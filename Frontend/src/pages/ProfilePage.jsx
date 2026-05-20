@@ -173,7 +173,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex-grow flex flex-col bg-white relative pb-12">
+    <div className="bg-white relative pb-12 w-full">
       
       {/* 1. Dual Wavy SVG Background at Top */}
       <div className="absolute top-0 left-0 right-0 h-[290px] overflow-hidden z-0 pointer-events-none">
@@ -205,7 +205,7 @@ export default function ProfilePage() {
       </div>
 
       {/* 2. Page Content Overlaid */}
-      <div className="relative z-10 p-5 space-y-5 flex-grow flex flex-col">
+      <div className="relative z-10 p-5 space-y-5">
         
         {/* Navigation Bar */}
         <div className="flex items-center">
@@ -293,7 +293,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Menu Options Stack */}
-        <div className="space-y-3 pb-6 flex-grow">
+        <div className="space-y-3 pb-6">
           {menuOptions.map((opt, idx) => {
             const Icon = opt.icon;
             return (
