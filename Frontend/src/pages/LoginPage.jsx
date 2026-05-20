@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
+import dollImage from '../assets/DollMynzo-removebg-preview.png';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -73,6 +74,51 @@ export default function LoginPage() {
     </div>
   );
 
+  // Floating doll component — reused on both screens
+  const FloatingDoll = () => (
+    <>
+      {/* CSS Keyframe animation injected once */}
+      <style>{`
+        @keyframes floatDoll {
+          0%   { transform: translateY(0px) scale(1); }
+          50%  { transform: translateY(-12px) scale(1.025); }
+          100% { transform: translateY(0px) scale(1); }
+        }
+        .doll-float {
+          animation: floatDoll 3.2s ease-in-out infinite;
+          will-change: transform;
+        }
+      `}</style>
+
+      {/* Soft ambient glow behind the doll */}
+      <div
+        className="absolute bottom-10 right-2 z-10 pointer-events-none"
+        style={{
+          width: '130px',
+          height: '130px',
+          background: 'radial-gradient(circle, rgba(255,110,84,0.22) 0%, rgba(255,142,77,0.10) 55%, transparent 80%)',
+          filter: 'blur(18px)',
+          borderRadius: '50%',
+          transform: 'translateX(10px) translateY(20px)',
+        }}
+      />
+
+      {/* Doll Image */}
+      <img
+        src={dollImage}
+        alt="Mynzo Mascot"
+        className="doll-float absolute bottom-4 right-2 z-10 pointer-events-none select-none"
+        style={{
+          width: '130px',
+          opacity: 0.95,
+          filter: 'drop-shadow(0 10px 22px rgba(0,0,0,0.13)) drop-shadow(0 2px 6px rgba(255,110,84,0.18))',
+          objectFit: 'contain',
+        }}
+        draggable={false}
+      />
+    </>
+  );
+
   return (
     <div className="h-screen w-full overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth bg-[#F8F9FD] flex flex-row">
       
@@ -122,6 +168,9 @@ export default function LoginPage() {
             <ChevronRight className="w-3.5 h-3.5 animate-pulse" />
           </div>
         </div>
+
+        {/* Floating Doll Mascot — Welcome Screen */}
+        <FloatingDoll />
       </section>
 
       {/* ======================================= */}
@@ -236,6 +285,9 @@ export default function LoginPage() {
 
           </form>
         </div>
+
+        {/* Floating Doll Mascot — Sign In Screen */}
+        <FloatingDoll />
       </section>
 
     </div>
