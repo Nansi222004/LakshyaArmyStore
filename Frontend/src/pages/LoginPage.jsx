@@ -107,9 +107,9 @@ export default function LoginPage() {
       <img
         src={dollImage}
         alt="Mynzo Mascot"
-        className="doll-float absolute bottom-4 right-2 z-10 pointer-events-none select-none"
+        className="doll-float absolute bottom-6 right-0 z-10 pointer-events-none select-none"
         style={{
-          width: '130px',
+          width: '140px',
           opacity: 0.95,
           filter: 'drop-shadow(0 10px 22px rgba(0,0,0,0.13)) drop-shadow(0 2px 6px rgba(255,110,84,0.18))',
           objectFit: 'contain',
@@ -162,9 +162,9 @@ export default function LoginPage() {
         </div>
 
         {/* Welcome Text Section */}
-        <div className="bg-[#F8F9FD] px-8 pb-14 pt-4 flex flex-col justify-start text-left relative z-10 space-y-3">
+        <div className="bg-[#F8F9FD] px-8 pr-36 pb-14 pt-4 flex flex-col justify-start text-left relative z-10 space-y-3">
           <h2 className="text-3xl font-extrabold text-[#02006c] tracking-tight leading-none">Welcome</h2>
-          <p className="text-xs text-slate-400 font-bold leading-relaxed max-w-xs">
+          <p className="text-xs text-slate-400 font-bold leading-relaxed">
             Sign in and discover elegant collections, curated surprises, and rewards made for you.
           </p>
           <div className="w-8 h-1 bg-[#FF6E54] rounded-full mt-2"></div>
@@ -172,7 +172,7 @@ export default function LoginPage() {
           {/* Swipe right to continue indicator */}
           <div 
             onClick={() => scrollToSection(signInRef)}
-            className="flex items-center justify-center gap-1.5 text-[9px] font-black text-slate-400 uppercase tracking-widest pt-12 cursor-pointer transition-colors hover:text-[#FF6E54]"
+            className="flex items-center justify-start gap-1.5 text-[9px] font-black text-slate-400 uppercase tracking-widest pt-8 cursor-pointer transition-colors hover:text-[#FF6E54]"
           >
             <span>Swipe Right to Begin</span>
             <ChevronRight className="w-3.5 h-3.5 animate-pulse" />
