@@ -130,7 +130,7 @@ export default function LoginPage() {
         className="h-full w-full flex-shrink-0 snap-start snap-always flex flex-col justify-between overflow-hidden relative bg-[#F8F9FD]"
       >
         {/* Peach Gradient Background Header */}
-        <div className="relative h-[68%] bg-gradient-to-br from-orange-300 via-orange-400 to-[#FF8E4D] flex flex-col justify-center items-center gap-3">
+        <div className="relative h-[52%] bg-gradient-to-br from-orange-300 via-orange-400 to-[#FF8E4D] flex flex-col justify-center items-center gap-3">
           {renderLeafOverlay()}
 
           {/* Logo Container */}
@@ -162,7 +162,7 @@ export default function LoginPage() {
         </div>
 
         {/* Welcome Text Section */}
-        <div className="bg-[#F8F9FD] px-6 pr-40 pb-6 pt-3 flex flex-col justify-start text-left relative z-10 space-y-1.5">
+        <div className="bg-[#F8F9FD] px-6 pr-40 pb-6 pt-1 flex flex-col justify-start text-left relative z-10 space-y-1.5">
           <h2 className="text-2xl font-extrabold text-[#02006c] tracking-tight leading-tight">Welcome</h2>
           <p className="text-[10px] text-slate-400 font-semibold leading-snug">
             Discover collections, surprises &amp; rewards made for you.
