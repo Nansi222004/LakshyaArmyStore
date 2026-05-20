@@ -195,7 +195,7 @@ export default function CategoriesPage() {
         </div>
 
         {/* 2. Main filtered products catalog grid */}
-        <div className="flex-grow p-4 overflow-y-auto space-y-4 bg-orange-50 relative">
+        <div className="flex-grow p-4 overflow-y-auto space-y-4 bg-[#e76a39]/15 relative">
         
         {/* Title bar */}
         <div className="flex items-center justify-between border-b border-slate-50 pb-2 relative z-20">
