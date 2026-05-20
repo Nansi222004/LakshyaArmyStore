@@ -162,20 +162,20 @@ export default function LoginPage() {
         </div>
 
         {/* Welcome Text Section */}
-        <div className="bg-[#F8F9FD] px-8 pr-36 pb-14 pt-4 flex flex-col justify-start text-left relative z-10 space-y-3">
-          <h2 className="text-3xl font-extrabold text-[#02006c] tracking-tight leading-none">Welcome</h2>
-          <p className="text-xs text-slate-400 font-bold leading-relaxed">
-            Sign in and discover elegant collections, curated surprises, and rewards made for you.
+        <div className="bg-[#F8F9FD] px-6 pr-40 pb-6 pt-3 flex flex-col justify-start text-left relative z-10 space-y-1.5">
+          <h2 className="text-2xl font-extrabold text-[#02006c] tracking-tight leading-tight">Welcome</h2>
+          <p className="text-[10px] text-slate-400 font-semibold leading-snug">
+            Discover collections, surprises &amp; rewards made for you.
           </p>
-          <div className="w-8 h-1 bg-[#FF6E54] rounded-full mt-2"></div>
+          <div className="w-6 h-0.5 bg-[#FF6E54] rounded-full"></div>
 
           {/* Swipe right to continue indicator */}
           <div 
             onClick={() => scrollToSection(signInRef)}
-            className="flex items-center justify-start gap-1.5 text-[9px] font-black text-slate-400 uppercase tracking-widest pt-8 cursor-pointer transition-colors hover:text-[#FF6E54]"
+            className="flex items-center gap-1 text-[8px] font-black text-slate-400 uppercase tracking-widest pt-4 cursor-pointer transition-colors hover:text-[#FF6E54] whitespace-nowrap"
           >
             <span>Swipe Right to Begin</span>
-            <ChevronRight className="w-3.5 h-3.5 animate-pulse" />
+            <ChevronRight className="w-3 h-3 animate-pulse flex-shrink-0" />
           </div>
         </div>
 
