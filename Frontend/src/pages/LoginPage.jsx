@@ -127,7 +127,7 @@ export default function LoginPage() {
       {/* ======================================= */}
       <section 
         ref={welcomeRef}
-        className="h-full w-full flex-shrink-0 snap-start snap-always flex flex-col justify-between overflow-hidden relative bg-[#F8F9FD]"
+        className="h-full w-full flex-shrink-0 snap-start snap-always flex flex-col justify-start overflow-hidden relative bg-[#F8F9FD]"
       >
         {/* Peach Gradient Background Header */}
         <div className="relative h-[52%] bg-gradient-to-br from-orange-300 via-orange-400 to-[#FF8E4D] flex flex-col justify-center items-center gap-3">
