@@ -12,6 +12,7 @@ export const AppProvider = ({ children }) => {
     { ...CRAZY_DEALS[1] },
     { ...CRAZY_DEALS[3] }
   ]);
+  const [orders, setOrders] = useState([]);
   const [coins, setCoins] = useState(560);
   const [location, setLocation] = useState("83 Kishan Pura Mataji Mandir, Sector 3, Mathura");
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,6 +65,10 @@ export const AppProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   const totalCartItems = cart.reduce((total, item) => total + item.quantity, 0);
   const totalCartPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -85,6 +90,10 @@ export const AppProvider = ({ children }) => {
     return wishlist.some((item) => item.id === productId);
   };
 
+  const addOrder = (order) => {
+    setOrders((prev) => [order, ...prev]);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -92,6 +101,7 @@ export const AppProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateQuantity,
+        clearCart,
         totalCartItems,
         totalCartPrice,
         coins,
@@ -99,6 +109,8 @@ export const AppProvider = ({ children }) => {
         wishlist,
         toggleWishlist,
         isInWishlist,
+        orders,
+        addOrder,
         location,
         setLocation,
         searchQuery,

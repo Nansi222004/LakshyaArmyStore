@@ -10,10 +10,16 @@ export default function Layout({ children }) {
                      location.pathname.toLowerCase().startsWith('/profile') || 
                      location.pathname.toLowerCase().startsWith('/categories') || 
                      location.pathname.toLowerCase().startsWith('/wishlist') ||
+                     location.pathname.toLowerCase().startsWith('/orders') ||
                      location.pathname.toLowerCase().startsWith('/cart') ||
-                     location.pathname.toLowerCase().startsWith('/games');
+                     location.pathname.toLowerCase().startsWith('/games') ||
+                     location.pathname.toLowerCase().startsWith('/crazy-deals') ||
+                     location.pathname.toLowerCase().startsWith('/checkout') ||
+                     location.pathname.toLowerCase().startsWith('/product') ||
+                     location.pathname.toLowerCase().startsWith('/similar-products') ||
+                     location.pathname.toLowerCase().startsWith('/top-selection');
 
-  const hideMobileNav = isLoginPage || location.pathname.toLowerCase().startsWith('/profile');
+  const hideMobileNav = isLoginPage || location.pathname.toLowerCase().startsWith('/profile') || location.pathname.toLowerCase().startsWith('/checkout') || location.pathname.toLowerCase().startsWith('/product');
 
   return (
     <div className="h-[100dvh] bg-slate-100 flex justify-center items-start text-slate-800 antialiased font-sans overflow-hidden">

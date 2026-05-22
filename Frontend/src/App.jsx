@@ -12,6 +12,12 @@ import CartPage from './pages/CartPage';
 import ProfilePage from './pages/ProfilePage';
 import LoginPage from './pages/LoginPage';
 import WishlistPage from './pages/WishlistPage';
+import OrdersPage from './pages/OrdersPage';
+import CrazyDealsPage from './pages/CrazyDealsPage';
+import CheckoutPage from './pages/CheckoutPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
+import TopSelectionPage from './pages/TopSelectionPage';
+import SimilarProductsPage from './pages/SimilarProductsPage';
 
 import './App.css';
 
@@ -40,7 +46,7 @@ function AppContent() {
   useEffect(() => {
     // Once splash screen video completes, run hierarchical route matching
     if (!showSplash) {
-      const protectedRoutes = ['/wishlist'];
+      const protectedRoutes = ['/wishlist', '/orders'];
       const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
 
       if (!user && isProtectedRoute) {
@@ -83,6 +89,12 @@ function AppContent() {
         <Route path="/games" element={<GamesPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/crazy-deals" element={<CrazyDealsPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/product/:id" element={<ProductDetailsPage />} />
+        <Route path="/similar-products" element={<SimilarProductsPage />} />
+        <Route path="/top-selection" element={<TopSelectionPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>

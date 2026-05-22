@@ -4,6 +4,8 @@ import { useApp } from '../context/AppContext';
 import { Heart, ChevronLeft, ShoppingBag } from 'lucide-react';
 import ProductCard from '../components/ui/ProductCard';
 import { motion, AnimatePresence } from 'framer-motion';
+import Lottie from 'lottie-react';
+import shoppingBagAnimation from '../assets/Lotties/Shopping bag.json';
 
 export default function WishlistPage() {
   const { wishlist } = useApp();
@@ -12,22 +14,25 @@ export default function WishlistPage() {
   return (
     <div className="flex-grow flex flex-col bg-white min-h-screen">
       {/* Elevated Sticky Header */}
-      <header className="sticky top-0 bg-orange-50 border-b border-slate-100/80 px-4 py-3 flex items-center justify-between z-40">
-        <div className="flex items-center gap-2">
+      <header className="sticky top-0 bg-orange-100 border-b border-orange-200/50 px-4 py-3 flex items-center justify-between z-40">
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => navigate(-1)}
-            className="p-1 bg-white hover:bg-orange-100/50 border border-slate-100/85 rounded-full shadow-2xs transition-colors active:scale-95 cursor-pointer text-[#02006c]"
+            className="p-1 bg-white hover:bg-orange-50 border border-slate-100 rounded-full shadow-sm transition-colors active:scale-95 cursor-pointer text-[#02006c]"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <div>
-            <h1 className="text-xs font-black text-[#02006c] tracking-wide uppercase font-syne flex items-center gap-1">
-              Your Wishlist
-              <Heart className="w-3.5 h-3.5 text-[#FF6E54] fill-current" />
-            </h1>
-            <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest font-sans">
-              Saved Treasures
-            </p>
+          <div className="flex items-center gap-1.5 -ml-1">
+            <Lottie animationData={shoppingBagAnimation} loop={true} className="w-10 h-10" />
+            <div className="flex flex-col justify-center">
+              <h1 className="text-sm font-black text-[#02006c] tracking-wide uppercase font-sans flex items-center gap-1.5 leading-tight">
+                My Picks
+                <Heart className="w-3.5 h-3.5 text-[#FF6E54] fill-current" />
+              </h1>
+              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest font-sans leading-tight">
+                Saved Treasures
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-1 bg-[#FF6E54]/10 text-[#FF6E54] px-2.5 py-0.5 rounded-full border border-[#FF6E54]/15">

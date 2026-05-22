@@ -4,9 +4,12 @@ import { useApp } from '../context/AppContext';
 import avtarImage from '../assets/AvatarProfile-removebg-preview.png';
 import { 
   ChevronLeft, User, Lock, Settings, Phone, LogOut, Camera, 
-  ChevronRight, Coins, Gift, ShoppingBag, Sparkles, X 
+  ChevronRight, Coins, Gift, ShoppingBag, Sparkles, X,
+  CreditCard, Globe, Bell, Headphones, Store, FileText, HelpCircle,
+  Heart, Package
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CRAZY_DEALS } from '../data/mockData';
 
 // Dynamic SVG Avatar Component
 function DynamicAvatar({ config, size = "w-20 h-20" }) {
@@ -167,26 +170,62 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="bg-slate-50 flex flex-col items-center justify-center min-h-[100dvh] p-6 font-sans text-center animate-fade-in relative overflow-hidden">
-        {/* Soft Decorative Blobs */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60 translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60 -translate-x-1/2 translate-y-1/2"></div>
-
-        <div className="relative z-10 flex flex-col items-center w-full max-w-sm">
-          <div className="w-24 h-24 bg-white shadow-xl shadow-orange-500/10 text-[#FF6E54] rounded-full flex items-center justify-center mb-6 border border-orange-100/50">
-            <Lock className="w-10 h-10" />
-          </div>
-          <h2 className="text-2xl font-black text-[#02006c] mb-3 font-syne tracking-wide">Profile Locked</h2>
-          <p className="text-slate-500 text-xs font-bold leading-relaxed mb-8 max-w-[250px]">
-            Log in to view your profile, manage orders, and customize your Mynzo Avatar.
-          </p>
-          <button 
-            onClick={() => navigate('/login')}
-            className="w-full py-4 bg-gradient-to-r from-[#FF6E54] to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white text-[12px] font-black rounded-[20px] transition-all shadow-xl shadow-[#FF6E54]/25 uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.98]"
-          >
-            Login to Continue <ChevronRight className="w-4 h-4" />
-          </button>
+      <div className="bg-slate-100 min-h-[100dvh] pb-24 font-sans animate-fade-in flex flex-col">
+        
+        {/* Sticky App Header */}
+        <div className="bg-[#FFE4D6] px-4 py-4 shadow-sm z-10 sticky top-0">
+          <h1 className="text-[#02006c] text-[20px] font-black tracking-tight">Profile</h1>
         </div>
+
+        {/* Login Section Card */}
+        <div className="bg-[#FFE4D6] px-4 py-4 mb-2 shadow-sm mt-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[14px] text-[#02006c] font-medium">Log in to get exclusive offers</span>
+            <button 
+              onClick={() => navigate('/login')}
+              className="bg-[#02006c] hover:bg-blue-900 active:scale-95 text-white text-[13px] font-bold py-2 px-6 rounded transition-all shadow-sm"
+            >
+              Log In
+            </button>
+          </div>
+        </div>
+
+
+
+        {/* Recently Viewed Stores */}
+        <div className="bg-white p-4 mb-2 shadow-sm">
+          <h3 className="text-[15px] font-bold text-slate-800 mb-3">Recently Viewed Stores</h3>
+          <div className="flex overflow-x-auto gap-3 pb-1 scrollbar-none">
+            {CRAZY_DEALS.slice(0, 3).map((deal) => (
+              <div key={deal.id} className="w-24 flex-shrink-0 flex flex-col items-center border border-slate-100 rounded-lg p-1.5 cursor-pointer hover:border-orange-200 hover:shadow-sm transition-all group">
+                <div className="w-full aspect-[4/5] overflow-hidden rounded mb-2 bg-[#F8F9FD]">
+                  <img src={deal.image} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <span className="text-[10px] font-bold text-slate-600 text-center truncate w-full px-1 group-hover:text-[#02006c] transition-colors">{deal.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
+
+        {/* Feedback & Information */}
+        <div className="bg-white shadow-sm mb-4">
+          <h3 className="text-[15px] font-bold text-slate-800 p-4 pb-2">Feedback & Information</h3>
+          <div className="flex flex-col">
+            {[
+              { icon: FileText, label: 'Terms, Policies and Licenses' },
+              { icon: HelpCircle, label: 'Browse FAQs' }
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-4 p-4 border-b border-slate-50 last:border-0 cursor-pointer hover:bg-slate-50 group transition-colors">
+                <item.icon className="w-5 h-5 text-[#02006c] group-hover:scale-110 transition-transform" />
+                <span className="text-[13px] font-medium text-slate-700 flex-1 group-hover:text-[#02006c] transition-colors">{item.label}</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#FF6E54] group-hover:translate-x-1 transition-all" />
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     );
   }
@@ -195,6 +234,8 @@ export default function ProfilePage() {
 
   const menuOptions = [
     { id: 'wallet', label: "My Wallet", desc: "View your current Mynzo coin balance", icon: Coins, color: "bg-indigo-100/60 text-[#02006c]" },
+    { label: "My Picks", desc: "Check your wishlist", icon: Heart, color: "bg-rose-100/60 text-rose-500", path: "/wishlist" },
+    { label: "My Orders", desc: "Watch what orders are placed", icon: Package, color: "bg-sky-100/60 text-sky-600", path: "/orders" },
     { label: "Account Information", desc: "Manage your email, phone, and profile settings", icon: User, color: "bg-orange-100/60 text-[#FF6E54]" },
     { label: "Security & Password", desc: "Change password and secure credentials", icon: Lock, color: "bg-amber-100/60 text-amber-600" },
     { label: "System Settings", desc: "Configure app defaults and notifications", icon: Settings, color: "bg-slate-100 text-slate-600" },
@@ -397,7 +438,10 @@ export default function ProfilePage() {
               return (
                 <button
                   key={idx}
-                  onClick={() => isWallet && setShowWalletBalance(!showWalletBalance)}
+                  onClick={() => {
+                    if (isWallet) setShowWalletBalance(!showWalletBalance);
+                    else if (opt.path) navigate(opt.path);
+                  }}
                   className="w-full flex items-center justify-between p-3.5 rounded-[20px] hover:bg-slate-50 active:scale-[0.98] transition-all duration-300 text-left cursor-pointer group"
                 >
                   <div className="flex items-center gap-4 min-w-0 flex-1">

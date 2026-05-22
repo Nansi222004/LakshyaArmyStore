@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Plus, Minus, Trash2, ShieldCheck, ArrowRight, ChevronLeft } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import Lottie from 'lottie-react';
+import addToCartAnimation from '../assets/Lotties/AddToCart.json';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -56,22 +58,26 @@ export default function CartPage() {
   return (
     <div className="flex-grow flex flex-col bg-white min-h-screen">
       {/* Elevated Sticky Header */}
-      <header className="sticky top-0 bg-orange-50 border-b border-slate-100/80 px-4 py-3 flex items-center justify-between z-40">
-        <div className="flex items-center gap-2">
+      <header className="sticky top-0 bg-orange-100 border-b border-orange-200/50 px-4 py-3 flex items-center justify-between z-40 shadow-sm">
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => navigate(-1)}
-            className="p-1 bg-white hover:bg-orange-100/50 border border-slate-100/85 rounded-full shadow-2xs transition-colors active:scale-95 cursor-pointer text-[#02006c]"
+            className="p-1.5 bg-white hover:bg-orange-50 border border-slate-200 rounded-full shadow-sm transition-colors active:scale-95 cursor-pointer text-[#02006c]"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <div>
-            <h1 className="text-xs font-black text-[#02006c] tracking-wide uppercase font-syne flex items-center gap-1">
-              Your Basket
-              <ShoppingBag className="w-3.5 h-3.5 text-[#FF6E54]" />
-            </h1>
-            <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest font-sans">
-              Secure Checkout
-            </p>
+          
+          <div className="flex items-center gap-1.5 -ml-1">
+            <Lottie animationData={addToCartAnimation} loop={true} className="w-10 h-10" />
+            <div className="flex flex-col justify-center">
+              <h1 className="text-sm font-black text-[#02006c] tracking-wide uppercase font-sans flex items-center gap-1.5 leading-tight">
+                Your Basket
+                <ShoppingBag className="w-3.5 h-3.5 text-[#FF6E54]" />
+              </h1>
+              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest font-sans leading-tight">
+                Secure Checkout
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-1 bg-[#FF6E54]/10 text-[#FF6E54] px-2.5 py-0.5 rounded-full border border-[#FF6E54]/15">
@@ -90,14 +96,18 @@ export default function CartPage() {
                   key={item.id} 
                   className="flex items-center gap-3 bg-white rounded-2xl p-3 border border-slate-100 shadow-xs hover:border-slate-200 transition-all duration-300"
                 >
-                  {/* SVG Image container */}
-                  <div className="w-16 h-16 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                    {renderMiniGraphic(item.type)}
+                  {/* SVG/Image container */}
+                  <div className="w-16 h-16 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {item.image ? (
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    ) : (
+                      renderMiniGraphic(item.type)
+                    )}
                   </div>
 
                   {/* Details layout */}
                   <div className="flex-grow min-w-0">
-                    <h4 className="text-xs font-bold text-[#0F172A] truncate leading-tight">{item.name}</h4>
+                    <h4 className="text-sm font-bold text-[#0F172A] truncate leading-tight" style={{ fontFamily: "'Times New Roman', Times, serif" }}>{item.name}</h4>
                     <p className="text-[9px] text-[#FF6E54] font-black mt-1 bg-orange-50 px-2 py-0.5 rounded-full w-fit">
                       {item.discount} OFF
                     </p>
@@ -173,9 +183,10 @@ export default function CartPage() {
 
             {/* Checkout CTA */}
             <button 
+              onClick={() => navigate('/checkout')}
               className="w-full bg-[#FF6E54] hover:bg-orange-600 active:scale-95 text-white py-3.5 rounded-2xl font-black text-xs shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 group transition-all duration-300"
             >
-              <span>PLACE ORDER</span>
+              <span>PROCEED TO CHECKOUT</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

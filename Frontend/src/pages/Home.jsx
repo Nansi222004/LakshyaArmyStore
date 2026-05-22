@@ -54,7 +54,7 @@ export default function Home() {
     switch (id) {
       case 'for-you':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <path d="M16 10a4 4 0 0 1-8 0" />
@@ -62,7 +62,7 @@ export default function Home() {
         );
       case 'beauty':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M7 9 A 2 2 0 0 1 9 7 H 15 A 2 2 0 0 1 17 9 V 20 A 2 2 0 0 1 15 22 H 9 A 2 2 0 0 1 7 20 Z" />
             <path d="M10 7 V 3 H 14 V 7" />
             <line x1="9" y1="13" x2="15" y2="13" />
@@ -71,7 +71,7 @@ export default function Home() {
         );
       case 'gifting':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 12 20 22 4 22 4 12" />
             <rect x="2" y="7" width="20" height="5" />
             <line x1="12" y1="22" x2="12" y2="7" />
@@ -81,7 +81,7 @@ export default function Home() {
         );
       case 'electronics':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
             <line x1="8" y1="21" x2="16" y2="21" />
             <line x1="12" y1="17" x2="12" y2="21" />
@@ -89,7 +89,7 @@ export default function Home() {
         );
       case 'jewellery':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M6 3h12l4 6-10 12L2 9z" />
             <path d="M11 3 8 9l4 12 4-12-3-6" />
             <path d="M2 9h20" />
@@ -97,7 +97,7 @@ export default function Home() {
         );
       case 'toys':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="8" width="18" height="13" rx="3" />
             <rect x="7" y="10" width="10" height="4" rx="1" />
             <path d="M 6 17 H 10 M 8 15 V 19" />
@@ -109,7 +109,7 @@ export default function Home() {
         );
       case 'stationery':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2 L20 20 H4 Z" />
             <line x1="2" y1="16" x2="22" y2="16" />
             <rect x="10" y="8" width="4" height="4" rx="0.5" />
@@ -117,13 +117,13 @@ export default function Home() {
         );
       case 'fashion':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20.38 3.46L16 6a2 2 0 0 1-2-2V2H10v2a2 2 0 0 1-2 2L3.62 3.46a2 2 0 0 0-2.38.88l-1 1.5a2 2 0 0 0 .38 2.56L4 10v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10l3.38-2.6a2 2 0 0 0 .38-2.56l-1-1.5a2 2 0 0 0-2.38-.88z" />
           </svg>
         );
       case 'electrical':
         return (
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
           </svg>
         );
@@ -317,7 +317,7 @@ export default function Home() {
               className="flex flex-col items-center gap-0.5 flex-shrink-0 cursor-pointer transition-all duration-300 min-w-[52px]"
             >
               {/* Ultra-Compact Card box for only the icon */}
-              <div className={`w-9.5 h-9.5 flex items-center justify-center rounded-xl border transition-all duration-300 ${
+              <div className={`w-11 h-11 flex items-center justify-center rounded-xl border transition-all duration-300 ${
                 isActive 
                   ? 'bg-[#FF6E54] border-[#FF6E54] text-white shadow-xs' 
                   : 'bg-white border-orange-200 text-[#02006c] hover:border-[#FF6E54]/40'
@@ -460,7 +460,7 @@ export default function Home() {
             </span>
           </div>
           <button 
-            onClick={() => navigate('/categories')}
+            onClick={() => navigate('/crazy-deals')}
             className="text-xs font-black text-[#FF6E54] hover:underline"
           >
             See All
@@ -482,7 +482,7 @@ export default function Home() {
             {filteredDeals.map((deal) => (
               <div 
                 key={deal.id}
-                onClick={() => navigate('/categories')}
+                onClick={() => navigate('/crazy-deals')}
                 className="flex-shrink-0 w-24 flex flex-col justify-between cursor-pointer group"
               >
                 <div>
@@ -539,7 +539,7 @@ export default function Home() {
               TOP SELECTION
             </h3>
             <button 
-              onClick={() => navigate('/categories')}
+              onClick={() => navigate('/top-selection')}
               className="bg-slate-50 border border-slate-200 text-[#02006c] w-7 h-7 rounded-xl flex items-center justify-center shadow-2xs cursor-pointer hover:bg-slate-100 hover:scale-105 active:scale-95 transition-all"
             >
               <ChevronRight className="w-4 h-4 stroke-[3]" />
@@ -664,7 +664,7 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-3">
           {flashDeals.length > 0 ? (
             flashDeals.slice(0, 4).map((deal) => (
-              <div key={deal.id} onClick={() => navigate('/categories')} className="bg-[#F8F9FD] rounded-xl p-2 relative cursor-pointer hover:bg-slate-100 transition-colors group">
+              <div key={deal.id} onClick={() => navigate(`/product/${deal.id}`)} className="bg-[#F8F9FD] rounded-xl p-2 relative cursor-pointer hover:bg-slate-100 transition-colors group">
                 {/* Heart Icon */}
                 <button className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm z-10 text-slate-300 hover:text-[#FF6E54] transition-colors">
                   <Heart className="w-3.5 h-3.5" />
@@ -690,40 +690,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 6. Games Zone Promo Banner */}
-      <div className="px-4">
-        <div 
-          onClick={() => navigate('/games')}
-          className="bg-gradient-to-r from-red-500 to-orange-500 rounded-xl p-5 text-white shadow-lg shadow-orange-500/10 cursor-pointer relative overflow-hidden group hover:scale-[1.01] transition-all duration-300"
-        >
-          {/* Abstract light effects */}
-          <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/10 rounded-full blur-xl group-hover:scale-110 transition-transform duration-500"></div>
 
-          <div className="flex justify-between items-center relative z-10">
-            <div className="space-y-1 max-w-[65%]">
-              <span className="text-[9px] font-extrabold tracking-widest text-amber-300 uppercase">Games Zone</span>
-              <h3 className="text-sm font-black leading-tight">
-                Play Games <br />Win Rewards
-              </h3>
-              <p className="text-[10px] text-orange-100 font-medium">
-                Let the fun (and coins) begin!
-              </p>
-              
-              <div className="pt-2">
-                <span className="inline-block bg-white text-[#FF6E54] text-[9px] font-black px-4 py-1.5 rounded-full shadow-sm">
-                  PLAY NOW
-                </span>
-              </div>
-            </div>
-
-            {/* Controller and Trophy inline Graphic */}
-            <div className="flex flex-col items-center gap-1.5">
-              <Trophy className="w-10 h-10 text-amber-300 drop-shadow-md animate-bounce" />
-              <Gamepad2 className="w-12 h-12 text-slate-100 drop-shadow-md rotate-[-12deg]" />
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div>
   );

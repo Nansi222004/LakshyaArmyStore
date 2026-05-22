@@ -8,7 +8,8 @@ export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
 
-  const handleAdd = () => {
+  const handleAdd = (e) => {
+    e.stopPropagation();
     if (!user) {
       navigate('/login');
       return;
@@ -122,7 +123,10 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-slate-100/80 p-2 shadow-2xs hover:shadow-[0_8px_24px_-6px_rgba(255,110,84,0.2)] hover:border-[#FF6E54]/30 hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between group">
+    <div 
+      onClick={() => navigate(`/product/${product.id}`)}
+      className="bg-white rounded-lg border border-slate-100/80 p-2 shadow-2xs hover:shadow-[0_8px_24px_-6px_rgba(255,110,84,0.2)] hover:border-[#FF6E54]/30 hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+    >
       <div>
         {/* Card Top: Discount Badge & Rating */}
         <div className="flex items-center justify-between gap-1 mb-1">
@@ -136,9 +140,9 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* Image display */}
-        <div className="bg-slate-50/60 backdrop-blur-xs border border-white/80 rounded p-1 flex items-center justify-center mb-1.5 group-hover:scale-102 transition-transform duration-300 relative">
+        <div className="bg-slate-50/60 backdrop-blur-xs border border-white/80 rounded flex items-center justify-center mb-1.5 group-hover:scale-[1.02] transition-transform duration-300 relative overflow-hidden aspect-square w-full">
           {product.image ? (
-            <img src={product.image} alt={product.name} className="w-14 h-14 object-contain drop-shadow-sm" />
+            <img src={product.image} alt={product.name} className="w-full h-full object-cover drop-shadow-sm" />
           ) : (
             renderProductGraphic(product.type)
           )}
