@@ -341,7 +341,7 @@ export default function Home() {
     <div className="flex-grow space-y-3.5 pb-6 animate-fade-in">
       
       {/* 1. Ultra-Compact Category strip with minimized gaps and in-place active states */}
-      <div className="flex items-center gap-1 overflow-x-auto px-2 py-1.5 bg-white border-b border-slate-50 scrollbar-none scroll-smooth">
+      <div className="flex items-center gap-1 overflow-x-auto px-2 py-1.5 bg-white border-b border-slate-50 scrollbar-none scroll-smooth mt-2">
         {CATEGORIES.map((cat) => {
           const isActive = selectedCategory === cat.id;
 
@@ -350,31 +350,31 @@ export default function Home() {
               key={cat.id}
               onClick={() => {
                 setSelectedCategory(cat.id);
-                // Active that category in-place! NO redirect navigation!
               }}
-              className="flex flex-col items-center gap-0.5 flex-shrink-0 cursor-pointer transition-all duration-300 min-w-[52px]"
+              className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer transition-all duration-300 min-w-[50px] px-1"
             >
-              {/* Ultra-Compact Card box for only the icon */}
-              <div className={`w-11 h-11 flex items-center justify-center rounded-xl border transition-all duration-300 ${
-                isActive 
-                  ? 'bg-[#FF6E54] border-[#FF6E54] text-white shadow-xs' 
-                  : 'bg-white border-orange-200 text-[#02006c] hover:border-[#FF6E54]/40'
+              {/* Image Box */}
+              <div className={`w-14 h-14 flex items-center justify-center rounded-2xl border transition-all duration-300 overflow-hidden ${
+                isActive
+                  ? 'bg-[#FF6E54] border-[#FF6E54] text-white shadow-sm'
+                  : 'bg-[#FFF0ED] border-[#FFF0ED] text-[#02006c] hover:border-[#FF6E54]/40'
               }`}>
-                {renderCategoryIcon(cat.id, isActive)}
+                {cat.image ? (
+                  <img src={cat.image} alt={cat.name} className="w-full h-full object-contain p-1" />
+                ) : (
+                  renderCategoryIcon(cat.id, isActive)
+                )}
               </div>
 
-              {/* Centered label below */}
-              <div className="flex flex-col items-center gap-0.5">
-                <span className={`text-[8.5px] tracking-tight transition-colors ${
-                  isActive ? 'font-black text-[#02006c]' : 'font-bold text-slate-500'
+              {/* Label */}
+              <div className="flex flex-col items-center">
+                <span className={`text-[11px] px-2 py-0.5 rounded-full transition-colors ${
+                  isActive 
+                    ? 'font-bold text-[#FF6E54] border border-[#FF6E54]' 
+                    : 'font-semibold text-[#02006c] border border-transparent'
                 }`}>
                   {cat.name}
                 </span>
-                
-                {/* Active Indicator Underline centered beneath label */}
-                {isActive && (
-                  <span className="w-4 h-[1.5px] bg-[#FF6E54] rounded-full"></span>
-                )}
               </div>
             </button>
           );
@@ -383,66 +383,21 @@ export default function Home() {
 
       {/* 2. Banner Slider (Hero Banner Section) */}
       <div className="px-2 relative">
-        <div className="overflow-hidden rounded-xl border border-slate-100 shadow-sm relative h-32">
-          {BANNERS.map((banner, idx) => (
-            <div
-              key={banner.id}
-              className={`absolute inset-0 p-4 flex flex-col justify-center gap-1.5 transition-all duration-700 ease-in-out ${
-                idx === activeBanner 
-                  ? 'opacity-100 translate-x-0 scale-100' 
-                  : 'opacity-0 translate-x-8 scale-95 pointer-events-none'
-              } ${banner.bg}`}
-            >
-              {/* Text Layout */}
-              <div className="max-w-[65%] space-y-0.5">
-                <span className="text-[9px] font-extrabold tracking-widest text-[#FF6E54] uppercase">
-                  {banner.title}
-                </span>
-                <h2 className={`text-[15px] font-extrabold leading-tight tracking-tight ${banner.textColor}`}>
-                  {banner.subtitle}
-                </h2>
-                <p className="text-[9px] text-slate-500 font-medium">
-                  {banner.desc}
-                </p>
-              </div>
-
-              {/* Action Button */}
-              <button 
+        <div className="overflow-hidden rounded-xl shadow-sm relative aspect-[21/9] w-full">
+          <div 
+            className="flex w-full h-full transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${activeBanner * 100}%)` }}
+          >
+            {BANNERS.map((banner) => (
+              <div
+                key={banner.id}
+                className="w-full h-full flex-shrink-0 cursor-pointer"
                 onClick={() => navigate('/categories')}
-                className="bg-[#FF6E54] hover:bg-orange-600 active:scale-95 text-white text-[8.5px] font-extrabold px-3 py-1.5 rounded-full shadow-md shadow-orange-500/20 w-fit transition-all duration-300 mt-0.5"
               >
-                {banner.cta}
-              </button>
-
-              {/* Image Graphic Layout inside banner */}
-              <div className="absolute right-1 bottom-0 top-0 w-28 flex items-center justify-center">
-                {banner.id === 1 ? (
-                  // Custom Teddy Bear Vector Illustration
-                  <svg viewBox="0 0 100 100" className="w-20 h-20 drop-shadow-md">
-                    <circle cx="50" cy="74" r="22" fill="#FECDD3" />
-                    <circle cx="50" cy="46" r="18" fill="#FDA4AF" />
-                    {/* Ears */}
-                    <circle cx="32" cy="32" r="8" fill="#FDA4AF" />
-                    <circle cx="68" cy="32" r="8" fill="#FDA4AF" />
-                    <ellipse cx="50" cy="50" r="7" rx="6" ry="4" fill="#FFE4E6" />
-                    <ellipse cx="50" cy="48" r="2.5" fill="#475569" />
-                    <circle cx="44" cy="42" r="2" fill="#0F172A" />
-                    <circle cx="56" cy="42" r="2" fill="#0F172A" />
-                    <path d="M45 58c1.5 2 3.5 2 5 0" stroke="#F43F5E" strokeWidth="2" fill="none" />
-                  </svg>
-                ) : (
-                  // Custom Gift Illustration
-                  <svg viewBox="0 0 100 100" className="w-20 h-20 drop-shadow-md animate-pulse">
-                    <rect x="25" y="38" width="50" height="42" rx="4" fill="#F97316" />
-                    <rect x="20" y="32" width="60" height="8" rx="2" fill="#EA580C" />
-                    {/* Ribbon */}
-                    <rect x="46" y="32" width="8" height="48" fill="#FEF08A" />
-                    <circle cx="50" cy="24" r="6" fill="#FDE047" />
-                  </svg>
-                )}
+                <img src={banner.image} alt="Banner" className="w-full h-full object-cover" />
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Indicators */}
@@ -462,27 +417,7 @@ export default function Home() {
       {/* CONDITIONAL RENDER: "For You" vs Other Categories */}
       {selectedCategory === 'for-you' ? (
         <>
-          {/* 3. Mynzo Trust Stamps (Value Props) */}
-          <div className="px-4 -mt-2">
-        <div className="grid grid-cols-4 gap-2">
-          {VALUE_PROPS.map((prop) => (
-            <div 
-              key={prop.id} 
-              className="flex flex-col items-center justify-center rounded-lg bg-white border border-orange-200 p-1 py-1.5 shadow-3xs hover:border-[#FF6E54] hover:scale-[1.01] active:scale-95 transition-all duration-300 cursor-pointer"
-            >
-              {/* Colored Stamp Icon box with soft blue and blue icon */}
-              <div className="w-6.5 h-6.5 bg-blue-50 text-[#02006c] rounded-md flex items-center justify-center mb-0.75 shadow-3xs">
-                {prop.id === 1 && <Truck className="w-3.5 h-3.5 stroke-[2.2]" />}
-                {prop.id === 2 && <RotateCcw className="w-3.5 h-3.5 stroke-[2.2]" />}
-                {prop.id === 3 && <ShieldCheck className="w-3.5 h-3.5 stroke-[2.2]" />}
-                {prop.id === 4 && <Tag className="w-3.5 h-3.5 stroke-[2.2]" />}
-              </div>
-              <h5 className="text-[7.5px] font-bold text-[#02006c] leading-tight text-center">{prop.title}</h5>
-              <p className="text-[6.5px] text-slate-400 font-medium leading-none mt-0.5 text-center">{prop.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+
 
       {/* 4. Crazy Deals Horizontal Scroll List (Custom Compact & Soft Orange Canvas Layout) */}
       <div className="px-4 space-y-2.5">
@@ -491,8 +426,7 @@ export default function Home() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <span 
-              className="text-xl font-extrabold text-[#02006c] flex items-center gap-1.5"
-              style={{ fontFamily: "'Times New Roman', Times, Georgia, serif" }}
+              className="text-[22px] font-extrabold text-[#02006c] flex items-center gap-1.5 ![font-family:'Times_New_Roman',Times,serif]"
             >
               Crazy Deals
             </span>
@@ -502,14 +436,14 @@ export default function Home() {
           </div>
           <button 
             onClick={() => navigate('/crazy-deals')}
-            className="text-xs font-black text-[#FF6E54] hover:underline"
+            className="text-xs font-black text-[#ee4923] hover:underline"
           >
             See All
           </button>
         </div>
 
         {/* Ticking Countdown Timer */}
-        <div className="flex items-center gap-1 text-[12px] font-black text-[#FF6E54] tracking-wide -mt-1.5">
+        <div className="flex items-center gap-1 text-[13px] font-black text-[#ee4923] tracking-wide -mt-1.5 ![font-family:'Times_New_Roman',Times,serif]">
           <span>{hrs}</span>
           <span className="animate-pulse">:</span>
           <span>{mins}</span>
@@ -530,7 +464,7 @@ export default function Home() {
                   {/* Compact Light Orange image display box */}
                   <div className="w-24 h-24 bg-orange-50/80 border border-orange-100/50 rounded-2xl flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-all duration-300 animate-fade-in">
                     {/* Discount Pill */}
-                    <span className="absolute top-1.5 left-1.5 bg-[#FF6E54] text-white text-[7.5px] font-black px-1.5 py-0.5 rounded-lg shadow-3xs z-10">
+                    <span className="absolute top-0 left-0 bg-[#ee4923] text-white text-[9px] font-black px-2.5 py-1 rounded-br-lg shadow-3xs z-10">
                       {deal.discount}
                     </span>
 
@@ -538,7 +472,7 @@ export default function Home() {
                     <img 
                       src={deal.image} 
                       alt={deal.name}
-                      className="w-18 h-18 object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
 
@@ -550,7 +484,7 @@ export default function Home() {
 
                 {/* Pricing row (No cart button, no description) */}
                 <div className="flex items-center gap-1.5 mt-0.5 px-0.5 leading-none">
-                  <span className="text-[10.5px] font-extrabold text-[#FF6E54]">₹{deal.price}</span>
+                  <span className="text-[10.5px] font-extrabold text-[#ee4923]">₹{deal.price}</span>
                   <span className="text-[8.5px] text-slate-400 font-bold line-through">₹{deal.originalPrice}</span>
                 </div>
               </div>
@@ -576,7 +510,7 @@ export default function Home() {
           
           {/* Header Row */}
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-[17px] font-semibold tracking-wide text-[#02006c]" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+            <h3 className="text-[19px] font-bold tracking-wide text-[#02006c] ![font-family:'Times_New_Roman',Times,serif]">
               TOP SELECTION
             </h3>
             <button 
@@ -671,10 +605,10 @@ export default function Home() {
       <div className="px-4 py-2 space-y-3">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-[17px] font-bold text-[#02006c]">Flash Sale</h3>
+          <h3 className="text-[19px] font-bold text-[#02006c] ![font-family:'Times_New_Roman',Times,serif]">Flash Sale</h3>
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-slate-400 font-medium mr-1">Closing in :</span>
-            <div className="flex items-center gap-0.5 text-[10px] font-bold text-[#FF6E54]">
+            <div className="flex items-center gap-0.5 text-[11px] font-bold text-[#FF6E54] ![font-family:'Times_New_Roman',Times,serif]">
               <span className="bg-orange-50 px-1 py-0.5 rounded-sm">{hrs}</span>
               <span className="text-slate-300 px-0.5">:</span>
               <span className="bg-orange-50 px-1 py-0.5 rounded-sm">{mins}</span>

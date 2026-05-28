@@ -50,39 +50,35 @@ import elec13 from '../assets/Electrical/Electrical3.jpg';
 import elec14 from '../assets/Electrical/Electrical4.jpg';
 import elec15 from '../assets/Electrical/Electrical5.jpg';
 
+import catForYou from '../assets/CategorySection/categoryForU-removebg-preview.png';
+import catBeauty from '../assets/CategorySection/Category1-removebg-preview.png';
+import catToys from '../assets/CategorySection/Category2-removebg-preview.png';
+import catJewellery from '../assets/CategorySection/Category3-removebg-preview.png';
+import catElectronics from '../assets/CategorySection/Category4-removebg-preview.png';
+import catStationery from '../assets/CategorySection/Category5-removebg-preview.png';
+import catFashion from '../assets/CategorySection/Category6-removebg-preview.png';
+import catGifting from '../assets/CategorySection/Category7-removebg-preview.png';
+
 export const CATEGORIES = [
-  { id: 'for-you', name: 'For You', icon: 'ShoppingBag' },
-  { id: 'beauty', name: 'Beauty', icon: 'Sparkles' },
-  { id: 'gifting', name: 'Gifting', icon: 'Gift' },
-  { id: 'electronics', name: 'Electronics', icon: 'Monitor' },
-  { id: 'jewellery', name: 'Jewellery', icon: 'Gem' },
-  { id: 'toys', name: 'Toys', icon: 'Gamepad2' },
-  { id: 'stationery', name: 'Stationery', icon: 'PenTool' },
-  { id: 'fashion', name: 'Fashion', icon: 'Shirt' },
-  { id: 'electrical', name: 'Electrical', icon: 'Zap' },
+  { id: 'for-you', name: 'For You', icon: 'ShoppingBag', image: catForYou },
+  { id: 'beauty', name: 'Beauty', icon: 'Sparkles', image: catBeauty },
+  { id: 'gifting', name: 'Gifting', icon: 'Gift', image: catGifting },
+  { id: 'electronics', name: 'Electronics', icon: 'Monitor', image: catElectronics },
+  { id: 'jewellery', name: 'Jewellery', icon: 'Gem', image: catJewellery },
+  { id: 'toys', name: 'Toys', icon: 'Gamepad2', image: catToys },
+  { id: 'stationery', name: 'Stationery', icon: 'PenTool', image: catStationery },
+  { id: 'fashion', name: 'Fashion', icon: 'Shirt', image: catFashion },
+  { id: 'electrical', name: 'Electrical', icon: 'Zap', image: elec11 },
 ];
 
+import banner1 from '../assets/Banner/finalBanner.jpeg';
+import banner2 from '../assets/Banner/finalBanner2.jpeg';
+import banner3 from '../assets/Banner/finalBanner3.jpeg';
+
 export const BANNERS = [
-  {
-    id: 1,
-    title: "NOT JUST A GIFT,",
-    subtitle: "IT'S A FEELING 💖",
-    desc: "Surprise. Smile. Repeat.",
-    cta: "SHOP NOW",
-    bg: "bg-amber-50/80 border-amber-100",
-    textColor: "text-amber-950",
-    image: "hero",
-  },
-  {
-    id: 2,
-    title: "TODAY'S SPECIAL",
-    subtitle: "CRAZY DEALS 🔥",
-    desc: "Up to 50% off on premium items.",
-    cta: "EXPLORE NOW",
-    bg: "bg-orange-50/80 border-orange-100",
-    textColor: "text-orange-950",
-    image: "deals",
-  }
+  { id: 1, image: banner1 },
+  { id: 2, image: banner2 },
+  { id: 3, image: banner3 }
 ];
 
 export const VALUE_PROPS = [

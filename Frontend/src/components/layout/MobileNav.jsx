@@ -43,13 +43,13 @@ export default function MobileNav() {
               onClick={() => navigate(item.path)}
               className={`relative flex flex-col items-center justify-center flex-1 max-w-[54px] h-[54px] rounded-2xl transition-all duration-500 ease-out active:scale-95 ${
                 isActive 
-                  ? 'bg-gradient-to-br from-[#FFCFC2] to-[#FFE3DB]/90 backdrop-blur-md border border-white/80 shadow-[0_4px_15px_rgba(255,110,84,0.25)]' 
+                  ? 'bg-[#ee4923]/15 backdrop-blur-md border border-white/80 shadow-[0_4px_15px_rgba(238,73,35,0.25)]' 
                   : 'bg-transparent'
               }`}
             >
               <div className={`transition-all duration-500 ${
                 isActive 
-                  ? 'text-[#FF6E54] -translate-y-0.5 scale-110' 
+                  ? 'text-[#ee4923] -translate-y-0.5 scale-110' 
                   : 'text-[#64748B] hover:text-[#0F172A]'
               }`}>
                 <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[2]'}`} />
@@ -57,7 +57,7 @@ export default function MobileNav() {
 
               <span className={`text-[9px] tracking-wide transition-all duration-500 ${
                 isActive 
-                  ? 'text-[#FF6E54] font-bold mt-0.5' 
+                  ? 'text-[#ee4923] font-bold mt-0.5' 
                   : 'text-[#64748B] font-medium mt-1'
               }`}>
                 {item.label}
@@ -65,7 +65,7 @@ export default function MobileNav() {
 
               {/* Red Badge for Cart */}
               {item.badge && totalCartItems > 0 && (
-                <span className="absolute top-0.5 right-0.5 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#FF6E54] text-[9px] font-bold text-white ring-2 ring-white shadow-sm">
+                <span className="absolute top-0.5 right-0.5 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#ee4923] text-[9px] font-bold text-white ring-2 ring-white shadow-sm">
                   {totalCartItems}
                 </span>
               )}

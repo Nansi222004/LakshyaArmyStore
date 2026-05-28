@@ -6,10 +6,10 @@ import {
   ChevronLeft, User, Lock, Settings, Phone, LogOut, Camera, 
   ChevronRight, Coins, Gift, ShoppingBag, Sparkles, X,
   CreditCard, Globe, Bell, Headphones, Store, FileText, HelpCircle,
-  Heart, Package, Edit2, MapPin
+  Heart, Package, Edit2, MapPin, Truck, RotateCcw, ShieldCheck, Tag
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CRAZY_DEALS } from '../data/mockData';
+import { CRAZY_DEALS, VALUE_PROPS } from '../data/mockData';
 
 // Dynamic SVG Avatar Component
 function DynamicAvatar({ config, size = "w-20 h-20" }) {
@@ -386,11 +386,11 @@ export default function ProfilePage() {
   return (
     <div className="bg-white relative pb-24 w-full min-h-full font-sans overflow-x-hidden selection:bg-orange-100 animate-fade-in">
       
-      {/* 1. Soft Pastel Background */}
-      <div className="absolute top-0 left-0 right-0 h-[240px] z-0 pointer-events-none overflow-hidden rounded-b-[48px] bg-gradient-to-b from-orange-50/80 to-white">
+      {/* 1. Dark Orange Background */}
+      <div className="absolute top-0 left-0 right-0 h-[240px] z-0 pointer-events-none overflow-hidden rounded-b-2xl bg-[#ee4923]">
         {/* Cute soft blobs */}
-        <div className="absolute -top-10 -left-10 w-48 h-48 bg-orange-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
-        <div className="absolute top-10 -right-10 w-48 h-48 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
+        <div className="absolute -top-10 -left-10 w-48 h-48 bg-white/20 rounded-full mix-blend-overlay filter blur-3xl opacity-60"></div>
+        <div className="absolute top-10 -right-10 w-48 h-48 bg-yellow-400/20 rounded-full mix-blend-overlay filter blur-3xl opacity-60"></div>
       </div>
 
       {/* 2. Page Content Overlaid */}
@@ -400,14 +400,14 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between">
           <button 
             onClick={() => navigate('/')}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-slate-600 hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-[#02006c] hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           
           <button 
             onClick={() => navigate('/account')}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-slate-600 hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-[#02006c] hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
           >
              <Edit2 className="w-5 h-5" />
           </button>
@@ -456,7 +456,7 @@ export default function ProfilePage() {
           </div>
 
           {/* User Names */}
-          <h3 className="text-xl font-black text-slate-800 mt-3 font-syne tracking-wide">
+          <h3 className="text-xl font-black text-white mt-3 font-syne tracking-wide drop-shadow-md">
             {mockUser.name}
           </h3>
           <div className="flex items-center gap-1 mt-1.5 bg-orange-50 border border-orange-100 px-3 py-1 rounded-full shadow-sm">
@@ -501,6 +501,28 @@ export default function ProfilePage() {
           >
             <Headphones className="w-5 h-5 text-[#FF6E54] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">Help Center</span>
+          </div>
+        </div>
+
+        {/* Mynzo Trust Stamps (Value Props) */}
+        <div className="px-1">
+          <div className="grid grid-cols-4 gap-2">
+            {VALUE_PROPS.map((prop) => (
+              <div 
+                key={prop.id} 
+                className="flex flex-col items-center justify-center rounded-lg bg-white border border-orange-200 p-1.5 py-2 shadow-3xs hover:border-[#FF6E54] hover:scale-[1.01] active:scale-95 transition-all duration-300 cursor-pointer"
+              >
+                {/* Colored Stamp Icon box with soft blue and blue icon */}
+                <div className="w-7 h-7 bg-blue-50 text-[#02006c] rounded-md flex items-center justify-center mb-1 shadow-3xs">
+                  {prop.id === 1 && <Truck className="w-4 h-4 stroke-[2.2]" />}
+                  {prop.id === 2 && <RotateCcw className="w-4 h-4 stroke-[2.2]" />}
+                  {prop.id === 3 && <ShieldCheck className="w-4 h-4 stroke-[2.2]" />}
+                  {prop.id === 4 && <Tag className="w-4 h-4 stroke-[2.2]" />}
+                </div>
+                <h5 className="text-[8px] font-bold text-[#02006c] leading-tight text-center">{prop.title}</h5>
+                <p className="text-[7px] text-slate-400 font-medium leading-none mt-0.5 text-center">{prop.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
 

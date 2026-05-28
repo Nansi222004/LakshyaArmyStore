@@ -110,64 +110,21 @@ export default function OrdersPage() {
 
       {/* Banner Slider */}
       <div className="px-3 py-2 relative mt-1">
-        <div className="overflow-hidden rounded-xl border border-slate-100 shadow-sm relative h-32">
-          {BANNERS.map((banner, idx) => (
-            <div
-              key={banner.id}
-              className={`absolute inset-0 p-4 flex flex-col justify-center gap-1.5 transition-all duration-700 ease-in-out ${
-                idx === activeBanner 
-                  ? 'opacity-100 translate-x-0 scale-100' 
-                  : 'opacity-0 translate-x-8 scale-95 pointer-events-none'
-              } ${banner.bg}`}
-            >
-              {/* Text Layout */}
-              <div className="max-w-[65%] space-y-0.5">
-                <span className="text-[9px] font-extrabold tracking-widest text-[#FF6E54] uppercase">
-                  {banner.title}
-                </span>
-                <h2 className={`text-[15px] font-extrabold leading-tight tracking-tight ${banner.textColor}`}>
-                  {banner.subtitle}
-                </h2>
-                <p className="text-[9px] text-slate-500 font-medium">
-                  {banner.desc}
-                </p>
-              </div>
-
-              {/* Action Button */}
-              <button 
+        <div className="overflow-hidden rounded-xl shadow-sm relative aspect-[21/9] w-full">
+          <div 
+            className="flex w-full h-full transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${activeBanner * 100}%)` }}
+          >
+            {BANNERS.map((banner) => (
+              <div
+                key={banner.id}
+                className="w-full h-full flex-shrink-0 cursor-pointer"
                 onClick={() => navigate('/categories')}
-                className="bg-[#FF6E54] hover:bg-orange-600 active:scale-95 text-white text-[8.5px] font-extrabold px-3 py-1.5 rounded-full shadow-md shadow-orange-500/20 w-fit transition-all duration-300 mt-0.5 cursor-pointer"
               >
-                {banner.cta}
-              </button>
-
-              {/* Image Graphic Layout inside banner */}
-              <div className="absolute right-1 bottom-0 top-0 w-28 flex items-center justify-center">
-                {banner.id === 1 ? (
-                  // Custom Teddy Bear Vector Illustration
-                  <svg viewBox="0 0 100 100" className="w-20 h-20 drop-shadow-md">
-                    <circle cx="50" cy="74" r="22" fill="#FECDD3" />
-                    <circle cx="50" cy="46" r="18" fill="#FDA4AF" />
-                    <circle cx="32" cy="32" r="8" fill="#FDA4AF" />
-                    <circle cx="68" cy="32" r="8" fill="#FDA4AF" />
-                    <ellipse cx="50" cy="50" r="7" rx="6" ry="4" fill="#FFE4E6" />
-                    <ellipse cx="50" cy="48" r="2.5" fill="#475569" />
-                    <circle cx="44" cy="42" r="2" fill="#0F172A" />
-                    <circle cx="56" cy="42" r="2" fill="#0F172A" />
-                    <path d="M45 58c1.5 2 3.5 2 5 0" stroke="#F43F5E" strokeWidth="2" fill="none" />
-                  </svg>
-                ) : (
-                  // Custom Gift Illustration
-                  <svg viewBox="0 0 100 100" className="w-20 h-20 drop-shadow-md animate-pulse">
-                    <rect x="25" y="38" width="50" height="42" rx="4" fill="#F97316" />
-                    <rect x="20" y="32" width="60" height="8" rx="2" fill="#EA580C" />
-                    <rect x="46" y="32" width="8" height="48" fill="#FEF08A" />
-                    <circle cx="50" cy="24" r="6" fill="#FDE047" />
-                  </svg>
-                )}
+                <img src={banner.image} alt="Banner" className="w-full h-full object-cover" />
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Indicators */}

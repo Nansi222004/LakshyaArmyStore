@@ -86,46 +86,46 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="bg-orange-50 transition-all duration-300">
+      <header className="bg-[#EE4923] transition-all duration-300">
         {/* Compact Main top header */}
         <div className="flex items-center justify-between px-2.5 py-1 bg-transparent">
           <div className="flex items-center gap-2 cursor-pointer animate-fade-in" onClick={() => navigate('/')}>
             {/* Logo image */}
             <img
-              src="/Logo.jpg"
+              src="/mynzo%20world.jpg"
               alt="Mynzo Logo"
-              className="h-14 object-contain rounded-lg hover:scale-102 transition-transform duration-300"
+              className="h-16 object-contain rounded-md hover:scale-105 transition-transform duration-300"
               onError={(e) => {
                 e.target.alt = "Mynzo World";
               }}
             />
           </div>
 
-          {/* Color theme with #02006c */}
-          <div className="flex items-center gap-3 text-[#02006c]">
+          {/* Color theme updated to white for dark bg */}
+          <div className="flex items-center gap-3 text-white">
             <button 
               onClick={() => setIsNotificationModalOpen(true)}
-              className="relative p-1 hover:bg-orange-100/40 rounded-full transition-colors"
+              className="relative p-1 hover:bg-white/20 rounded-full transition-colors"
             >
               <Bell className="w-5.5 h-5.5 stroke-[1.8]" />
-              <span className="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-[#FF6E54] border-2 border-white rounded-full"></span>
+              <span className="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-white border-2 border-[#EE4923] rounded-full"></span>
             </button>
             <button 
               onClick={() => navigate('/wishlist')}
-              className="relative p-1 hover:bg-orange-100/40 rounded-full transition-colors"
+              className="relative p-1 hover:bg-white/20 rounded-full transition-colors"
             >
               <Heart className="w-5.5 h-5.5 stroke-[1.8]" />
               {user && wishlist && wishlist.length > 0 && (
-                <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-[#FF6E54] border border-white rounded-full"></span>
+                <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-white border border-[#EE4923] rounded-full"></span>
               )}
             </button>
             <button
               onClick={() => navigate('/cart')}
-              className="relative p-1 hover:bg-orange-100/40 rounded-full transition-colors"
+              className="relative p-1 hover:bg-white/20 rounded-full transition-colors"
             >
               <ShoppingCart className="w-5.5 h-5.5 stroke-[1.8]" />
               {user && totalCartItems > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#FF6E54] text-[8.5px] font-black text-white ring-1.5 ring-white animate-pulse">
+                <span className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-white text-[8.5px] font-black text-[#EE4923] ring-1.5 ring-[#EE4923] animate-pulse">
                   {totalCartItems}
                 </span>
               )}
@@ -137,7 +137,7 @@ export default function Navbar() {
         <div className="px-1.5 py-1 bg-transparent">
           <div
             onClick={() => setIsLocationModalOpen(true)}
-            className="bg-[#FF6E54] text-white flex items-center justify-between px-4 py-2.5 rounded-lg text-[10.5px] font-black cursor-pointer hover:bg-[#e64c33] shadow-md shadow-orange-500/15 active:scale-[0.99] transition-all duration-300"
+            className="bg-white/20 border border-white/30 text-white flex items-center justify-between px-4 py-2.5 rounded-lg text-[10.5px] font-black cursor-pointer hover:bg-white/30 shadow-md shadow-black/5 active:scale-[0.99] transition-all duration-300"
           >
             <div className="flex items-center gap-1.5 truncate">
               <MapPin className="w-4 h-4 text-white flex-shrink-0" />
@@ -152,10 +152,10 @@ export default function Navbar() {
       </header>
 
       {/* Search bar row - Now Sticky at the top! */}
-      <div className="sticky top-0 z-40 px-2 py-2 bg-orange-50 border-b border-orange-100/40 shadow-sm transition-all duration-300">
+      <div className="sticky top-0 z-40 px-2 py-2 bg-[#EE4923] shadow-sm transition-all duration-300">
         <div className="flex items-center gap-2">
           {/* Search Input Bar (Symmetrical rounded-lg and increased height with py-2) */}
-          <div className="flex-1 relative flex items-center bg-white/95 rounded-lg px-3.5 py-2 border border-slate-200/50 focus-within:border-[#FF6E54] focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 transition-all duration-300 shadow-3xs">
+          <div className="flex-1 relative flex items-center bg-white rounded-lg px-3.5 py-2 focus-within:ring-2 focus-within:ring-white/50 transition-all duration-300 shadow-3xs">
             <Search className="w-4 h-4 text-slate-400 mr-2.5" />
             <input
               type="text"
@@ -173,11 +173,11 @@ export default function Navbar() {
             <div className="flex items-center gap-1.5 ml-2.5">
               <Camera 
                 onClick={handleCameraClick}
-                className="w-4 h-4 text-slate-400 cursor-pointer hover:text-[#FF6E54] transition-colors" 
+                className="w-4 h-4 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
               />
               <Mic 
                 onClick={handleVoiceSearch}
-                className="w-4 h-4 text-slate-400 cursor-pointer hover:text-[#FF6E54] transition-colors" 
+                className="w-4 h-4 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
               />
               <input 
                 type="file" 
@@ -191,7 +191,7 @@ export default function Navbar() {
           </div>
 
           {/* Barcode/QR Scanner button (Symmetrical rounded-lg and balanced w-9 h-9) */}
-          <button className="bg-white/95 border border-slate-200/50 hover:bg-white active:scale-95 text-[#FF6E54] rounded-lg shadow-3xs transition-all duration-300 w-9 h-9 flex items-center justify-center flex-shrink-0">
+          <button className="bg-white active:scale-95 text-[#EE4923] rounded-lg shadow-3xs transition-all duration-300 w-9 h-9 flex items-center justify-center flex-shrink-0">
             <Scan className="w-4.5 h-4.5 stroke-[2.2]" />
           </button>
         </div>

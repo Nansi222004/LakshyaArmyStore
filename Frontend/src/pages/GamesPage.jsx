@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
-import { Compass, HelpCircle, Layers, MapPin, Trophy, X, Coins, Gift, Sparkles, CheckCircle2, AlertCircle, ChevronLeft } from 'lucide-react';
+import { Compass, HelpCircle, Layers, MapPin, Trophy, X, Coins, Gift, Sparkles, CheckCircle2, AlertCircle, ChevronLeft, Bell, Heart, ShoppingCart, Home, Grid, Camera, User, Gamepad2, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { PLAY_AND_WIN } from '../data/mockData';
+
+// Import Games Overlays
 import SnakeGame from '../components/games/SnakeGame';
+import SpeedTapGame from '../components/games/SpeedTap/SpeedTapGame';
+import TicTacToeGame from '../components/games/TicTacToe/TicTacToeGame';
+import QuizGame from '../components/games/QuizGame/QuizGame';
+
+// Import Icons
+import giftBoxImg from '../assets/GamesIcons/gift_box.png';
+import speedTapImg from '../assets/GamesIcons/speed_tap.png';
+import snakeImg from '../assets/GamesIcons/snake.png';
+import ticTacToeImg from '../assets/GamesIcons/tic_tac_toe.png';
+import quizImg from '../assets/GamesIcons/quiz.png';
+import spinImg from '../assets/GamesIcons/spin.png';
+import bubblePopImg from '../assets/GamesIcons/bubble_pop.png';
+import categoryForUImg from '../assets/CategorySection/categoryForU-removebg-preview.png';
+import category7Img from '../assets/CategorySection/Category7-removebg-preview.png';
 
 export default function GamesPage() {
   const navigate = useNavigate();
   const { coins, addCoins } = useApp();
-  const [activeGame, setActiveGame] = useState(null); // 'spin' | 'quiz' | 'scratch' | 'treasure' | null
+  
+  // Navigation State
+  const [currentView, setCurrentView] = useState('home'); // 'home' | 'all'
+  const [activeCategory, setActiveCategory] = useState('All');
+  
+  // Game Overlay State
+  const [activeGame, setActiveGame] = useState(null); // 'spin' | 'quiz' | 'scratch' | 'treasure' | 'speedTap' | 'ticTacToe' | 'snake' | null
   const [gameFeedback, setGameFeedback] = useState(null);
 
   // Spin Game State
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinAngle, setSpinAngle] = useState(0);
-
-  // Quiz Game State
-  const [selectedQuizAnswer, setSelectedQuizAnswer] = useState(null);
-  const [quizSubmitted, setQuizSubmitted] = useState(false);
-  const quizQuestion = {
-    q: "Which gift is traditionally associated with a 25th wedding anniversary?",
-    options: ["Silver", "Gold", "Diamond", "Platinum"],
-    correctIdx: 0,
-    reward: 50
-  };
 
   // Scratch State
   const [scratchedPercent, setScratchedPercent] = useState(0);
@@ -39,16 +50,23 @@ export default function GamesPage() {
 
   const handleOpenGame = (gameId) => {
     setGameFeedback(null);
-    setQuizSubmitted(false);
-    setSelectedQuizAnswer(null);
     setScratchedPercent(0);
     setOpenedChest(null);
-    
-    if (gameId === 'game-1') setActiveGame('spin');
-    else if (gameId === 'game-2') setActiveGame('quiz');
-    else if (gameId === 'game-3') setActiveGame('scratch');
-    else if (gameId === 'game-4') setActiveGame('treasure');
-    else setActiveGame(gameId);
+    setActiveGame(gameId);
+  };
+
+  const handleInvite = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Join Mynzo',
+          text: 'Come play games and win rewards on Mynzo!',
+          url: window.location.origin
+        });
+      }
+    } catch (err) {
+      console.log('Error sharing:', err);
+    }
   };
 
   // Spin & Win logic
@@ -92,31 +110,6 @@ export default function GamesPage() {
     }, 4000);
   };
 
-  // Quiz logic
-  const handleQuizAnswer = (idx) => {
-    if (quizSubmitted) return;
-    setSelectedQuizAnswer(idx);
-  };
-
-  const handleQuizSubmit = () => {
-    if (selectedQuizAnswer === null || quizSubmitted) return;
-    setQuizSubmitted(true);
-    if (selectedQuizAnswer === quizQuestion.correctIdx) {
-      addCoins(quizQuestion.reward);
-      setGameFeedback({
-        success: true,
-        msg: `Correct Answer! +${quizQuestion.reward} Coins credited to your wallet! 🧠`,
-        amount: quizQuestion.reward
-      });
-    } else {
-      setGameFeedback({
-        success: false,
-        msg: "Oops! Incorrect answer. The correct answer was Silver.",
-        amount: 0
-      });
-    }
-  };
-
   // Scratch logic
   const handleScratch = () => {
     if (scratchedPercent >= 100) return;
@@ -145,79 +138,219 @@ export default function GamesPage() {
     });
   };
 
-  // Icon mapper
-  const renderGameIcon = (id, className = "w-6 h-6") => {
-    if (id === 'game-1') return <Compass className={className} />;
-    if (id === 'game-2') return <HelpCircle className={className} />;
-    if (id === 'game-3') return <Layers className={className} />;
-    if (id === 'game-4') return <MapPin className={className} />;
-    return <Trophy className={className} />;
-  };
+  const ALL_GAMES = [
+    { id: 'speedTap', title: 'Speed Tap', desc: 'Tap as fast as you can in 10 seconds', tags: 'Win • Coins • Coupons', icon: speedTapImg, badge: '🔥' },
+    { id: 'snake', title: 'Snake & Chase', desc: 'Eat more, grow longer, beat your high score!', tags: 'Win • Coins', icon: snakeImg },
+    { id: 'ticTacToe', title: 'Tic Tac Toe', desc: 'Challenge your brain. Win exciting rewards!', tags: 'Win • Coins • Coupons', icon: ticTacToeImg },
+    { id: 'quiz', title: 'Quiz Game', desc: 'Answer smart, win more every day!', tags: 'Win • Coins • Coupons', icon: quizImg }
+  ];
 
-  return (
-    <div className="flex-grow p-4 space-y-6 pb-6 animate-fade-in">
-      
-      {/* Custom Gaming Header */}
-      <div className="flex items-center justify-between pb-3 pt-4 px-4 -mx-4 -mt-4 bg-orange-100/90 border-b border-orange-200/60 backdrop-blur-md sticky top-0 z-20 mb-6">
-        <button 
-          onClick={() => navigate('/')}
-          className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-orange-200 text-[#FF6E54] hover:bg-orange-50 active:scale-95 transition-all cursor-pointer shadow-sm shadow-[#FF6E54]/10"
-        >
-          <ChevronLeft className="w-5 h-5" />
+  const renderHomeView = () => (
+    <div className="flex-1 overflow-y-auto pb-24 bg-[#FFF6F2]">
+      {/* Playground Header */}
+      <div className="flex items-center justify-between px-5 pt-4 pb-4 sticky top-0 bg-[#FFF6F2]/95 border-b-2 border-[#EE4923]/20 backdrop-blur-md z-20">
+        <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors">
+          <ChevronLeft className="w-6 h-6 text-[#071226]" />
         </button>
-        <h1 className="text-xl font-black text-[#02006c] uppercase tracking-widest font-syne drop-shadow-sm">Playground</h1>
-        <div className="w-10 h-10"></div> {/* Spacer for centering */}
+        <div className="flex flex-col items-center">
+          <h1 className="text-xl font-black text-[#071226] uppercase tracking-tighter leading-none">PLAYGROUND <span className="text-amber-400">✦</span></h1>
+          <p className="text-[10px] font-medium text-slate-500 mt-1">Play Games, Win Rewards!</p>
+        </div>
+        <div className="w-6 h-6"></div>
       </div>
 
-      {/* Upper balance board */}
-      <div className="bg-gradient-to-br from-[#0F172A] to-slate-800 rounded-3xl p-5 text-white shadow-xl flex items-center justify-between border border-slate-700/50">
-        <div className="space-y-1">
-          <h2 className="text-base font-extrabold flex items-center gap-1.5">
-            Mynzo <span className="text-[#FF6E54]">Playground</span>
-          </h2>
-          <p className="text-[10px] text-slate-400 font-medium">
-            Accumulate coins and spend them on gifts!
-          </p>
+      <div className="px-5 mt-2 space-y-6">
+
+        {/* Wallet Card */}
+        <div className="relative w-full h-44 rounded-2xl p-5 text-white overflow-hidden shadow-lg"
+             style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #EE4923 100%)' }}>
+          <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-white/20 rounded-full blur-3xl"></div>
+          
+          <div className="relative z-10 flex flex-col h-full justify-between w-1/2">
+            <div>
+              <p className="text-sm font-bold opacity-90">My Coins</p>
+              <p className="text-[10px] uppercase tracking-widest opacity-80 mb-1">Balance</p>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center border-2 border-white/30 shadow-inner">
+                  <span className="text-[10px] font-black text-amber-900">M</span>
+                </div>
+                <span className="text-3xl font-black">{coins}</span>
+              </div>
+            </div>
+            <button className="bg-white text-[#EE4923] text-[10px] font-black px-4 py-1.5 rounded-full w-max shadow-md flex items-center gap-1 active:scale-95 transition-transform">
+              My Wallet <ChevronLeft className="w-3 h-3 rotate-180" />
+            </button>
+          </div>
+
+          <div className="absolute bottom-[-10px] right-[-20px] w-48 h-48 z-10 pointer-events-none">
+            <img src={categoryForUImg} alt="Gift Box" className="w-full h-full object-contain drop-shadow-2xl" />
+          </div>
         </div>
 
-        {/* Balance Badge */}
-        <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl px-4 py-2 flex items-center gap-2">
-          <Coins className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '3s' }} />
-          <div className="flex flex-col">
-            <span className="text-xs text-slate-400 font-bold leading-none uppercase tracking-wider">Balance</span>
-            <span className="text-base font-black text-amber-300 mt-0.5">{coins}</span>
+        {/* Fun Zone Section */}
+        {/* Top Games Section */}
+        <div>
+          <h2 className="text-xl font-black text-[#071226] mb-4">Top Games</h2>
+
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              { id: 'speedTap', icon: speedTapImg, title: 'Speed Tap' },
+              { id: 'snake', icon: snakeImg, title: 'Snake & Chase' },
+              { id: 'ticTacToe', icon: ticTacToeImg, title: 'Tic Tac Toe' },
+              { id: 'quiz', icon: quizImg, title: 'Quiz Game' }
+            ].map(game => (
+              <div key={game.id} onClick={() => handleOpenGame(game.id)} className="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-100 p-1 overflow-hidden">
+                  <img src={game.icon} alt={game.title} className="w-full h-full object-cover rounded-xl" />
+                </div>
+                <span className="text-[9px] font-bold text-slate-600 text-center leading-tight">{game.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Daily Streak */}
+        <div className="bg-white rounded-[2rem] p-5 shadow-sm border border-slate-100">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-black text-[#071226] text-sm flex items-center gap-1">🔥 Daily Streak</h3>
+            <span className="text-[#EE4923] font-bold text-xs">2 Days</span>
+          </div>
+          <p className="text-[10px] text-slate-500 font-medium mb-4">Play daily & win more coins</p>
+          
+          <div className="flex justify-between relative">
+            <div className="absolute top-3 left-0 w-full h-[2px] bg-slate-100 z-0"></div>
+            <div className="absolute top-3 left-0 w-[30%] h-[2px] bg-[#EE4923] z-0"></div>
+            
+            {[1, 2, 3, 4, 5, 6, 7].map((day) => {
+              const isPast = day <= 3;
+              const isGift = day === 4 || day === 7;
+              return (
+                <div key={day} className="flex flex-col items-center gap-1.5 relative z-10 bg-white">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] ${
+                    isPast 
+                      ? 'bg-[#EE4923] text-white' 
+                      : isGift 
+                        ? 'bg-amber-100 text-amber-500' 
+                        : 'bg-slate-100 text-transparent'
+                  }`}>
+                    {isPast ? '✓' : isGift ? <Gift className="w-3 h-3" /> : ''}
+                  </div>
+                  <span className="text-[8px] font-medium text-slate-500">Day {day}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+
+
+        {/* Invite Banner */}
+        <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl py-6 px-4 flex items-center justify-between border border-orange-200 shadow-sm mb-6 relative overflow-hidden">
+          <div className="absolute left-[-10px] top-[-10px] w-28 h-28 opacity-30 pointer-events-none">
+             <img src={categoryForUImg} alt="Gift" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex items-center gap-3 relative z-10 ml-6">
+            <div>
+              <h4 className="font-black text-[#071226] text-[15px]">Invite Friends</h4>
+              <p className="text-xs text-[#EE4923] font-bold mt-0.5">& Earn 100 Coins</p>
+            </div>
+          </div>
+          <button onClick={handleInvite} className="bg-[#EE4923] text-white text-xs font-black px-5 py-2.5 rounded-full shadow-md active:scale-95 transition-transform z-10 relative">
+            Invite Now
+          </button>
+
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderAllGamesView = () => (
+    <div className="flex-1 flex flex-col bg-[#FFF6F2]">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 pt-4 pb-4 sticky top-0 bg-[#FFF6F2]/90 backdrop-blur-md z-20">
+        <button onClick={() => setCurrentView('home')} className="p-2 -ml-2 rounded-full hover:bg-black/5">
+          <ChevronLeft className="w-6 h-6 text-[#071226]" />
+        </button>
+        <h1 className="text-xl font-black text-[#071226]">All Games</h1>
+        <div className="grid grid-cols-4 gap-1 opacity-20">
+          {[...Array(16)].map((_, i) => (
+            <div key={i} className="w-1 h-1 bg-slate-800 rounded-full"></div>
+          ))}
+        </div>
+      </div>
+
+      {/* Categories */}
+      <div className="px-5 mb-6">
+        <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+          {['All', 'Trending', 'Puzzle', 'Arcade', 'Action'].map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors shadow-sm ${
+                activeCategory === cat 
+                  ? 'bg-[#EE4923] text-white' 
+                  : 'bg-white text-slate-500 border border-slate-200'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Games List */}
+      <div className="flex-1 overflow-y-auto px-5 pb-24 space-y-4">
+        {ALL_GAMES.map(game => (
+          <div key={game.id} className="bg-white rounded-[2rem] p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-4">
+            <div className="w-[84px] h-[84px] rounded-[1.5rem] p-1 flex-shrink-0 relative overflow-hidden bg-slate-50 border border-slate-100">
+              <img src={game.icon} alt={game.title} className="w-full h-full object-cover rounded-xl" />
+              {game.badge && (
+                <div className="absolute top-1 right-1 bg-white rounded-full p-1 shadow-md">
+                  <span className="text-[10px]">{game.badge}</span>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex-1">
+              <h3 className="font-black text-[#071226] text-[15px] mb-1">{game.title}</h3>
+              <p className="text-[10px] text-slate-500 font-medium leading-tight pr-4 mb-2">{game.desc}</p>
+              <p className="text-[9px] font-bold text-[#EE4923]">{game.tags}</p>
+            </div>
+            
+            <button 
+              onClick={() => handleOpenGame(game.id)}
+              className="bg-[#EE4923] text-white text-[11px] font-black px-5 py-2.5 rounded-full shadow-[0_5px_15px_rgba(238,73,35,0.2)] active:scale-95 transition-transform flex-shrink-0"
+            >
+              Play
+            </button>
+          </div>
+        ))}
+
+        {/* Promo Footer */}
+        <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-[2rem] p-5 border border-orange-100 shadow-sm mt-8 relative overflow-hidden flex justify-between items-center">
+          <div className="relative z-10 w-2/3">
+            <h4 className="font-black text-[#071226] text-base mb-1">Play Daily & Win Big!</h4>
+            <p className="text-[10px] text-slate-600 font-medium mb-3">Complete games and collect bonuses every day.</p>
+            <button className="bg-[#EE4923] text-white text-[10px] font-black px-4 py-2 rounded-full shadow-md active:scale-95 transition-transform w-max">
+              Explore Rewards
+            </button>
+          </div>
+          <div className="absolute right-[-20px] bottom-[-20px] w-32 h-32 pointer-events-none z-0">
+             <img src={giftBoxImg} alt="Gift" className="w-full h-full object-contain" />
           </div>
         </div>
       </div>
+    </div>
+  );
 
-      {/* Main grid of game widgets */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-sm font-black text-[#0F172A]">Games Zone</h3>
-          <p className="text-[10px] text-slate-400 font-semibold italic">Fun khelo, rewards lelo! 🥳</p>
-        </div>
+  return (
+    <div className="flex flex-col h-screen bg-[#FFF6F2] relative font-sans">
+      
+      {currentView === 'home' ? renderHomeView() : renderAllGamesView()}
 
-        <div className="w-full">
-          <button
-            onClick={() => handleOpenGame('snake')}
-            className="w-full border border-orange-200 p-5 rounded-3xl flex items-center justify-between gap-4 transition-all duration-300 active:scale-95 bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 shadow-sm"
-          >
-            <div className="flex items-center gap-4 text-left">
-              <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-md shadow-orange-200 text-2xl">
-                🐍
-              </div>
-              <div>
-                <h4 className="text-sm font-black text-[#02006c]">Snake & Chase</h4>
-                <p className="text-[10px] text-slate-500 font-bold mt-1">Play the classic game & earn coins!</p>
-              </div>
-            </div>
-            <div className="bg-[#FF6E54] text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-sm shadow-[#FF6E54]/30">
-              PLAY
-            </div>
-          </button>
-        </div>
-      </div>
 
+
+      {/* Game Overlays */}
       {/* Spinner Wheel Game Overlay */}
       {activeGame === 'spin' && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
@@ -272,82 +405,7 @@ export default function GamesPage() {
               {isSpinning ? "SPINNING..." : "TAP TO SPIN"}
             </button>
 
-            {/* Reward Feedback Popup */}
             {gameFeedback && (
-              <div className={`p-4 rounded-2xl flex items-start gap-3 border animate-fade-in ${
-                gameFeedback.success ? 'bg-emerald-50 border-emerald-100 text-emerald-950' : 'bg-rose-50 border-rose-100 text-rose-950'
-              }`}>
-                {gameFeedback.success ? <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" /> : <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0" />}
-                <p className="text-[11px] font-bold leading-normal">{gameFeedback.msg}</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Daily Quiz Game Overlay */}
-      {activeGame === 'quiz' && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 w-full max-w-sm relative shadow-2xl animate-scale-up space-y-6">
-            <button onClick={() => setActiveGame(null)} className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 transition-colors">
-              <X className="w-5 h-5 text-slate-500" />
-            </button>
-
-            <div className="text-center space-y-1">
-              <h3 className="text-sm font-black text-[#0F172A] flex items-center justify-center gap-1.5">
-                🧠 Daily Quiz
-              </h3>
-              <p className="text-[10px] text-slate-400 font-bold">Answer correctly to secure +50 Coins!</p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                <p className="text-xs font-bold text-slate-700 leading-normal">{quizQuestion.q}</p>
-              </div>
-
-              <div className="space-y-2">
-                {quizQuestion.options.map((option, idx) => {
-                  let btnStyle = "border-slate-100 hover:bg-slate-50 text-slate-700";
-                  if (selectedQuizAnswer === idx) {
-                    btnStyle = "border-orange-500 bg-orange-50 text-orange-950 font-bold";
-                  }
-                  if (quizSubmitted) {
-                    if (idx === quizQuestion.correctIdx) {
-                      btnStyle = "border-emerald-500 bg-emerald-50 text-emerald-950 font-bold";
-                    } else if (selectedQuizAnswer === idx) {
-                      btnStyle = "border-rose-500 bg-rose-50 text-rose-950 font-bold";
-                    } else {
-                      btnStyle = "border-slate-100 text-slate-400 opacity-60";
-                    }
-                  }
-
-                  return (
-                    <button
-                      key={idx}
-                      disabled={quizSubmitted}
-                      onClick={() => handleQuizAnswer(idx)}
-                      className={`w-full p-3 rounded-xl border text-left text-xs transition-all duration-300 ${btnStyle}`}
-                    >
-                      {option}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {!quizSubmitted ? (
-              <button
-                onClick={handleQuizSubmit}
-                disabled={selectedQuizAnswer === null}
-                className={`w-full py-3 rounded-2xl font-black text-xs transition-all duration-300 ${
-                  selectedQuizAnswer === null
-                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                    : 'bg-[#FF6E54] hover:bg-orange-600 text-white active:scale-95'
-                }`}
-              >
-                SUBMIT ANSWER
-              </button>
-            ) : (
               <div className={`p-4 rounded-2xl flex items-start gap-3 border animate-fade-in ${
                 gameFeedback.success ? 'bg-emerald-50 border-emerald-100 text-emerald-950' : 'bg-rose-50 border-rose-100 text-rose-950'
               }`}>
@@ -381,14 +439,12 @@ export default function GamesPage() {
                 className="w-48 h-48 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden shadow-inner cursor-pointer"
               >
                 {scratchedPercent < 100 ? (
-                  /* Overlay silver layer */
                   <div className={`absolute inset-0 bg-slate-300 flex flex-col items-center justify-center transition-opacity duration-500 ${isScratching ? 'opacity-40' : 'opacity-100'}`}>
                     <Layers className="w-10 h-10 text-slate-400 animate-pulse" />
                     <span className="text-[10px] font-black text-slate-500 mt-2 uppercase tracking-widest">TAP TO SCRATCH</span>
                   </div>
                 ) : null}
 
-                {/* Prize inside */}
                 <Sparkles className="w-12 h-12 text-[#FF6E54] animate-bounce" />
                 <h4 className="text-sm font-black text-[#0F172A] mt-2">75 COINS</h4>
                 <p className="text-[9px] text-[#FF6E54] font-bold">Credited to wallet!</p>
@@ -415,37 +471,28 @@ export default function GamesPage() {
 
             <div className="text-center space-y-1">
               <h3 className="text-sm font-black text-[#0F172A] flex items-center justify-center gap-1.5">
-                🗝️ Treasure Hunt
+                🏴‍☠️ Treasure Hunt
               </h3>
-              <p className="text-[10px] text-slate-400 font-bold">Pick one of these mystery chests to unlock treasure!</p>
+              <p className="text-[10px] text-slate-400 font-bold">Pick a chest to reveal your reward!</p>
             </div>
 
-            {/* Chest Grid */}
-            <div className="grid grid-cols-3 gap-2 py-4">
-              {chests.map((chest) => {
-                const isSelected = openedChest === chest.id;
-
-                return (
-                  <button
-                    key={chest.id}
-                    disabled={openedChest !== null}
-                    onClick={() => handleChestClick(chest)}
-                    className={`p-3 rounded-2xl border flex flex-col items-center justify-center gap-2 transition-all duration-300 active:scale-95 ${
-                      isSelected 
-                        ? 'bg-amber-50 border-amber-500 text-amber-950 scale-105 shadow-md' 
-                        : openedChest !== null
-                          ? 'border-slate-100 opacity-60'
-                          : 'border-slate-100 hover:bg-slate-50'
-                    }`}
-                  >
-                    <Gift className={`w-8 h-8 ${isSelected ? 'text-amber-500 animate-bounce' : 'text-slate-400'}`} />
-                    <span className="text-[8px] font-extrabold uppercase leading-none text-slate-500">{chest.label}</span>
-                    {isSelected && (
-                      <span className="text-[9px] font-black text-amber-600 mt-1">+{chest.reward}</span>
-                    )}
-                  </button>
-                );
-              })}
+            <div className="grid grid-cols-3 gap-3 py-4">
+              {chests.map(chest => (
+                <div 
+                  key={chest.id}
+                  onClick={() => handleChestClick(chest)}
+                  className={`aspect-square rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
+                    openedChest === chest.id 
+                      ? 'bg-amber-100 border-2 border-amber-400 scale-105 shadow-md' 
+                      : openedChest !== null 
+                        ? 'bg-slate-50 opacity-50 cursor-not-allowed'
+                        : 'bg-slate-100 hover:bg-slate-200 border border-slate-200 active:scale-95 shadow-inner'
+                  }`}
+                >
+                  <Gift className={`w-8 h-8 mb-1 ${openedChest === chest.id ? 'text-amber-500 animate-bounce' : 'text-slate-400'}`} />
+                  {openedChest === chest.id && <span className="text-[10px] font-black text-amber-600">+{chest.reward}</span>}
+                </div>
+              ))}
             </div>
 
             {gameFeedback && (
@@ -458,12 +505,29 @@ export default function GamesPage() {
         </div>
       )}
 
-      {/* Snake & Chase Game Overlay */}
-      {activeGame === 'snake' && (
-        <SnakeGame onClose={() => setActiveGame(null)} addCoins={addCoins} />
+      {/* Bubble Pop Overlay (Coming Soon Placeholder) */}
+      {activeGame === 'bubblePop' && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-sm relative shadow-2xl animate-scale-up text-center">
+             <button onClick={() => setActiveGame(null)} className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 transition-colors">
+              <X className="w-5 h-5 text-slate-500" />
+            </button>
+            <div className="w-24 h-24 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center">
+              <img src={bubblePopImg} alt="Bubble Pop" className="w-16 h-16 object-contain" />
+            </div>
+            <h3 className="text-xl font-black text-[#071226] mb-2">Bubble Pop!</h3>
+            <p className="text-slate-500 text-sm font-medium mb-6">This game is currently in development. Check back soon!</p>
+            <button onClick={() => setActiveGame(null)} className="bg-[#EE4923] text-white font-black px-6 py-3 rounded-full w-full">Got It</button>
+          </div>
+        </div>
       )}
+
+      {/* Dedicated Full Screen Game Overlays */}
+      {activeGame === 'snake' && <SnakeGame onClose={() => setActiveGame(null)} addCoins={addCoins} />}
+      {activeGame === 'speedTap' && <SpeedTapGame onClose={() => setActiveGame(null)} addCoins={addCoins} />}
+      {activeGame === 'ticTacToe' && <TicTacToeGame onClose={() => setActiveGame(null)} addCoins={addCoins} />}
+      {activeGame === 'quiz' && <QuizGame onClose={() => setActiveGame(null)} addCoins={addCoins} />}
 
     </div>
   );
 }
-
