@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Bell, Heart, ShoppingCart, MapPin, ChevronDown, Search, Camera, Mic, Scan, X, Crosshair, MoreHorizontal, Home, Plus } from 'lucide-react';
+import { Bell, Heart, ShoppingCart, MapPin, ChevronDown, Search, Camera, Mic, Scan, X, Crosshair, MoreHorizontal, Home, Plus, Gamepad2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { NOTIFICATIONS } from '../../data/mockData';
@@ -86,15 +86,15 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="bg-[#EE4923] transition-all duration-300">
+      <header className="sticky top-0 z-50 bg-[#EE4923] shadow-sm transition-all duration-300 pb-2">
         {/* Compact Main top header */}
         <div className="flex items-center justify-between px-2.5 py-1 bg-transparent">
           <div className="flex items-center gap-2 cursor-pointer animate-fade-in" onClick={() => navigate('/')}>
             {/* Logo image */}
             <img
-              src="/mynzo%20world.jpg"
+              src="/mynzo%20world_page-0001.jpg"
               alt="Mynzo Logo"
-              className="h-16 object-contain rounded-md hover:scale-105 transition-transform duration-300"
+              className="h-12 bg-white p-1 rounded-lg shadow-sm object-contain hover:scale-105 transition-transform duration-300"
               onError={(e) => {
                 e.target.alt = "Mynzo World";
               }}
@@ -134,7 +134,7 @@ export default function Navbar() {
         </div>
 
         {/* Location selector bar with INCREASED WIDTH (px-1.5) and DECREASED BORDER RADIUS (rounded-lg) */}
-        <div className="px-1.5 py-1 bg-transparent">
+        <div className="px-2 py-1 bg-transparent">
           <div
             onClick={() => setIsLocationModalOpen(true)}
             className="bg-white/20 border border-white/30 text-white flex items-center justify-between px-4 py-2.5 rounded-lg text-[10.5px] font-black cursor-pointer hover:bg-white/30 shadow-md shadow-black/5 active:scale-[0.99] transition-all duration-300"
@@ -149,53 +149,60 @@ export default function Navbar() {
           </div>
         </div>
 
-      </header>
-
-      {/* Search bar row - Now Sticky at the top! */}
-      <div className="sticky top-0 z-40 px-2 py-2 bg-[#EE4923] shadow-sm transition-all duration-300">
-        <div className="flex items-center gap-2">
-          {/* Search Input Bar (Symmetrical rounded-lg and increased height with py-2) */}
-          <div className="flex-1 relative flex items-center bg-white rounded-lg px-3.5 py-2 focus-within:ring-2 focus-within:ring-white/50 transition-all duration-300 shadow-3xs">
-            <Search className="w-4 h-4 text-slate-400 mr-2.5" />
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full bg-transparent text-xs text-[#02006c] outline-none placeholder-slate-400 font-semibold"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && window.location.pathname !== '/categories') {
-                  navigate('/categories');
-                }
-              }}
-            />
-            {/* Voice search Mic option added next to Camera inside input capsule */}
-            <div className="flex items-center gap-1.5 ml-2.5">
-              <Camera 
-                onClick={handleCameraClick}
-                className="w-4 h-4 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
+        {/* Search bar row */}
+        <div className="px-2 pt-1.5">
+          <div className="flex items-center gap-2">
+            {/* Search Input Bar (Symmetrical rounded-lg and increased height with py-2) */}
+            <div className="flex-1 relative flex items-center bg-white rounded-lg px-3.5 py-2.5 focus-within:ring-2 focus-within:ring-white/50 transition-all duration-300 shadow-3xs">
+              <Search className="w-4.5 h-4.5 text-slate-400 mr-2.5" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full bg-transparent text-sm text-[#02006c] outline-none placeholder-slate-400 font-semibold"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && window.location.pathname !== '/categories') {
+                    navigate('/categories');
+                  }
+                }}
               />
-              <Mic 
-                onClick={handleVoiceSearch}
-                className="w-4 h-4 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
-              />
-              <input 
-                type="file" 
-                accept="image/*" 
-                capture="environment" 
-                ref={fileInputRef} 
-                className="hidden" 
-                onChange={handleImageCapture} 
-              />
+              {/* Voice search Mic option added next to Camera inside input capsule */}
+              <div className="flex items-center gap-2 ml-2.5">
+                <Camera 
+                  onClick={handleCameraClick}
+                  className="w-4.5 h-4.5 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
+                />
+                <Mic 
+                  onClick={handleVoiceSearch}
+                  className="w-4.5 h-4.5 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
+                />
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  capture="environment" 
+                  ref={fileInputRef} 
+                  className="hidden" 
+                  onChange={handleImageCapture} 
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Barcode/QR Scanner button (Symmetrical rounded-lg and balanced w-9 h-9) */}
-          <button className="bg-white active:scale-95 text-[#EE4923] rounded-lg shadow-3xs transition-all duration-300 w-9 h-9 flex items-center justify-center flex-shrink-0">
-            <Scan className="w-4.5 h-4.5 stroke-[2.2]" />
-          </button>
+            {/* Fun Zone / Games button highlight */}
+            <button 
+              onClick={() => navigate('/games')}
+              className="relative overflow-hidden group active:scale-95 text-white rounded-lg shadow-md transition-all duration-300 w-[42px] h-[42px] flex items-center justify-center flex-shrink-0 bg-white/20 backdrop-blur-md border border-white/40 hover:bg-white/30"
+            >
+              <Gamepad2 className="w-5 h-5 drop-shadow-sm" />
+              {/* Little ping animation to highlight it */}
+              <span className="absolute -top-1.5 -right-1.5 flex h-3.5 w-3.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-white shadow-sm"></span>
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Delivery Address Modal */}
       {isLocationModalOpen && (
@@ -205,7 +212,7 @@ export default function Navbar() {
             <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4" />
             
             <div className="flex items-center justify-between mb-4 flex-shrink-0">
-              <h3 className="text-[17px] font-bold text-[#02006c]">Select delivery address</h3>
+              <h3 className="text-[17px] font-bold text-[#02006c] nunito-heading">Select delivery address</h3>
               <button
                 onClick={() => setIsLocationModalOpen(false)}
                 className="p-1 rounded-full hover:bg-slate-100 transition-colors"
@@ -216,7 +223,7 @@ export default function Navbar() {
 
             <div className="overflow-y-auto scrollbar-none pb-4 flex-grow space-y-5">
               {/* Search Bar */}
-              <div className="relative flex items-center bg-white rounded-xl border border-slate-200 px-3 py-2.5 shadow-3xs focus-within:border-[#FF6E54] focus-within:ring-2 focus-within:ring-orange-100 transition-all">
+              <div className="relative flex items-center bg-white rounded-xl border border-slate-200 px-3 py-2.5 shadow-3xs focus-within:border-[#ee4923] focus-within:ring-2 focus-within:ring-orange-100 transition-all">
                 <Search className="w-4 h-4 text-slate-400 mr-2.5" />
                 <input
                   type="text"
@@ -230,7 +237,7 @@ export default function Navbar() {
               {/* Use Current Location */}
               <button 
                 onClick={() => handleSaveLocation("Current Location")}
-                className="flex items-center gap-3 w-full py-1 text-[#FF6E54] hover:opacity-80 transition-opacity"
+                className="flex items-center gap-3 w-full py-1 text-[#ee4923] hover:opacity-80 transition-opacity"
               >
                 <Crosshair className="w-5 h-5" />
                 <span className="text-sm font-bold">Use my current location</span>
@@ -240,7 +247,7 @@ export default function Navbar() {
 
               {/* Saved Addresses Header */}
               <div className="flex items-center justify-between mt-2 mb-3">
-                <h4 className="text-[13px] font-bold text-[#0F172A]">Saved addresses</h4>
+                <h4 className="text-[13px] font-bold text-[#0F172A] nunito-heading">Saved addresses</h4>
                 <button 
                   onClick={() => {
                     if (isAddingNewAddress) {
@@ -253,7 +260,7 @@ export default function Navbar() {
                       setNewAddressForm({ name: '', address: '', pincode: '' });
                     }
                   }}
-                  className="text-[#FF6E54] text-xs font-bold flex items-center gap-1 hover:underline"
+                  className="text-[#ee4923] text-xs font-bold flex items-center gap-1 hover:underline"
                 >
                   {isAddingNewAddress ? "Cancel" : <><Plus className="w-3.5 h-3.5" /> Add New</>}
                 </button>
@@ -269,7 +276,7 @@ export default function Navbar() {
                         type="text" 
                         value={newAddressForm.name}
                         onChange={(e) => setNewAddressForm({...newAddressForm, name: e.target.value})}
-                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#FF6E54] focus:outline-none bg-white" 
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#ee4923] focus:outline-none bg-white" 
                         placeholder="e.g. John Doe"
                       />
                     </div>
@@ -279,7 +286,7 @@ export default function Navbar() {
                         type="text" 
                         value={newAddressForm.pincode}
                         onChange={(e) => setNewAddressForm({...newAddressForm, pincode: e.target.value.replace(/[^0-9]/g, '')})}
-                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#FF6E54] focus:outline-none bg-white" 
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#ee4923] focus:outline-none bg-white" 
                         placeholder="e.g. 452010"
                         maxLength={6}
                       />
@@ -289,7 +296,7 @@ export default function Navbar() {
                       <textarea 
                         value={newAddressForm.address}
                         onChange={(e) => setNewAddressForm({...newAddressForm, address: e.target.value})}
-                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#FF6E54] focus:outline-none bg-white min-h-[80px]" 
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#ee4923] focus:outline-none bg-white min-h-[80px]" 
                         placeholder="e.g. 123 Main St, Apartment 4B..."
                       />
                     </div>
@@ -315,7 +322,7 @@ export default function Navbar() {
                           alert("Please fill in all mandatory fields, including the Pin Code.");
                         }
                       }}
-                      className="w-full bg-[#FF6E54] text-white text-sm font-bold py-2.5 rounded-lg hover:bg-orange-600 transition-colors"
+                      className="w-full bg-[#ee4923] text-white text-sm font-bold py-2.5 rounded-lg hover:bg-orange-600 transition-colors"
                     >
                       {editingAddressId ? "Update Address" : "Save Address"}
                     </button>
@@ -326,7 +333,7 @@ export default function Navbar() {
                     const isSelected = location === addr.address || (location === "Delhi, India" && addr.id === 1);
                     return (
                       <div key={addr.id} className="flex items-start gap-3 w-full group animate-fade-in">
-                        <Home className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isSelected ? 'text-[#FF6E54]' : 'text-slate-500'}`} />
+                        <Home className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isSelected ? 'text-[#ee4923]' : 'text-slate-500'}`} />
                         <div 
                           className="flex-1 cursor-pointer"
                           onClick={() => handleSaveLocation(addr.address)}
@@ -334,7 +341,7 @@ export default function Navbar() {
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-[13px] font-bold text-[#0F172A]">{addr.name}</span>
                             {isSelected && (
-                              <span className="bg-orange-100 text-[#FF6E54] text-[9px] font-bold px-1.5 py-0.5 rounded">
+                              <span className="bg-orange-100 text-[#ee4923] text-[9px] font-bold px-1.5 py-0.5 rounded">
                                 Selected
                               </span>
                             )}
@@ -375,7 +382,7 @@ export default function Navbar() {
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-xs transition-opacity duration-300">
           <div className="w-full max-w-md bg-white rounded-t-3xl p-6 shadow-2xl animate-slide-up max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3 flex-shrink-0">
-              <h3 className="text-base font-bold text-[#02006c]">Notifications</h3>
+              <h3 className="text-base font-bold text-[#02006c] nunito-heading">Notifications</h3>
               <button
                 onClick={() => setIsNotificationModalOpen(false)}
                 className="p-1 rounded-full hover:bg-slate-100 transition-colors"
@@ -388,8 +395,8 @@ export default function Navbar() {
               {NOTIFICATIONS.map((notif) => (
                 <div key={notif.id} className={`p-3 rounded-xl border ${notif.read ? 'bg-white border-slate-100' : 'bg-orange-50/50 border-orange-200'}`}>
                   <div className="flex items-start justify-between">
-                    <h4 className={`text-sm font-bold ${notif.read ? 'text-slate-700' : 'text-[#02006c]'}`}>{notif.title}</h4>
-                    {!notif.read && <span className="w-2 h-2 rounded-full bg-[#FF6E54] flex-shrink-0 mt-1.5"></span>}
+                    <h4 className={`text-sm font-bold nunito-heading ${notif.read ? 'text-slate-700' : 'text-[#02006c]'}`}>{notif.title}</h4>
+                    {!notif.read && <span className="w-2 h-2 rounded-full bg-[#ee4923] flex-shrink-0 mt-1.5"></span>}
                   </div>
                   <p className="text-xs text-slate-500 mt-1 leading-relaxed">{notif.message}</p>
                   <span className="text-[10px] text-slate-400 mt-2 block font-medium">{notif.time}</span>

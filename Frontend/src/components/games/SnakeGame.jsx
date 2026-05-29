@@ -188,6 +188,34 @@ export default function SnakeGame({ onClose, addCoins }) {
     return `${m}:${s}`;
   };
 
+  // Swipe logic
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const minSwipeDistance = 30;
+
+  const onTouchStartEvent = (e) => {
+    setTouchEnd(null);
+    setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+  };
+
+  const onTouchMoveEvent = (e) => {
+    setTouchEnd({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+  };
+
+  const onTouchEndEvent = () => {
+    if (!touchStart || !touchEnd) return;
+    const distanceX = touchStart.x - touchEnd.x;
+    const distanceY = touchStart.y - touchEnd.y;
+    
+    if (Math.abs(distanceX) > Math.abs(distanceY)) {
+      if (distanceX > minSwipeDistance) handleControlClick('LEFT');
+      if (distanceX < -minSwipeDistance) handleControlClick('RIGHT');
+    } else {
+      if (distanceY > minSwipeDistance) handleControlClick('UP');
+      if (distanceY < -minSwipeDistance) handleControlClick('DOWN');
+    }
+  };
+
   // Render Helpers
   const handleControlClick = (newDir) => {
     if (status !== 'PLAYING') return;
@@ -199,7 +227,12 @@ export default function SnakeGame({ onClose, addCoins }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#070B19] flex flex-col font-sans animate-fade-in pb-12 overflow-y-auto">
+    <div 
+      className="fixed inset-0 z-[100] bg-[#070B19] flex flex-col font-sans animate-fade-in pb-12 overflow-y-auto overscroll-none touch-none"
+      onTouchStart={onTouchStartEvent}
+      onTouchMove={onTouchMoveEvent}
+      onTouchEnd={onTouchEndEvent}
+    >
       
       {/* Top Bar */}
       <div className="flex items-center justify-between p-5 pt-8">
@@ -337,38 +370,6 @@ export default function SnakeGame({ onClose, addCoins }) {
              </div>
           </div>
           
-        </div>
-
-        {/* D-Pad Controls */}
-        <div className="mt-6 relative w-28 h-28 flex items-center justify-center opacity-90">
-          <button 
-            onTouchStart={(e) => { e.preventDefault(); handleControlClick('UP'); }}
-            onMouseDown={(e) => { e.preventDefault(); handleControlClick('UP'); }}
-            className="absolute top-0 w-12 h-12 rounded-full border-2 border-slate-700 bg-slate-800/80 flex items-center justify-center text-orange-500 active:bg-orange-500 active:text-white transition-colors"
-          >
-            <ArrowUp className="w-6 h-6" />
-          </button>
-          <button 
-            onTouchStart={(e) => { e.preventDefault(); handleControlClick('DOWN'); }}
-            onMouseDown={(e) => { e.preventDefault(); handleControlClick('DOWN'); }}
-            className="absolute bottom-0 w-12 h-12 rounded-full border-2 border-slate-700 bg-slate-800/80 flex items-center justify-center text-orange-500 active:bg-orange-500 active:text-white transition-colors"
-          >
-            <ArrowDown className="w-6 h-6" />
-          </button>
-          <button 
-            onTouchStart={(e) => { e.preventDefault(); handleControlClick('LEFT'); }}
-            onMouseDown={(e) => { e.preventDefault(); handleControlClick('LEFT'); }}
-            className="absolute left-0 w-12 h-12 rounded-full border-2 border-slate-700 bg-slate-800/80 flex items-center justify-center text-orange-500 active:bg-orange-500 active:text-white transition-colors"
-          >
-            <ArrowLeftIcon className="w-6 h-6" />
-          </button>
-          <button 
-            onTouchStart={(e) => { e.preventDefault(); handleControlClick('RIGHT'); }}
-            onMouseDown={(e) => { e.preventDefault(); handleControlClick('RIGHT'); }}
-            className="absolute right-0 w-12 h-12 rounded-full border-2 border-slate-700 bg-slate-800/80 flex items-center justify-center text-orange-500 active:bg-orange-500 active:text-white transition-colors"
-          >
-            <ArrowRight className="w-6 h-6" />
-          </button>
         </div>
 
         {/* Info Columns */}

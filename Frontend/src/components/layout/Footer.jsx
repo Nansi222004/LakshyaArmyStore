@@ -8,10 +8,10 @@ export default function Footer() {
         {/* Brand Block */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#FF6E54] rounded-full flex items-center justify-center text-white">
+            <div className="w-8 h-8 bg-[#ee4923] rounded-full flex items-center justify-center text-white">
               <Gift className="w-4 h-4" />
             </div>
-            <span className="text-white font-extrabold text-lg tracking-tight">Mynzo <span className="text-[#FF6E54]">World</span></span>
+            <span className="text-white font-extrabold text-lg tracking-tight">Mynzo <span className="text-[#ee4923]">World</span></span>
           </div>
           <p className="text-xs leading-relaxed">
             Mynzo World is your premium online gifting destination, offering beautifully curated teddy bears, RC cars, pendants, and customized gift bundles that surprise, delight, and express your deepest feelings.
@@ -23,26 +23,26 @@ export default function Footer() {
           <div className="space-y-2">
             <h4 className="text-white font-bold uppercase tracking-wider text-[10px]">Categories</h4>
             <ul className="space-y-1.5">
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">Gift Hampers</a></li>
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">Teddy Bears & Plush</a></li>
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">RC Toys & Gadgets</a></li>
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">Sterling Pendants</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">Gift Hampers</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">Teddy Bears & Plush</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">RC Toys & Gadgets</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">Sterling Pendants</a></li>
             </ul>
           </div>
           <div className="space-y-2">
             <h4 className="text-white font-bold uppercase tracking-wider text-[10px]">Company</h4>
             <ul className="space-y-1.5">
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">About Mynzo</a></li>
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-[#FF6E54] transition-colors">Support Center</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">About Mynzo</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-[#ee4923] transition-colors">Support Center</a></li>
             </ul>
           </div>
         </div>
 
         {/* Trust Stamp */}
         <div className="flex items-center gap-2 bg-slate-800/40 p-3 rounded-xl border border-slate-800">
-          <ShieldCheck className="w-5 h-5 text-[#FF6E54] flex-shrink-0" />
+          <ShieldCheck className="w-5 h-5 text-[#ee4923] flex-shrink-0" />
           <span className="text-[11px] leading-tight">
             100% Buyer Protection Guarantee. Payments processed using grade-A secure transaction gateways.
           </span>

@@ -72,7 +72,7 @@ export default function AccountInfoPage() {
             </div>
             <button 
               onClick={() => fileInputRef.current.click()}
-              className="absolute bottom-0 right-0 p-2 bg-[#FF6E54] text-white rounded-full shadow-md hover:scale-105 transition-transform cursor-pointer"
+              className="absolute bottom-0 right-0 p-2 bg-[#ee4923] text-white rounded-full shadow-md hover:scale-105 transition-transform cursor-pointer"
             >
               <Camera className="w-4 h-4" />
             </button>
@@ -102,7 +102,7 @@ export default function AccountInfoPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
               />
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function AccountInfoPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
               />
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function AccountInfoPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
               />
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function AccountInfoPage() {
                 name="dob"
                 value={formData.dob}
                 onChange={handleChange}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
               />
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function AccountInfoPage() {
                   value="male" 
                   checked={formData.gender === 'male'} 
                   onChange={handleChange}
-                  className="w-4 h-4 text-[#FF6E54] border-slate-300 focus:ring-[#FF6E54]"
+                  className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                 />
                 <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Male</span>
               </label>
@@ -180,7 +180,7 @@ export default function AccountInfoPage() {
                   value="female" 
                   checked={formData.gender === 'female'} 
                   onChange={handleChange}
-                  className="w-4 h-4 text-[#FF6E54] border-slate-300 focus:ring-[#FF6E54]"
+                  className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                 />
                 <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Female</span>
               </label>
@@ -191,7 +191,7 @@ export default function AccountInfoPage() {
                   value="other" 
                   checked={formData.gender === 'other'} 
                   onChange={handleChange}
-                  className="w-4 h-4 text-[#FF6E54] border-slate-300 focus:ring-[#FF6E54]"
+                  className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                 />
                 <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Other</span>
               </label>

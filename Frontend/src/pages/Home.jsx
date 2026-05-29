@@ -249,7 +249,7 @@ export default function Home() {
             <circle cx="72" cy="74" r="12" fill="#1E293B" />
             <circle cx="72" cy="74" r="6" fill="#F97316" />
             {/* Car body */}
-            <rect x="22" y="52" width="56" height="18" rx="6" fill="#FF6E54" />
+            <rect x="22" y="52" width="56" height="18" rx="6" fill="#ee4923" />
             <path d="M32 52L40 38H60L68 52H32Z" fill="#0F172A" />
             {/* Windshield highlights */}
             <polygon points="42 40, 58 40, 62 50, 38 50" fill="#38BDF8" opacity="0.5" />
@@ -356,8 +356,8 @@ export default function Home() {
               {/* Image Box */}
               <div className={`w-14 h-14 flex items-center justify-center rounded-2xl border transition-all duration-300 overflow-hidden ${
                 isActive
-                  ? 'bg-[#FF6E54] border-[#FF6E54] text-white shadow-sm'
-                  : 'bg-[#FFF0ED] border-[#FFF0ED] text-[#02006c] hover:border-[#FF6E54]/40'
+                  ? 'bg-[#ee4923] border-[#ee4923] text-white shadow-sm'
+                  : 'bg-[#FFF0ED] border-[#FFF0ED] text-[#02006c] hover:border-[#ee4923]/40'
               }`}>
                 {cat.image ? (
                   <img src={cat.image} alt={cat.name} className="w-full h-full object-contain p-1" />
@@ -370,7 +370,7 @@ export default function Home() {
               <div className="flex flex-col items-center">
                 <span className={`text-[11px] px-2 py-0.5 rounded-full transition-colors ${
                   isActive 
-                    ? 'font-bold text-[#FF6E54] border border-[#FF6E54]' 
+                    ? 'font-bold text-[#ee4923] border border-[#ee4923]' 
                     : 'font-semibold text-[#02006c] border border-transparent'
                 }`}>
                   {cat.name}
@@ -407,7 +407,7 @@ export default function Home() {
               key={idx}
               onClick={() => setActiveBanner(idx)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                idx === activeBanner ? 'w-4 bg-[#FF6E54]' : 'w-1.5 bg-slate-200'
+                idx === activeBanner ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
               }`}
             ></button>
           ))}
@@ -426,7 +426,7 @@ export default function Home() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <span 
-              className="text-[22px] font-extrabold text-[#02006c] flex items-center gap-1.5 ![font-family:'Times_New_Roman',Times,serif]"
+              className="text-[22px] font-extrabold text-[#02006c] flex items-center gap-1.5 font-sans"
             >
               Crazy Deals
             </span>
@@ -443,7 +443,7 @@ export default function Home() {
         </div>
 
         {/* Ticking Countdown Timer */}
-        <div className="flex items-center gap-1 text-[13px] font-black text-[#ee4923] tracking-wide -mt-1.5 ![font-family:'Times_New_Roman',Times,serif]">
+        <div className="flex items-center gap-1 text-[13px] font-black text-[#ee4923] tracking-wide -mt-1.5 font-sans">
           <span>{hrs}</span>
           <span className="animate-pulse">:</span>
           <span>{mins}</span>
@@ -493,7 +493,7 @@ export default function Home() {
         ) : (
           /* Fallback empty state */
           <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-6 text-center space-y-2">
-            <ShieldAlert className="w-8 h-8 text-[#FF6E54] mx-auto opacity-75" />
+            <ShieldAlert className="w-8 h-8 text-[#ee4923] mx-auto opacity-75" />
             <h4 className="text-xs font-bold text-[#0F172A]">No Matching Deals</h4>
             <p className="text-[10px] text-slate-400 leading-tight">
               Try searching for something else like "teddy" or "car"
@@ -510,7 +510,7 @@ export default function Home() {
           
           {/* Header Row */}
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-[19px] font-bold tracking-wide text-[#02006c] ![font-family:'Times_New_Roman',Times,serif]">
+            <h3 className="text-[19px] font-bold tracking-wide text-[#02006c] font-sans">
               TOP SELECTION
             </h3>
             <button 
@@ -527,7 +527,7 @@ export default function Home() {
             {/* 1. Oversized Tee (Comfort Fit Tee) */}
             <div 
               onClick={() => navigate('/categories')}
-              className="bg-white border border-[#FF6E54] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
+              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
             >
               <div>
                 <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
@@ -545,7 +545,7 @@ export default function Home() {
             {/* 2. Layered Necklace (Gold Plated Jewelry) */}
             <div 
               onClick={() => navigate('/categories')}
-              className="bg-white border border-[#FF6E54] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
+              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
             >
               <div>
                 <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
@@ -563,7 +563,7 @@ export default function Home() {
             {/* 3. Vintage Watch (Gold Chain Dial) */}
             <div 
               onClick={() => navigate('/categories')}
-              className="bg-white border border-[#FF6E54] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
+              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
             >
               <div>
                 <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
@@ -581,7 +581,7 @@ export default function Home() {
             {/* 4. Benetint Lip Tint (Cheek & Lip Stain) */}
             <div 
               onClick={() => navigate('/categories')}
-              className="bg-white border border-[#FF6E54] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
+              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
             >
               <div>
                 <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
@@ -605,10 +605,10 @@ export default function Home() {
       <div className="px-4 py-2 space-y-3">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-[19px] font-bold text-[#02006c] ![font-family:'Times_New_Roman',Times,serif]">Flash Sale</h3>
+          <h3 className="text-[19px] font-bold text-[#02006c] font-sans">Flash Sale</h3>
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-slate-400 font-medium mr-1">Closing in :</span>
-            <div className="flex items-center gap-0.5 text-[11px] font-bold text-[#FF6E54] ![font-family:'Times_New_Roman',Times,serif]">
+            <div className="flex items-center gap-0.5 text-[11px] font-bold text-[#ee4923] font-sans">
               <span className="bg-orange-50 px-1 py-0.5 rounded-sm">{hrs}</span>
               <span className="text-slate-300 px-0.5">:</span>
               <span className="bg-orange-50 px-1 py-0.5 rounded-sm">{mins}</span>
@@ -626,7 +626,7 @@ export default function Home() {
               onClick={() => setActiveFlashTab(tab)}
               className={`px-3.5 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                 activeFlashTab === tab 
-                  ? 'bg-[#FF6E54] text-white shadow-sm' 
+                  ? 'bg-[#ee4923] text-white shadow-sm' 
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
               }`}
             >
@@ -652,7 +652,7 @@ export default function Home() {
                     toggleWishlist(deal);
                   }}
                   className={`absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm z-10 transition-colors ${
-                    isInWishlist(deal.id) ? 'text-[#FF6E54]' : 'text-slate-300 hover:text-[#FF6E54]'
+                    isInWishlist(deal.id) ? 'text-[#ee4923]' : 'text-slate-300 hover:text-[#ee4923]'
                   }`}
                 >
                   <Heart className={`w-3.5 h-3.5 ${isInWishlist(deal.id) ? 'fill-current' : ''}`} />
@@ -664,7 +664,7 @@ export default function Home() {
                 <div className="px-1">
                   <h4 className="text-[11px] font-bold text-[#02006c] truncate">{deal.name}</h4>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <span className="text-[12px] font-extrabold text-[#FF6E54]">₹{deal.price}</span>
+                    <span className="text-[12px] font-extrabold text-[#ee4923]">₹{deal.price}</span>
                     <span className="text-[9px] text-slate-400 line-through">₹{deal.originalPrice}</span>
                   </div>
                 </div>
@@ -917,7 +917,7 @@ export default function Home() {
             <h3 className="text-[17px] font-bold text-[#02006c] capitalize">
               {selectedCategory.replace('-', ' ')}
             </h3>
-            <span className="text-[10px] text-[#FF6E54] font-bold bg-orange-50 border border-orange-100 px-2.5 py-1 rounded-lg">
+            <span className="text-[10px] text-[#ee4923] font-bold bg-orange-50 border border-orange-100 px-2.5 py-1 rounded-lg">
               {filteredDeals.length} Items
             </span>
           </div>

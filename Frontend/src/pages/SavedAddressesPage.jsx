@@ -71,7 +71,7 @@ export default function SavedAddressesPage() {
       </div>
 
       <div className="px-4 py-3 flex justify-end">
-        <button onClick={openAddModal} className="flex items-center gap-1 text-[14px] font-bold text-[#FF6E54] hover:text-orange-600 cursor-pointer">
+        <button onClick={openAddModal} className="flex items-center gap-1 text-[14px] font-bold text-[#ee4923] hover:text-orange-600 cursor-pointer">
           <Plus className="w-4 h-4" /> Add New
         </button>
       </div>
@@ -155,7 +155,7 @@ export default function SavedAddressesPage() {
                   type="text" 
                   value={formData.name} 
                   onChange={e => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54]/20 transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
                   placeholder="Enter full name"
                 />
               </div>
@@ -166,7 +166,7 @@ export default function SavedAddressesPage() {
                   type="tel" 
                   value={formData.phone} 
                   onChange={e => setFormData({...formData, phone: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54]/20 transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
                   placeholder="Enter phone number"
                 />
               </div>
@@ -177,7 +177,7 @@ export default function SavedAddressesPage() {
                   value={formData.address} 
                   onChange={e => setFormData({...formData, address: e.target.value})}
                   rows={3}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54]/20 transition-all resize-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all resize-none"
                   placeholder="House No, Building, Street, City, Pincode"
                 />
               </div>
@@ -192,7 +192,7 @@ export default function SavedAddressesPage() {
                       value="Home" 
                       checked={formData.type === 'Home'} 
                       onChange={e => setFormData({...formData, type: e.target.value})}
-                      className="w-4 h-4 text-[#FF6E54] border-slate-300 focus:ring-[#FF6E54]"
+                      className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                     />
                     <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Home</span>
                   </label>
@@ -203,7 +203,7 @@ export default function SavedAddressesPage() {
                       value="Work" 
                       checked={formData.type === 'Work'} 
                       onChange={e => setFormData({...formData, type: e.target.value})}
-                      className="w-4 h-4 text-[#FF6E54] border-slate-300 focus:ring-[#FF6E54]"
+                      className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                     />
                     <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Work</span>
                   </label>
@@ -214,7 +214,7 @@ export default function SavedAddressesPage() {
                       value="Location" 
                       checked={formData.type === 'Location'} 
                       onChange={e => setFormData({...formData, type: e.target.value})}
-                      className="w-4 h-4 text-[#FF6E54] border-slate-300 focus:ring-[#FF6E54]"
+                      className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                     />
                     <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Other</span>
                   </label>

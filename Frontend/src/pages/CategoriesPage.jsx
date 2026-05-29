@@ -55,7 +55,7 @@ export default function CategoriesPage() {
       <img 
         src={imgSrc} 
         alt={id} 
-        className={`w-[44px] h-[44px] object-contain drop-shadow-sm transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`} 
+        className={`w-[36px] h-[36px] object-contain drop-shadow-sm transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`} 
       />
     );
   };
@@ -120,35 +120,35 @@ export default function CategoriesPage() {
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden">
       {/* Elevated Sticky Header */}
-      <header className="sticky top-0 bg-orange-50 border-b border-slate-100/80 px-4 py-3 flex items-center justify-between z-40 flex-shrink-0">
+      <header className="sticky top-0 bg-[#ee4923] border-b border-[#ee4923] px-4 py-3 flex items-center justify-between z-40 flex-shrink-0">
         <div className="flex items-center gap-2">
           <button 
             onClick={() => navigate(-1)}
-            className="p-1 bg-white hover:bg-orange-100/50 border border-slate-100/85 rounded-full shadow-2xs transition-colors active:scale-95 cursor-pointer text-[#02006c]"
+            className="p-1 bg-white hover:bg-white/90 border border-transparent rounded-full shadow-2xs transition-colors active:scale-95 cursor-pointer text-[#ee4923]"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-xs font-black text-[#02006c] tracking-wide uppercase font-syne">
-              Discover <span className="text-[#FF6E54]">Mynzo</span>
+            <h1 className="text-sm font-black text-white tracking-wide uppercase font-syne">
+              Discover <span>Mynzo</span>
             </h1>
-            <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest font-sans">
+            <p className="text-[10px] text-white/90 font-bold uppercase tracking-widest font-sans mt-0.5">
               Trend Starts Here
             </p>
           </div>
         </div>
         
         {/* Pulsing Active Badge */}
-        <div className="flex items-center gap-1 bg-[#FF6E54]/10 text-[#FF6E54] px-2 py-0.5 rounded-full border border-[#FF6E54]/15">
-          <span className="w-1.5 h-1.5 bg-[#FF6E54] rounded-full animate-ping"></span>
-          <span className="text-[8.5px] font-bold uppercase tracking-wider">Live Catalog</span>
+        <div className="flex items-center gap-1 bg-white/20 text-white px-2 py-0.5 rounded-full border border-white/30">
+          <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+          <span className="text-[9px] font-bold uppercase tracking-wider">Live Catalog</span>
         </div>
       </header>
 
       <div className="flex-grow flex animate-fade-in overflow-hidden">
         
         {/* 1. Vertical Sidebar Category Navigation */}
-        <div className="w-[82px] bg-[#02006c]/[0.02] border-r border-slate-100 flex flex-col items-center pt-4 pb-4 overflow-y-auto scrollbar-none gap-4 flex-shrink-0">
+        <div className="w-[72px] bg-[#02006c]/[0.02] border-r border-slate-100 flex flex-col items-center pt-2 pb-2 overflow-y-auto scrollbar-none gap-3 flex-shrink-0">
           {CATEGORIES.map((cat) => {
             const isActive = selectedCategory === cat.id;
 
@@ -156,26 +156,26 @@ export default function CategoriesPage() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className="flex flex-col items-center gap-1 w-full relative pb-2 group cursor-pointer"
+                className="flex flex-col items-center gap-1 w-full relative pb-1.5 group cursor-pointer"
               >
                 {/* Capsule Background */}
                 {isActive ? (
                   <motion.div 
                     layoutId="activeCategoryCapsule"
-                    className="w-[62px] h-[32px] rounded-[10px] absolute bottom-[22px] bg-[#FF6E54] shadow-md shadow-[#FF6E54]/30"
+                    className="w-[56px] h-[28px] rounded-[10px] absolute bottom-[20px] bg-[#ee4923] shadow-md shadow-[#ee4923]/30"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 ) : (
-                  <div className="w-[62px] h-[32px] rounded-[10px] absolute bottom-[22px] bg-orange-100 group-hover:bg-orange-200 transition-colors duration-300"></div>
+                  <div className="w-[56px] h-[28px] rounded-[10px] absolute bottom-[20px] bg-orange-100 group-hover:bg-orange-200 transition-colors duration-300"></div>
                 )}
                 
                 {/* Image Icon popping out */}
-                <div className="relative z-10 h-12 flex items-center justify-center transform translate-y-1 mb-1">
+                <div className="relative z-10 h-10 flex items-center justify-center transform translate-y-1 mb-1">
                   {renderCatIcon(cat.id, isActive)}
                 </div>
 
                 {/* Text Label */}
-                <span className={`text-[11px] leading-tight font-bold tracking-tight select-none px-1 transition-colors ${
+                <span className={`text-[10px] leading-tight font-bold tracking-tight select-none px-1 transition-colors ${
                   isActive ? 'text-[#0F172A] font-bold' : 'text-slate-500 font-semibold'
                 }`}>
                   {cat.name}
@@ -185,7 +185,7 @@ export default function CategoriesPage() {
                 {isActive && (
                   <motion.div 
                     layoutId="activeCategoryLine"
-                    className="absolute left-0 top-2 bottom-2 w-1.5 bg-[#02006c] rounded-r-full"
+                    className="absolute left-0 top-1 bottom-1 w-1 bg-[#02006c] rounded-r-full"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -195,46 +195,46 @@ export default function CategoriesPage() {
         </div>
 
         {/* 2. Main filtered products catalog grid */}
-        <div className="flex-grow p-4 overflow-y-auto space-y-4 bg-[#ff7400]/15 relative">
+        <div className="flex-grow p-2.5 overflow-y-auto space-y-3 bg-[#ff7400]/15 relative">
         
         {/* Title bar */}
-        <div className="flex items-center justify-between border-b border-slate-50 pb-2 relative z-20">
+        <div className="flex items-center justify-between border-b border-slate-50 pb-2 relative z-20 px-1">
           <div className="space-y-0.5">
-            <h3 className="text-xs font-bold text-[#0F172A] uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-[#02006c] uppercase tracking-wider">
               {CATEGORIES.find((c) => c.id === selectedCategory)?.name || "Catalog"}
             </h3>
-            <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">
+            <p className="text-[8px] text-[#02006c]/60 font-bold uppercase tracking-widest">
               {filteredProducts.length} items found
             </p>
           </div>
           <div className="relative">
             <Filter 
               onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className={`w-4 h-4 cursor-pointer transition-colors ${showSortDropdown ? 'text-[#FF6E54]' : 'text-slate-400 hover:text-orange-500'}`} 
+              className={`w-4 h-4 cursor-pointer transition-colors ${showSortDropdown ? 'text-[#ee4923]' : 'text-[#02006c]/70 hover:text-[#02006c]'}`} 
             />
             {showSortDropdown && (
               <div className="absolute right-0 mt-2 w-36 bg-white border border-slate-100 rounded-lg shadow-lg py-1 z-30 animate-fade-in text-[10px]">
                 <button 
                   onClick={() => { setSortBy('none'); setShowSortDropdown(false); }}
-                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'none' ? 'text-[#FF6E54]' : 'text-slate-600'}`}
+                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'none' ? 'text-[#ee4923]' : 'text-slate-600'}`}
                 >
                   DEFAULT
                 </button>
                 <button 
                   onClick={() => { setSortBy('price-low'); setShowSortDropdown(false); }}
-                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'price-low' ? 'text-[#FF6E54]' : 'text-slate-600'}`}
+                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'price-low' ? 'text-[#ee4923]' : 'text-slate-600'}`}
                 >
                   PRICE: LOW TO HIGH
                 </button>
                 <button 
                   onClick={() => { setSortBy('price-high'); setShowSortDropdown(false); }}
-                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'price-high' ? 'text-[#FF6E54]' : 'text-slate-600'}`}
+                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'price-high' ? 'text-[#ee4923]' : 'text-slate-600'}`}
                 >
                   PRICE: HIGH TO LOW
                 </button>
                 <button 
                   onClick={() => { setSortBy('rating'); setShowSortDropdown(false); }}
-                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'rating' ? 'text-[#FF6E54]' : 'text-slate-600'}`}
+                  className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'rating' ? 'text-[#ee4923]' : 'text-slate-600'}`}
                 >
                   TOP RATED
                 </button>
@@ -250,7 +250,7 @@ export default function CategoriesPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-2 gap-3 pb-8"
+            className="grid grid-cols-2 gap-2 pb-8"
           >
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -264,7 +264,7 @@ export default function CategoriesPage() {
             transition={{ duration: 0.2 }}
             className="bg-slate-50 border border-dashed border-slate-200 rounded-3xl p-8 text-center space-y-3 mt-6"
           >
-            <div className="w-12 h-12 bg-orange-100 text-[#FF6E54] rounded-full flex items-center justify-center mx-auto shadow-sm">
+            <div className="w-12 h-12 bg-orange-100 text-[#ee4923] rounded-full flex items-center justify-center mx-auto shadow-sm">
               <Search className="w-6 h-6 animate-pulse" />
             </div>
             <div className="space-y-1">
@@ -278,7 +278,7 @@ export default function CategoriesPage() {
                 setSelectedCategory('for-you');
                 setSearchQuery('');
               }}
-              className="bg-white border border-slate-200 hover:border-[#FF6E54] text-[#FF6E54] text-[8px] font-black px-4 py-2 rounded-xl transition-all duration-300"
+              className="bg-white border border-slate-200 hover:border-[#ee4923] text-[#ee4923] text-[8px] font-black px-4 py-2 rounded-xl transition-all duration-300"
             >
               RESET FILTERS
             </button>

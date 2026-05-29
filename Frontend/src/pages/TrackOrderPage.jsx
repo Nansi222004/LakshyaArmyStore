@@ -41,8 +41,8 @@ export default function TrackOrderPage() {
             <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Estimated Delivery</p>
             <p className="text-lg font-black text-[#02006c]">24 May, 2026</p>
           </div>
-          <div className="w-10 h-10 bg-[#FF6E54]/10 rounded-full flex items-center justify-center">
-            <Truck className="w-5 h-5 text-[#FF6E54]" />
+          <div className="w-10 h-10 bg-[#ee4923]/10 rounded-full flex items-center justify-center">
+            <Truck className="w-5 h-5 text-[#ee4923]" />
           </div>
         </div>
 
@@ -66,11 +66,11 @@ export default function TrackOrderPage() {
                     {/* Status Icon */}
                     <div className="relative">
                       {isActive && (
-                        <div className="absolute -inset-1 rounded-full bg-[#FF6E54]/20 animate-ping"></div>
+                        <div className="absolute -inset-1 rounded-full bg-[#ee4923]/20 animate-ping"></div>
                       )}
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center border-[3px] border-white relative z-10 shadow-sm ${
                         isCompleted ? 'bg-[#02006c] text-white' : 
-                        isActive ? 'bg-[#FF6E54] text-white shadow-md shadow-[#FF6E54]/30' : 
+                        isActive ? 'bg-[#ee4923] text-white shadow-md shadow-[#ee4923]/30' : 
                         'bg-slate-100 text-slate-400'
                       }`}>
                         <Icon className="w-4 h-4" />
@@ -81,7 +81,7 @@ export default function TrackOrderPage() {
                     <div className="pt-1 flex-1">
                       <div className="flex justify-between items-start">
                         <p className={`text-[13px] font-bold leading-tight ${
-                          isActive ? 'text-[#FF6E54]' : (isCompleted ? 'text-slate-800' : 'text-slate-400')
+                          isActive ? 'text-[#ee4923]' : (isCompleted ? 'text-slate-800' : 'text-slate-400')
                         }`}>
                           {step.title}
                         </p>

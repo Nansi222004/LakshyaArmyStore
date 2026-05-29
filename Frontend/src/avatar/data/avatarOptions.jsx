@@ -17,14 +17,14 @@ export const HAIR_COLORS = [
 
 export const OUTFIT_COLORS = [
   { id: "black", value: "#1A1A1A", label: "Black" },
-  { id: "orange", value: "#FF6E54", label: "Orange" },
+  { id: "orange", value: "#ee4923", label: "Orange" },
   { id: "white", value: "#F8F9FD", label: "White" },
   { id: "blue", value: "#02006c", label: "Dark Blue" },
   { id: "green", value: "#10B981", label: "Emerald" },
 ];
 
 export const BACKGROUNDS = [
-  { id: "gradient_orange", value: "linear-gradient(135deg, #FF6E54 0%, #FF8E4D 100%)", label: "Orange Glow" },
+  { id: "gradient_orange", value: "linear-gradient(135deg, #ee4923 0%, #FF8E4D 100%)", label: "Orange Glow" },
   { id: "gradient_blue", value: "linear-gradient(135deg, #02006c 0%, #0a08a0 100%)", label: "Deep Blue" },
   { id: "neon_purple", value: "linear-gradient(135deg, #8B5CF6 0%, #C084FC 100%)", label: "Neon Purple" },
   { id: "gaming_dark", value: "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)", label: "Dark Mode" },
@@ -258,7 +258,7 @@ export const ACCESSORIES = [
     id: "headphones",
     label: "Headphones",
     render: () => (
-      <g fill="#FF6E54">
+      <g fill="#ee4923">
         {/* Headband */}
         <path d="M 18 55 Q 15 20 50 20 Q 85 20 82 55" fill="none" stroke="#1A1A1A" strokeWidth="4" />
         {/* Ear cups */}
@@ -277,7 +277,7 @@ export const ACCESSORIES = [
         {/* Cap Base */}
         <path d="M 22 45 Q 50 15 78 45 Z" fill="#02006c" />
         {/* Brim */}
-        <path d="M 15 45 Q 50 35 85 45 Q 50 50 15 45 Z" fill="#FF6E54" />
+        <path d="M 15 45 Q 50 35 85 45 Q 50 50 15 45 Z" fill="#ee4923" />
       </g>
     )
   }

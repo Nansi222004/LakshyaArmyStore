@@ -148,13 +148,13 @@ export default function GamesPage() {
   const renderHomeView = () => (
     <div className="flex-1 overflow-y-auto pb-24 bg-[#FFF6F2]">
       {/* Playground Header */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-4 sticky top-0 bg-[#FFF6F2]/95 border-b-2 border-[#EE4923]/20 backdrop-blur-md z-20">
+      <div className="flex items-center justify-between px-5 py-2.5 sticky top-0 bg-orange-100 border-b-2 border-[#EE4923]/20 backdrop-blur-md z-20 shadow-sm">
         <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors">
           <ChevronLeft className="w-6 h-6 text-[#071226]" />
         </button>
         <div className="flex flex-col items-center">
           <h1 className="text-xl font-black text-[#071226] uppercase tracking-tighter leading-none">PLAYGROUND <span className="text-amber-400">✦</span></h1>
-          <p className="text-[10px] font-medium text-slate-500 mt-1">Play Games, Win Rewards!</p>
+          <p className="text-[10px] font-medium text-slate-600 mt-0.5">Play Games, Win Rewards!</p>
         </div>
         <div className="w-6 h-6"></div>
       </div>
@@ -399,7 +399,7 @@ export default function GamesPage() {
               className={`w-full py-3 rounded-2xl font-black text-xs transition-all duration-300 ${
                 isSpinning
                   ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                  : 'bg-[#FF6E54] hover:bg-orange-600 text-white active:scale-95 shadow-md shadow-orange-500/20'
+                  : 'bg-[#ee4923] hover:bg-orange-600 text-white active:scale-95 shadow-md shadow-orange-500/20'
               }`}
             >
               {isSpinning ? "SPINNING..." : "TAP TO SPIN"}
@@ -445,9 +445,9 @@ export default function GamesPage() {
                   </div>
                 ) : null}
 
-                <Sparkles className="w-12 h-12 text-[#FF6E54] animate-bounce" />
+                <Sparkles className="w-12 h-12 text-[#ee4923] animate-bounce" />
                 <h4 className="text-sm font-black text-[#0F172A] mt-2">75 COINS</h4>
-                <p className="text-[9px] text-[#FF6E54] font-bold">Credited to wallet!</p>
+                <p className="text-[9px] text-[#ee4923] font-bold">Credited to wallet!</p>
               </div>
             </div>
 

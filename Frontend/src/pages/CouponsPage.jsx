@@ -38,7 +38,7 @@ export default function CouponsPage() {
             <div className="bg-gradient-to-br from-[#02006c] to-indigo-900 w-24 flex flex-col items-center justify-center p-3 text-white border-r border-dashed border-slate-300 relative">
               <div className="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-slate-50"></div>
               <div className="absolute -bottom-2 -right-2 w-4 h-4 rounded-full bg-slate-50"></div>
-              <Gift className="w-6 h-6 mb-1 text-[#FF6E54]" />
+              <Gift className="w-6 h-6 mb-1 text-[#ee4923]" />
               <span className="text-xs font-bold text-center leading-tight">{coupon.discount}</span>
             </div>
             
@@ -47,7 +47,7 @@ export default function CouponsPage() {
               <div>
                 <p className="text-[13px] font-medium text-slate-600 mb-1 leading-tight">{coupon.desc}</p>
                 <div className="flex items-center gap-2">
-                  <span className="bg-orange-50 text-[#FF6E54] border border-orange-100 px-2 py-0.5 rounded font-bold tracking-wide text-[13px]">{coupon.code}</span>
+                  <span className="bg-orange-50 text-[#ee4923] border border-orange-100 px-2 py-0.5 rounded font-bold tracking-wide text-[13px]">{coupon.code}</span>
                   <button 
                     onClick={() => handleCopy(coupon.code)}
                     className={`transition-colors cursor-pointer ${

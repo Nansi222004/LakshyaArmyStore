@@ -107,7 +107,7 @@ export default function SecurityPage() {
             {/* Custom Toggle Switch */}
             <button 
               onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
-              className={`relative w-11 h-6 rounded-full transition-colors duration-300 flex-shrink-0 ${twoFactorEnabled ? 'bg-[#FF6E54]' : 'bg-slate-200'}`}
+              className={`relative w-11 h-6 rounded-full transition-colors duration-300 flex-shrink-0 ${twoFactorEnabled ? 'bg-[#ee4923]' : 'bg-slate-200'}`}
             >
               <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full shadow-sm transition-transform duration-300 ${twoFactorEnabled ? 'translate-x-5' : 'translate-x-0'}`}></div>
             </button>

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, ShoppingCart, Heart, Send, Star, ChevronRight, Home, Truck, Store, RotateCcw, Banknote, ShieldCheck, ArrowRight, ChevronDown, CheckCircle2, X } from 'lucide-react';
+import { ArrowLeft, Search, ShoppingCart, Heart, Send, Star, ChevronRight, Home, Truck, Store, RotateCcw, Banknote, ShieldCheck, ArrowRight, ChevronDown, ChevronUp, CheckCircle2, CheckCircle, X, Play } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { CRAZY_DEALS } from '../data/mockData';
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { totalCartItems, addToCart, cart, toggleWishlist, isInWishlist, user } = useApp();
+  const { totalCartItems, addToCart, cart, toggleWishlist, isInWishlist, user, setSearchQuery } = useApp();
   
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('M');
@@ -15,6 +15,23 @@ export default function ProductDetailsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
+  const [localSearchQuery, setLocalSearchQuery] = useState('');
+  
+  // Accordion and Tab States
+  const [isHighlightsOpen, setIsHighlightsOpen] = useState(true);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(true);
+  const [isReviewsOpen, setIsReviewsOpen] = useState(true);
+  const [activeDetailTab, setActiveDetailTab] = useState('specifications');
+  
+  // Review Media Viewer State
+  const [selectedReviewMedia, setSelectedReviewMedia] = useState(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedReviewMedia?.type === 'video' && videoRef.current) {
+      videoRef.current.play().catch(e => console.error("Autoplay prevented:", e));
+    }
+  }, [selectedReviewMedia]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,7 +65,7 @@ export default function ProductDetailsPage() {
   if (isLoading || !product) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center pb-20">
-        <div className="w-8 h-8 border-4 border-[#FF6E54] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-[#ee4923] border-t-transparent rounded-full animate-spin"></div>
         <p className="text-slate-500 font-medium text-sm mt-4 animate-pulse">Loading product...</p>
       </div>
     );
@@ -111,14 +128,21 @@ export default function ProductDetailsPage() {
             type="text" 
             placeholder="Search for products" 
             className="w-full bg-transparent outline-none text-sm text-slate-700"
-            readOnly
+            value={localSearchQuery}
+            onChange={(e) => setLocalSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && localSearchQuery.trim() !== '') {
+                setSearchQuery(localSearchQuery);
+                navigate('/categories');
+              }
+            }}
           />
         </div>
 
         <button onClick={() => navigate('/cart')} className="p-2 relative text-slate-700">
           <ShoppingCart className="w-6 h-6" />
           {totalCartItems > 0 && (
-            <span className="absolute top-0 right-0 bg-[#FF6E54] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
+            <span className="absolute top-0 right-0 bg-[#ee4923] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
               {totalCartItems}
             </span>
           )}
@@ -180,7 +204,7 @@ export default function ProductDetailsPage() {
           {/* Left Rating Badge Overlay */}
           <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md shadow-md flex items-center gap-1">
             <span className="text-[11px] font-bold text-[#02006c]">4.5</span>
-            <Star className="w-2.5 h-2.5 fill-[#FF6E54] text-[#FF6E54]" />
+            <Star className="w-2.5 h-2.5 fill-[#ee4923] text-[#ee4923]" />
             <span className="text-slate-300 text-[10px] mx-0.5">|</span>
             <span className="text-[10px] text-slate-500 font-medium">1.2k</span>
           </div>
@@ -219,7 +243,7 @@ export default function ProductDetailsPage() {
       <div className="bg-white p-3 pb-1">
         <h1 className="text-sm font-bold text-[#02006c] mb-1.5 leading-tight">{product.desc}</h1>
         <div className="flex items-end gap-1.5 mb-1">
-          <span className="text-[#FF6E54] font-bold text-lg">↓ {product.discount}</span>
+          <span className="text-[#ee4923] font-bold text-lg">↓ {product.discount}</span>
           <span className="text-2xl font-black text-[#02006c] tracking-tight">₹{product.price}</span>
         </div>
         <p className="text-[10px] text-slate-400 mb-2 line-through">MRP ₹{product.originalPrice}</p>
@@ -232,7 +256,7 @@ export default function ProductDetailsPage() {
           <span className="font-bold text-sm text-[#02006c]">Select Size</span>
           <button 
             onClick={() => setIsSizeChartOpen(true)}
-            className="text-[#FF6E54] font-bold text-[11px]"
+            className="text-[#ee4923] font-bold text-[11px]"
           >
             Size Chart
           </button>
@@ -249,7 +273,7 @@ export default function ProductDetailsPage() {
                 disabled={isOutOfStock}
                 onClick={() => setSelectedSize(size)}
                 className={`w-12 h-12 rounded-xl border flex items-center justify-center text-sm font-bold transition-all relative overflow-hidden
-                  ${isSelected ? 'border-[#FF6E54] text-[#FF6E54] bg-[#FF6E54]/5' : 
+                  ${isSelected ? 'border-[#ee4923] text-[#ee4923] bg-[#ee4923]/5' : 
                     isOutOfStock ? 'border-dashed border-slate-300 text-slate-300 bg-slate-50 cursor-not-allowed' : 
                     'border-slate-300 text-slate-700 hover:border-slate-400'
                   }
@@ -265,7 +289,7 @@ export default function ProductDetailsPage() {
       )}
 
       {/* Product Details Description */}
-      <div className="bg-white p-3 mt-2">
+      <div className="bg-white px-4 pt-4 pb-1">
         <h3 className="font-bold text-base text-[#02006c] mb-1">Product Details</h3>
         <p className="text-xs text-slate-600 leading-relaxed">
           Premium oversized comfort fit raglan tee. Crafted from the finest cotton blend for ultimate comfort all day long.
@@ -273,7 +297,7 @@ export default function ProductDetailsPage() {
       </div>
 
       {/* Delivery Details Section */}
-      <div className="bg-white p-3 mt-2">
+      <div className="bg-white px-4 py-2">
         <h3 className="font-bold text-base text-[#02006c] mb-3">Delivery details</h3>
         
         <div className="flex flex-col -mx-1 rounded-xl overflow-hidden">
@@ -311,7 +335,7 @@ export default function ProductDetailsPage() {
       </div>
 
       {/* Trust Badges */}
-      <div className="bg-white p-4 mt-1 flex justify-around items-center border-b border-slate-100">
+      <div className="bg-white px-4 pt-1 pb-4 flex justify-around items-center border-b border-slate-100">
         <div className="flex flex-col items-center gap-1.5">
           <div className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center bg-slate-50">
             <RotateCcw className="w-4 h-4 text-[#02006c]" />
@@ -342,18 +366,18 @@ export default function ProductDetailsPage() {
 
       {/* Similar Products */}
       <div className="bg-white py-4 mt-2">
-        <div className="flex items-center justify-between px-3 mb-3">
-          <h3 className="font-black text-base tracking-tight text-[#02006c]">Similar Products</h3>
+        <div className="flex items-center justify-between px-4 mb-3">
+          <h3 className="font-semibold text-lg tracking-tight text-[#02006c]">Similar Products</h3>
           <div 
             onClick={() => navigate('/similar-products')}
-            className="w-7 h-7 bg-slate-800 hover:bg-[#FF6E54] transition-colors rounded-full flex items-center justify-center cursor-pointer shadow-sm"
+            className="w-7 h-7 bg-slate-800 hover:bg-[#ee4923] transition-colors rounded-full flex items-center justify-center cursor-pointer shadow-sm"
           >
             <ArrowRight className="w-4 h-4 text-white" />
           </div>
         </div>
         
         {/* Horizontal Scroll List */}
-        <div className="flex overflow-x-auto gap-3 px-3 pb-2 snap-x scrollbar-none">
+        <div className="flex overflow-x-auto gap-4 pl-6 pr-4 pb-2 snap-x scroll-pl-6 scrollbar-none">
           {CRAZY_DEALS.map((deal) => (
             <div key={deal.id} className="w-32 flex-shrink-0 snap-start flex flex-col cursor-pointer" onClick={() => { navigate(`/product/${deal.id}`); window.scrollTo(0,0); }}>
               <div className="aspect-[3/4] bg-slate-100 rounded-lg overflow-hidden relative mb-2">
@@ -366,7 +390,7 @@ export default function ProductDetailsPage() {
               <h4 className="text-[10px] font-bold text-[#02006c] truncate">{deal.name}</h4>
               <p className="text-[9px] text-slate-400 truncate mb-1">{deal.desc}</p>
               <div className="flex items-center gap-1">
-                <span className="text-xs font-bold text-[#FF6E54]">₹{deal.price}</span>
+                <span className="text-xs font-bold text-[#ee4923]">₹{deal.price}</span>
                 <span className="text-[9px] text-slate-400 line-through">₹{deal.originalPrice}</span>
               </div>
               <span className="text-[8px] text-emerald-600 font-bold mt-0.5">60% OFF</span>
@@ -376,17 +400,191 @@ export default function ProductDetailsPage() {
         </div>
       </div>
 
-      {/* Product Highlights Dropdown */}
-      <div className="bg-white p-3 mt-2 mb-4">
-        <div className="flex items-center justify-between cursor-pointer">
+      {/* Product Highlights */}
+      <div className="bg-white px-4 py-3 mt-2 border-b border-slate-100">
+        <div className="flex items-center justify-between cursor-pointer" onClick={() => setIsHighlightsOpen(!isHighlightsOpen)}>
           <div className="flex flex-col">
-            <span className="font-bold text-sm text-[#02006c]">Product highlights</span>
-            <span className="text-xs text-slate-500">Key features, specifications and more</span>
+            <span className="font-bold text-base text-slate-800">Product highlights</span>
+            {!isHighlightsOpen && <span className="text-xs text-slate-500">Key features, specifications and more</span>}
           </div>
-          <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center">
-            <ChevronDown className="w-4 h-4 text-slate-400" />
+          <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center transition-transform duration-300">
+            {isHighlightsOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
           </div>
         </div>
+        
+        {isHighlightsOpen && (
+          <div className="mt-4 grid grid-cols-2 gap-y-4 gap-x-6 animate-fade-in">
+            <div className="flex flex-col border-b border-slate-100 pb-2">
+              <span className="text-[11px] text-slate-500 mb-0.5">Sleeve</span>
+              <span className="text-xs font-medium text-slate-800">Half Sleeve</span>
+            </div>
+            <div className="flex flex-col border-b border-slate-100 pb-2">
+              <span className="text-[11px] text-slate-500 mb-0.5">Fabric</span>
+              <span className="text-xs font-medium text-slate-800">Polyester</span>
+            </div>
+            <div className="flex flex-col border-b border-slate-100 pb-2">
+              <span className="text-[11px] text-slate-500 mb-0.5">Neck Type</span>
+              <span className="text-xs font-medium text-slate-800">Round Neck</span>
+            </div>
+            <div className="flex flex-col border-b border-slate-100 pb-2">
+              <span className="text-[11px] text-slate-500 mb-0.5">Pattern</span>
+              <span className="text-xs font-medium text-slate-800">Solid</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* All Details */}
+      <div className="bg-white px-4 py-3 border-b border-slate-100">
+        <div className="flex items-center justify-between cursor-pointer" onClick={() => setIsDetailsOpen(!isDetailsOpen)}>
+          <div className="flex flex-col">
+            <span className="font-bold text-base text-slate-800">All details</span>
+            {!isDetailsOpen && <span className="text-xs text-slate-500">Features, description and more</span>}
+          </div>
+          <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center transition-transform duration-300">
+            {isDetailsOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+          </div>
+        </div>
+
+        {isDetailsOpen && (
+          <div className="mt-4 animate-fade-in">
+            <div className="flex gap-2 mb-4">
+              <button 
+                onClick={() => setActiveDetailTab('specifications')}
+                className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${activeDetailTab === 'specifications' ? 'bg-[#1E1E1E] text-white' : 'bg-slate-50 text-slate-600 border border-slate-200'}`}
+              >
+                Specifications
+              </button>
+              <button 
+                onClick={() => setActiveDetailTab('manufacturer')}
+                className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${activeDetailTab === 'manufacturer' ? 'bg-[#1E1E1E] text-white' : 'bg-slate-50 text-slate-600 border border-slate-200'}`}
+              >
+                Manufacturer info
+              </button>
+            </div>
+
+            {activeDetailTab === 'specifications' && (
+              <div className="animate-fade-in">
+                <h4 className="font-bold text-sm text-slate-800 mb-3">General</h4>
+                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Brand</span>
+                    <span className="text-xs font-medium text-slate-800">MYo2</span>
+                  </div>
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Type</span>
+                    <span className="text-xs font-medium text-slate-800">Round Neck</span>
+                  </div>
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Sleeve</span>
+                    <span className="text-xs font-medium text-slate-800">Half Sleeve</span>
+                  </div>
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Fit</span>
+                    <span className="text-xs font-medium text-slate-800">Regular</span>
+                  </div>
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Fabric</span>
+                    <span className="text-xs font-medium text-slate-800">Polyester</span>
+                  </div>
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Sales Package</span>
+                    <span className="text-xs font-medium text-slate-800">1 T-shirt</span>
+                  </div>
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Pack of</span>
+                    <span className="text-xs font-medium text-slate-800">1</span>
+                  </div>
+                  <div className="flex flex-col border-b border-slate-100 pb-2">
+                    <span className="text-[11px] text-slate-500 mb-0.5">Style Code</span>
+                    <span className="text-xs font-medium text-slate-800">Apple Cut Dark Grey</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {activeDetailTab === 'manufacturer' && (
+              <div className="text-sm text-slate-600 animate-fade-in">
+                <p>Manufactured by: Apparel Corp India Ltd.</p>
+                <p>Country of Origin: India</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Ratings and reviews */}
+      <div className="bg-white px-4 py-3 mb-4">
+        <div className="flex items-center justify-between cursor-pointer" onClick={() => setIsReviewsOpen(!isReviewsOpen)}>
+          <span className="font-bold text-base text-slate-800">Ratings and reviews</span>
+          <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center transition-transform duration-300">
+            {isReviewsOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+          </div>
+        </div>
+
+        {isReviewsOpen && (
+          <div className="mt-3 animate-fade-in">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-3xl font-bold text-slate-800">4.1</span>
+              <Star className="w-6 h-6 fill-emerald-600 text-emerald-600" />
+              <span className="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-xs font-bold">Very Good</span>
+            </div>
+            <div className="flex items-center gap-1 text-[11px] text-slate-500 mb-4">
+              <span>based on 63 ratings by</span>
+              <CheckCircle className="w-3.5 h-3.5" />
+              <span>Verified Buyers</span>
+            </div>
+
+            <h4 className="text-[13px] text-slate-800 mb-2">Features customers loved</h4>
+            <div className="flex overflow-x-auto gap-2 pb-4 scrollbar-none snap-x">
+              {['Fabric Quality', 'Colour', 'Style', 'True to Specs', 'Stitching'].map(feature => (
+                <div key={feature} className="snap-start flex-shrink-0 bg-blue-50/50 text-slate-700 px-3 py-1.5 rounded-full text-[11px] font-medium border border-blue-100">
+                  {feature}
+                </div>
+              ))}
+            </div>
+
+            {/* User Review with Video */}
+            <div className="border-t border-slate-100 pt-4 mt-2">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 bg-purple-100 rounded-full flex items-center justify-center text-xs font-bold text-purple-700">A</div>
+                  <span className="text-xs font-bold text-slate-800">Aman Sharma</span>
+                </div>
+                <div className="flex items-center gap-0.5 bg-emerald-600 px-1.5 py-0.5 rounded text-white">
+                  <span className="text-[10px] font-bold">4</span>
+                  <Star className="w-2.5 h-2.5 fill-white text-white" />
+                </div>
+              </div>
+              <p className="text-[11px] text-slate-600 mb-3 leading-relaxed">
+                Amazing quality! The fabric feels premium and the fit is exactly as shown. The color hasn't faded even after multiple washes. Definitely recommend buying this.
+              </p>
+              
+              {/* Video/Reel Thumbnail */}
+              <div className="flex gap-2 overflow-x-auto scrollbar-none mb-2">
+                <div 
+                  onClick={() => setSelectedReviewMedia({ type: 'video', url: '/fit-check.mp4' })}
+                  className="relative w-20 h-[104px] rounded-md overflow-hidden flex-shrink-0 bg-slate-100 cursor-pointer shadow-sm"
+                >
+                  <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200" alt="User review video" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/25 flex items-center justify-center transition-colors hover:bg-black/40">
+                    <Play className="w-6 h-6 text-white fill-white opacity-90 drop-shadow-md" />
+                  </div>
+                </div>
+                <div 
+                  onClick={() => setSelectedReviewMedia({ type: 'image', url: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=800' })}
+                  className="w-20 h-[104px] rounded-md overflow-hidden flex-shrink-0 bg-slate-100 cursor-pointer shadow-sm"
+                >
+                  <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&q=80&w=200" alt="User review photo" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
+            
+            <button className="w-full mt-4 py-2 text-[11px] font-bold text-[#02006c] border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+              View All Reviews
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Sticky Bottom Action Bar */}
@@ -400,7 +598,7 @@ export default function ProductDetailsPage() {
           </button>
           <button 
             onClick={handleBuyNow}
-            className="flex-1 bg-[#FF6E54] rounded text-white font-bold text-[13px] flex items-center justify-center active:bg-orange-600 shadow-sm transition-colors"
+            className="flex-1 bg-[#ee4923] rounded text-white font-bold text-[13px] flex items-center justify-center active:bg-orange-600 shadow-sm transition-colors"
           >
             Buy at ₹{product.price}
           </button>
@@ -486,10 +684,10 @@ export default function ProductDetailsPage() {
               <div className="mt-6 flex justify-center bg-white rounded-lg p-3 max-w-[280px] mx-auto border border-slate-300">
                 <svg viewBox="0 0 200 150" className="w-full h-auto text-slate-800" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M60,40 Q100,20 140,40 L180,90 L160,110 L140,90 L140,150 L60,150 L60,90 L40,110 L20,90 Z" />
-                  <path strokeDasharray="4 4" d="M100,30 L100,150" stroke="#FF6E54" />
-                  <path strokeDasharray="4 4" d="M60,90 L140,90" stroke="#FF6E54" />
-                  <path strokeDasharray="4 4" d="M60,40 L140,40" stroke="#FF6E54" />
-                  <path strokeDasharray="4 4" d="M40,65 L80,65" stroke="#FF6E54" />
+                  <path strokeDasharray="4 4" d="M100,30 L100,150" stroke="#ee4923" />
+                  <path strokeDasharray="4 4" d="M60,90 L140,90" stroke="#ee4923" />
+                  <path strokeDasharray="4 4" d="M60,40 L140,40" stroke="#ee4923" />
+                  <path strokeDasharray="4 4" d="M40,65 L80,65" stroke="#ee4923" />
                   <text x="90" y="20" fontSize="8" fill="currentColor" stroke="none">NECK</text>
                   <text x="130" y="35" fontSize="8" fill="currentColor" stroke="none">SHOULDER</text>
                   <text x="95" y="100" fontSize="8" fill="currentColor" stroke="none">CHEST</text>
@@ -509,6 +707,50 @@ export default function ProductDetailsPage() {
         </div>
       )}
 
+      {/* Media Viewer Modal */}
+      {selectedReviewMedia && (
+        <div className="fixed inset-0 z-[200] bg-black/95 flex flex-col animate-fade-in font-sans">
+          <div className="flex justify-end p-4">
+            <button 
+              onClick={() => setSelectedReviewMedia(null)} 
+              className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+          </div>
+          <div className="flex-1 flex items-center justify-center p-4">
+            {selectedReviewMedia.type === 'video' ? (
+              <div className="relative w-full max-w-sm aspect-[9/16] bg-black rounded-xl overflow-hidden shadow-2xl">
+                <video 
+                  ref={videoRef}
+                  src={selectedReviewMedia.url} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  controls
+                  onTimeUpdate={(e) => {
+                    if (e.target.currentTime >= 8) {
+                      e.target.currentTime = 0;
+                      e.target.play();
+                    }
+                  }}
+                  className="w-full h-full object-cover" 
+                />
+                <div className="absolute bottom-4 left-4 right-4 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/10 text-white z-10">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-[10px] font-bold">A</div>
+                    <span className="text-xs font-bold shadow-sm">Aman Sharma</span>
+                  </div>
+                  <p className="text-[10px] line-clamp-2 text-white/90">Amazing quality! The fabric feels premium and the fit is exactly as shown.</p>
+                </div>
+              </div>
+            ) : (
+              <img src={selectedReviewMedia.url} alt="Review" className="w-full max-w-sm rounded-xl object-contain max-h-[80vh] shadow-2xl" />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

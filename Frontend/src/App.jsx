@@ -84,7 +84,7 @@ function AppContent() {
             controlsList="nodownload nofullscreen noremoteplayback"
             onEnded={handleSplashEnd}
             onContextMenu={(e) => e.preventDefault()}
-            className="w-full h-full object-cover pointer-events-none select-none"
+            className="absolute inset-0 w-full h-full object-cover object-center scale-[1.75] origin-center pointer-events-none select-none"
           />
         </div>
       </div>

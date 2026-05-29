@@ -4,6 +4,10 @@ import { ChevronLeft, Lock, ChevronDown, ChevronUp, CreditCard, Banknote, Gift, 
 import { useApp } from '../context/AppContext';
 import Lottie from 'lottie-react';
 import orderProcessingAnimation from '../assets/Lotties/OrderProcessing.json';
+import paytmLogo from '../assets/UPI/Paytm-removebg-preview.png';
+import phonepeLogo from '../assets/UPI/PhonePay-removebg-preview.png';
+import upiLogo from '../assets/UPI/UPI-removebg-preview.png';
+import cardsLogo from '../assets/UPI/Cards-removebg-preview.png';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -79,7 +83,7 @@ export default function CheckoutPage() {
             </div>
             <h3 className="text-[20px] font-black text-[#02006c] mb-2 tracking-tight">Order Placed Successfully!</h3>
             <p className="text-[13px] text-slate-500 mb-2">Your payment was securely processed.</p>
-            <div className="flex items-center justify-center gap-2 mt-4 text-[#FF6E54] font-bold text-[11px] uppercase tracking-widest">
+            <div className="flex items-center justify-center gap-2 mt-4 text-[#ee4923] font-bold text-[11px] uppercase tracking-widest">
               <Loader2 className="w-3 h-3 animate-spin" />
               <span>Redirecting...</span>
             </div>
@@ -108,7 +112,7 @@ export default function CheckoutPage() {
           </div>
         </div>
         <div className="flex items-center gap-1.5 bg-white px-2 py-1 rounded-md border border-orange-100 shadow-xs">
-          <Lock className="w-3 h-3 text-[#FF6E54]" />
+          <Lock className="w-3 h-3 text-[#ee4923]" />
           <span className="text-[9px] font-bold text-slate-700 font-sans uppercase tracking-wider">100% Secure</span>
         </div>
       </header>
@@ -154,7 +158,7 @@ export default function CheckoutPage() {
               className="p-4 flex items-center justify-between w-full text-left bg-white hover:bg-slate-50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-6 bg-slate-100 rounded border border-slate-200 flex items-center justify-center font-sans text-[8px] font-black tracking-widest text-[#02006c]">UPI</div>
+                <img src={upiLogo} alt="UPI" className="w-10 h-auto object-contain drop-shadow-sm" />
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-slate-800">UPI</span>
                   {expandedSection !== 'UPI' && <span className="text-[10px] text-emerald-600 mt-0.5">Get upto ₹50 cashback • 2 offers available</span>}
@@ -171,24 +175,24 @@ export default function CheckoutPage() {
                 <div 
                   onClick={() => setSelectedUpiOption('Paytm')}
                   className={`bg-white border rounded-xl p-3 mb-3 transition-all relative overflow-hidden cursor-pointer shadow-xs
-                    ${selectedUpiOption === 'Paytm' ? 'border-[#FF6E54]' : 'border-slate-200 hover:border-slate-300'}`}
+                    ${selectedUpiOption === 'Paytm' ? 'border-[#ee4923]' : 'border-slate-200 hover:border-slate-300'}`}
                 >
-                  {selectedUpiOption === 'Paytm' && <div className="absolute top-0 left-0 w-1 h-full bg-[#FF6E54]"></div>}
+                  {selectedUpiOption === 'Paytm' && <div className="absolute top-0 left-0 w-1 h-full bg-[#ee4923]"></div>}
                   <div className="flex items-center justify-between mb-2 pl-2">
                     <div className="flex items-center gap-3">
                       <div className={`w-5 h-5 rounded-full flex items-center justify-center border
                         ${selectedUpiOption === 'Paytm' ? 'border-transparent' : 'border-slate-300'}`}>
-                        {selectedUpiOption === 'Paytm' && <CheckCircle2 className="w-5 h-5 text-[#FF6E54] fill-[#FF6E54]/20" />}
+                        {selectedUpiOption === 'Paytm' && <CheckCircle2 className="w-5 h-5 text-[#ee4923] fill-[#ee4923]/20" />}
                       </div>
                       <span className="text-sm font-bold text-slate-800">Paytm</span>
                     </div>
-                    <div className="w-8 h-8 rounded-full bg-[#002970]/10 flex items-center justify-center text-[8px] font-black text-[#002970]">Pay</div>
+                    <img src={paytmLogo} alt="Paytm" className="h-6 w-auto object-contain pr-1" />
                   </div>
                   
                   {selectedUpiOption === 'Paytm' && (
                     <button 
                       onClick={(e) => { e.stopPropagation(); handleOrder(); }}
-                      className="w-full bg-[#FF6E54] hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 mt-3"
+                      className="w-full bg-[#ee4923] hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 mt-3"
                     >
                       <span>Pay ₹{grandTotal}</span>
                       <ArrowRight className="w-4 h-4" />
@@ -199,31 +203,32 @@ export default function CheckoutPage() {
                 {/* PhonePe Option */}
                 <div 
                   onClick={() => setSelectedUpiOption('PhonePe')}
-                  className={`bg-white border rounded-xl p-3 transition-all relative overflow-hidden cursor-pointer shadow-xs
-                    ${selectedUpiOption === 'PhonePe' ? 'border-[#FF6E54]' : 'border-slate-200 hover:border-slate-300'}`}
+                  className={`bg-white border rounded-xl p-3 transition-all relative overflow-hidden cursor-pointer shadow-xs mb-3
+                    ${selectedUpiOption === 'PhonePe' ? 'border-[#ee4923]' : 'border-slate-200 hover:border-slate-300'}`}
                 >
-                  {selectedUpiOption === 'PhonePe' && <div className="absolute top-0 left-0 w-1 h-full bg-[#FF6E54]"></div>}
+                  {selectedUpiOption === 'PhonePe' && <div className="absolute top-0 left-0 w-1 h-full bg-[#ee4923]"></div>}
                   <div className="flex items-center justify-between mb-2 pl-2">
                     <div className="flex items-center gap-3">
                       <div className={`w-5 h-5 rounded-full flex items-center justify-center border
                         ${selectedUpiOption === 'PhonePe' ? 'border-transparent' : 'border-slate-300'}`}>
-                        {selectedUpiOption === 'PhonePe' && <CheckCircle2 className="w-5 h-5 text-[#FF6E54] fill-[#FF6E54]/20" />}
+                        {selectedUpiOption === 'PhonePe' && <CheckCircle2 className="w-5 h-5 text-[#ee4923] fill-[#ee4923]/20" />}
                       </div>
                       <span className="text-sm font-bold text-slate-800">PhonePe</span>
                     </div>
-                    <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-[8px] font-black text-purple-700">Pe</div>
+                    <img src={phonepeLogo} alt="PhonePe" className="h-6 w-auto object-contain pr-1" />
                   </div>
 
                   {selectedUpiOption === 'PhonePe' && (
                     <button 
                       onClick={(e) => { e.stopPropagation(); handleOrder(); }}
-                      className="w-full bg-[#FF6E54] hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 mt-3"
+                      className="w-full bg-[#ee4923] hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 mt-3"
                     >
                       <span>Pay ₹{grandTotal}</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   )}
                 </div>
+
               </div>
             )}
           </div>
@@ -235,14 +240,16 @@ export default function CheckoutPage() {
               className="p-4 flex items-center justify-between w-full text-left bg-white hover:bg-slate-50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <CreditCard className="w-6 h-6 text-slate-600" />
+                <img src={cardsLogo} alt="Cards" className="w-10 h-auto object-contain drop-shadow-sm" />
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-slate-800">Credit / Debit / ATM Card</span>
                   <span className="text-[10px] text-slate-500 mt-0.5">Add and secure cards as per RBI guidelines</span>
                   {expandedSection !== 'CARDS' && <span className="text-[10px] text-emerald-600 mt-0.5">Get upto 5% cashback • 2 offers available</span>}
                 </div>
               </div>
-              {expandedSection === 'CARDS' ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+              <div className="flex items-center gap-2">
+                {expandedSection === 'CARDS' ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+              </div>
             </button>
             {expandedSection === 'CARDS' && (
               <div className="px-4 pb-4 pt-2 bg-slate-50/50">
@@ -253,7 +260,7 @@ export default function CheckoutPage() {
                     maxLength={16}
                     value={cardDetails.number}
                     onChange={(e) => setCardDetails({...cardDetails, number: e.target.value})}
-                    className="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm outline-none focus:border-[#FF6E54]"
+                    className="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm outline-none focus:border-[#ee4923]"
                   />
                   <div className="flex gap-4">
                     <input 
@@ -262,7 +269,7 @@ export default function CheckoutPage() {
                       maxLength={5}
                       value={cardDetails.expiry}
                       onChange={(e) => setCardDetails({...cardDetails, expiry: e.target.value})}
-                      className="w-1/2 bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm outline-none focus:border-[#FF6E54]"
+                      className="w-1/2 bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm outline-none focus:border-[#ee4923]"
                     />
                     <input 
                       type="password" 
@@ -270,13 +277,13 @@ export default function CheckoutPage() {
                       maxLength={3}
                       value={cardDetails.cvv}
                       onChange={(e) => setCardDetails({...cardDetails, cvv: e.target.value})}
-                      className="w-1/2 bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm outline-none focus:border-[#FF6E54]"
+                      className="w-1/2 bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm outline-none focus:border-[#ee4923]"
                     />
                   </div>
                   <button 
                     onClick={handleOrder}
                     disabled={cardDetails.number.length < 16 || cardDetails.cvv.length < 3}
-                    className="w-full bg-[#FF6E54] disabled:bg-slate-300 hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-[#ee4923] disabled:bg-slate-300 hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
                   >
                     <span>Pay ₹{grandTotal}</span>
                   </button>
@@ -305,7 +312,7 @@ export default function CheckoutPage() {
                   </p>
                   <button 
                     onClick={handleOrder}
-                    className="w-full bg-[#FF6E54] hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                    className="w-full bg-[#ee4923] hover:bg-[#e05b43] active:scale-95 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
                   >
                     <span>Place Order (₹{grandTotal + 9})</span>
                   </button>
@@ -399,7 +406,7 @@ export default function CheckoutPage() {
                       <span className="text-[10px] text-slate-500 font-semibold mt-0.5">Qty: {item.quantity}</span>
                     </div>
                   </div>
-                  <span className="text-sm font-black text-[#FF6E54] whitespace-nowrap">₹{item.price * item.quantity}</span>
+                  <span className="text-sm font-black text-[#ee4923] whitespace-nowrap">₹{item.price * item.quantity}</span>
                 </div>
               ))}
               {cart.length === 0 && (

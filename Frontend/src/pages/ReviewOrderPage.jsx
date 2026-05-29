@@ -9,6 +9,7 @@ export default function ReviewOrderPage() {
 
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [feeInfoModal, setFeeInfoModal] = useState(null);
 
   const [selectedAddressId, setSelectedAddressId] = useState(1);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
@@ -80,7 +81,7 @@ export default function ReviewOrderPage() {
             </p>
             <button 
               onClick={() => setIsAddressModalOpen(true)}
-              className="text-[#FF6E54] text-xs font-bold mb-4"
+              className="text-[#ee4923] text-xs font-bold mb-4"
             >
               Change Address <span className="ml-1">›</span>
             </button>
@@ -117,7 +118,7 @@ export default function ReviewOrderPage() {
             )}
             <button 
               onClick={() => setIsCouponModalOpen(true)}
-              className="text-[#FF6E54] text-xs font-bold"
+              className="text-[#ee4923] text-xs font-bold"
             >
               All Offers <span className="ml-1">›</span>
             </button>
@@ -144,15 +145,15 @@ export default function ReviewOrderPage() {
               {appliedCoupon ? (
                 <span className="text-emerald-600 font-medium">- ₹{appliedCoupon.discount}</span>
               ) : (
-                <button onClick={() => setIsCouponModalOpen(true)} className="text-[#FF6E54] font-bold">Apply Coupon</button>
+                <button onClick={() => setIsCouponModalOpen(true)} className="text-[#ee4923] font-bold">Apply Coupon</button>
               )}
             </div>
             <div className="flex justify-between items-center text-[13px]">
-              <span className="text-slate-600">Platform Fee <span className="text-[#FF6E54] font-bold ml-1 text-[11px]">Know More</span></span>
+              <span className="text-slate-600">Platform Fee <button onClick={() => setFeeInfoModal('platform')} className="text-[#ee4923] font-bold ml-1 text-[11px] hover:underline cursor-pointer">Know More</button></span>
               <span className="text-slate-800">₹{platformFee}</span>
             </div>
             <div className="flex justify-between items-center text-[13px]">
-              <span className="text-slate-600">Cash/Pay on Delivery Fee <span className="text-[#FF6E54] font-bold ml-1 text-[11px]">Know More</span></span>
+              <span className="text-slate-600">Cash/Pay on Delivery Fee <button onClick={() => setFeeInfoModal('cod')} className="text-[#ee4923] font-bold ml-1 text-[11px] hover:underline cursor-pointer">Know More</button></span>
               <span className="text-slate-800">₹{codFee}</span>
             </div>
             
@@ -163,8 +164,27 @@ export default function ReviewOrderPage() {
           </div>
         </div>
         
+        {/* Payment Method Selected Overlay */}
+        <div className="mt-4 bg-white rounded-xl shadow-sm border border-slate-200 p-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+             <div className="w-10 h-6 border border-slate-200 rounded flex items-center justify-center bg-slate-50">
+               <Banknote className="w-4 h-4 text-[#02006c]" />
+             </div>
+             <div className="flex flex-col">
+               <span className="text-[11px] font-bold text-[#02006c]">Cash on delivery(Cash/UPI)</span>
+               <span className="text-[9px] text-slate-500">₹ 10 is applied extra for this option.</span>
+             </div>
+          </div>
+          <button 
+            onClick={() => navigate('/checkout')}
+            className="text-[#ee4923] font-bold text-xs pr-1 active:scale-95 transition-transform"
+          >
+            Change
+          </button>
+        </div>
+
         {/* Secure marker */}
-        <div className="flex items-center justify-center gap-1.5 pt-4 opacity-50 pb-8">
+        <div className="flex items-center justify-center gap-1.5 pt-6 opacity-50 pb-28">
            <ShieldCheck className="w-5 h-5 text-slate-500" />
            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Safe and Secure Payments</span>
         </div>
@@ -173,30 +193,11 @@ export default function ReviewOrderPage() {
       {/* Sticky Bottom Action Bar */}
       <div className="fixed bottom-0 left-0 right-0 w-full max-w-md mx-auto z-40 bg-white">
         <div className="bg-white p-3 border-t border-slate-200 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] rounded-t-2xl relative">
-          
-          {/* Payment Method Selected Overlay */}
-          <div className="absolute -top-12 left-4 right-4 bg-white rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] border border-slate-100 p-2.5 flex items-center justify-between z-10">
-            <div className="flex items-center gap-3">
-               <div className="w-10 h-6 border border-slate-200 rounded flex items-center justify-center bg-slate-50">
-                 <Banknote className="w-4 h-4 text-[#02006c]" />
-               </div>
-               <div className="flex flex-col">
-                 <span className="text-[11px] font-bold text-[#02006c]">Cash on delivery(Cash/UPI)</span>
-                 <span className="text-[9px] text-slate-500">₹ 10 is applied extra for this option.</span>
-               </div>
-            </div>
-            <button 
-              onClick={() => navigate('/checkout')}
-              className="text-[#FF6E54] font-bold text-xs pr-1 active:scale-95 transition-transform"
-            >
-              Change
-            </button>
-          </div>
 
           {/* Place Order Button */}
           <button 
             onClick={() => navigate('/checkout')}
-            className="w-full bg-[#FF6E54] active:bg-[#e05b43] text-white py-3.5 rounded-lg font-bold text-sm shadow-md transition-all mt-4"
+            className="w-full bg-[#ee4923] active:bg-[#e05b43] text-white py-3.5 rounded-lg font-bold text-sm shadow-md transition-all"
           >
             Confirm & Place order ₹{grandTotal}
           </button>
@@ -221,7 +222,7 @@ export default function ReviewOrderPage() {
               {availableCoupons.map((coupon, idx) => (
                 <div key={idx} className="border border-slate-200 rounded-xl p-4 relative overflow-hidden bg-white shadow-sm">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="bg-orange-50 text-[#FF6E54] border border-orange-100 px-2 py-1 rounded text-xs font-black uppercase tracking-wider">{coupon.code}</span>
+                    <span className="bg-orange-50 text-[#ee4923] border border-orange-100 px-2 py-1 rounded text-xs font-black uppercase tracking-wider">{coupon.code}</span>
                     {appliedCoupon?.code === coupon.code ? (
                       <span className="text-emerald-600 font-bold text-xs flex items-center gap-1">Applied</span>
                     ) : (
@@ -269,16 +270,16 @@ export default function ReviewOrderPage() {
                   }}
                   className={`border rounded-xl p-4 cursor-pointer transition-all ${
                     selectedAddressId === addr.id 
-                      ? 'border-[#FF6E54] bg-orange-50/30' 
+                      ? 'border-[#ee4923] bg-orange-50/30' 
                       : 'border-slate-200 hover:border-slate-300 bg-white'
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <div className="pt-0.5">
                       <div className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center ${
-                        selectedAddressId === addr.id ? 'border-[#FF6E54]' : 'border-slate-300'
+                        selectedAddressId === addr.id ? 'border-[#ee4923]' : 'border-slate-300'
                       }`}>
-                        {selectedAddressId === addr.id && <div className="w-2 h-2 rounded-full bg-[#FF6E54]" />}
+                        {selectedAddressId === addr.id && <div className="w-2 h-2 rounded-full bg-[#ee4923]" />}
                       </div>
                     </div>
                     <div className="flex-1 flex flex-col">
@@ -293,6 +294,31 @@ export default function ReviewOrderPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fee Info Modal */}
+      {feeInfoModal && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm animate-fade-in px-4">
+          <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl animate-scale-up">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-[#02006c] text-lg">
+                {feeInfoModal === 'platform' ? 'Platform Fee' : 'Cash on Delivery Fee'}
+              </h3>
+              <button onClick={() => setFeeInfoModal(null)} className="p-1 rounded-full bg-slate-100 hover:bg-slate-200">
+                <X className="w-5 h-5 text-slate-600" />
+              </button>
+            </div>
+            <p className="text-slate-600 text-sm leading-relaxed mb-6">
+              {feeInfoModal === 'platform' 
+                ? 'This nominal fee helps us maintain the platform, ensure secure payments, and provide you with a seamless shopping experience.'
+                : 'A small fee charged by our delivery partners for handling cash. Pay online to avoid this fee!'
+              }
+            </p>
+            <button onClick={() => setFeeInfoModal(null)} className="w-full bg-[#EE4923] text-white py-3 rounded-xl font-bold active:scale-95 transition-transform">
+              Understood
+            </button>
           </div>
         </div>
       )}

@@ -185,13 +185,13 @@ export default function LoginPage() {
             <div className="space-y-1">
               <h2 className="text-2xl font-extrabold text-[#02006c]">Sign In</h2>
               <p className="text-[10px] text-slate-400 font-bold">Sign in to your Registered Account.</p>
-              <div className="w-6 h-0.75 bg-[#FF6E54] rounded-full mt-1.5"></div>
+              <div className="w-6 h-0.75 bg-[#ee4923] rounded-full mt-1.5"></div>
             </div>
 
             <form onSubmit={handleSendOtp} className="space-y-4 pt-2">
               <div className="space-y-1 text-left">
                 <label className="text-sm font-syne font-black text-slate-500 uppercase tracking-widest">Phone Number</label>
-                <div className="flex gap-2 border-b-2 border-slate-200 focus-within:border-[#FF6E54] transition-colors py-2">
+                <div className="flex gap-2 border-b-2 border-slate-200 focus-within:border-[#ee4923] transition-colors py-2">
                   <span className="text-lg text-[#02006c] font-black pr-2 border-r-2 border-slate-100 flex items-center select-none">+91</span>
                   <input 
                     type="tel" 
@@ -241,7 +241,7 @@ export default function LoginPage() {
                   <Edit2 className="w-3 h-3" />
                 </button>
               </div>
-              <div className="w-6 h-0.75 bg-[#FF6E54] rounded-full mt-1.5"></div>
+              <div className="w-6 h-0.75 bg-[#ee4923] rounded-full mt-1.5"></div>
             </div>
 
             <form onSubmit={handleVerifyOtpAndLogin} className="flex flex-col gap-2 pt-4">
@@ -261,7 +261,7 @@ export default function LoginPage() {
                       value={digit}
                       onChange={(e) => handleOtpChange(index, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                      className="w-12 h-14 rounded-xl border-2 border-slate-200 bg-white text-center text-xl font-black text-[#02006c] focus:border-[#FF6E54] focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
+                      className="w-12 h-14 rounded-xl border-2 border-slate-200 bg-white text-center text-xl font-black text-[#02006c] focus:border-[#ee4923] focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
                     />
                   ))}
                 </div>

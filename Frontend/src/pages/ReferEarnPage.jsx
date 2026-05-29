@@ -56,8 +56,8 @@ export default function ReferEarnPage() {
         
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-[#02006c] to-indigo-900 rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden mb-6 mt-2">
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#FF6E54]/20 rounded-full blur-2xl"></div>
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#FF6E54]/20 rounded-full blur-2xl"></div>
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#ee4923]/20 rounded-full blur-2xl"></div>
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#ee4923]/20 rounded-full blur-2xl"></div>
           
           <div className="relative z-10 flex flex-col items-center">
             <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-3 border border-white/30">
@@ -75,7 +75,7 @@ export default function ReferEarnPage() {
           <p className="text-[13px] font-bold text-slate-500 mb-3 text-center uppercase tracking-wider">Your Referral Code</p>
           
           <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-lg p-2 pl-4">
-            <span className="text-xl font-black text-[#FF6E54] tracking-widest">{referralCode}</span>
+            <span className="text-xl font-black text-[#ee4923] tracking-widest">{referralCode}</span>
             <button 
               onClick={handleCopy}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-md font-bold text-sm transition-all ${
@@ -111,7 +111,7 @@ export default function ReferEarnPage() {
             <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-slate-100"></div>
             
             <div className="flex gap-4 relative z-10">
-              <div className="w-8 h-8 rounded-full bg-[#FF6E54]/10 border border-[#FF6E54]/30 flex items-center justify-center flex-shrink-0 text-[#FF6E54] font-black text-sm">
+              <div className="w-8 h-8 rounded-full bg-[#ee4923]/10 border border-[#ee4923]/30 flex items-center justify-center flex-shrink-0 text-[#ee4923] font-black text-sm">
                 1
               </div>
               <div className="pt-1.5">
@@ -121,7 +121,7 @@ export default function ReferEarnPage() {
             </div>
             
             <div className="flex gap-4 relative z-10">
-              <div className="w-8 h-8 rounded-full bg-[#FF6E54]/10 border border-[#FF6E54]/30 flex items-center justify-center flex-shrink-0 text-[#FF6E54] font-black text-sm">
+              <div className="w-8 h-8 rounded-full bg-[#ee4923]/10 border border-[#ee4923]/30 flex items-center justify-center flex-shrink-0 text-[#ee4923] font-black text-sm">
                 2
               </div>
               <div className="pt-1.5">
@@ -131,7 +131,7 @@ export default function ReferEarnPage() {
             </div>
 
             <div className="flex gap-4 relative z-10">
-              <div className="w-8 h-8 rounded-full bg-[#FF6E54]/10 border border-[#FF6E54]/30 flex items-center justify-center flex-shrink-0 text-[#FF6E54] font-black text-sm">
+              <div className="w-8 h-8 rounded-full bg-[#ee4923]/10 border border-[#ee4923]/30 flex items-center justify-center flex-shrink-0 text-[#ee4923] font-black text-sm">
                 3
               </div>
               <div className="pt-1.5">

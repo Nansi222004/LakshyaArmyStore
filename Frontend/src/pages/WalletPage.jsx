@@ -49,15 +49,15 @@ export default function WalletPage() {
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
           <button className="bg-white rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all active:scale-95 group">
-            <div className="w-10 h-10 bg-[#FF6E54]/10 rounded-full flex items-center justify-center group-hover:bg-[#FF6E54]/20 transition-colors">
-              <ArrowDownLeft className="w-5 h-5 text-[#FF6E54]" />
+            <div className="w-10 h-10 bg-[#ee4923]/10 rounded-full flex items-center justify-center group-hover:bg-[#ee4923]/20 transition-colors">
+              <ArrowDownLeft className="w-5 h-5 text-[#ee4923]" />
             </div>
             <span className="text-[13px] font-bold text-[#02006c]">Earn Coins</span>
           </button>
           
           <button className="bg-white rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all active:scale-95 group">
-            <div className="w-10 h-10 bg-[#FF6E54]/10 rounded-full flex items-center justify-center group-hover:bg-[#FF6E54]/20 transition-colors">
-              <Gift className="w-5 h-5 text-[#FF6E54]" />
+            <div className="w-10 h-10 bg-[#ee4923]/10 rounded-full flex items-center justify-center group-hover:bg-[#ee4923]/20 transition-colors">
+              <Gift className="w-5 h-5 text-[#ee4923]" />
             </div>
             <span className="text-[13px] font-bold text-[#02006c]">Redeem</span>
           </button>

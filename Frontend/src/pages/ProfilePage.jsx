@@ -224,7 +224,7 @@ export default function ProfilePage() {
               >
                 <item.icon className="w-5 h-5 text-[#02006c] group-hover:scale-110 transition-transform" />
                 <span className="text-[13px] font-medium text-slate-700 flex-1 group-hover:text-[#02006c] transition-colors">{item.label}</span>
-                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#FF6E54] group-hover:translate-x-1 transition-all" />
+                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ee4923] group-hover:translate-x-1 transition-all" />
               </div>
             ))}
           </div>
@@ -321,7 +321,7 @@ export default function ProfilePage() {
 
   const menuOptions = [
     { id: 'wallet', label: "My Wallet", desc: "View your current Mynzo coin balance", icon: Coins, color: "bg-indigo-100/60 text-[#02006c]", path: "/wallet" },
-    { label: "Account Information", desc: "Manage your email, phone, and profile settings", icon: User, color: "bg-orange-100/60 text-[#FF6E54]", path: "/account" },
+    { label: "Account Information", desc: "Manage your email, phone, and profile settings", icon: User, color: "bg-orange-100/60 text-[#ee4923]", path: "/account" },
     { label: "Saved Addresses", desc: "Manage your delivery addresses", icon: MapPin, color: "bg-rose-100/60 text-rose-500", path: "/saved-addresses" },
     { label: "Security & Password", desc: "Change password and secure credentials", icon: Lock, color: "bg-amber-100/60 text-amber-600", path: "/security" },
     { label: "Refer & Earn", desc: "Invite friends and earn Mynzo Coins", icon: Gift, color: "bg-emerald-100/60 text-emerald-600", path: "/refer" }
@@ -344,11 +344,11 @@ export default function ProfilePage() {
     hairColors: [
       { name: "Dark", value: "#3E2723" },
       { name: "Blonde", value: "#E6C15C" },
-      { name: "Coral", value: "#FF6E54" },
+      { name: "Coral", value: "#ee4923" },
       { name: "Teal", value: "#2DD4BF" }
     ],
     outfitColors: [
-      { name: "Coral", value: "#FF6E54" },
+      { name: "Coral", value: "#ee4923" },
       { name: "Navy", value: "#02006c" },
       { name: "Emerald", value: "#10B981" },
       { name: "Amber", value: "#F59E0B" }
@@ -475,7 +475,7 @@ export default function ProfilePage() {
             onClick={() => navigate('/orders')}
             className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Package className="w-5 h-5 text-[#FF6E54] group-hover:scale-110 transition-transform" />
+            <Package className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">Orders</span>
           </div>
 
@@ -483,7 +483,7 @@ export default function ProfilePage() {
             onClick={() => navigate('/wishlist')}
             className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Heart className="w-5 h-5 text-[#FF6E54] group-hover:scale-110 transition-transform" />
+            <Heart className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">My Picks</span>
           </div>
 
@@ -491,7 +491,7 @@ export default function ProfilePage() {
             onClick={() => navigate('/coupons')}
             className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Gift className="w-5 h-5 text-[#FF6E54] group-hover:scale-110 transition-transform" />
+            <Gift className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">Coupons</span>
           </div>
 
@@ -499,7 +499,7 @@ export default function ProfilePage() {
             onClick={() => navigate('/help')}
             className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Headphones className="w-5 h-5 text-[#FF6E54] group-hover:scale-110 transition-transform" />
+            <Headphones className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">Help Center</span>
           </div>
         </div>
@@ -510,7 +510,7 @@ export default function ProfilePage() {
             {VALUE_PROPS.map((prop) => (
               <div 
                 key={prop.id} 
-                className="flex flex-col items-center justify-center rounded-lg bg-white border border-orange-200 p-1.5 py-2 shadow-3xs hover:border-[#FF6E54] hover:scale-[1.01] active:scale-95 transition-all duration-300 cursor-pointer"
+                className="flex flex-col items-center justify-center rounded-lg bg-white border border-orange-200 p-1.5 py-2 shadow-3xs hover:border-[#ee4923] hover:scale-[1.01] active:scale-95 transition-all duration-300 cursor-pointer"
               >
                 {/* Colored Stamp Icon box with soft blue and blue icon */}
                 <div className="w-7 h-7 bg-blue-50 text-[#02006c] rounded-md flex items-center justify-center mb-1 shadow-3xs">
@@ -575,7 +575,7 @@ export default function ProfilePage() {
                       <span className="text-[9px] text-slate-400 font-bold block truncate mt-1 leading-none tracking-wide">{opt.desc}</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[#FF6E54] group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[#ee4923] group-hover:translate-x-1 transition-all" />
                 </button>
               );
             })}
@@ -639,7 +639,7 @@ export default function ProfilePage() {
 
               <div className="space-y-2 px-2">
                 <h3 className="text-xl font-black text-[#02006c] font-syne leading-tight uppercase tracking-wider">
-                  Create your<br/><span className="text-[#FF6E54]">Perfect style</span>
+                  Create your<br/><span className="text-[#ee4923]">Perfect style</span>
                 </h3>
                 <p className="text-[10px] text-slate-500 font-bold leading-relaxed max-w-[260px] mx-auto uppercase tracking-widest">
                   Every person has a unique style. We can help create your perfect 3D character.
@@ -648,14 +648,14 @@ export default function ProfilePage() {
 
               <div className="flex justify-center items-center gap-1.5 py-1">
                 <span className="w-6 h-1.5 bg-slate-200 rounded-full"></span>
-                <span className="w-6 h-1.5 bg-[#FF6E54] rounded-full"></span>
+                <span className="w-6 h-1.5 bg-[#ee4923] rounded-full"></span>
                 <span className="w-6 h-1.5 bg-slate-200 rounded-full"></span>
               </div>
 
               <div className="space-y-3 pt-2">
                 <button
                   onClick={() => setModalStep(1)}
-                  className="w-full py-4 bg-[#FF6E54] hover:bg-orange-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer uppercase tracking-widest shadow-lg shadow-[#FF6E54]/30"
+                  className="w-full py-4 bg-[#ee4923] hover:bg-orange-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer uppercase tracking-widest shadow-lg shadow-[#ee4923]/30"
                 >
                   Get Started
                 </button>
@@ -679,7 +679,7 @@ export default function ProfilePage() {
               <div className="px-6 pb-4 pt-1 flex items-center justify-between bg-white z-20">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center border border-orange-100/50">
-                    <Sparkles className="w-4 h-4 text-[#FF6E54]" />
+                    <Sparkles className="w-4 h-4 text-[#ee4923]" />
                   </div>
                   <h3 className="text-sm font-black text-[#02006c] uppercase tracking-wider font-syne">
                     Avatar Editor
@@ -695,8 +695,8 @@ export default function ProfilePage() {
 
               {/* Live Character Preview Window (Sticky) */}
               <div className="flex justify-center items-center py-6 bg-slate-50/80 border-b border-slate-100 sticky top-0 z-10 backdrop-blur-xl">
-                <div className="p-2.5 border border-slate-200/80 rounded-full bg-white shadow-xl shadow-[#FF6E54]/5 relative group">
-                  <div className="absolute inset-0 rounded-full bg-[#FF6E54]/10 blur-xl group-hover:bg-[#FF6E54]/20 transition-colors"></div>
+                <div className="p-2.5 border border-slate-200/80 rounded-full bg-white shadow-xl shadow-[#ee4923]/5 relative group">
+                  <div className="absolute inset-0 rounded-full bg-[#ee4923]/10 blur-xl group-hover:bg-[#ee4923]/20 transition-colors"></div>
                   <DynamicAvatar config={tempConfig} size="w-32 h-32 relative z-10" />
                 </div>
               </div>
@@ -707,7 +707,7 @@ export default function ProfilePage() {
                 {/* Category: Skin Tone */}
                 <div className="space-y-3.5">
                   <label className="text-[10px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF6E54]"></span> Skin Tone
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#ee4923]"></span> Skin Tone
                   </label>
                   <div className="flex flex-wrap items-center gap-4">
                     {optionsPool.skinTones.map((skin) => (
@@ -715,7 +715,7 @@ export default function ProfilePage() {
                         key={skin.value}
                         onClick={() => setTempConfig(prev => ({ ...prev, skinTone: skin.value }))}
                         className={`w-11 h-11 rounded-full transition-all active:scale-90 cursor-pointer relative ${
-                          tempConfig.skinTone === skin.value ? 'scale-110 shadow-md ring-2 ring-offset-2 ring-[#FF6E54]' : 'ring-1 ring-slate-200 hover:scale-105'
+                          tempConfig.skinTone === skin.value ? 'scale-110 shadow-md ring-2 ring-offset-2 ring-[#ee4923]' : 'ring-1 ring-slate-200 hover:scale-105'
                         }`}
                         style={{ backgroundColor: skin.value }}
                       >
@@ -813,7 +813,7 @@ export default function ProfilePage() {
                         onClick={() => setTempConfig(prev => ({ ...prev, accessory: acc.id }))}
                         className={`py-3 text-[10px] font-bold uppercase tracking-widest rounded-[16px] transition-all active:scale-95 cursor-pointer text-center ${
                           tempConfig.accessory === acc.id 
-                            ? 'bg-[#FF6E54] text-white shadow-lg shadow-[#FF6E54]/20 border-none' 
+                            ? 'bg-[#ee4923] text-white shadow-lg shadow-[#ee4923]/20 border-none' 
                             : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                         }`}
                       >
@@ -834,7 +834,7 @@ export default function ProfilePage() {
                 </button>
                 <button
                   onClick={handleSaveAvatar}
-                  className="flex-grow py-4 bg-gradient-to-r from-[#FF6E54] to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer text-center uppercase tracking-wider shadow-xl shadow-[#FF6E54]/25 flex justify-center items-center gap-2"
+                  className="flex-grow py-4 bg-gradient-to-r from-[#ee4923] to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer text-center uppercase tracking-wider shadow-xl shadow-[#ee4923]/25 flex justify-center items-center gap-2"
                 >
                   Save & Equip <Sparkles className="w-4 h-4 fill-white" />
                 </button>

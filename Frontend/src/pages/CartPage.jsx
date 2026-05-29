@@ -60,7 +60,7 @@ export default function CartPage() {
             <div className="flex flex-col justify-center">
               <h1 className="text-sm font-black text-[#02006c] tracking-wide uppercase font-sans flex items-center gap-1.5 leading-tight">
                 Your Basket
-                <ShoppingBag className="w-3.5 h-3.5 text-[#FF6E54]" />
+                <ShoppingBag className="w-3.5 h-3.5 text-[#ee4923]" />
               </h1>
               <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest font-sans leading-tight">
                 Secure Checkout
@@ -68,7 +68,7 @@ export default function CartPage() {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1 bg-[#FF6E54]/10 text-[#FF6E54] px-2.5 py-0.5 rounded-full border border-[#FF6E54]/15">
+        <div className="flex items-center gap-1 bg-[#ee4923]/10 text-[#ee4923] px-2.5 py-0.5 rounded-full border border-[#ee4923]/15">
           <span className="text-[8.5px] font-bold uppercase tracking-wider">{totalCartItems} Items</span>
         </div>
       </header>
@@ -155,7 +155,7 @@ export default function CartPage() {
                     </button>
                     <button 
                       onClick={() => navigate('/review-order')} 
-                      className="flex-1 flex items-center justify-center gap-1.5 text-[#FF6E54] hover:bg-orange-50 text-xs font-bold transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 text-[#ee4923] hover:bg-orange-50 text-xs font-bold transition-colors"
                     >
                       <Zap className="w-3.5 h-3.5" /> Buy this now
                     </button>
@@ -209,7 +209,7 @@ export default function CartPage() {
               </div>
               <button 
                 onClick={() => navigate('/review-order')} 
-                className="w-1/2 bg-[#ffb900] active:bg-[#e5a600] text-[#02006c] py-3.5 rounded-lg font-black text-[15px] shadow-sm transition-all"
+                className="w-1/2 bg-[#ee4923] active:bg-[#d8401e] text-white py-3.5 rounded-lg font-black text-[15px] shadow-sm transition-all"
               >
                 Place Order
               </button>
@@ -218,7 +218,7 @@ export default function CartPage() {
         ) : (
           /* Empty State */
           <div className="bg-white border-t border-slate-100 p-10 text-center flex flex-col items-center justify-center flex-grow">
-            <div className="w-20 h-20 bg-orange-50 text-[#FF6E54] rounded-full flex items-center justify-center mx-auto shadow-sm mb-4">
+            <div className="w-20 h-20 bg-orange-50 text-[#ee4923] rounded-full flex items-center justify-center mx-auto shadow-sm mb-4">
               <ShoppingBag className="w-10 h-10" />
             </div>
             <h4 className="text-base font-black text-[#0F172A] mb-2">Your Bag is Empty</h4>
@@ -227,7 +227,7 @@ export default function CartPage() {
             </p>
             <button
               onClick={() => { navigate('/'); setActiveTab('home'); }}
-              className="bg-[#FF6E54] active:scale-95 text-white text-xs font-black px-8 py-3.5 rounded shadow-sm transition-all"
+              className="bg-[#ee4923] active:scale-95 text-white text-xs font-black px-8 py-3.5 rounded shadow-sm transition-all"
             >
               CONTINUE SHOPPING
             </button>
@@ -262,16 +262,16 @@ export default function CartPage() {
                   }}
                   className={`border rounded-xl p-4 cursor-pointer transition-all ${
                     selectedAddressId === addr.id 
-                      ? 'border-[#FF6E54] bg-orange-50/30' 
+                      ? 'border-[#ee4923] bg-orange-50/30' 
                       : 'border-slate-200 hover:border-slate-300 bg-white'
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <div className="pt-0.5">
                       <div className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center ${
-                        selectedAddressId === addr.id ? 'border-[#FF6E54]' : 'border-slate-300'
+                        selectedAddressId === addr.id ? 'border-[#ee4923]' : 'border-slate-300'
                       }`}>
-                        {selectedAddressId === addr.id && <div className="w-2 h-2 rounded-full bg-[#FF6E54]" />}
+                        {selectedAddressId === addr.id && <div className="w-2 h-2 rounded-full bg-[#ee4923]" />}
                       </div>
                     </div>
                     <div className="flex-1 flex flex-col">

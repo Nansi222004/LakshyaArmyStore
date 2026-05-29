@@ -20,7 +20,7 @@ export default function CrazyDealsPage() {
           <ArrowLeft className="w-5 h-5 text-orange-900" />
         </button>
         <div className="flex flex-col">
-          <h2 className="text-xl font-black text-[#FF6E54] tracking-tight leading-none mb-1">CRAZY DEALS</h2>
+          <h2 className="text-xl font-black text-[#ee4923] tracking-tight leading-none mb-1">CRAZY DEALS</h2>
           <p className="text-[10px] text-orange-800 font-medium leading-none">Up to 50% Off! Don't miss out.</p>
         </div>
       </div>
@@ -36,7 +36,7 @@ export default function CrazyDealsPage() {
               onClick={() => navigate(`/product/${deal.id}`)} 
             >  
               {/* Discount Badge */}
-              <span className="absolute top-2 left-2 bg-[#FF6E54] text-white text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm z-10">
+              <span className="absolute top-2 left-2 bg-[#ee4923] text-white text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm z-10">
                 {deal.discount}
               </span>
 
@@ -69,7 +69,7 @@ export default function CrazyDealsPage() {
                 <p className="text-[9px] text-slate-500 truncate">{deal.desc}</p>
                 
                 <div className="flex items-center gap-1.5 pt-1">
-                  <span className="text-sm font-extrabold text-[#FF6E54]">₹{deal.price}</span>
+                  <span className="text-sm font-extrabold text-[#ee4923]">₹{deal.price}</span>
                   <span className="text-[10px] text-slate-400 font-medium line-through">₹{deal.originalPrice}</span>
                 </div>
               </div>

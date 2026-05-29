@@ -77,8 +77,8 @@ export default function OrdersPage() {
     date: idx === 0 ? 'Arriving by May 10' : 'Delivered on Apr 13',
     status: idx === 0 ? 'In Transit' : 'Delivered',
     name: o.items && o.items[0] ? o.items[0].name : 'Product',
-    // Fallback image to prevent breaking images
-    image: fallbackImages[idx % fallbackImages.length],
+    // Use actual image if available, else fallback
+    image: (o.items && o.items[0] && o.items[0].image) ? o.items[0].image : fallbackImages[idx % fallbackImages.length],
     rating: idx === 1 ? 3 : 0,
     ratingText: idx === 1 ? 'Okay' : (idx === 0 ? '' : 'Rate & Review')
   })) : MOCK_ORDERS;
@@ -134,7 +134,7 @@ export default function OrdersPage() {
               key={idx}
               onClick={() => setActiveBanner(idx)}
               className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === activeBanner ? 'w-4 bg-[#FF6E54]' : 'w-1.5 bg-slate-200'
+                idx === activeBanner ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
               }`}
             ></button>
           ))}
@@ -167,7 +167,7 @@ export default function OrdersPage() {
                 <div 
                   key={status}
                   onClick={() => { setFilterStatus(status); setShowFilters(false); }}
-                  className={`px-3 py-2 text-[14px] rounded-lg cursor-pointer transition-colors ${filterStatus === status ? 'bg-[#FF6E54]/10 text-[#FF6E54] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                  className={`px-3 py-2 text-[14px] rounded-lg cursor-pointer transition-colors ${filterStatus === status ? 'bg-[#ee4923]/10 text-[#ee4923] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
                 >
                   {status}
                 </div>

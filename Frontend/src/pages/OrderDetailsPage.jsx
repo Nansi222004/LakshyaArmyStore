@@ -6,7 +6,7 @@ import { useApp } from '../context/AppContext';
 export default function OrderDetailsPage() {
   const navigate = useNavigate();
   const { orderId } = useParams();
-  const { addStudioPost, user, getOrderReview, addOrderReview } = useApp();
+  const { addStudioPost, user, getOrderReview, addOrderReview, orders } = useApp();
 
   const id = orderId || 'OD337252952617879100';
   const initialDraft = getOrderReview(id) || {};
@@ -69,7 +69,15 @@ export default function OrderDetailsPage() {
     }
   };
 
-  const product = MOCK_ORDER_DETAILS[id] || MOCK_ORDER_DETAILS['ORD-3M44-P9'];
+  const globalOrder = orders?.find(o => o.id === id);
+  const globalProduct = globalOrder?.items?.[0];
+
+  const product = globalProduct ? {
+    name: globalProduct.name,
+    image: globalProduct.image,
+    price: globalProduct.originalPrice || globalProduct.price,
+    selling: globalProduct.price
+  } : (MOCK_ORDER_DETAILS[id] || MOCK_ORDER_DETAILS['ORD-3M44-P9']);
 
   const fullAddress = "83 kishan pura mataji mandir, sector no. 5 new harsook, Jaipur, Rajasthan 302033";
 
@@ -139,53 +147,53 @@ Thank you for shopping with Mynzo!
 
       <div className="flex flex-col">
         {/* Top Section */}
-        <div className="p-4">
-          {/* Product Card */}
-          <div className="flex gap-4 items-center">
-            <div className="w-20 h-20 bg-pink-50 rounded-xl p-2 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-100">
+        <div className="p-3">
+          {/* Compact Product & Order ID */}
+          <div className="flex gap-3 items-center mb-3">
+            <div className="w-14 h-14 bg-pink-50 rounded-lg p-1.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-100 shadow-sm">
                <img src={product.image} alt="Product" className="w-full h-full object-contain mix-blend-multiply" />
             </div>
-            <p className="text-[14px] text-slate-800 line-clamp-2 leading-tight">
-              {product.name}
-            </p>
+            <div className="flex flex-col justify-center">
+              <p className="text-[13px] text-slate-800 line-clamp-1 font-medium">
+                {product.name}
+              </p>
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-1">
+                <span>Order #{id}</span>
+                <Copy onClick={handleCopyId} className="w-3.5 h-3.5 text-[#ee4923] cursor-pointer hover:text-[#ff5c3f]" />
+              </div>
+            </div>
           </div>
 
-          {/* Order ID */}
-          <div className="flex items-center gap-2 text-[12px] text-slate-500 pt-2 pb-4">
-            <span>Order #{id}</span>
-            <Copy onClick={handleCopyId} className="w-4 h-4 text-[#FF6E54] cursor-pointer hover:text-[#ff5c3f]" />
-          </div>
-
-          {/* Delivered Card */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-2">
-            <div className="p-4 border-b border-slate-100">
-               <div className="flex items-center justify-between mb-4">
-                 <h2 className={`text-[18px] font-bold ${isDelivered ? 'text-green-700' : 'text-[#FF6E54]'}`}>
+          {/* Compact Delivered Card */}
+          <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden mb-1">
+            <div className="p-3 border-b border-slate-100 flex items-center justify-between">
+               <div>
+                 <h2 className={`text-[15px] font-bold ${isDelivered ? 'text-green-700' : 'text-[#ee4923]'} mb-1`}>
                    {isDelivered ? 'Delivered, Apr 13' : 'Arriving by May 10'}
                  </h2>
-                 <div className={`${isDelivered ? 'bg-green-600' : 'bg-[#FF6E54]'} rounded-full w-8 h-8 flex items-center justify-center`}>
-                   {isDelivered ? (
-                     <CheckCircle2 className="w-5 h-5 text-white" />
-                   ) : (
-                     <Package className="w-5 h-5 text-white" />
-                   )}
-                 </div>
+                 {isDelivered ? (
+                   <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                     <div className="w-3 h-3 border border-slate-400 rounded-full flex items-center justify-center text-[8px]">i</div>
+                     Return policy ended on Apr 23
+                   </div>
+                 ) : (
+                   <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                     Item is out for delivery
+                   </div>
+                 )}
                </div>
-               {isDelivered ? (
-                 <div className="flex items-center gap-2 text-[13px] text-slate-500">
-                   <div className="w-4 h-4 border border-slate-400 rounded-full flex items-center justify-center text-[10px]">i</div>
-                   Return policy ended on Apr 23
-                 </div>
-               ) : (
-                 <div className="flex items-center gap-2 text-[13px] text-slate-500">
-                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                   Item is out for delivery
-                 </div>
-               )}
+               <div className={`${isDelivered ? 'bg-green-600' : 'bg-[#ee4923]'} rounded-full w-6 h-6 flex items-center justify-center shadow-sm`}>
+                 {isDelivered ? (
+                   <CheckCircle2 className="w-4 h-4 text-white" />
+                 ) : (
+                   <Package className="w-4 h-4 text-white" />
+                 )}
+               </div>
             </div>
             <button 
               onClick={() => navigate(`/track-order/${id}`)}
-              className="w-full py-3.5 text-[15px] font-semibold text-[#FF6E54] hover:bg-[#FF6E54]/5 active:bg-[#FF6E54]/10 transition-colors"
+              className="w-full py-2.5 text-[13px] font-semibold text-[#ee4923] hover:bg-[#ee4923]/5 active:bg-[#ee4923]/10 transition-colors"
             >
               {isDelivered ? 'See all updates' : 'Track your order'}
             </button>
@@ -197,8 +205,8 @@ Thank you for shopping with Mynzo!
         {isDelivered && (
           <>
             {/* Rate Experience */}
-            <div className="p-4">
-              <h2 className="text-[18px] font-bold text-slate-800 mb-3">Rate your experience</h2>
+            <div className="p-3">
+              <h2 className="text-[15px] font-bold text-slate-800 mb-2">Rate your experience</h2>
               {isEditingReview ? (
                 <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
                   <div className="flex flex-col items-center justify-center mb-5">
@@ -218,7 +226,7 @@ Thank you for shopping with Mynzo!
                       value={reviewText}
                       onChange={(e) => setReviewText(e.target.value)}
                       placeholder="What did you like or dislike?"
-                      className="w-full bg-white border border-slate-200 rounded-xl p-3 text-[14px] outline-none focus:border-[#FF6E54] focus:ring-1 focus:ring-[#FF6E54] transition-all resize-none h-[80px]"
+                      className="w-full bg-white border border-slate-200 rounded-xl p-3 text-[14px] outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923] transition-all resize-none h-[80px]"
                     ></textarea>
                   </div>
 
@@ -242,12 +250,12 @@ Thank you for shopping with Mynzo!
                       </div>
                     )}
                     <div className="flex gap-3">
-                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#FF6E54] hover:bg-orange-50 transition-colors">
+                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#ee4923] hover:bg-orange-50 transition-colors">
                         <ImageIcon className="w-5 h-5 text-slate-400 mb-1" />
                         <span className="text-[10px] font-medium text-slate-600">Add Photos</span>
                         <input type="file" accept="image/jpeg, image/png, image/webp" multiple className="hidden" onChange={handlePhotoUpload} />
                       </label>
-                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#FF6E54] hover:bg-orange-50 transition-colors">
+                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#ee4923] hover:bg-orange-50 transition-colors">
                         <Video className="w-5 h-5 text-slate-400 mb-1" />
                         <span className="text-[10px] font-medium text-slate-600">Add Reel</span>
                         <input type="file" accept="video/mp4, video/webm" className="hidden" onChange={handleVideoUpload} />
@@ -286,37 +294,37 @@ Thank you for shopping with Mynzo!
                         
                         alert("Review submitted successfully!");
                       }}
-                      className="flex-1 bg-[#FF6E54] hover:bg-[#ff5c3f] text-white font-bold py-3 rounded-xl transition-colors shadow-sm cursor-pointer"
+                      className="flex-1 bg-[#ee4923] hover:bg-[#ff5c3f] text-white font-bold py-3 rounded-xl transition-colors shadow-sm cursor-pointer"
                     >
                       Submit Review
                     </button>
                   </div>
                 </div>
               ) : submittedReview ? (
-                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                  <div className="flex justify-between items-start mb-2">
+                <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                  <div className="flex justify-between items-start mb-1">
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} className={`w-5 h-5 ${star <= submittedReview.rating ? 'text-green-600 fill-green-600' : 'text-slate-200 fill-slate-200'}`} />
+                        <Star key={star} className={`w-4 h-4 ${star <= submittedReview.rating ? 'text-green-600 fill-green-600' : 'text-slate-200 fill-slate-200'}`} />
                       ))}
                     </div>
-                    <button onClick={() => setIsEditingReview(true)} className="text-[13px] font-semibold text-[#FF6E54] hover:underline flex items-center gap-1">
-                      <PenLine className="w-3.5 h-3.5" /> Edit
+                    <button onClick={() => setIsEditingReview(true)} className="text-[12px] font-semibold text-[#ee4923] hover:underline flex items-center gap-1">
+                      <PenLine className="w-3 h-3" /> Edit
                     </button>
                   </div>
                   {submittedReview.text && (
-                    <p className="text-[14px] text-slate-700 mt-2 mb-3 leading-relaxed">{submittedReview.text}</p>
+                    <p className="text-[12px] text-slate-700 mt-1 mb-2 leading-snug">{submittedReview.text}</p>
                   )}
                   {(submittedReview.photos.length > 0 || submittedReview.video) && (
-                    <div className="flex flex-wrap gap-2 mt-3">
+                    <div className="flex flex-wrap gap-1.5 mt-2">
                       {submittedReview.photos.map((p, i) => (
-                        <div key={i} onClick={() => setSelectedMedia({ type: 'image', url: p })} className="w-16 h-16 rounded-lg border border-slate-200 overflow-hidden bg-white cursor-pointer hover:opacity-80 transition-opacity">
+                        <div key={i} onClick={() => setSelectedMedia({ type: 'image', url: p })} className="w-12 h-12 rounded-md border border-slate-200 overflow-hidden bg-white cursor-pointer hover:opacity-80 transition-opacity">
                           <img src={p} className="w-full h-full object-cover" />
                         </div>
                       ))}
                       {submittedReview.video && (
-                        <div onClick={() => setSelectedMedia({ type: 'video', url: submittedReview.video })} className="w-16 h-16 rounded-lg border border-slate-200 overflow-hidden bg-black relative flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
-                          <Video className="w-6 h-6 text-white/80 absolute z-10" />
+                        <div onClick={() => setSelectedMedia({ type: 'video', url: submittedReview.video })} className="w-12 h-12 rounded-md border border-slate-200 overflow-hidden bg-black relative flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+                          <Video className="w-4 h-4 text-white/80 absolute z-10" />
                           <video src={submittedReview.video} className="w-full h-full object-cover opacity-60" />
                         </div>
                       )}
@@ -340,7 +348,7 @@ Thank you for shopping with Mynzo!
                     </div>
                     <button 
                       onClick={() => setIsEditingReview(true)}
-                      className="border border-[#FF6E54] text-[#FF6E54] bg-white px-4 py-1.5 rounded-lg text-[14px] font-semibold flex items-center gap-2 hover:bg-[#FF6E54]/5 transition-colors"
+                      className="border border-[#ee4923] text-[#ee4923] bg-white px-4 py-1.5 rounded-lg text-[14px] font-semibold flex items-center gap-2 hover:bg-[#ee4923]/5 transition-colors"
                     >
                       <PenLine className="w-4 h-4" />
                       Write review
@@ -455,20 +463,20 @@ Thank you for shopping with Mynzo!
         <div className="h-2 bg-slate-100 w-full"></div>
 
         {/* Order ID bottom */}
-        <div className="p-4 pb-6">
+        <div className="p-4 pb-28">
           <h3 className="text-[14px] font-bold text-slate-800">Order ID</h3>
           <div className="flex items-center gap-2 text-[13px] text-slate-500 mt-1">
             <span>{id}</span>
-            <Copy onClick={handleCopyId} className="w-4 h-4 text-[#FF6E54] cursor-pointer hover:text-[#ff5c3f]" />
+            <Copy onClick={handleCopyId} className="w-4 h-4 text-[#ee4923] cursor-pointer hover:text-[#ff5c3f]" />
           </div>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-3 bg-white border-t border-slate-200 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-50">
+      <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-2 bg-white border-t border-slate-200 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-50">
          <button 
            onClick={() => navigate('/')}
-           className="w-full border border-[#FF6E54] text-[#FF6E54] font-bold text-[15px] py-3.5 rounded-xl hover:bg-[#FF6E54]/5 active:bg-[#FF6E54]/10 transition-colors"
+           className="w-full border border-[#ee4923] text-[#ee4923] font-bold text-[13px] py-2.5 rounded-lg hover:bg-[#ee4923]/5 active:bg-[#ee4923]/10 transition-colors"
          >
            Shop more from Mynzo
          </button>

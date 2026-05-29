@@ -57,7 +57,7 @@ export default function HelpSupportPage() {
         <div className="space-y-4">
           <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Contact Us</h3>
           
-          <a href="tel:+18001234567" className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#FF6E54] hover:shadow-md transition-all group">
+          <a href="tel:+18001234567" className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
             <div className="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <PhoneCall className="w-5 h-5" />
             </div>
@@ -70,7 +70,7 @@ export default function HelpSupportPage() {
             </div>
           </a>
 
-          <a href="mailto:support@mynzo.com" className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#FF6E54] hover:shadow-md transition-all group">
+          <a href="mailto:support@mynzo.com" className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
             <div className="w-12 h-12 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <Mail className="w-5 h-5" />
             </div>
@@ -100,12 +100,12 @@ export default function HelpSupportPage() {
                   onClick={() => toggleFaq(index)}
                   className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 cursor-pointer"
                 >
-                  <span className={`text-[13px] font-bold ${openFaqIndex === index ? 'text-[#FF6E54]' : 'text-[#02006c]'}`}>
+                  <span className={`text-[13px] font-bold ${openFaqIndex === index ? 'text-[#ee4923]' : 'text-[#02006c]'}`}>
                     {faq.question}
                   </span>
                   <ChevronDown 
                     className={`w-4 h-4 text-slate-400 flex-shrink-0 transition-transform duration-300 ${
-                      openFaqIndex === index ? 'rotate-180 text-[#FF6E54]' : ''
+                      openFaqIndex === index ? 'rotate-180 text-[#ee4923]' : ''
                     }`}
                   />
                 </button>

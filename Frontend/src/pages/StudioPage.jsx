@@ -220,7 +220,7 @@ export default function StudioPage() {
           <span className="text-white border-b-2 border-white pb-1">For You</span>
         </div>
         
-        <div className="bg-[#FF6E54] text-white px-2 py-1 rounded text-[10px] font-black tracking-wider shadow-lg flex items-center gap-1">
+        <div className="bg-[#ee4923] text-white px-2 py-1 rounded text-[10px] font-black tracking-wider shadow-lg flex items-center gap-1">
           <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
           LIVE
         </div>
@@ -315,10 +315,10 @@ export default function StudioPage() {
                   <span className="text-[13px] font-bold truncate max-w-[150px] drop-shadow-md">{post.product.name}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-[13px] font-bold text-white drop-shadow-md">₹{post.product.price}</span>
-                    <span className="text-[10px] text-[#FF6E54] font-black bg-white/90 px-1 rounded">-{post.product.discount || '10%'} OFF</span>
+                    <span className="text-[10px] text-[#ee4923] font-black bg-white/90 px-1 rounded">-{post.product.discount || '10%'} OFF</span>
                   </div>
                 </div>
-                <div className="bg-[#FF6E54] text-white text-[10px] font-bold px-2 py-1.5 rounded ml-2 whitespace-nowrap">
+                <div className="bg-[#ee4923] text-white text-[10px] font-bold px-2 py-1.5 rounded ml-2 whitespace-nowrap">
                   View Product &gt;
                 </div>
               </div>
@@ -379,12 +379,12 @@ export default function StudioPage() {
                 onChange={(e) => setNewComment(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && submitComment()}
                 placeholder="Add comment..." 
-                className="flex-1 bg-slate-100 text-slate-800 text-[14px] rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-[#FF6E54]/30"
+                className="flex-1 bg-slate-100 text-slate-800 text-[14px] rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-[#ee4923]/30"
               />
               <button 
                 onClick={submitComment}
                 disabled={!newComment.trim()}
-                className="bg-[#FF6E54] text-white p-2 rounded-full disabled:opacity-50 disabled:bg-slate-300"
+                className="bg-[#ee4923] text-white p-2 rounded-full disabled:opacity-50 disabled:bg-slate-300"
               >
                 <ArrowLeft className="w-4 h-4 rotate-180" />
               </button>
