@@ -32,7 +32,7 @@ export default function MobileNav() {
 
   return (
     <div className="absolute bottom-0 left-0 right-0 z-50 w-full bg-white/90 backdrop-blur-2xl shadow-[0_-8px_30px_rgba(0,0,0,0.08)] border-t border-white/60 rounded-t-[2rem]">
-      <nav className="flex items-center justify-between px-2 py-1.5 w-full mx-auto pb-safe">
+      <nav className="flex items-center justify-between px-2 py-2.5 w-full mx-auto pb-safe">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -41,23 +41,23 @@ export default function MobileNav() {
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
-              className={`relative flex flex-col items-center justify-center flex-1 max-w-[54px] h-[54px] rounded-2xl outline-none focus:outline-none [-webkit-tap-highlight-color:transparent] transition-all duration-500 ease-out active:scale-95 ${
+              className={`relative flex flex-col items-center justify-center flex-1 max-w-[64px] h-[64px] rounded-2xl outline-none focus:outline-none [-webkit-tap-highlight-color:transparent] transition-all duration-500 ease-out active:scale-95 ${
                 isActive 
-                  ? 'bg-[#ee4923]/15 backdrop-blur-md border border-white/80 shadow-[0_4px_15px_rgba(238,73,35,0.25)]' 
+                  ? 'bg-[#d8421b]/35 backdrop-blur-md border border-white/80 shadow-[0_4px_15px_rgba(216,66,27,0.25)]' 
                   : 'bg-transparent border border-transparent'
               }`}
             >
               <div className={`transition-all duration-500 ${
                 isActive 
-                  ? 'text-[#ee4923] -translate-y-0.5 scale-110' 
+                  ? 'text-[#d8421b] -translate-y-0.5 scale-110' 
                   : 'text-[#64748B] hover:text-[#0F172A]'
               }`}>
-                <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[2]'}`} />
+                <Icon className={`w-6 h-6 ${isActive ? 'stroke-[2.5]' : 'stroke-[2]'}`} />
               </div>
 
-              <span className={`text-[9px] tracking-wide transition-all duration-500 ${
+              <span className={`text-[10px] tracking-wide transition-all duration-500 ${
                 isActive 
-                  ? 'text-[#ee4923] font-bold mt-0.5' 
+                  ? 'text-[#d8421b] font-bold mt-0.5' 
                   : 'text-[#64748B] font-medium mt-1'
               }`}>
                 {item.label}
@@ -65,7 +65,7 @@ export default function MobileNav() {
 
               {/* Red Badge for Cart */}
               {item.badge && totalCartItems > 0 && (
-                <span className="absolute top-0.5 right-0.5 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#ee4923] text-[9px] font-bold text-white ring-2 ring-white shadow-sm">
+                <span className="absolute top-0.5 right-0.5 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#d8421b] text-[9px] font-bold text-white ring-2 ring-white shadow-sm">
                   {totalCartItems}
                 </span>
               )}

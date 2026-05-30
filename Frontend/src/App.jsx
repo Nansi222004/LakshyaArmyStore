@@ -39,20 +39,24 @@ function AppContent() {
 
   // Show splash screen video on initial app load/open
   const [showSplash, setShowSplash] = useState(true);
+  const [isFading, setIsFading] = useState(false);
 
   const handleSplashEnd = () => {
-    setShowSplash(false);
+    setIsFading(true);
+    setTimeout(() => {
+      setShowSplash(false);
+    }, 500); // 500ms fade out transition
   };
 
   useEffect(() => {
-    if (showSplash) {
-      // 5.5s safety timer to proceed even if video playback issues occur
+    if (showSplash && !isFading) {
+      // 12s safety timer to proceed even if video playback issues occur
       const timer = setTimeout(() => {
         handleSplashEnd();
-      }, 5500);
+      }, 12000);
       return () => clearTimeout(timer);
     }
-  }, [showSplash]);
+  }, [showSplash, isFading]);
 
   useEffect(() => {
     // Once splash screen video completes, run hierarchical route matching
@@ -68,31 +72,33 @@ function AppContent() {
     }
   }, [showSplash, user, location.pathname, navigate]);
 
-  if (showSplash) {
-    return (
-      <div className="h-[100dvh] bg-slate-100 flex justify-center items-start text-slate-800 antialiased font-sans select-none pointer-events-none overflow-hidden">
-        {/* Centered Mobile Phone Frame */}
-        <div className="w-full max-w-md h-full bg-black relative flex items-center justify-center overflow-hidden shadow-2xl border-x border-slate-100">
-          <video
-            src="/SplashScreen.mp4"
-            autoPlay
-            muted
-            playsInline
-            webkit-playsinline="true"
-            preload="auto"
-            disablePictureInPicture
-            controlsList="nodownload nofullscreen noremoteplayback"
-            onEnded={handleSplashEnd}
-            onContextMenu={(e) => e.preventDefault()}
-            className="absolute inset-0 w-full h-full object-cover object-center scale-[1.75] origin-center pointer-events-none select-none"
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <Layout>
+    <>
+      {showSplash && (
+        <div 
+          className={`fixed inset-0 z-[9999] h-[100dvh] bg-slate-100 flex justify-center items-start text-slate-800 antialiased font-sans select-none pointer-events-none overflow-hidden transition-opacity duration-500 ease-in-out ${isFading ? 'opacity-0' : 'opacity-100'}`}
+        >
+          {/* Centered Mobile Phone Frame */}
+          <div className="w-full max-w-md h-full bg-white relative flex items-center justify-center overflow-hidden shadow-2xl border-x border-slate-100">
+            <video
+              src="/FinalSplashScreen.mp4"
+              autoPlay
+              muted
+              playsInline
+              webkit-playsinline="true"
+              preload="auto"
+              disablePictureInPicture
+              controlsList="nodownload nofullscreen noremoteplayback"
+              onEnded={handleSplashEnd}
+              onContextMenu={(e) => e.preventDefault()}
+              style={{ objectFit: 'cover', objectPosition: '40% center' }}
+              className="absolute inset-0 w-full h-full origin-center pointer-events-none select-none"
+            />
+          </div>
+        </div>
+      )}
+      
+      <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<CategoriesPage />} />
@@ -121,6 +127,7 @@ function AppContent() {
         <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
       </Routes>
     </Layout>
+    </>
   );
 }
 
