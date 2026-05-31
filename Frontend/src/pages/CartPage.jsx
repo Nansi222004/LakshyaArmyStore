@@ -38,6 +38,21 @@ export default function CartPage() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [couponApplied, setCouponApplied] = useState(false);
   
+  const [isQtyModalOpen, setIsQtyModalOpen] = useState(false);
+  const [qtyModalItemId, setQtyModalItemId] = useState(null);
+  const [customQtyInput, setCustomQtyInput] = useState('');
+
+  const handleApplyCustomQty = () => {
+    const qty = parseInt(customQtyInput);
+    if (!isNaN(qty) && qty > 0) {
+      updateQuantity(qtyModalItemId, qty);
+      setIsQtyModalOpen(false);
+      setCustomQtyInput('');
+    } else {
+      alert("Please enter a valid quantity greater than 0.");
+    }
+  };
+  
   const selectedAddress = addresses.find(a => a.id === selectedAddressId) || addresses[0];
 
   const mockSavings = 2458;
@@ -115,9 +130,28 @@ export default function CartPage() {
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                       </div>
                       
-                      <div className="border border-slate-300 rounded flex items-center justify-between px-2 py-1 bg-white shadow-sm cursor-pointer hover:border-slate-400">
+                      <div className="relative border border-slate-300 rounded flex items-center justify-between px-2 py-1 bg-white shadow-sm cursor-pointer hover:border-slate-400">
                         <span className="text-[11px] font-bold text-slate-800">Qty: {item.quantity}</span>
                         <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
+                        <select 
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          value={item.quantity > 3 ? "custom" : item.quantity}
+                          onChange={(e) => {
+                            if (e.target.value === "more") {
+                              setQtyModalItemId(item.id);
+                              setCustomQtyInput(item.quantity > 3 ? item.quantity.toString() : '');
+                              setIsQtyModalOpen(true);
+                            } else if (e.target.value !== "custom") {
+                              updateQuantity(item.id, parseInt(e.target.value));
+                            }
+                          }}
+                        >
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          {item.quantity > 3 && <option value="custom" hidden>{item.quantity}</option>}
+                          <option value="more">More</option>
+                        </select>
                       </div>
                     </div>
                     
@@ -137,8 +171,8 @@ export default function CartPage() {
                       {/* Pricing */}
                       <div className="flex items-end gap-2 mt-2.5">
                         <span className="text-green-600 font-bold text-xs mb-0.5">↓{item.discount}</span>
-                        <span className="text-slate-400 line-through text-xs mb-0.5">₹{item.originalPrice}</span>
-                        <span className="text-slate-900 font-black text-lg tracking-tight leading-none">₹{item.price}</span>
+                        <span className="text-slate-400 line-through text-xs mb-0.5">₹{item.originalPrice * item.quantity}</span>
+                        <span className="text-slate-900 font-black text-lg tracking-tight leading-none">₹{item.price * item.quantity}</span>
                       </div>
                       
                       {/* Delivery */}
@@ -234,6 +268,40 @@ export default function CartPage() {
           </div>
         )}
       </div>
+
+      {/* Custom Quantity Modal */}
+      {isQtyModalOpen && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm animate-fade-in px-4">
+          <div className="bg-white rounded-2xl w-full max-w-[320px] p-5 shadow-2xl animate-scale-in">
+            <h2 className="text-lg font-black text-[#02006c] mb-4 text-center">Enter Quantity</h2>
+            
+            <input 
+              type="number" 
+              className="w-full border border-slate-300 rounded-lg px-4 py-3 text-center text-lg font-bold text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-2 focus:ring-orange-100 mb-6"
+              value={customQtyInput}
+              onChange={(e) => setCustomQtyInput(e.target.value)}
+              placeholder="e.g. 4"
+              min="1"
+              autoFocus
+            />
+
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setIsQtyModalOpen(false)}
+                className="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl hover:bg-slate-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleApplyCustomQty}
+                className="flex-1 bg-[#ee4923] text-white font-bold py-3 rounded-xl hover:bg-orange-600 transition-colors shadow-sm shadow-orange-200"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Address Selection Modal */}
       {isAddressModalOpen && (

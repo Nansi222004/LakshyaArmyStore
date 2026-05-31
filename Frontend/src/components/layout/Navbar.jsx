@@ -1,11 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Heart, ShoppingCart, MapPin, ChevronDown, Search, Camera, Mic, Scan, X, Crosshair, MoreHorizontal, Home, Plus, Gamepad2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { NOTIFICATIONS } from '../../data/mockData';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const routerLocation = useLocation();
+  const isHome = routerLocation.pathname === '/';
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const scrollContainer = document.getElementById('main-scroll-container');
+    if (!scrollContainer) return;
+
+    const handleScroll = (e) => {
+      setIsScrolled(e.target.scrollTop > 20);
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const shouldHideTopSections = isHome && isScrolled;
   const {
     user,
     totalCartItems,
@@ -88,11 +106,12 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-50 bg-[#EE4923] shadow-sm transition-all duration-300 pb-2">
         {/* Compact Main top header */}
-        <div className="flex items-center justify-between px-2.5 py-1 bg-transparent">
-          <div className="flex items-center gap-2 cursor-pointer animate-fade-in" onClick={() => navigate('/')}>
+        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${shouldHideTopSections ? 'max-h-0 opacity-0' : 'max-h-[100px] opacity-100'}`}>
+          <div className="flex items-center justify-between px-2.5 py-1 bg-transparent">
+            <div className="flex items-center gap-2 cursor-pointer animate-fade-in" onClick={() => navigate('/')}>
             {/* Logo image */}
             <img
-              src="/mynzo%20world_page-0001.jpg"
+              src="/HopeFinal.png"
               alt="Mynzo Logo"
               className="h-12 bg-white p-1 rounded-lg shadow-sm object-contain hover:scale-105 transition-transform duration-300"
               onError={(e) => {
@@ -131,11 +150,13 @@ export default function Navbar() {
               )}
             </button>
           </div>
+          </div>
         </div>
 
         {/* Location selector bar with INCREASED WIDTH (px-1.5) and DECREASED BORDER RADIUS (rounded-lg) */}
-        <div className="px-2 py-1 bg-transparent">
-          <div
+        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${shouldHideTopSections ? 'max-h-0 opacity-0' : 'max-h-[100px] opacity-100'}`}>
+          <div className="px-2 py-1 bg-transparent">
+            <div
             onClick={() => setIsLocationModalOpen(true)}
             className="bg-white/20 border border-white/30 text-white flex items-center justify-between px-4 py-2.5 rounded-lg text-[10.5px] font-black cursor-pointer hover:bg-white/30 shadow-md shadow-black/5 active:scale-[0.99] transition-all duration-300"
           >
@@ -146,6 +167,7 @@ export default function Navbar() {
               </span>
             </div>
             <ChevronDown className="w-4 h-4 text-white flex-shrink-0" />
+          </div>
           </div>
         </div>
 

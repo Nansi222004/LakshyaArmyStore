@@ -158,11 +158,11 @@ export default function LoginPage() {
         </button>
 
         {/* Logo Container */}
-        <div className="relative z-10 w-24 h-24 bg-white/30 backdrop-blur-md rounded-full p-1.5 border-2 border-white/50 flex items-center justify-center shadow-xl shadow-orange-900/10 mb-2 animate-fade-in">
+        <div className="relative z-10 h-28 flex items-center justify-center mb-2 animate-fade-in drop-shadow-xl">
           <img 
-            src="/Logo.jpg" 
+            src="/HopeFinal.png" 
             alt="Mynzo Logo" 
-            className="w-full h-full object-cover rounded-full"
+            className="h-full w-auto object-contain rounded-3xl"
             onError={(e) => { e.target.style.display = 'none'; }}
           />
         </div>
