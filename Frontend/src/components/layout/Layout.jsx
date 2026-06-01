@@ -38,8 +38,8 @@ export default function Layout({ children }) {
   return (
     <div className="h-[100dvh] bg-slate-100 flex justify-center items-start text-slate-800 antialiased font-sans overflow-hidden">
       {/* Centered Mobile Phone Frame */}
-      <div className={`w-full max-w-md h-full bg-white shadow-2xl flex flex-col relative border-x border-slate-100 ${hideMobileNav ? 'pb-0' : 'pb-16'}`}>
-        <main id="main-scroll-container" className="flex-grow flex flex-col bg-white overflow-y-auto overflow-x-hidden relative">
+      <div className={`w-full max-w-md h-full bg-white shadow-2xl flex flex-col relative ${hideMobileNav ? 'pb-0' : 'pb-16'}`}>
+        <main id="main-scroll-container" className="flex-grow flex flex-col bg-white overflow-y-auto overflow-x-hidden relative scrollbar-none">
           {!hideNavbar && <Navbar />}
           {children}
         </main>
