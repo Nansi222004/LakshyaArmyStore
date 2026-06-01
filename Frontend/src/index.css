@@ -14,6 +14,27 @@
 /* Force Nunito across all visual components, buttons, fields, and text elements */
 * {
   font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  /* Prevent tap highlight color on mobile */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Global native app behaviors */
+body {
+  /* Disable text selection */
+  -webkit-user-select: none;
+  user-select: none;
+  
+  /* Disable callout menus on iOS */
+  -webkit-touch-callout: none;
+  
+  /* Prevent pinch-to-zoom and double-tap zoom (allows scrolling) */
+  touch-action: pan-x pan-y;
+}
+
+/* Re-enable text selection for form inputs */
+input, textarea, select {
+  -webkit-user-select: auto;
+  user-select: auto;
 }
 
 .nunito-heading {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, ShoppingCart, Heart, Send, Star, ChevronRight, Home, Truck, Store, RotateCcw, Banknote, ShieldCheck, ArrowRight, ChevronDown, ChevronUp, CheckCircle2, CheckCircle, X, Play } from 'lucide-react';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useApp } from '../context/AppContext';
 import { CRAZY_DEALS } from '../data/mockData';
 
@@ -16,6 +17,7 @@ export default function ProductDetailsPage() {
   const [toastMessage, setToastMessage] = useState('');
   const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
   const [localSearchQuery, setLocalSearchQuery] = useState('');
+  const [fullscreenImage, setFullscreenImage] = useState(null);
   
   // Accordion and Tab States
   const [isHighlightsOpen, setIsHighlightsOpen] = useState(true);
@@ -156,6 +158,7 @@ export default function ProductDetailsPage() {
           {/* Main Product Images Slider */}
           <div 
             className="w-full h-full flex overflow-x-auto snap-x snap-mandatory scrollbar-none"
+            style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
             onScroll={(e) => {
               const scrollPosition = e.target.scrollLeft;
               const width = e.target.offsetWidth;
@@ -171,8 +174,9 @@ export default function ProductDetailsPage() {
               <img 
                 key={idx} 
                 src={img} 
+                onClick={() => setFullscreenImage(img)}
                 alt={`${product.name} - view ${idx + 1}`} 
-                className="w-full h-full flex-shrink-0 object-cover snap-center" 
+                className="w-full h-full flex-shrink-0 object-cover snap-center cursor-pointer" 
               />
             ))}
           </div>
@@ -748,6 +752,41 @@ export default function ProductDetailsPage() {
             ) : (
               <img src={selectedReviewMedia.url} alt="Review" className="w-full max-w-sm rounded-xl object-contain max-h-[80vh] shadow-2xl" />
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen Image Zoom Modal */}
+      {fullscreenImage && (
+        <div className="fixed inset-0 z-[300] bg-black flex flex-col animate-fade-in font-sans touch-none">
+          <div className="absolute top-0 left-0 right-0 p-4 flex justify-end z-[310]">
+            <button 
+              onClick={() => setFullscreenImage(null)} 
+              className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+          </div>
+          <div className="flex-1 flex items-center justify-center w-full h-full overflow-hidden">
+            <TransformWrapper
+              initialScale={1}
+              minScale={1}
+              maxScale={4}
+              centerOnInit={true}
+              wheel={{ step: 0.1 }}
+              doubleClick={{ mode: 'toggle' }}
+              pinch={{ step: 5 }}
+            >
+              {({ zoomIn, zoomOut, resetTransform }) => (
+                <TransformComponent wrapperStyle={{ width: '100vw', height: '100vh' }} contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img 
+                    src={fullscreenImage} 
+                    alt="Zoomed Product" 
+                    className="w-full h-auto max-h-[100dvh] object-contain pointer-events-auto" 
+                  />
+                </TransformComponent>
+              )}
+            </TransformWrapper>
           </div>
         </div>
       )}
