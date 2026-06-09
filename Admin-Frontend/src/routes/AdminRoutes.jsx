@@ -4,14 +4,12 @@ import AdminLayout from '../layouts/AdminLayout';
 import Auth from '../pages/admin/Auth';
 import Dashboard from '../pages/admin/Dashboard';
 import ProductModeration from '../modules/admin/products/ProductModeration';
-import VendorList from '../modules/admin/vendors/VendorList';
-import VendorApproval from '../modules/admin/vendors/VendorApproval';
-import SellerDashboard from '../modules/vendor/dashboard/Dashboard';
-import InventoryList from '../modules/vendor/inventory/InventoryList';
 import CategoryManager from '../modules/admin/catalog/CategoryManager';
 import BannerManager from '../modules/admin/catalog/BannerManager';
 import CategoryChipsManager from '../modules/admin/catalog/CategoryChipsManager';
 import HomeSectionsManager from '../modules/admin/catalog/HomeSectionsManager';
+import InventoryList from '../pages/admin/inventory/InventoryList';
+import ThirdPartyDelivery from '../pages/admin/delivery/ThirdPartyDelivery';
 
 // New Admin Pages
 import Analytics from '../pages/admin/Analytics';
@@ -34,6 +32,7 @@ import SubAdmins from '../pages/admin/system/SubAdmins';
 import Coupons from '../pages/admin/promotions/Coupons';
 import FlashSale from '../pages/admin/promotions/FlashSale';
 import FeaturedProducts from '../pages/admin/promotions/FeaturedProducts';
+import GameManager from '../pages/admin/promotions/GameManager';
 
 // Comms
 import Notifications from '../pages/admin/comms/Notifications';
@@ -85,6 +84,7 @@ const AdminRoutes = () => {
         <Route path="promotions/coupons" element={<Coupons />} />
         <Route path="promotions/flash-sale" element={<FlashSale />} />
         <Route path="promotions/featured" element={<FeaturedProducts />} />
+        <Route path="promotions/games" element={<GameManager />} />
 
         {/* Comms */}
         <Route path="comms/notifications" element={<Notifications />} />
@@ -94,11 +94,8 @@ const AdminRoutes = () => {
         <Route path="content/qna" element={<QnAModeration />} />
         <Route path="content/legal" element={<LegalPolicies />} />
         
-        {/* Partners */}
-        <Route path="vendors/all" element={<VendorList />} />
-        <Route path="vendors/approval" element={<VendorApproval />} />
-        <Route path="delivery/all" element={<AllDeliveries />} />
-        <Route path="delivery/approval" element={<DeliveryApproval />} />
+        {/* Delivery */}
+        <Route path="delivery/services" element={<ThirdPartyDelivery />} />
         
         {/* Finance */}
         <Route path="finance/earnings" element={<PlatformEarnings />} />

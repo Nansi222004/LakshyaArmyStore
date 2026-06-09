@@ -5,7 +5,7 @@ import {
   Bell, Search, Menu, ShieldCheck, Briefcase, Layers, Star,
   Truck, Store, Key, Settings, ChevronDown, ChevronRight,
   UserPlus, DollarSign, BarChart3, HelpCircle, FileText, Image, LayoutGrid, Layout,
-  Tag, Zap, MessageSquare, RotateCcw, Inbox,
+  Tag, Zap, MessageSquare, RotateCcw, Inbox, Gamepad2,
   Banknote, Percent, AlertCircle, CheckCircle2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -58,69 +58,36 @@ const AdminLayout = () => {
       items: [
         { name: 'Banner Manager', path: '/admin/storefront/banners', icon: <Image size={18} /> },
         { name: 'Category Chips', path: '/admin/storefront/chips', icon: <LayoutGrid size={18} /> },
-        { 
-          name: 'Home Sections', 
-          icon: <Layout size={18} />,
-          subItems: [
-            { name: 'Still Looking', path: '/admin/storefront/sections/still-looking' },
-            { name: 'Top Selection', path: '/admin/storefront/sections/top-selection' },
-            { name: 'Spotlight', path: '/admin/storefront/sections/spotlight' },
-            { name: 'Best Quality', path: '/admin/storefront/sections/best-quality' },
-            { name: 'Keep Shopping', path: '/admin/storefront/sections/keep-shopping' },
-          ]
-        },
-        { name: 'Category Manager', path: '/admin/categories', icon: <Layers size={18} /> },
       ]
     },
     {
       title: 'BUSINESS OPS',
       items: [
         {
-          name: 'Inventory',
+          name: 'Products Management',
           icon: <Package size={18} />,
           subItems: [
-            { name: 'Stock Levels', path: '/admin/inventory/all' },
+            { name: 'All Products', path: '/admin/inventory/all' },
             { name: 'Add Product', path: '/admin/inventory/add' },
             { name: 'Stock Alerts', path: '/admin/inventory/alerts' },
           ]
         },
         { name: 'Orders', path: '/admin/orders', icon: <ShoppingCart size={18} /> },
         { name: 'Returns & Refunds', path: '/admin/operations/returns', icon: <RotateCcw size={18} /> },
+        { name: 'Delivery Services', path: '/admin/delivery/services', icon: <Truck size={18} /> },
       ]
     },
     {
       title: 'PROMOTIONS',
       items: [
         { name: 'Coupon Manager', path: '/admin/promotions/coupons', icon: <Tag size={18} /> },
-        { name: 'Flash Sales', path: '/admin/promotions/flash-sale', icon: <Zap size={18} /> },
-        { name: 'Featured Selection', path: '/admin/promotions/featured', icon: <Star size={18} /> },
+        { name: 'Game Manager', path: '/admin/promotions/games', icon: <Gamepad2 size={18} /> },
       ]
     },
     {
       title: 'COMMS',
       items: [
         { name: 'Notification Hub', path: '/admin/comms/notifications', icon: <Bell size={18} /> },
-      ]
-    },
-    {
-      title: 'PARTNERS',
-      items: [
-        {
-          name: 'Vendors',
-          icon: <Store size={18} />,
-          subItems: [
-            { name: 'Active Vendors', path: '/admin/vendors/all' },
-            { name: 'Onboarding Requests', path: '/admin/vendors/approval' },
-          ]
-        },
-        {
-          name: 'Delivery Partners',
-          icon: <Truck size={18} />,
-          subItems: [
-            { name: 'All Partners', path: '/admin/delivery/all' },
-            { name: 'Onboarding', path: '/admin/delivery/approval' },
-          ]
-        },
       ]
     },
     {
@@ -132,23 +99,9 @@ const AdminLayout = () => {
       ]
     },
     {
-      title: 'SUPPORT',
-      items: [
-        { name: 'Help Desk', path: '/admin/support/tickets', icon: <Inbox size={18} /> },
-      ]
-    },
-    {
-      title: 'CATALOG',
-      items: [
-        { name: 'Moderation', path: '/admin/products/moderation', icon: <Layers size={18} /> },
-        { name: 'Categories', path: '/admin/categories', icon: <Briefcase size={18} /> },
-      ]
-    },
-    {
       title: 'FINANCE',
       items: [
         { name: 'Earnings', path: '/admin/finance/earnings', icon: <DollarSign size={18} /> },
-        { name: 'Payouts', path: '/admin/payouts', icon: <Banknote size={18} /> },
         { name: 'Commission Rules', path: '/admin/finance/rules', icon: <Percent size={18} /> },
         { name: 'Tax & GST Config', path: '/admin/finance/tax', icon: <ShieldCheck size={18} /> },
         { name: 'Delivery Charges', path: '/admin/finance/delivery-charges', icon: <Truck size={18} /> },
@@ -157,12 +110,12 @@ const AdminLayout = () => {
     {
       title: 'SYSTEM',
       items: [
-        { name: 'Sub-Admins & Roles', path: '/admin/system/sub-admins', icon: <ShieldCheck size={18} /> },
         { name: 'Settings', path: '/admin/settings', icon: <Settings size={18} /> },
         { name: 'Logout', path: '/admin/auth', icon: <LogOut size={18} /> },
       ]
     }
   ];
+
 
   const getPageTitle = () => {
     const currentPath = location.pathname;
@@ -208,7 +161,7 @@ const AdminLayout = () => {
           {menuGroups.map((group, gIdx) => (
             <div key={gIdx} className="space-y-2">
               {isSidebarOpen && (
-                <h3 className="px-4 text-[9px] font-semibold text-blue-300 uppercase tracking-[2px]">
+                <h3 className="px-4 text-[13px] font-[800] text-orange-600 uppercase tracking-[2px]">
                   {group.title}
                 </h3>
               )}
@@ -224,14 +177,14 @@ const AdminLayout = () => {
                       <div key={item.name} className="space-y-1">
                         <button
                           onClick={() => toggleSubMenu(item.name)}
-                          className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all ${isActive
-                              ? 'bg-blue-50 text-blue-500'
-                              : 'text-blue-900/60 hover:bg-blue-50/50 hover:text-blue-500'
+                          className={`w-full flex items-center justify-between px-4 py-2.5 transition-all outline-none focus:outline-none focus:ring-0 ${isActive
+                              ? 'bg-blue-50 text-blue-500 rounded-md'
+                              : 'text-blue-900/60 hover:bg-blue-50/50 hover:text-blue-500 rounded-xl'
                             }`}
                         >
                           <div className="flex items-center gap-3">
                             <span className={`flex-shrink-0 ${isActive ? 'text-blue-500' : ''}`}>{item.icon}</span>
-                            {isSidebarOpen && <span className="font-bold text-[13px] font-raleway">{item.name}</span>}
+                            {isSidebarOpen && <span className="font-bold text-[17px] font-raleway">{item.name}</span>}
                           </div>
                           {isSidebarOpen && (
                             <span className="opacity-40">{isMenuOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}</span>
@@ -248,7 +201,7 @@ const AdminLayout = () => {
                                 <Link
                                   key={sub.path}
                                   to={sub.path}
-                                  className={`block py-2.5 text-[13px] font-bold transition-all ${location.pathname === sub.path
+                                  className={`block py-2.5 text-[16px] font-bold transition-all outline-none focus:outline-none ${location.pathname === sub.path
                                       ? 'text-blue-500'
                                       : 'text-slate-400 hover:text-blue-500'
                                     }`}
@@ -267,13 +220,13 @@ const AdminLayout = () => {
                     <Link
                       key={item.path}
                       to={item.path}
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${isActive
-                          ? 'bg-blue-500 text-white shadow-lg shadow-blue-100'
-                          : 'text-blue-900/60 hover:bg-blue-50/50 hover:text-blue-500'
+                      className={`flex items-center gap-3 px-4 py-2.5 transition-all outline-none focus:outline-none focus:ring-0 ${isActive
+                          ? 'bg-blue-500 text-white shadow-md shadow-blue-100/30 rounded-md'
+                          : 'text-blue-900/60 hover:bg-blue-50/50 hover:text-blue-500 rounded-xl'
                         }`}
                     >
                       <span className="flex-shrink-0">{item.icon}</span>
-                      {isSidebarOpen && <span className="font-bold text-[13px] font-raleway">{item.name}</span>}
+                      {isSidebarOpen && <span className="font-bold text-[17px] font-raleway">{item.name}</span>}
                     </Link>
                   );
                 })}
