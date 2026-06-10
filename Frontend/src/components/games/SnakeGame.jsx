@@ -68,7 +68,7 @@ export default function SnakeGame({ onClose, addCoins }) {
     }
     const reward = Math.floor(score / 5);
     setEarnedCoins(reward);
-    if (reward > 0 && addCoins) {
+    if (addCoins) {
        addCoins(reward);
     }
   };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { AppProvider, useApp } from './context/AppContext';
 import Layout from './components/layout/Layout';
 
@@ -61,7 +62,7 @@ function AppContent() {
   useEffect(() => {
     // Once splash screen video completes, run hierarchical route matching
     if (!showSplash) {
-      const protectedRoutes = ['/wishlist', '/orders'];
+      const protectedRoutes = ['/wishlist', '/orders', '/games', '/profile', '/refer', '/saved-addresses', '/wallet', '/checkout'];
       const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
 
       if (!user && isProtectedRoute) {
@@ -98,6 +99,7 @@ function AppContent() {
         </div>
       )}
       
+      <Toaster position="bottom-center" toastOptions={{ duration: 3000 }} />
       <Layout>
       <Routes>
         <Route path="/" element={<Home />} />

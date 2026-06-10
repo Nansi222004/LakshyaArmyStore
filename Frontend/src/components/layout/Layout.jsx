@@ -7,6 +7,14 @@ import { useApp } from '../../context/AppContext';
 export default function Layout({ children }) {
   const location = useLocation();
   const { globalToast } = useApp();
+
+  React.useEffect(() => {
+    const scrollContainer = document.getElementById('main-scroll-container');
+    if (scrollContainer) {
+      scrollContainer.scrollTop = 0;
+    }
+  }, [location.pathname]);
+
   const isLoginPage = location.pathname.toLowerCase().startsWith('/login');
   const hideNavbar = isLoginPage || 
                      location.pathname.toLowerCase().startsWith('/studio') ||
@@ -35,11 +43,16 @@ export default function Layout({ children }) {
 
   const hideMobileNav = isLoginPage || location.pathname.toLowerCase().startsWith('/studio') || location.pathname.toLowerCase().startsWith('/profile') || location.pathname.toLowerCase().startsWith('/checkout') || location.pathname.toLowerCase().startsWith('/review-order') || location.pathname.toLowerCase().startsWith('/product') || location.pathname.toLowerCase().startsWith('/account') || location.pathname.toLowerCase().startsWith('/security') || location.pathname.toLowerCase().startsWith('/settings') || location.pathname.toLowerCase().startsWith('/wallet') || location.pathname.toLowerCase().startsWith('/coupons') || location.pathname.toLowerCase().startsWith('/refer') || location.pathname.toLowerCase().startsWith('/track-order') || location.pathname.toLowerCase().startsWith('/order-details') || location.pathname.toLowerCase().startsWith('/saved-addresses') || location.pathname.toLowerCase().startsWith('/cart');
 
+  const isStudio = location.pathname.toLowerCase().startsWith('/studio');
+
   return (
     <div className="h-[100dvh] bg-slate-100 flex justify-center items-start text-slate-800 antialiased font-sans overflow-hidden">
       {/* Centered Mobile Phone Frame */}
       <div className={`w-full max-w-md h-full bg-white shadow-2xl flex flex-col relative ${hideMobileNav ? 'pb-0' : 'pb-16'}`}>
-        <main id="main-scroll-container" className="flex-grow flex flex-col bg-white overflow-y-auto overflow-x-hidden relative scrollbar-none">
+        <main 
+          id="main-scroll-container" 
+          className={`flex-grow flex flex-col bg-white relative scrollbar-none ${isStudio ? 'overflow-hidden' : 'overflow-y-auto overflow-x-hidden'}`}
+        >
           {!hideNavbar && <Navbar />}
           {children}
         </main>

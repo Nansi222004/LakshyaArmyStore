@@ -6,7 +6,7 @@ import {
   Truck, Store, Key, Settings, ChevronDown, ChevronRight,
   UserPlus, DollarSign, BarChart3, HelpCircle, FileText, Image, LayoutGrid, Layout,
   Tag, Zap, MessageSquare, RotateCcw, Inbox, Gamepad2,
-  Banknote, Percent, AlertCircle, CheckCircle2
+  Banknote, Percent, AlertCircle, CheckCircle2, GitBranch
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,8 +28,18 @@ const AdminLayout = () => {
     }
   }, [navigate]);
 
-  // Get logged in admin info
-  const adminInfo = JSON.parse(localStorage.getItem('adminInfo') || '{"name":"Admin","email":"admin@gmail.com"}');
+  // Get logged in admin info as reactive state
+  const [adminInfo, setAdminInfo] = useState(() => {
+    return JSON.parse(localStorage.getItem('adminInfo') || '{"name":"Admin","email":"admin@gmail.com"}');
+  });
+
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      setAdminInfo(JSON.parse(localStorage.getItem('adminInfo') || '{"name":"Admin","email":"admin@gmail.com"}'));
+    };
+    window.addEventListener('adminInfoUpdated', handleProfileUpdate);
+    return () => window.removeEventListener('adminInfoUpdated', handleProfileUpdate);
+  }, []);
 
   // Proper logout function
   const handleLogout = () => {
@@ -76,6 +86,7 @@ const AdminLayout = () => {
       items: [
         { name: 'Banner Manager', path: '/admin/storefront/banners', icon: <Image size={18} /> },
         { name: 'Category Chips', path: '/admin/storefront/chips', icon: <LayoutGrid size={18} /> },
+        { name: 'Subcatgeory Chips', path: '/admin/storefront/subchips', icon: <LayoutGrid size={18} /> },
       ]
     },
     {
@@ -100,6 +111,7 @@ const AdminLayout = () => {
       items: [
         { name: 'Coupon Manager', path: '/admin/promotions/coupons', icon: <Tag size={18} /> },
         { name: 'Game Manager', path: '/admin/promotions/games', icon: <Gamepad2 size={18} /> },
+        { name: 'Referral Program', path: '/admin/promotions/referrals', icon: <GitBranch size={18} /> },
       ]
     },
     {
@@ -112,7 +124,7 @@ const AdminLayout = () => {
       title: 'CONTENT',
       items: [
         { name: 'Review Moderation', path: '/admin/content/reviews', icon: <MessageSquare size={18} /> },
-        { name: 'Q&A Moderation', path: '/admin/content/qna', icon: <HelpCircle size={18} /> },
+        { name: 'FAQs', path: '/admin/content/qna', icon: <HelpCircle size={18} /> },
         { name: 'Legal & Policies', path: '/admin/content/legal', icon: <FileText size={18} /> },
       ]
     },
@@ -120,8 +132,7 @@ const AdminLayout = () => {
       title: 'FINANCE',
       items: [
         { name: 'Earnings', path: '/admin/finance/earnings', icon: <DollarSign size={18} /> },
-        { name: 'Commission Rules', path: '/admin/finance/rules', icon: <Percent size={18} /> },
-        { name: 'Tax & GST Config', path: '/admin/finance/tax', icon: <ShieldCheck size={18} /> },
+        // { name: 'Tax & GST Config', path: '/admin/finance/tax', icon: <ShieldCheck size={18} /> },
         { name: 'Delivery Charges', path: '/admin/finance/delivery-charges', icon: <Truck size={18} /> },
       ]
     },
@@ -158,7 +169,7 @@ const AdminLayout = () => {
           {isSidebarOpen ? (
             <Link to="/admin/dashboard" className="flex items-center gap-3 group">
               <img 
-                src="/Logo (4).png" 
+                src="/HopeFinal.png" 
                 alt="Logo" 
                 className="h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
               />
@@ -166,7 +177,7 @@ const AdminLayout = () => {
           ) : (
             <div className="w-12 h-12 flex items-center justify-center transition-all">
               <img 
-                src="/Logo (4).png" 
+                src="/HopeFinal.png" 
                 alt="Logo" 
                 className="h-10 w-10 object-contain" 
               />
@@ -258,8 +269,12 @@ const AdminLayout = () => {
               onClick={() => navigate('/admin/settings')}
               className={`p-4 bg-blue-50 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-blue-100 transition-all`}
             >
-              <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-xs text-blue-500 border border-blue-100">
-                 {adminInfo.name?.charAt(0).toUpperCase() || 'A'}
+              <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-xs text-blue-500 border border-blue-100 overflow-hidden">
+                 {adminInfo.avatar ? (
+                    <img src={adminInfo.avatar} alt="Admin" className="w-full h-full object-cover" />
+                 ) : (
+                    adminInfo.name?.charAt(0).toUpperCase() || 'A'
+                 )}
               </div>
               {isSidebarOpen && (
                 <div className="flex-1 min-w-0">
@@ -393,9 +408,13 @@ const AdminLayout = () => {
                </div>
                <div 
                  onClick={() => navigate('/admin/settings')}
-                 className={`w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white font-semibold text-lg shadow-xl cursor-pointer hover:scale-105 active:scale-95 transition-all`}
+                 className={`w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white font-semibold text-lg shadow-xl cursor-pointer hover:scale-105 active:scale-95 transition-all overflow-hidden`}
                >
-                 A
+                 {adminInfo.avatar ? (
+                    <img src={adminInfo.avatar} alt="Admin" className="w-full h-full object-cover" />
+                 ) : (
+                    adminInfo.name?.charAt(0).toUpperCase() || 'A'
+                 )}
                </div>
             </div>
           </div>

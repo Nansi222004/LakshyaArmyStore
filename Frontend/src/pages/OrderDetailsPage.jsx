@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Copy, CheckCircle2, Star, MapPin, Receipt, Download, ChevronDown, PenLine, X, Package, Image as ImageIcon, Video } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import toast from 'react-hot-toast';
 
 export default function OrderDetailsPage() {
   const navigate = useNavigate();
@@ -32,21 +33,33 @@ export default function OrderDetailsPage() {
 
   const handlePhotoUpload = (e) => {
     if (e.target.files) {
-      const newPhotos = Array.from(e.target.files).map(f => URL.createObjectURL(f));
+      const filesArray = Array.from(e.target.files);
+      const invalidFile = filesArray.find(f => f.size > 10 * 1024 * 1024);
+      if (invalidFile) {
+        toast.error('Image size cannot exceed 10MB!');
+        return;
+      }
+      const newPhotos = filesArray.map(f => URL.createObjectURL(f));
       setReviewPhotos(prev => [...prev, ...newPhotos]);
     }
   };
 
   const handleVideoUpload = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setReviewVideo(URL.createObjectURL(e.target.files[0]));
+      const file = e.target.files[0];
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('Video size cannot exceed 10MB!');
+        return;
+      }
+      setReviewVideo(URL.createObjectURL(file));
     }
   };
   const [isOffersExpanded, setIsOffersExpanded] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isAddressExpanded, setIsAddressExpanded] = useState(false);
 
-  const isDelivered = id !== 'ORD-8X92-K1';
+  const globalOrder = orders?.find(o => o.id === id);
+  const isDelivered = globalOrder ? globalOrder.status === 'Delivered' : id !== 'ORD-8X92-K1';
 
   const MOCK_ORDER_DETAILS = {
     'ORD-8X92-K1': {
@@ -69,45 +82,55 @@ export default function OrderDetailsPage() {
     }
   };
 
-  const globalOrder = orders?.find(o => o.id === id);
-  const globalProduct = globalOrder?.items?.[0];
+  const orderItems = globalOrder ? globalOrder.items : [
+    {
+      id: 'mock-1',
+      name: (MOCK_ORDER_DETAILS[id] || MOCK_ORDER_DETAILS['ORD-3M44-P9']).name,
+      image: (MOCK_ORDER_DETAILS[id] || MOCK_ORDER_DETAILS['ORD-3M44-P9']).image,
+      price: (MOCK_ORDER_DETAILS[id] || MOCK_ORDER_DETAILS['ORD-3M44-P9']).selling,
+      quantity: 1
+    }
+  ];
 
-  const product = globalProduct ? {
-    name: globalProduct.name,
-    image: globalProduct.image,
-    price: globalProduct.originalPrice || globalProduct.price,
-    selling: globalProduct.price
-  } : (MOCK_ORDER_DETAILS[id] || MOCK_ORDER_DETAILS['ORD-3M44-P9']);
+  // Helper product details for reviews / first item reference
+  const firstItem = orderItems[0];
+  const product = {
+    name: firstItem.name,
+    image: firstItem.image,
+    price: firstItem.price * 1.2, // mock original price
+    selling: firstItem.price
+  };
 
-  const fullAddress = "83 kishan pura mataji mandir, sector no. 5 new harsook, Jaipur, Rajasthan 302033";
+  const deliveryAddress = globalOrder?.deliveryAddress || {
+    name: user?.name || "Mukesh Jinodiya",
+    type: "Home",
+    address: "83 kishan pura mataji mandir, sector no. 5 new harsook, Jaipur, Rajasthan 302033",
+    pincode: "302033"
+  };
+
+  const orderTotal = globalOrder ? globalOrder.total : (product.selling + 7 - 150);
 
   const handleDownload = () => {
     setIsDownloading(true);
     setTimeout(() => {
-      // Create invoice content
+      const itemsText = orderItems.map(item => `${item.quantity}x ${item.name} - ₹${item.price}`).join('\n');
       const invoiceContent = `
 =========================================
                MYNZO INVOICE
 =========================================
 Order ID: ${id}
-Date: ${new Date().toLocaleDateString()}
+Date: ${globalOrder?.date || new Date().toLocaleDateString()}
 
 Items:
-1x ${product.name}
+${itemsText}
 
 -----------------------------------------
-Listing Price:      ₹${product.price}
-Selling Price:      ₹${product.selling}
-Total Fees:         ₹7
-Other Discount:    -₹150
------------------------------------------
-Total Amount:       ₹${product.selling + 7 - 150}
-Paid By:            UPI
+Total Amount:       ₹${orderTotal}
+Paid By:            ${globalOrder?.paymentMethod || 'UPI'}
 
 Thank you for shopping with Mynzo!
 =========================================
 `;
-      // Create a Blob and trigger download
       const blob = new Blob([invoiceContent], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -124,7 +147,7 @@ Thank you for shopping with Mynzo!
 
   const handleCopyId = () => {
     navigator.clipboard.writeText(id);
-    alert('Order ID copied to clipboard!');
+    toast.success('Order ID copied to clipboard!');
   };
 
   return (
@@ -148,19 +171,29 @@ Thank you for shopping with Mynzo!
       <div className="flex flex-col">
         {/* Top Section */}
         <div className="p-3">
-          {/* Compact Product & Order ID */}
-          <div className="flex gap-3 items-center mb-3">
-            <div className="w-14 h-14 bg-pink-50 rounded-lg p-1.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-100 shadow-sm">
-               <img src={product.image} alt="Product" className="w-full h-full object-contain mix-blend-multiply" />
-            </div>
-            <div className="flex flex-col justify-center">
-              <p className="text-[13px] text-slate-800 line-clamp-1 font-medium">
-                {product.name}
-              </p>
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-1">
-                <span>Order #{id}</span>
+          {/* Products List & Order ID */}
+          <div className="flex flex-col gap-3 mb-3">
+            {orderItems.map((item, idx) => (
+              <div key={item.id || idx} className="flex gap-3 items-center p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+                <div className="w-14 h-14 bg-pink-50 rounded-lg p-1.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-200/50 shadow-sm">
+                   <img src={item.image} alt={item.name} className="w-full h-full object-contain mix-blend-multiply" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] text-slate-800 line-clamp-1 font-semibold">
+                    {item.name}
+                  </p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Qty: {item.quantity} • Price: ₹{item.price}
+                  </p>
+                </div>
+              </div>
+            ))}
+            <div className="flex items-center gap-1.5 text-[11px] text-slate-500 px-1 mt-1 justify-between">
+              <div className="flex items-center gap-1">
+                <span>Order ID: #{id}</span>
                 <Copy onClick={handleCopyId} className="w-3.5 h-3.5 text-[#ee4923] cursor-pointer hover:text-[#ff5c3f]" />
               </div>
+              <span className="font-bold text-slate-600">Total Items: {orderItems.reduce((acc, curr) => acc + curr.quantity, 0)}</span>
             </div>
           </div>
 
@@ -169,7 +202,7 @@ Thank you for shopping with Mynzo!
             <div className="p-3 border-b border-slate-100 flex items-center justify-between">
                <div>
                  <h2 className={`text-[15px] font-bold ${isDelivered ? 'text-green-700' : 'text-[#ee4923]'} mb-1`}>
-                   {isDelivered ? 'Delivered, Apr 13' : 'Arriving by May 10'}
+                   {isDelivered ? `Delivered, ${globalOrder?.date || 'Apr 13'}` : 'Arriving by May 10'}
                  </h2>
                  {isDelivered ? (
                    <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
@@ -372,8 +405,8 @@ Thank you for shopping with Mynzo!
              >
                 <MapPin className="w-5 h-5 text-slate-600 flex-shrink-0 mt-0.5 group-hover:text-slate-800 transition-colors" />
                 <p className={`text-[14px] text-slate-700 leading-snug transition-all ${isAddressExpanded ? '' : 'line-clamp-2'}`}>
-                  <span className="font-bold text-slate-900 mr-1">Home</span>
-                  {fullAddress}
+                  <span className="font-bold text-slate-900 mr-1">{deliveryAddress.type}</span>
+                  {deliveryAddress.address}, {deliveryAddress.pincode}
                 </p>
              </div>
              <div className="flex gap-3 items-center pt-2">
@@ -381,7 +414,7 @@ Thank you for shopping with Mynzo!
                   <svg className="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 </div>
                 <p className="text-[14px] font-semibold text-slate-800">
-                  Mukesh Jinodiya <span className="font-normal text-slate-600 ml-1">9302841832</span>
+                  {deliveryAddress.name} <span className="font-normal text-slate-600 ml-1">{user?.phone || '9302841832'}</span>
                 </p>
              </div>
           </div>
@@ -396,19 +429,19 @@ Thank you for shopping with Mynzo!
              <div className="space-y-3 text-[14px]">
                 <div className="flex justify-between items-center text-slate-700">
                   <span>Listing price</span>
-                  <span>₹{product.price}</span>
+                  <span>₹{orderItems.reduce((acc, curr) => acc + (curr.price * 1.2 * curr.quantity), 0).toFixed(0)}</span>
                 </div>
                 <div className="flex justify-between items-center text-slate-700">
                   <span className="flex items-center gap-1">Selling price <div className="w-3.5 h-3.5 border border-slate-400 rounded-full flex items-center justify-center text-[8px]">i</div></span>
-                  <span>₹{product.selling}</span>
+                  <span>₹{orderItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0)}</span>
                 </div>
                 <div className="flex justify-between items-center text-slate-700">
                   <span className="flex items-center gap-1">Total fees <ChevronDown className="w-4 h-4" /></span>
-                  <span>₹7</span>
+                  <span>₹15</span>
                 </div>
                 <div className="flex justify-between items-center text-slate-700">
-                  <span className="flex items-center gap-1">Other discount <ChevronDown className="w-4 h-4" /></span>
-                  <span className="text-green-600">-₹150</span>
+                  <span className="flex items-center gap-1">Delivery Charges</span>
+                  <span className="text-emerald-600 font-medium">FREE</span>
                 </div>
              </div>
              
@@ -416,14 +449,14 @@ Thank you for shopping with Mynzo!
              
              <div className="flex justify-between items-center text-[15px] font-bold text-slate-800 mb-4">
                <span>Total amount</span>
-               <span>₹{product.selling + 7 - 150}</span>
+               <span>₹{orderTotal}</span>
              </div>
 
              <div className="bg-slate-50 rounded-lg p-3 flex justify-between items-center text-[14px]">
                <span className="text-slate-700">Paid By</span>
                <div className="flex items-center gap-1 font-semibold text-slate-800">
-                 <div className="border border-slate-300 rounded px-1 text-[10px] font-black tracking-widest">UPI</div>
-                 UPI
+                 <div className="border border-slate-300 rounded px-1 text-[10px] font-black tracking-widest uppercase">{globalOrder?.paymentMethod || 'COD'}</div>
+                 {globalOrder?.paymentMethod || 'Cash on Delivery'}
                </div>
              </div>
 

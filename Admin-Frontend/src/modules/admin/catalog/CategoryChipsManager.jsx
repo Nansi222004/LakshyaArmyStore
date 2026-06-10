@@ -1,72 +1,294 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Plus, Trash2, Edit2, GripVertical, Save, X,
   CheckCircle2, Eye, EyeOff, Layers, LayoutGrid
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-// These match EXACTLY the CATEGORIES array in CategoryNavbar.jsx
-const INITIAL_CATEGORIES = [
-  { id: 'for-you',     label: 'For You',     emoji: '🏠', active: true,  order: 1 },
-  { id: 'beauty',      label: 'Beauty',      emoji: '💄', active: true,  order: 2 },
-  { id: 'gifting',     label: 'Gifting',     emoji: '🎁', active: true,  order: 3 },
-  { id: 'electronics', label: 'Electronics', emoji: '📱', active: true,  order: 4 },
-  { id: 'jewellery',   label: 'Jewellery',   emoji: '💎', active: true,  order: 5 },
-  { id: 'toys',        label: 'Toys',        emoji: '🧸', active: true,  order: 6 },
-  { id: 'stationery',  label: 'Stationery',  emoji: '✏️', active: true,  order: 7 },
-  { id: 'fashion',     label: 'Fashion',     emoji: '👗', active: true,  order: 8 },
-  { id: 'electrical',  label: 'Electrical',  emoji: '⚡', active: false, order: 9 },
-];
+import toast from 'react-hot-toast';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 const BANNER_TABS = ['Home', 'Fashion', 'Beauty', 'Toys', 'Electronics', 'Jewellery', 'Art. Jewellery', '1g Gold', 'Cosmetics'];
 
-const EMPTY_CAT = { label: '', emoji: '🏷️', active: true };
+const EMPTY_CAT = { categoryName: '', image: '', active: true };
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+  if (
+    imagePath.startsWith('http://') || 
+    imagePath.startsWith('https://') || 
+    imagePath.startsWith('data:') ||
+    imagePath.startsWith('blob:')
+  ) {
+    return imagePath;
+  }
+  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  return `${apiBase}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+};
+
+// Define CategoryForm OUTSIDE of CategoryChipsManager to prevent recreating the component on every state change (which causes loss of focus/keyboard re-rendering).
+const CategoryForm = ({ onSave, onCancel, label, formData, setFormData, imagePreview, setImageFile, setImagePreview }) => (
+  <motion.div
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 space-y-3"
+  >
+    <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{label}</p>
+    <div className="grid grid-cols-3 gap-3">
+      <div className="col-span-2">
+        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Category Name *</label>
+        <input
+          value={formData.categoryName}
+          onChange={e => setFormData(p => ({ ...p, categoryName: e.target.value }))}
+          placeholder="e.g. Home Decor"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
+        />
+      </div>
+      <div>
+        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Image Upload *</label>
+        <div className="flex items-center gap-2">
+          {imagePreview ? (
+            <img src={getImageUrl(imagePreview)} className="w-9 h-9 rounded-lg object-cover border border-slate-200" alt="Preview" />
+          ) : (
+            <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-[9px] leading-tight font-black uppercase text-center">No img</div>
+          )}
+          <label className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[9px] font-black uppercase tracking-widest cursor-pointer hover:bg-slate-50 transition-all select-none">
+            Upload
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  if (file.size > 10 * 1024 * 1024) {
+                    toast.error('Image size cannot exceed 10MB!');
+                    return;
+                  }
+                  setImageFile(file);
+                  setImagePreview(URL.createObjectURL(file));
+                }
+              }}
+            />
+          </label>
+        </div>
+      </div>
+    </div>
+    <label className="flex items-center gap-2 cursor-pointer">
+      <input
+        type="checkbox"
+        checked={formData.active}
+        onChange={e => setFormData(p => ({ ...p, active: e.target.checked }))}
+        className="accent-blue-500 w-4 h-4"
+      />
+      <span className="text-[11px] font-bold text-slate-600">Visible in app</span>
+    </label>
+    <div className="flex gap-2">
+      <button onClick={onSave} className="px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+        <Save size={12} /> Save
+      </button>
+      <button onClick={onCancel} className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-1.5">
+        <X size={12} /> Cancel
+      </button>
+    </div>
+  </motion.div>
+);
 
 const CategoryChipsManager = () => {
-  const [categories, setCategories] = useState(INITIAL_CATEGORIES);
+  const [categories, setCategories] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(EMPTY_CAT);
   const [saved, setSaved] = useState(false);
+
+  // File Upload State
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
 
   // Banner tabs section
   const [bannerTabs, setBannerTabs] = useState(BANNER_TABS);
   const [newTabName, setNewTabName] = useState('');
   const [isAddingTab, setIsAddingTab] = useState(false);
 
-  const handleToggle = (id) => {
-    setCategories(prev => prev.map(c => c.id === id ? { ...c, active: !c.active } : c));
+  // Confirm Modal state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmTitle, setConfirmTitle] = useState('');
+  const [confirmMessage, setConfirmMessage] = useState('');
+
+  const triggerConfirm = (title, message, action) => {
+    setConfirmTitle(title);
+    setConfirmMessage(message);
+    setConfirmAction(() => action);
+    setConfirmOpen(true);
   };
 
-  const handleDelete = (id) => {
-    setCategories(prev => prev.filter(c => c.id !== id));
+  const fetchChips = async () => {
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/admin/catalog/chips`);
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCategories(data.chips);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to load category chips from server');
+    }
+  };
+
+  useEffect(() => {
+    fetchChips();
+  }, []);
+
+  const handleToggle = async (id) => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    const cat = categories.find(c => c.id === id);
+    if (!cat) return;
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/admin/catalog/chips/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          active: !cat.active
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success('Visibility toggled!');
+        fetchChips();
+      } else {
+        toast.error(data.message || 'Failed to toggle visibility');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    triggerConfirm(
+      'Delete Category',
+      'Are you sure you want to permanently delete this category chip?',
+      async () => {
+        const token = localStorage.getItem('adminToken');
+        if (!token) return;
+        try {
+          const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const res = await fetch(`${apiBase}/admin/catalog/chips/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            toast.success(data.message || 'Category chip deleted!');
+            fetchChips();
+          } else {
+            toast.error(data.message || 'Failed to delete category chip');
+          }
+        } catch (err) {
+          console.error(err);
+          toast.error('Could not connect to backend server');
+        }
+      }
+    );
   };
 
   const handleEdit = (cat) => {
     setEditingId(cat.id);
-    setFormData({ label: cat.label, emoji: cat.emoji, active: cat.active });
+    setFormData({ categoryName: cat.categoryName, image: cat.image, active: cat.active });
+    setImagePreview(cat.image || '');
+    setImageFile(null);
     setIsAdding(false);
   };
 
-  const handleSaveEdit = () => {
-    if (!formData.label) return;
-    setCategories(prev => prev.map(c => c.id === editingId ? { ...c, ...formData } : c));
-    setEditingId(null);
-    setFormData(EMPTY_CAT);
+  const handleSaveEdit = async () => {
+    if (!formData.categoryName) return;
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const bodyFormData = new FormData();
+      bodyFormData.append('categoryName', formData.categoryName);
+      bodyFormData.append('active', formData.active);
+      if (imageFile) {
+        bodyFormData.append('image', imageFile);
+      }
+
+      const res = await fetch(`${apiBase}/admin/catalog/chips/${editingId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: bodyFormData
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success(data.message || 'Category chip updated!');
+        fetchChips();
+        setEditingId(null);
+        setFormData(EMPTY_CAT);
+        setImageFile(null);
+        setImagePreview('');
+      } else {
+        toast.error(data.message || 'Failed to update category chip');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
   };
 
-  const handleAddNew = () => {
-    if (!formData.label) return;
-    const newId = formData.label.toLowerCase().replace(/\s+/g, '-');
-    setCategories(prev => [...prev, {
-      id: newId,
-      label: formData.label,
-      emoji: formData.emoji,
-      active: formData.active,
-      order: prev.length + 1
-    }]);
-    setIsAdding(false);
-    setFormData(EMPTY_CAT);
+  const handleAddNew = async () => {
+    if (!formData.categoryName) return;
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const bodyFormData = new FormData();
+      bodyFormData.append('categoryName', formData.categoryName);
+      bodyFormData.append('active', formData.active);
+      bodyFormData.append('order', categories.length + 1);
+      if (imageFile) {
+        bodyFormData.append('image', imageFile);
+      }
+
+      const res = await fetch(`${apiBase}/admin/catalog/chips`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: bodyFormData
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success(data.message || 'Category chip added!');
+        fetchChips();
+        setIsAdding(false);
+        setFormData(EMPTY_CAT);
+        setImageFile(null);
+        setImagePreview('');
+      } else {
+        toast.error(data.message || 'Failed to add category chip');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
   };
 
   const handleAddTab = () => {
@@ -80,55 +302,6 @@ const CategoryChipsManager = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
-
-  const CategoryForm = ({ onSave, onCancel, label }) => (
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 space-y-3"
-    >
-      <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{label}</p>
-      <div className="grid grid-cols-3 gap-3">
-        <div className="col-span-2">
-          <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Category Name *</label>
-          <input
-            value={formData.label}
-            onChange={e => setFormData(p => ({ ...p, label: e.target.value }))}
-            placeholder="e.g. Home Decor"
-            className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
-          />
-        </div>
-        <div>
-          <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emoji / Icon</label>
-          <input
-            value={formData.emoji}
-            onChange={e => setFormData(p => ({ ...p, emoji: e.target.value }))}
-            placeholder="🏷️"
-            className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[14px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white text-center"
-            maxLength={4}
-          />
-        </div>
-      </div>
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={formData.active}
-          onChange={e => setFormData(p => ({ ...p, active: e.target.checked }))}
-          className="accent-blue-500 w-4 h-4"
-        />
-        <span className="text-[11px] font-bold text-slate-600">Visible in app</span>
-      </label>
-      <div className="flex gap-2">
-        <button onClick={onSave} className="px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
-          <Save size={12} /> Save
-        </button>
-        <button onClick={onCancel} className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-1.5">
-          <X size={12} /> Cancel
-        </button>
-      </div>
-    </motion.div>
-  );
 
   const activeCount = categories.filter(c => c.active).length;
 
@@ -189,9 +362,15 @@ const CategoryChipsManager = () => {
           <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-2">Live Preview</p>
           <div className="flex gap-1 flex-nowrap">
             {categories.filter(c => c.active).map((cat) => (
-              <div key={cat.id} className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100 flex-shrink-0">
-                <span className="text-base">{cat.emoji}</span>
-                <span className="text-[8px] font-bold text-slate-600 whitespace-nowrap">{cat.label}</span>
+              <div key={cat.id} className="flex flex-col items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100 flex-shrink-0">
+                <div className="w-8 h-8 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center">
+                  {cat.image ? (
+                    <img src={getImageUrl(cat.image)} className="w-full h-full object-cover" alt="" />
+                  ) : (
+                    <Layers size={12} className="text-slate-400" />
+                  )}
+                </div>
+                <span className="text-[8px] font-bold text-slate-600 whitespace-nowrap">{cat.categoryName}</span>
               </div>
             ))}
           </div>
@@ -203,7 +382,12 @@ const CategoryChipsManager = () => {
             <CategoryForm
               label="Add new category chip"
               onSave={handleAddNew}
-              onCancel={() => { setIsAdding(false); setFormData(EMPTY_CAT); }}
+              onCancel={() => { setIsAdding(false); setFormData(EMPTY_CAT); setImageFile(null); setImagePreview(''); }}
+              formData={formData}
+              setFormData={setFormData}
+              imagePreview={imagePreview}
+              setImageFile={setImageFile}
+              setImagePreview={setImagePreview}
             />
           )}
         </AnimatePresence>
@@ -222,9 +406,14 @@ const CategoryChipsManager = () => {
               >
                 {editingId === cat.id ? (
                   <CategoryForm
-                    label={`Editing: "${cat.label}"`}
+                    label={`Editing: "${cat.categoryName}"`}
                     onSave={handleSaveEdit}
-                    onCancel={() => { setEditingId(null); setFormData(EMPTY_CAT); }}
+                    onCancel={() => { setEditingId(null); setFormData(EMPTY_CAT); setImageFile(null); setImagePreview(''); }}
+                    formData={formData}
+                    setFormData={setFormData}
+                    imagePreview={imagePreview}
+                    setImageFile={setImageFile}
+                    setImagePreview={setImagePreview}
                   />
                 ) : (
                   <div className={`bg-white border rounded-xl p-3 flex items-center gap-3 shadow-sm hover:shadow-md transition-all group ${!cat.active ? 'opacity-50 border-slate-100' : 'border-slate-100'}`}>
@@ -233,13 +422,17 @@ const CategoryChipsManager = () => {
                     </div>
                     {/* Order */}
                     <span className="text-[10px] font-black text-slate-300 w-5 text-center font-roboto">#{index + 1}</span>
-                    {/* Emoji */}
-                    <div className="w-9 h-9 bg-slate-50 rounded-lg flex items-center justify-center text-xl border border-slate-100 flex-shrink-0">
-                      {cat.emoji}
+                    {/* Image */}
+                    <div className="w-9 h-9 bg-slate-50 rounded-lg overflow-hidden flex items-center justify-center border border-slate-100 flex-shrink-0">
+                      {cat.image ? (
+                        <img src={getImageUrl(cat.image)} className="w-full h-full object-cover" alt="icon" />
+                      ) : (
+                        <Layers size={14} className="text-slate-400" />
+                      )}
                     </div>
                     {/* Info */}
                     <div className="flex-1">
-                      <p className="text-[13px] font-bold text-slate-900 font-montserrat leading-tight">{cat.label}</p>
+                      <p className="text-[13px] font-bold text-slate-900 font-montserrat leading-tight">{cat.categoryName}</p>
                       <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter font-roboto">ID: {cat.id}</p>
                     </div>
                     {/* Status */}
@@ -248,8 +441,18 @@ const CategoryChipsManager = () => {
                     </span>
                     {/* Actions */}
                     <div className="flex items-center gap-1.5">
-                      <button onClick={() => handleToggle(cat.id)} className={`p-1.5 rounded-lg transition-all ${cat.active ? 'bg-green-50 text-green-500 hover:bg-green-100' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}>
-                        {cat.active ? <Eye size={13} /> : <EyeOff size={13} />}
+                      {/* Toggle Switch */}
+                      <button
+                        onClick={() => handleToggle(cat.id)}
+                        className={`w-7 h-4 rounded-full p-0.5 transition-colors duration-200 focus:outline-none flex items-center ${
+                          cat.active ? 'bg-green-500 justify-end' : 'bg-slate-300 justify-start'
+                        }`}
+                      >
+                        <motion.div
+                          layout
+                          className="w-3 h-3 rounded-full bg-white shadow-sm"
+                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                        />
                       </button>
                       <button onClick={() => handleEdit(cat)} className="p-1.5 bg-slate-50 text-slate-600 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
                         <Edit2 size={13} />
@@ -266,60 +469,23 @@ const CategoryChipsManager = () => {
         </div>
       </div>
 
-      {/* ─── SECTION 2: Banner Tabs ─── */}
-      <div className="space-y-3">
-        <div className="flex items-center gap-3">
-          <h2 className="text-[11px] font-black text-slate-500 uppercase tracking-widest font-montserrat">Home Banner Tabs</h2>
-          <div className="flex-1 h-px bg-slate-100" />
-          <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Tabs for carousel banners in home page</span>
-        </div>
-
-        <div className="bg-white border border-slate-100 rounded-xl p-4 space-y-3">
-          <div className="flex flex-wrap gap-2">
-            {bannerTabs.map((tab, i) => (
-              <div key={i} className="flex items-center gap-1.5 pl-3 pr-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg">
-                <span className="text-[11px] font-bold text-slate-700">{tab}</span>
-                <button onClick={() => setBannerTabs(prev => prev.filter((_, idx) => idx !== i))} className="text-slate-300 hover:text-red-500 transition-colors">
-                  <X size={12} />
-                </button>
-              </div>
-            ))}
-            <button
-              onClick={() => setIsAddingTab(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 border-2 border-dashed border-slate-200 rounded-lg text-[10px] font-black text-slate-400 hover:border-blue-400 hover:text-blue-500 transition-all"
-            >
-              <Plus size={11} /> Add Tab
-            </button>
-          </div>
-          <AnimatePresence>
-            {isAddingTab && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="flex gap-2">
-                <input
-                  value={newTabName}
-                  onChange={e => setNewTabName(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleAddTab()}
-                  placeholder="Tab name..."
-                  className="border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 w-40"
-                  autoFocus
-                />
-                <button onClick={handleAddTab} className="px-3 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black">Add</button>
-                <button onClick={() => { setIsAddingTab(false); setNewTabName(''); }} className="px-3 py-2 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black">Cancel</button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
       {/* Info */}
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
         <Layers size={18} className="text-blue-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">How it works</p>
           <p className="text-[11px] text-blue-400 font-medium mt-1 leading-relaxed">
-            <strong>Category Chips</strong> appear in the scrollable navigation bar at the top of the user home page. <strong>Banner Tabs</strong> control which categories have a dedicated banner carousel section in the home page. Use the <strong>Banner Manager</strong> to add/edit the actual banner images for each tab.
+            <strong>Category Chips</strong> appear in the scrollable navigation bar at the top of the user home page.
           </p>
         </div>
       </div>
+      <ConfirmModal
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={confirmAction}
+        title={confirmTitle}
+        message={confirmMessage}
+      />
     </div>
   );
 };

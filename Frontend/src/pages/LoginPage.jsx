@@ -2,9 +2,10 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { ArrowLeft, Edit2, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import dollImage from '../assets/DollMynzo-removebg-preview.png';
 
-const API_URL = 'http://localhost:5000/api/auth';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth`;
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -25,10 +26,20 @@ export default function LoginPage() {
   const [signInError, setSignInError] = useState('');
   const [signInSuccess, setSignInSuccess] = useState('');
 
+  // Autofocus the first digit input when OTP screen is loaded
+  React.useEffect(() => {
+    if (otpSent) {
+      setTimeout(() => {
+        otpRefs[0].current?.focus();
+      }, 100);
+    }
+  }, [otpSent]);
+
   const handleSendOtp = async (e) => {
     e.preventDefault();
     if (!phoneNumber.trim() || phoneNumber.length < 10) {
       setSignInError('Please enter a valid 10-digit phone number');
+      toast.error('Please enter a valid 10-digit phone number');
       return;
     }
 
@@ -45,19 +56,23 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setSignInError(data.message || 'Failed to send OTP');
+        const errorMsg = data.message || 'Failed to send OTP';
+        setSignInError(errorMsg);
+        toast.error(errorMsg);
         return;
       }
 
       setOtpSent(true);
-      setSignInSuccess(
-        data.isNewUser
-          ? '✨ New account milega! OTP enter karo.'
-          : '📱 OTP sent! Enter karo.'
-      );
+      const successMsg = data.isNewUser
+        ? '✨ New account created! Enter the OTP.'
+        : '📱 OTP sent successfully!';
+      setSignInSuccess(successMsg);
+      toast.success(successMsg);
     } catch (err) {
       console.error(err);
-      setSignInError('Server se connect nahi ho pa raha. Backend chal raha hai?');
+      const errorMsg = 'Could not connect to server. Is backend running?';
+      setSignInError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -90,6 +105,7 @@ export default function LoginPage() {
 
     if (fullOtp.length < 6) {
       setSignInError('Please enter the complete 6-digit OTP');
+      toast.error('Please enter the complete 6-digit OTP');
       return;
     }
 
@@ -106,7 +122,9 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setSignInError(data.message || 'OTP verification failed');
+        const errorMsg = data.message || 'OTP verification failed';
+        setSignInError(errorMsg);
+        toast.error(errorMsg);
         return;
       }
 
@@ -118,6 +136,7 @@ export default function LoginPage() {
       // Update app context
       if (setUser) {
         setUser({
+          id: data.user._id || data.user.id || null,
           name: data.user.name || null,
           phone: `+91 ${phoneNumber}`,
           email: data.user.email || null,
@@ -127,10 +146,13 @@ export default function LoginPage() {
         });
       }
 
+      toast.success(data.message || 'Login successful!');
       navigate('/');
     } catch (err) {
       console.error(err);
-      setSignInError('Server se connect nahi ho pa raha. Backend chal raha hai?');
+      const errorMsg = 'Could not connect to server. Is backend running?';
+      setSignInError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

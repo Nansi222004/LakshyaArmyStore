@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Users as UsersIcon, Search, Filter, Mail, 
@@ -7,6 +7,7 @@ import {
   Download, UserPlus, Star, Edit2, ShieldAlert, Eye
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const MOCK_USERS = [
   { id: 'USR001', name: 'Rahul Sharma', email: 'rahul@example.com', phone: '+91 98765 43210', joined: '2026-05-01', totalSpent: '₹45,200', orders: 12, status: 'Active' },
@@ -20,7 +21,7 @@ const Users = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [usersList, setUsersList] = useState(MOCK_USERS);
+  const [usersList, setUsersList] = useState([]);
   const [filterStatus, setFilterStatus] = useState('All');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,6 +30,43 @@ const Users = () => {
     phone: '',
     status: 'Active'
   });
+
+  const fetchUsers = async () => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/admin/auth/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        const formattedUsers = data.users.map((u, index) => ({
+          id: u._id,
+          name: u.name || 'Anonymous User',
+          email: u.email || 'N/A',
+          phone: u.phone || 'N/A',
+          joined: new Date(u.createdAt).toISOString().split('T')[0],
+          totalSpent: '₹0',
+          orders: 0,
+          status: 'Active'
+        }));
+        setUsersList(formattedUsers);
+      } else {
+        toast.error(data.message || 'Failed to load users');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const filteredUsers = usersList.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -45,23 +83,49 @@ const Users = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveCustomer = () => {
-    if (!formData.name || !formData.email) return;
+  const handleSaveCustomer = async () => {
+    if (!formData.name || !formData.phone) {
+      toast.error('Name and Phone number are required');
+      return;
+    }
 
-    const newUser = {
-      id: `USR${String(usersList.length + 1).padStart(3, '0')}`,
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone || '+91 00000 00000',
-      joined: new Date().toISOString().split('T')[0],
-      totalSpent: '₹0',
-      orders: 0,
-      status: formData.status
-    };
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(formData.phone)) {
+      toast.error('Phone number must be exactly 10 digits');
+      return;
+    }
 
-    setUsersList([newUser, ...usersList]);
-    setIsAddModalOpen(false);
-    setFormData({ name: '', email: '', phone: '', status: 'Active' });
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/admin/auth/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email || undefined,
+          phone: formData.phone
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success(data.message || 'Customer added successfully');
+        fetchUsers();
+        setIsAddModalOpen(false);
+        setFormData({ name: '', email: '', phone: '', status: 'Active' });
+      } else {
+        toast.error(data.message || 'Failed to add customer');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
   };
 
   const [activeMenu, setActiveMenu] = useState(null);
@@ -259,7 +323,9 @@ const Users = () => {
                             initial={{ opacity: 0, scale: 0.95, y: -10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                            className="absolute right-6 top-14 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 z-20 py-2 overflow-hidden"
+                            className={`absolute right-6 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 z-20 py-2 overflow-hidden ${
+                              i >= filteredUsers.length - 2 && filteredUsers.length > 2 ? 'bottom-14' : 'top-14'
+                            }`}
                           >
                              <button onClick={(e) => handleAction(e, 'view', user)} className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-slate-50 text-slate-600 transition-colors">
                                 <Eye size={14} className="text-blue-500" />

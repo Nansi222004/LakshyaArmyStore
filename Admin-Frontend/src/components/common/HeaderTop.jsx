@@ -9,7 +9,7 @@ const HeaderTop = ({ cartCount = 0 }) => {
       {/* ── Logo ── */}
       <Link to="/vendor/home" className="flex items-center flex-shrink-0">
         <motion.img
-          src="/Logo (4).png"
+          src="/HopeFinal.png"
           alt="Cocia"
           className="h-10 w-28 object-contain object-left"
           whileTap={{ scale: 0.95 }}

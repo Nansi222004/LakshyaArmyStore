@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import toast from 'react-hot-toast';
 import avtarImage from '../assets/AvatarProfile-removebg-preview.png';
 import { 
   ChevronLeft, User, Lock, Settings, Phone, LogOut, Camera, 
@@ -152,20 +153,72 @@ export default function ProfilePage() {
 
   // Custom Image Upload State
   const [uploadedImage, setUploadedImage] = useState(() => {
-    return sessionStorage.getItem('userUploadedImage') || null;
+    return user?.avatar || sessionStorage.getItem('userUploadedImage') || null;
   });
   const fileInputRef = useRef(null);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('Image size cannot exceed 10MB!');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result;
-        setUploadedImage(base64String);
-        sessionStorage.setItem('userUploadedImage', base64String);
+        setUploadedImage(reader.result);
       };
       reader.readAsDataURL(file);
+
+      const token = localStorage.getItem('userToken');
+      if (token) {
+        const uploadPromise = new Promise(async (resolve, reject) => {
+          try {
+            const formData = new FormData();
+            formData.append('image', file);
+            const apiBase = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth`;
+            const res = await fetch(`${apiBase}/profile`, {
+              method: 'PUT',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              },
+              body: formData
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+              reject(new Error(data.message || 'Failed to upload profile photo'));
+              return;
+            }
+
+            const currentInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            const updatedInfo = {
+              ...currentInfo,
+              avatar: data.user.avatar
+            };
+            localStorage.setItem('userInfo', JSON.stringify(updatedInfo));
+
+            if (setUser) {
+              setUser({
+                ...user,
+                avatar: data.user.avatar
+              });
+            }
+            resolve('Profile photo updated successfully!');
+          } catch (err) {
+            reject(err);
+          }
+        });
+
+        toast.promise(uploadPromise, {
+          loading: 'Uploading photo...',
+          success: (msg) => msg,
+          error: (err) => err.message || 'Failed to upload photo.'
+        });
+      } else {
+        toast.success('Photo preview updated! (Offline mode)');
+      }
     }
   };
 

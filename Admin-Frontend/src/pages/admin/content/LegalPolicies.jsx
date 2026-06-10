@@ -1,54 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileText, Save, RotateCcw, AlertCircle, CheckCircle2, Edit3, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const LegalPolicies = () => {
   const [activeTab, setActiveTab] = useState('privacy'); // 'privacy' or 'terms'
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
   
-  const [privacyPolicy, setPrivacyPolicy] = useState(`Privacy Policy for Cocio
+  const [privacyPolicy, setPrivacyPolicy] = useState('');
+  const [termsConditions, setTermsConditions] = useState('');
 
-Last Updated: May 2026
-
-At Cocio, we take your privacy seriously. This policy describes how we collect, use, and protect your personal data when you use our B2B marketplace.
-
-1. DATA COLLECTION
-We collect information that you provide when creating an account, such as your business name, email address, and contact details.
-
-2. HOW WE USE DATA
-We use your information to facilitate transactions, provide customer support, and improve our services.
-
-3. DATA PROTECTION
-We implement industry-standard security measures to ensure the safety of your personal information.`);
-
-  const [termsConditions, setTermsConditions] = useState(`Terms & Conditions for Cocio
-
-1. ACCEPTANCE OF TERMS
-By accessing and using the Cocio platform, you agree to comply with these terms.
-
-2. VENDOR OBLIGATIONS
-Vendors must provide accurate product information and maintain professional standards of service.
-
-3. PAYMENTS & COMMISSIONS
-All transactions are subject to platform commissions as defined in the Finance section.`);
+  // Keep original copies to discard changes correctly
+  const [originalPrivacy, setOriginalPrivacy] = useState('');
+  const [originalTerms, setOriginalTerms] = useState('');
 
   const [isSaving, setIsSaving] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const handleSave = () => {
+  const fetchPolicies = async () => {
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/admin/content/legal`);
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setPrivacyPolicy(data.privacy || '');
+        setTermsConditions(data.terms || '');
+        setOriginalPrivacy(data.privacy || '');
+        setOriginalTerms(data.terms || '');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to load legal policies');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPolicies();
+  }, []);
+
+  const handleSave = async () => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      toast.error('Not authenticated');
+      return;
+    }
+
     setIsSaving(true);
-    // Mock API call
-    setTimeout(() => {
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const content = activeTab === 'privacy' ? privacyPolicy : termsConditions;
+      const res = await fetch(`${apiBase}/admin/content/legal`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          type: activeTab,
+          content
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        if (activeTab === 'privacy') {
+          setOriginalPrivacy(privacyPolicy);
+        } else {
+          setOriginalTerms(termsConditions);
+        }
+        setIsEditing(false);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      } else {
+        toast.error(data.message || 'Failed to save policy');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    } finally {
       setIsSaving(false);
-      setIsEditing(false);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    }, 1500);
+    }
   };
 
   const handleDiscard = () => {
     setIsEditing(false);
-    // In a real app, you would reset the state to the original fetched data
+    // Reset to the original fetched data
+    setPrivacyPolicy(originalPrivacy);
+    setTermsConditions(originalTerms);
   };
 
   return (
@@ -60,7 +100,9 @@ All transactions are subject to platform commissions as defined in the Finance s
           <p className="text-slate-500 text-sm mt-1">Manage your platform's Privacy Policy and Terms of Use</p>
         </div>
         <div className="flex items-center gap-3">
-          {!isEditing ? (
+          {loading ? (
+            <span className="text-sm font-semibold text-slate-400">Loading...</span>
+          ) : !isEditing ? (
             <button 
               onClick={() => setIsEditing(true)}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-100 text-sm font-semibold"
@@ -99,17 +141,17 @@ All transactions are subject to platform commissions as defined in the Finance s
         {/* Tabs */}
         <div className="flex border-b border-slate-50">
           <button 
-            disabled={isEditing}
+            disabled={isEditing || loading}
             onClick={() => setActiveTab('privacy')}
-            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'privacy' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'privacy' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing || loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Privacy Policy
             {activeTab === 'privacy' && <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />}
           </button>
           <button 
-            disabled={isEditing}
+            disabled={isEditing || loading}
             onClick={() => setActiveTab('terms')}
-            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'terms' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'terms' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing || loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Terms & Conditions
             {activeTab === 'terms' && <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />}
@@ -148,15 +190,21 @@ All transactions are subject to platform commissions as defined in the Finance s
                 <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest italic">Read-Only Mode</span>
               )}
             </div>
-            <textarea
-              readOnly={!isEditing}
-              value={activeTab === 'privacy' ? privacyPolicy : termsConditions}
-              onChange={(e) => activeTab === 'privacy' ? setPrivacyPolicy(e.target.value) : setTermsConditions(e.target.value)}
-              className={`w-full h-[500px] border rounded-2xl p-8 text-slate-700 font-medium leading-relaxed transition-all resize-none outline-none ${isEditing 
-                ? 'bg-slate-50 border-blue-200 focus:ring-4 focus:ring-blue-50 focus:border-blue-400' 
-                : 'bg-slate-50/30 border-slate-100 cursor-not-allowed'}`}
-              placeholder="Start typing your policy content..."
-            />
+            {loading ? (
+              <div className="w-full h-[500px] bg-slate-50/50 border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 font-semibold">
+                Loading content...
+              </div>
+            ) : (
+              <textarea
+                readOnly={!isEditing}
+                value={activeTab === 'privacy' ? privacyPolicy : termsConditions}
+                onChange={(e) => activeTab === 'privacy' ? setPrivacyPolicy(e.target.value) : setTermsConditions(e.target.value)}
+                className={`w-full h-[500px] border rounded-2xl p-8 text-slate-700 font-medium leading-relaxed transition-all resize-none outline-none ${isEditing 
+                  ? 'bg-slate-50 border-blue-200 focus:ring-4 focus:ring-blue-50 focus:border-blue-400' 
+                  : 'bg-slate-50/30 border-slate-100 cursor-not-allowed'}`}
+                placeholder="Start typing your policy content..."
+              />
+            )}
           </div>
         </div>
       </div>
@@ -177,3 +225,4 @@ All transactions are subject to platform commissions as defined in the Finance s
 };
 
 export default LegalPolicies;
+

@@ -5,6 +5,10 @@ const app = require('./app');
 const connectDB = require('./Config/db');
 const Admin = require('./Models/Admin');
 
+const http = require('http');
+const socketIo = require('socket.io');
+const socketHandler = require('./Utils/socketHandler');
+
 const PORT = process.env.PORT || 5000;
 
 // Auto-create admin if not exists (har baar server start hone par check)
@@ -24,7 +28,18 @@ const ensureAdmin = async () => {
 // Connect to MongoDB then start server
 connectDB().then(async () => {
   await ensureAdmin();
-  app.listen(PORT, () => {
+  
+  const server = http.createServer(app);
+  const io = socketIo(server, {
+    cors: {
+      origin: '*',
+      methods: ['GET', 'POST']
+    }
+  });
+
+  socketHandler(io);
+
+  server.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
   });
 });

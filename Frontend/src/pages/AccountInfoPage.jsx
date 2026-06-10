@@ -2,32 +2,51 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, User, Mail, Phone, Calendar, Camera } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import toast from 'react-hot-toast';
+
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth`;
 
 export default function AccountInfoPage() {
   const navigate = useNavigate();
   const { user, setUser } = useApp();
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  const formatDob = (dobValue) => {
+    if (!dobValue) return '';
+    try {
+      const date = new Date(dobValue);
+      if (isNaN(date.getTime())) return '';
+      return date.toISOString().split('T')[0];
+    } catch {
+      return '';
+    }
+  };
 
   const [formData, setFormData] = useState({
-    name: user?.name || 'User_1544',
-    email: user?.email || 'user1544@mynzo.com',
-    phone: user?.phone || '+91 98765 43210',
-    dob: '1995-08-15',
-    gender: 'female'
+    name: user?.name && user.name !== 'User' && !user.name.startsWith('User_') ? user.name : '',
+    email: user?.email && !user.email.startsWith('user1544@') ? user.email : '',
+    phone: user?.phone || '',
+    dob: formatDob(user?.dob),
+    gender: user?.gender || ''
   });
 
+  const [imageFile, setImageFile] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(() => {
-    return sessionStorage.getItem('userUploadedImage') || null;
+    return user?.avatar || sessionStorage.getItem('userUploadedImage') || null;
   });
   const fileInputRef = useRef(null);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('Image size cannot exceed 10MB!');
+        return;
+      }
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result;
-        setUploadedImage(base64String);
-        sessionStorage.setItem('userUploadedImage', base64String);
+        setUploadedImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -37,12 +56,106 @@ export default function AccountInfoPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSave = () => {
-    if (setUser) {
-      setUser({ ...user, ...formData });
+  const handleSave = async () => {
+    if (formData.phone) {
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(formData.phone)) {
+        toast.error('Phone number must be exactly 10 digits!');
+        return;
+      }
     }
-    alert('Changes saved successfully!');
-    navigate(-1);
+
+    if (formData.dob) {
+      const selectedDate = new Date(formData.dob);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (selectedDate >= today) {
+        toast.error('Date of Birth must be a past date!');
+        return;
+      }
+    }
+
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+      if (setUser) {
+        setUser({ ...user, ...formData });
+      }
+      if (!toast.info) {
+        toast.info = (msg, options) => toast(msg, { icon: 'ℹ️', ...options });
+      }
+      toast.info('Changes saved successfully! (Offline mode)');
+      setTimeout(() => navigate(-1), 1200);
+      return;
+    }
+
+    const savePromise = new Promise(async (resolve, reject) => {
+      try {
+        const submitData = new FormData();
+        submitData.append('name', formData.name);
+        submitData.append('email', formData.email);
+        submitData.append('phone', formData.phone);
+        submitData.append('dob', formData.dob);
+        submitData.append('gender', formData.gender);
+        if (imageFile) {
+          submitData.append('image', imageFile);
+        }
+
+        const res = await fetch(`${API_URL}/profile`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: submitData
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          reject(new Error(data.message || 'Failed to update profile'));
+          return;
+        }
+
+        const currentInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+        const updatedInfo = {
+          ...currentInfo,
+          name: data.user.name,
+          email: data.user.email,
+          phone: data.user.phone,
+          dob: data.user.dob,
+          gender: data.user.gender,
+          avatar: data.user.avatar
+        };
+        localStorage.setItem('userInfo', JSON.stringify(updatedInfo));
+
+        if (setUser) {
+          setUser({
+            ...user,
+            name: data.user.name,
+            email: data.user.email,
+            phone: data.user.phone,
+            dob: data.user.dob,
+            gender: data.user.gender,
+            avatar: data.user.avatar
+          });
+        }
+
+        resolve(data.message || 'Changes saved successfully!');
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+    toast.promise(savePromise, {
+      loading: 'Saving your changes...',
+      success: (msg) => msg,
+      error: (err) => err.message || 'Failed to save changes.'
+    });
+
+    try {
+      await savePromise;
+      setTimeout(() => navigate(-1), 1200);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -153,6 +266,7 @@ export default function AccountInfoPage() {
                 name="dob"
                 value={formData.dob}
                 onChange={handleChange}
+                max={todayStr}
                 className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
               />
             </div>
@@ -167,7 +281,7 @@ export default function AccountInfoPage() {
                   type="radio" 
                   name="gender" 
                   value="male" 
-                  checked={formData.gender === 'male'} 
+                  checked={formData.gender?.toLowerCase() === 'male'} 
                   onChange={handleChange}
                   className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                 />
@@ -178,7 +292,7 @@ export default function AccountInfoPage() {
                   type="radio" 
                   name="gender" 
                   value="female" 
-                  checked={formData.gender === 'female'} 
+                  checked={formData.gender?.toLowerCase() === 'female'} 
                   onChange={handleChange}
                   className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                 />
@@ -189,7 +303,7 @@ export default function AccountInfoPage() {
                   type="radio" 
                   name="gender" 
                   value="other" 
-                  checked={formData.gender === 'other'} 
+                  checked={formData.gender?.toLowerCase() === 'other'} 
                   onChange={handleChange}
                   className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
                 />
