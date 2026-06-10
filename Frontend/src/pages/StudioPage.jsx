@@ -4,7 +4,7 @@ import { Heart, MessageCircle, Share2, ShoppingBag, Gift, ArrowLeft, CheckCircle
 import { useApp } from '../context/AppContext';
 
 // Optimized Video component with preloading and unmuting control
-const ReelVideo = ({ src, onVisible, isMuted, toggleMute, active }) => {
+const ReelVideo = ({ src, onVisible, isMuted, toggleMute, active, onDoubleTap }) => {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -79,6 +79,8 @@ const ReelVideo = ({ src, onVisible, isMuted, toggleMute, active }) => {
       ref={containerRef} 
       className="absolute inset-0 z-0 cursor-pointer select-none will-change-transform" 
       onClick={handleTap}
+      onMouseDown={onDoubleTap}
+      onTouchStart={onDoubleTap}
     >
       <video 
         ref={videoRef}
@@ -105,6 +107,8 @@ const ReelVideo = ({ src, onVisible, isMuted, toggleMute, active }) => {
           e.stopPropagation();
           toggleMute();
         }}
+        onMouseDown={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
         className="absolute top-20 right-4 z-30 p-2.5 bg-black/30 backdrop-blur-md rounded-full border border-white/10 text-white"
       >
         {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -440,8 +444,6 @@ export default function StudioPage() {
           return (
             <div 
               key={post.id} 
-              onMouseDown={(e) => handleDoubleTap(e, post)}
-              onTouchStart={(e) => handleDoubleTap(e, post)}
               className="w-full h-[100dvh] snap-start relative bg-slate-900 flex justify-center items-center overflow-hidden font-sans"
             >
               {/* Media Background with active check */}
@@ -451,6 +453,7 @@ export default function StudioPage() {
                 isMuted={isMuted}
                 toggleMute={() => setIsMuted(!isMuted)}
                 active={isActive}
+                onDoubleTap={(e) => handleDoubleTap(e, post)}
               />
 
               {/* Gradient Overlays */}

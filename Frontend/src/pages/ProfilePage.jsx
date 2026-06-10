@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import toast from 'react-hot-toast';
-import avtarImage from '../assets/AvatarProfile-removebg-preview.png';
+import avtarImage from '../assets/AvatarProfile-removebg-preview.webp';
 import { 
   ChevronLeft, User, Lock, Settings, Phone, LogOut, Camera, 
   ChevronRight, Coins, Gift, ShoppingBag, Sparkles, X,

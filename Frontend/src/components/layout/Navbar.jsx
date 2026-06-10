@@ -162,7 +162,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 cursor-pointer animate-fade-in" onClick={() => navigate('/')}>
             {/* Logo image */}
             <img
-              src="/HopeFinal.png"
+              src="/HopeFinal.webp"
               alt="Mynzo Logo"
               className="h-12 bg-white p-1 rounded-lg shadow-sm object-contain hover:scale-105 transition-transform duration-300"
               onError={(e) => {

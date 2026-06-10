@@ -1,37 +1,37 @@
-import Mascara from '../assets/products/product01.jpg';
-import LipstickDeal from '../assets/products/product02.jpg';
-import LipGloss from '../assets/products/product03.jpg';
-import LipLiner from '../assets/products/product04.jpg';
-import PlumShampoo from '../assets/products/product05.jpg';
-import LorealShampoo from '../assets/products/product06.jpg';
-import MatrixShampoo from '../assets/products/product07.jpg';
-import MakeupHero from '../assets/products/product08.jpg';
+import Mascara from '../assets/products/product01.webp';
+import LipstickDeal from '../assets/products/product02.webp';
+import LipGloss from '../assets/products/product03.webp';
+import LipLiner from '../assets/products/product04.webp';
+import PlumShampoo from '../assets/products/product05.webp';
+import LorealShampoo from '../assets/products/product06.webp';
+import MatrixShampoo from '../assets/products/product07.webp';
+import MakeupHero from '../assets/products/product08.webp';
 
-import StationeryImg from '../assets/products/product09.jpg';
-import GiftingImg from '../assets/products/product10.jpg';
+import StationeryImg from '../assets/products/product09.webp';
+import GiftingImg from '../assets/products/product10.webp';
 import PrintingImg from '../assets/products/product11.webp';
-import JewelleryImg from '../assets/products/product12.jpg';
-import ElectricalImg from '../assets/products/product13.jpg';
-import ToysImg from '../assets/products/product14.jpg';
-import TopImg3 from '../assets/TopSection/TopSection3.jpg';
-import TopImg4 from '../assets/TopSection/TopSection21.jpg';
+import JewelleryImg from '../assets/products/product12.webp';
+import ElectricalImg from '../assets/products/product13.webp';
+import ToysImg from '../assets/products/product14.webp';
+import TopImg3 from '../assets/TopSection/TopSection3.webp';
+import TopImg4 from '../assets/TopSection/TopSection21.webp';
 
-import SamsungS24 from '../assets/products/product01.jpg';
-import AsusLaptop from '../assets/products/product02.jpg';
-import EarbudsDeal from '../assets/products/product03.jpg';
-import ElectronicsHero from '../assets/products/product04.jpg';
+import SamsungS24 from '../assets/products/product01.webp';
+import AsusLaptop from '../assets/products/product02.webp';
+import EarbudsDeal from '../assets/products/product03.webp';
+import ElectronicsHero from '../assets/products/product04.webp';
 
 import ClothesImg from '../assets/products/product15.webp';
-import Tshirt from '../assets/products/product05.jpg';
-import FashionHero from '../assets/products/product06.jpg';
-import FlipFlops from '../assets/products/product07.jpg';
+import Tshirt from '../assets/products/product05.webp';
+import FashionHero from '../assets/products/product06.webp';
+import FlipFlops from '../assets/products/product07.webp';
 
-import SplitAC from '../assets/products/product08.jpg';
-import TowerFan from '../assets/products/product09.jpg';
-import FanPedestal from '../assets/products/product10.jpg';
+import SplitAC from '../assets/products/product08.webp';
+import TowerFan from '../assets/products/product09.webp';
+import FanPedestal from '../assets/products/product10.webp';
 import FanBlack from '../assets/products/product11.webp';
-import CoolerWhite from '../assets/products/product12.jpg';
-import CookwareHero from '../assets/products/product13.jpg';
+import CoolerWhite from '../assets/products/product12.webp';
+import CookwareHero from '../assets/products/product13.webp';
 
 export const allCategoryProducts = {
   'For You': [

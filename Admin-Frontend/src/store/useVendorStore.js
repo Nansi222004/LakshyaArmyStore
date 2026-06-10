@@ -1,34 +1,34 @@
 import { create } from 'zustand';
 
 // Import local assets for proper image display
-import FashionImg from '../assets/products/product01.jpg';
-import JewelleryImg from '../assets/products/product02.jpg';
-import TshirtImg from '../assets/TopSection/TopSection2.jpg';
-import BeautyImg from '../assets/products/product04.jpg';
-import MakeupImg from '../assets/TopSection/TopSection1.jpg';
-import EarbudsImg from '../assets/products/product06.jpg';
-import SamsungImg from '../assets/products/product07.jpg';
-import ElectronicsImg from '../assets/products/product08.jpg';
-import SuitcaseImg from '../assets/products/product09.jpg';
-import FlipFlopsImg from '../assets/products/product10.jpg';
+import FashionImg from '../assets/products/product01.webp';
+import JewelleryImg from '../assets/products/product02.webp';
+import TshirtImg from '../assets/TopSection/TopSection2.webp';
+import BeautyImg from '../assets/products/product04.webp';
+import MakeupImg from '../assets/TopSection/TopSection1.webp';
+import EarbudsImg from '../assets/products/product06.webp';
+import SamsungImg from '../assets/products/product07.webp';
+import ElectronicsImg from '../assets/products/product08.webp';
+import SuitcaseImg from '../assets/products/product09.webp';
+import FlipFlopsImg from '../assets/products/product10.webp';
 import LipstickImg from '../assets/products/product11.webp';
-import ShampooImg from '../assets/products/product12.jpg';
-import ToysImg from '../assets/products/product13.jpg';
-import StationeryImg from '../assets/products/product14.jpg';
+import ShampooImg from '../assets/products/product12.webp';
+import ToysImg from '../assets/products/product13.webp';
+import StationeryImg from '../assets/products/product14.webp';
 import GiftingImg from '../assets/products/product15.webp';
 
 // Still Looking Section Assets
-import StillImg1 from '../assets/StillSection/StillImages1.png';
-import StillImg2 from '../assets/StillSection/StillImages2.jpg';
-import StillImg3 from '../assets/StillSection/StillImages3.jpg';
-import StillImg4 from '../assets/StillSection/StillImages4.png';
-import StillImg5 from '../assets/StillSection/StillImages5.jpg';
+import StillImg1 from '../assets/StillSection/StillImages1.webp';
+import StillImg2 from '../assets/StillSection/StillImages2.webp';
+import StillImg3 from '../assets/StillSection/StillImages3.webp';
+import StillImg4 from '../assets/StillSection/StillImages4.webp';
+import StillImg5 from '../assets/StillSection/StillImages5.webp';
 
 // Top Selection Section Assets
-import TopImg1 from '../assets/TopSection/TopSection1.jpg';
-import TopImg2 from '../assets/TopSection/TopSection2.jpg';
-import TopImg3 from '../assets/TopSection/TopSection3.jpg';
-import TopImg4 from '../assets/TopSection/TopSection21.jpg';
+import TopImg1 from '../assets/TopSection/TopSection1.webp';
+import TopImg2 from '../assets/TopSection/TopSection2.webp';
+import TopImg3 from '../assets/TopSection/TopSection3.webp';
+import TopImg4 from '../assets/TopSection/TopSection21.webp';
 
 // Using local assets for products
 const PRODUCT_IMAGES = {

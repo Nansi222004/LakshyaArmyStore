@@ -5,16 +5,16 @@ import { CATEGORIES, BANNERS, VALUE_PROPS } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ui/ProductCard';
 
-import CrazyDeals2 from '../assets/CrazyDeals/CrazyDeals2.jpg';
-import CrazyDeals3 from '../assets/CrazyDeals/CrazyDeals3.jpg';
-import CrazyDeals4 from '../assets/CrazyDeals/CrazyDeals4.jpg';
-import CrazyDeals5 from '../assets/CrazyDeals/CrazyDeals5.jpg';
+import CrazyDeals2 from '../assets/CrazyDeals/CrazyDeals2.webp';
+import CrazyDeals3 from '../assets/CrazyDeals/CrazyDeals3.webp';
+import CrazyDeals4 from '../assets/CrazyDeals/CrazyDeals4.webp';
+import CrazyDeals5 from '../assets/CrazyDeals/CrazyDeals5.webp';
 
-import beauty1 from '../assets/BeautyProducts/Beauty1.png';
-import beauty2 from '../assets/BeautyProducts/Beauty2.jpg';
-import beauty3 from '../assets/BeautyProducts/Beauty3.jpg';
-import beauty4 from '../assets/BeautyProducts/Beauty4.jpg';
-import beauty5 from '../assets/BeautyProducts/Beauty5.jpg';
+import beauty1 from '../assets/BeautyProducts/Beauty1.webp';
+import beauty2 from '../assets/BeautyProducts/Beauty2.webp';
+import beauty3 from '../assets/BeautyProducts/Beauty3.webp';
+import beauty4 from '../assets/BeautyProducts/Beauty4.webp';
+import beauty5 from '../assets/BeautyProducts/Beauty5.webp';
 
 export default function Home() {
   const navigate = useNavigate();

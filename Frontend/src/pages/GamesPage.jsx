@@ -11,11 +11,11 @@ import TicTacToeGame from '../components/games/TicTacToe/TicTacToeGame';
 import QuizGame from '../components/games/QuizGame/QuizGame';
 
 // Import Icons
-import speedTapImg from '../assets/GamesIcons/speed_tap.png';
-import snakeImg from '../assets/GamesIcons/snake.png';
-import ticTacToeImg from '../assets/GamesIcons/tic_tac_toe.png';
-import quizImg from '../assets/GamesIcons/quiz.png';
-import categoryForUImg from '../assets/CategorySection/categoryForU-removebg-preview.png';
+import speedTapImg from '../assets/GamesIcons/speed_tap.webp';
+import snakeImg from '../assets/GamesIcons/snake.webp';
+import ticTacToeImg from '../assets/GamesIcons/tic_tac_toe.webp';
+import quizImg from '../assets/GamesIcons/quiz.webp';
+import categoryForUImg from '../assets/CategorySection/categoryForU-removebg-preview.webp';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 

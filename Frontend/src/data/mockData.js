@@ -1,63 +1,63 @@
-import imgTee from '../assets/CrazyDeals/CrazyDeals2.jpg';
-import imgNecklace from '../assets/CrazyDeals/CrazyDeals3.jpg';
-import imgWatch from '../assets/CrazyDeals/CrazyDeals4.jpg';
-import imgTint from '../assets/CrazyDeals/CrazyDeals5.jpg';
+import imgTee from '../assets/CrazyDeals/CrazyDeals2.webp';
+import imgNecklace from '../assets/CrazyDeals/CrazyDeals3.webp';
+import imgWatch from '../assets/CrazyDeals/CrazyDeals4.webp';
+import imgTint from '../assets/CrazyDeals/CrazyDeals5.webp';
 
-import beauty1 from '../assets/BeautyProducts/Beauty1.png';
-import beauty2 from '../assets/BeautyProducts/Beauty2.jpg';
-import beauty3 from '../assets/BeautyProducts/Beauty3.jpg';
-import beauty4 from '../assets/BeautyProducts/Beauty4.jpg';
-import beauty5 from '../assets/BeautyProducts/Beauty5.jpg';
+import beauty1 from '../assets/BeautyProducts/Beauty1.webp';
+import beauty2 from '../assets/BeautyProducts/Beauty2.webp';
+import beauty3 from '../assets/BeautyProducts/Beauty3.webp';
+import beauty4 from '../assets/BeautyProducts/Beauty4.webp';
+import beauty5 from '../assets/BeautyProducts/Beauty5.webp';
 
-import gift1 from '../assets/GiftProducts/Gift1.jpg';
-import gift2 from '../assets/GiftProducts/Gift2.jpg';
-import gift3 from '../assets/GiftProducts/Gift3.jpg';
-import gift4 from '../assets/GiftProducts/Gift4.jpg';
-import gift5 from '../assets/GiftProducts/Gift5.jpg';
-import gift6 from '../assets/GiftProducts/Gift6.jpg';
+import gift1 from '../assets/GiftProducts/Gift1.webp';
+import gift2 from '../assets/GiftProducts/Gift2.webp';
+import gift3 from '../assets/GiftProducts/Gift3.webp';
+import gift4 from '../assets/GiftProducts/Gift4.webp';
+import gift5 from '../assets/GiftProducts/Gift5.webp';
+import gift6 from '../assets/GiftProducts/Gift6.webp';
 
-import elec1 from '../assets/Electronics/Electronics1.jpg';
-import elec2 from '../assets/Electronics/Electronics2.jpg';
-import elec3 from '../assets/Electronics/Electronics3.jpg';
-import elec4 from '../assets/Electronics/Electronics4.jpg';
-import elec5 from '../assets/Electronics/Electronics5.jpg';
+import elec1 from '../assets/Electronics/Electronics1.webp';
+import elec2 from '../assets/Electronics/Electronics2.webp';
+import elec3 from '../assets/Electronics/Electronics3.webp';
+import elec4 from '../assets/Electronics/Electronics4.webp';
+import elec5 from '../assets/Electronics/Electronics5.webp';
 
-import jewel1 from '../assets/JewellaryProducts/Jewellary1.jpg';
-import jewel2 from '../assets/JewellaryProducts/Jewellary2.jpg';
-import jewel3 from '../assets/JewellaryProducts/Jewellary3.jpg';
-import jewel4 from '../assets/JewellaryProducts/Jewellary4.jpg';
+import jewel1 from '../assets/JewellaryProducts/Jewellary1.webp';
+import jewel2 from '../assets/JewellaryProducts/Jewellary2.webp';
+import jewel3 from '../assets/JewellaryProducts/Jewellary3.webp';
+import jewel4 from '../assets/JewellaryProducts/Jewellary4.webp';
 
-import toy1 from '../assets/Toys/Toys11.jpg';
-import toy2 from '../assets/Toys/Toys12.jpg';
-import toy3 from '../assets/Toys/Toys13.jpg';
-import toy4 from '../assets/Toys/Toys14.jpg';
-import toy5 from '../assets/Toys/Toys15.jpg';
+import toy1 from '../assets/Toys/Toys11.webp';
+import toy2 from '../assets/Toys/Toys12.webp';
+import toy3 from '../assets/Toys/Toys13.webp';
+import toy4 from '../assets/Toys/Toys14.webp';
+import toy5 from '../assets/Toys/Toys15.webp';
 
-import stat1 from '../assets/Stationary/Stationary11.jpg';
-import stat2 from '../assets/Stationary/Stationary12.jpg';
-import stat3 from '../assets/Stationary/Stationary13.jpg';
-import stat4 from '../assets/Stationary/Stationary14.jpg';
-import stat5 from '../assets/Stationary/Stationary15.jpg';
+import stat1 from '../assets/Stationary/Stationary11.webp';
+import stat2 from '../assets/Stationary/Stationary12.webp';
+import stat3 from '../assets/Stationary/Stationary13.webp';
+import stat4 from '../assets/Stationary/Stationary14.webp';
+import stat5 from '../assets/Stationary/Stationary15.webp';
 
-import fash1 from '../assets/Fashion/Fashion11.jpg';
-import fash2 from '../assets/Fashion/Fashion12.jpg';
-import fash3 from '../assets/Fashion/Fashion13.jpg';
-import fash4 from '../assets/Fashion/Fashion14.jpg';
+import fash1 from '../assets/Fashion/Fashion11.webp';
+import fash2 from '../assets/Fashion/Fashion12.webp';
+import fash3 from '../assets/Fashion/Fashion13.webp';
+import fash4 from '../assets/Fashion/Fashion14.webp';
 
-import elec11 from '../assets/Electrical/Elecrical1.jpg';
-import elec12 from '../assets/Electrical/Electrical2.jpg';
-import elec13 from '../assets/Electrical/Electrical3.jpg';
-import elec14 from '../assets/Electrical/Electrical4.jpg';
-import elec15 from '../assets/Electrical/Electrical5.jpg';
+import elec11 from '../assets/Electrical/Elecrical1.webp';
+import elec12 from '../assets/Electrical/Electrical2.webp';
+import elec13 from '../assets/Electrical/Electrical3.webp';
+import elec14 from '../assets/Electrical/Electrical4.webp';
+import elec15 from '../assets/Electrical/Electrical5.webp';
 
-import catForYou from '../assets/CategorySection/categoryForU-removebg-preview.png';
-import catBeauty from '../assets/CategorySection/Category1-removebg-preview.png';
-import catToys from '../assets/CategorySection/Category2-removebg-preview.png';
-import catJewellery from '../assets/CategorySection/Category3-removebg-preview.png';
-import catElectronics from '../assets/CategorySection/Category4-removebg-preview.png';
-import catStationery from '../assets/CategorySection/Category5-removebg-preview.png';
-import catFashion from '../assets/CategorySection/Category6-removebg-preview.png';
-import catGifting from '../assets/CategorySection/Category7-removebg-preview.png';
+import catForYou from '../assets/CategorySection/categoryForU-removebg-preview.webp';
+import catBeauty from '../assets/CategorySection/Category1-removebg-preview.webp';
+import catToys from '../assets/CategorySection/Category2-removebg-preview.webp';
+import catJewellery from '../assets/CategorySection/Category3-removebg-preview.webp';
+import catElectronics from '../assets/CategorySection/Category4-removebg-preview.webp';
+import catStationery from '../assets/CategorySection/Category5-removebg-preview.webp';
+import catFashion from '../assets/CategorySection/Category6-removebg-preview.webp';
+import catGifting from '../assets/CategorySection/Category7-removebg-preview.webp';
 
 export const CATEGORIES = [
   { id: 'for-you', name: 'For You', icon: 'ShoppingBag', image: catForYou },
@@ -71,9 +71,9 @@ export const CATEGORIES = [
   { id: 'electrical', name: 'Electrical', icon: 'Zap', image: elec11 },
 ];
 
-import banner1 from '../assets/Banner/finalBanner.jpeg';
-import banner2 from '../assets/Banner/finalBanner2.jpeg';
-import banner3 from '../assets/Banner/finalBanner3.jpeg';
+import banner1 from '../assets/Banner/finalBanner.webp';
+import banner2 from '../assets/Banner/finalBanner2.webp';
+import banner3 from '../assets/Banner/finalBanner3.webp';
 
 export const BANNERS = [
   { id: 1, image: banner1 },

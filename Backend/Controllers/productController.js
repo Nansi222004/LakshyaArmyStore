@@ -32,7 +32,9 @@ const getProducts = async (req, res) => {
       ];
     }
 
-    const products = await Product.find(filter).sort({ createdAt: -1 });
+    const products = await Product.find(filter)
+      .select('-highlights -technicalSpecs -description -variations -shippingSpecs')
+      .sort({ createdAt: -1 });
     res.status(200).json({ success: true, products });
   } catch (error) {
     console.error('Get Products Error:', error);

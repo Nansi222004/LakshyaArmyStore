@@ -56,7 +56,7 @@ const Auth = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
             <img 
-              src="/HopeFinal.png" 
+              src="/HopeFinal.webp" 
               alt="Cocia Logo" 
               className="h-12 w-auto object-contain"
               onError={(e) => {
