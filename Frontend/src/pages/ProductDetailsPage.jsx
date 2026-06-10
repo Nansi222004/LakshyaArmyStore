@@ -19,6 +19,88 @@ export default function ProductDetailsPage() {
   const [localSearchQuery, setLocalSearchQuery] = useState('');
   const [fullscreenImage, setFullscreenImage] = useState(null);
   
+  // Video Reels States
+  const [productReels, setProductReels] = useState([]);
+  const [isUploadReelOpen, setIsUploadReelOpen] = useState(false);
+  const [reelRating, setReelRating] = useState(5);
+  const [reelCaption, setReelCaption] = useState('');
+  const [reelVideoFile, setReelVideoFile] = useState(null);
+  const [isUploadingReel, setIsUploadingReel] = useState(false);
+
+  const fetchProductReels = async () => {
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/reels`);
+      const data = await res.json();
+      if (res.ok && data.success) {
+        // Filter approved reels for this product
+        const filtered = (data.reels || []).filter(r => {
+          const prodId = r.productId?._id || r.productId;
+          return prodId === id;
+        });
+        setProductReels(filtered);
+      }
+    } catch (err) {
+      console.error('Error fetching reels for product:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductReels();
+  }, [id]);
+
+  const handleUploadReel = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    if (!reelVideoFile) {
+      alert('Please select a video file first!');
+      return;
+    }
+
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+      alert('Please log in again');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('productId', id);
+    formData.append('rating', reelRating);
+    formData.append('caption', reelCaption);
+    formData.append('video', reelVideoFile);
+
+    try {
+      setIsUploadingReel(true);
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/reels`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setToastMessage('Reel review uploaded! Awaiting Admin Approval.');
+        setTimeout(() => setToastMessage(''), 4000);
+        setIsUploadReelOpen(false);
+        setReelCaption('');
+        setReelVideoFile(null);
+      } else {
+        alert(data.message || 'Failed to upload video review');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to server');
+    } finally {
+      setIsUploadingReel(false);
+    }
+  };
+
   // Accordion and Tab States
   const [isHighlightsOpen, setIsHighlightsOpen] = useState(true);
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
@@ -35,59 +117,140 @@ export default function ProductDetailsPage() {
     }
   }, [selectedReviewMedia]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    // Find product from mockData. In a real app, this would be an API call.
-    const foundProduct = CRAZY_DEALS.find(p => p.id === id);
-    
-    // Small delay to make the page transition feel like a completely new page load
-    const timer = setTimeout(() => {
-      if (foundProduct) {
-        setProduct(foundProduct);
-      } else {
-        // Fallback if not found
-        setProduct({
-          id: 'fallback',
-          name: 'Product Details',
-          desc: 'Product description goes here',
-          price: 999,
-          originalPrice: 1999,
-          discount: '50%',
-          image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800'
-        });
-      }
-      setActiveImageIndex(0);
-      setIsLoading(false);
-      window.scrollTo(0, 0);
-    }, 200);
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
+      return imagePath;
+    }
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${apiBase}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  };
 
-    return () => clearTimeout(timer);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setIsLoading(true);
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/products/${id}`);
+        const data = await res.json();
+        
+        if (res.ok && data.success && data.product) {
+          const p = data.product;
+          
+          let productImages = p.images || [];
+          if (productImages.length === 0) {
+            productImages = ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800'];
+          }
+          
+          const normalised = {
+            id: p._id || p.id,
+            name: p.name,
+            desc: p.description || '',
+            price: p.sellingPrice,
+            originalPrice: p.mrp || p.sellingPrice,
+            discount: p.discountLabel || (p.mrp ? `${Math.round((1 - p.sellingPrice / p.mrp) * 100)}% OFF` : '0% OFF'),
+            rating: p.rating || 0,
+            type: (p.category || '').toLowerCase(),
+            image: getImageUrl(productImages[0]),
+            images: productImages.map(getImageUrl),
+            brandName: p.brandName || 'Mynzo Originals',
+            flags: p.flags || {},
+            stock: p.stock || 0,
+            highlights: p.highlights || {},
+            technicalSpecs: p.technicalSpecs || {},
+            manufacturerInfo: p.manufacturerInfo || ''
+          };
+          
+          setProduct(normalised);
+        } else {
+          const foundProduct = CRAZY_DEALS.find(item => item.id === id);
+          if (foundProduct) {
+            setProduct({
+              ...foundProduct,
+              images: [foundProduct.image]
+            });
+          } else {
+            setProduct({
+              id: 'fallback',
+              name: 'Product Details',
+              desc: 'Product description goes here',
+              price: 999,
+              originalPrice: 1999,
+              discount: '50% OFF',
+              image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800',
+              images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800'],
+              brandName: 'Mynzo Originals',
+              highlights: {},
+              technicalSpecs: {}
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching product details:', err);
+        const foundProduct = CRAZY_DEALS.find(item => item.id === id);
+        if (foundProduct) {
+          setProduct({
+            ...foundProduct,
+            images: [foundProduct.image]
+          });
+        }
+      } finally {
+        setIsLoading(false);
+        setActiveImageIndex(0);
+        window.scrollTo(0, 0);
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   if (isLoading || !product) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center pb-20">
-        <div className="w-8 h-8 border-4 border-[#ee4923] border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-500 font-medium text-sm mt-4 animate-pulse">Loading product...</p>
+      <div className="flex flex-col min-h-screen bg-slate-100 font-sans pb-[80px]">
+        {/* Sticky Header Skeleton */}
+        <header className="bg-white sticky top-0 z-50 flex items-center justify-between px-3 py-3 shadow-sm border-b border-slate-100 animate-pulse">
+          <div className="w-6 h-6 bg-slate-200 rounded-full" />
+          <div className="flex-1 mx-3 h-8 bg-slate-200 rounded" />
+          <div className="w-6 h-6 bg-slate-200 rounded-full" />
+        </header>
+
+        {/* Hero Image Section Skeleton */}
+        <div className="w-full aspect-[3/4] bg-slate-200 animate-pulse" />
+
+        {/* Product Info Section Skeleton */}
+        <div className="bg-white p-4 space-y-3 animate-pulse">
+          <div className="w-3/4 h-5 bg-slate-200 rounded" />
+          <div className="w-1/2 h-4 bg-slate-200 rounded" />
+          <div className="w-1/3 h-6 bg-slate-200 rounded" />
+        </div>
+
+        {/* Size Selector Skeleton */}
+        <div className="bg-white p-4 mt-2 space-y-3 animate-pulse">
+          <div className="w-24 h-4 bg-slate-200 rounded" />
+          <div className="flex gap-3">
+            {[1, 2, 3, 4, 5].map(i => (
+              <div key={i} className="w-12 h-12 rounded-xl bg-slate-200" />
+            ))}
+          </div>
+        </div>
+
+        {/* Product Details Description Skeleton */}
+        <div className="bg-white p-4 mt-2 space-y-2.5 animate-pulse">
+          <div className="w-28 h-5 bg-slate-200 rounded" />
+          <div className="w-full h-3.5 bg-slate-200 rounded" />
+          <div className="w-5/6 h-3.5 bg-slate-200 rounded" />
+        </div>
       </div>
     );
   }
 
   const handleAddToCart = () => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
     addToCart(product);
     setToastMessage('Item added to cart!');
     setTimeout(() => setToastMessage(''), 3000);
   };
 
   const handleBuyNow = () => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
     const itemInCart = cart.find(item => item.id === product.id);
     if (!itemInCart) {
       addToCart(product);
@@ -153,10 +316,11 @@ export default function ProductDetailsPage() {
 
 
       {/* Hero Image Section */}
-      <div className="relative bg-white">
+      <div className="relative bg-white pb-3 border-b border-slate-100">
         <div className="w-full aspect-[3/4] relative overflow-hidden">
           {/* Main Product Images Slider */}
           <div 
+            id="product-image-slider"
             className="w-full h-full flex overflow-x-auto snap-x snap-mandatory scrollbar-none"
             style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
             onScroll={(e) => {
@@ -165,12 +329,7 @@ export default function ProductDetailsPage() {
               setActiveImageIndex(Math.round(scrollPosition / width));
             }}
           >
-            {[
-              product.image,
-              product.image,
-              product.image,
-              product.image
-            ].map((img, idx) => (
+            {(product.images && product.images.length > 0 ? product.images : [product.image]).map((img, idx) => (
               <img 
                 key={idx} 
                 src={img} 
@@ -181,7 +340,17 @@ export default function ProductDetailsPage() {
             ))}
           </div>
 
-
+          {/* Dots Indicator Overlay */}
+          {product.images && product.images.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+              {product.images.map((_, idx) => (
+                <div 
+                  key={idx}
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeImageIndex === idx ? 'bg-[#ee4923] w-3.5' : 'bg-white/60'}`}
+                />
+              ))}
+            </div>
+          )}
 
           {/* Right Action Overlays */}
           <div className="absolute top-4 right-4 flex flex-col gap-3 z-10">
@@ -218,29 +387,58 @@ export default function ProductDetailsPage() {
             <h2 className="text-white font-black tracking-tight text-xl mb-4 drop-shadow-md">Key Highlights</h2>
             
             <div className="space-y-3">
-              <div className="flex flex-col border-b border-white/20 pb-1 w-24">
-                <span className="text-[10px] text-white/70">Fit</span>
-                <span className="text-sm font-bold text-white drop-shadow">Boxy</span>
-              </div>
-              <div className="flex flex-col border-b border-white/20 pb-1 w-24">
-                <span className="text-[10px] text-white/70">Collar</span>
-                <span className="text-sm font-bold text-white drop-shadow">Spread</span>
-              </div>
-              <div className="flex flex-col border-b border-white/20 pb-1 w-24">
-                <span className="text-[10px] text-white/70">Fabric</span>
-                <span className="text-sm font-bold text-white drop-shadow">Cotton Blend</span>
-              </div>
-              <div className="flex flex-col border-b border-white/20 pb-1 w-24">
-                <span className="text-[10px] text-white/70">Pattern</span>
-                <span className="text-sm font-bold text-white drop-shadow">Solid / Printed</span>
-              </div>
-              <div className="flex flex-col border-b border-white/20 pb-1 w-24">
-                <span className="text-[10px] text-white/70">Occasion</span>
-                <span className="text-sm font-bold text-white drop-shadow">Casual</span>
-              </div>
+              {product.highlights && Object.keys(product.highlights).length > 0 ? (
+                Object.entries(product.highlights).slice(0, 5).map(([key, val]) => (
+                  <div key={key} className="flex flex-col border-b border-white/20 pb-0.5 w-28">
+                    <span className="text-[10px] text-white/70 capitalize">{key}</span>
+                    <span className="text-xs font-bold text-white drop-shadow truncate">{val}</span>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="flex flex-col border-b border-white/20 pb-1 w-24">
+                    <span className="text-[10px] text-white/70">Fit</span>
+                    <span className="text-sm font-bold text-white drop-shadow">Regular</span>
+                  </div>
+                  <div className="flex flex-col border-b border-white/20 pb-1 w-24">
+                    <span className="text-[10px] text-white/70">Fabric</span>
+                    <span className="text-sm font-bold text-white drop-shadow">Premium Quality</span>
+                  </div>
+                  <div className="flex flex-col border-b border-white/20 pb-1 w-24">
+                    <span className="text-[10px] text-white/70">Origin</span>
+                    <span className="text-sm font-bold text-white drop-shadow">Made in India</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
+
+        {/* Image Thumbnails Row */}
+        {product.images && product.images.length > 1 && (
+          <div className="flex justify-center gap-2 mt-3 px-4 overflow-x-auto scrollbar-none">
+            {product.images.map((img, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setActiveImageIndex(idx);
+                  const slider = document.getElementById('product-image-slider');
+                  if (slider) {
+                    slider.scrollTo({
+                      left: idx * slider.offsetWidth,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+                className={`w-12 h-16 rounded-md overflow-hidden border-2 transition-all flex-shrink-0 ${
+                  activeImageIndex === idx ? 'border-[#ee4923] scale-105 shadow-sm' : 'border-slate-200 opacity-60'
+                }`}
+              >
+                <img src={img} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Product Info Section */}
@@ -296,7 +494,7 @@ export default function ProductDetailsPage() {
       <div className="bg-white px-4 pt-4 pb-1">
         <h3 className="font-bold text-base text-[#02006c] mb-1">Product Details</h3>
         <p className="text-xs text-slate-600 leading-relaxed">
-          Premium oversized comfort fit raglan tee. Crafted from the finest cotton blend for ultimate comfort all day long.
+          {product.desc || 'No description available.'}
         </p>
       </div>
 
@@ -418,22 +616,25 @@ export default function ProductDetailsPage() {
         
         {isHighlightsOpen && (
           <div className="mt-4 grid grid-cols-2 gap-y-4 gap-x-6 animate-fade-in">
-            <div className="flex flex-col border-b border-slate-100 pb-2">
-              <span className="text-[11px] text-slate-500 mb-0.5">Sleeve</span>
-              <span className="text-xs font-medium text-slate-800">Half Sleeve</span>
-            </div>
-            <div className="flex flex-col border-b border-slate-100 pb-2">
-              <span className="text-[11px] text-slate-500 mb-0.5">Fabric</span>
-              <span className="text-xs font-medium text-slate-800">Polyester</span>
-            </div>
-            <div className="flex flex-col border-b border-slate-100 pb-2">
-              <span className="text-[11px] text-slate-500 mb-0.5">Neck Type</span>
-              <span className="text-xs font-medium text-slate-800">Round Neck</span>
-            </div>
-            <div className="flex flex-col border-b border-slate-100 pb-2">
-              <span className="text-[11px] text-slate-500 mb-0.5">Pattern</span>
-              <span className="text-xs font-medium text-slate-800">Solid</span>
-            </div>
+            {product.highlights && Object.keys(product.highlights).length > 0 ? (
+              Object.entries(product.highlights).map(([key, val]) => (
+                <div key={key} className="flex flex-col border-b border-slate-100 pb-2">
+                  <span className="text-[11px] text-slate-500 mb-0.5 capitalize">{key}</span>
+                  <span className="text-xs font-medium text-slate-800">{val}</span>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="flex flex-col border-b border-slate-100 pb-2">
+                  <span className="text-[11px] text-slate-500 mb-0.5">Quality</span>
+                  <span className="text-xs font-medium text-slate-800">Premium Grade</span>
+                </div>
+                <div className="flex flex-col border-b border-slate-100 pb-2">
+                  <span className="text-[11px] text-slate-500 mb-0.5">Warranty</span>
+                  <span className="text-xs font-medium text-slate-800">1 Year Warranty</span>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -471,46 +672,33 @@ export default function ProductDetailsPage() {
               <div className="animate-fade-in">
                 <h4 className="font-bold text-sm text-slate-800 mb-3">General</h4>
                 <div className="grid grid-cols-2 gap-y-4 gap-x-6">
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Brand</span>
-                    <span className="text-xs font-medium text-slate-800">MYo2</span>
-                  </div>
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Type</span>
-                    <span className="text-xs font-medium text-slate-800">Round Neck</span>
-                  </div>
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Sleeve</span>
-                    <span className="text-xs font-medium text-slate-800">Half Sleeve</span>
-                  </div>
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Fit</span>
-                    <span className="text-xs font-medium text-slate-800">Regular</span>
-                  </div>
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Fabric</span>
-                    <span className="text-xs font-medium text-slate-800">Polyester</span>
-                  </div>
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Sales Package</span>
-                    <span className="text-xs font-medium text-slate-800">1 T-shirt</span>
-                  </div>
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Pack of</span>
-                    <span className="text-xs font-medium text-slate-800">1</span>
-                  </div>
-                  <div className="flex flex-col border-b border-slate-100 pb-2">
-                    <span className="text-[11px] text-slate-500 mb-0.5">Style Code</span>
-                    <span className="text-xs font-medium text-slate-800">Apple Cut Dark Grey</span>
-                  </div>
+                  {product.technicalSpecs && Object.keys(product.technicalSpecs).length > 0 ? (
+                    Object.entries(product.technicalSpecs).map(([key, val]) => (
+                      <div key={key} className="flex flex-col border-b border-slate-100 pb-2">
+                        <span className="text-[11px] text-slate-500 mb-0.5 capitalize">{key}</span>
+                        <span className="text-xs font-medium text-slate-800">{val}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="flex flex-col border-b border-slate-100 pb-2">
+                        <span className="text-[11px] text-slate-500 mb-0.5">Brand</span>
+                        <span className="text-xs font-medium text-slate-800">{product.brandName || 'Generic'}</span>
+                      </div>
+                      <div className="flex flex-col border-b border-slate-100 pb-2">
+                        <span className="text-[11px] text-slate-500 mb-0.5">Type</span>
+                        <span className="text-xs font-medium text-slate-800">Premium quality product</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             )}
             
             {activeDetailTab === 'manufacturer' && (
-              <div className="text-sm text-slate-600 animate-fade-in">
-                <p>Manufactured by: Apparel Corp India Ltd.</p>
-                <p>Country of Origin: India</p>
+              <div className="text-sm text-slate-600 animate-fade-in space-y-1">
+                <p><span className="font-semibold text-slate-800">Manufactured by:</span> {product.manufacturerInfo || 'Premium Brand Logistics Ltd.'}</p>
+                <p><span className="font-semibold text-slate-800">Country of Origin:</span> India</p>
               </div>
             )}
           </div>
@@ -537,6 +725,55 @@ export default function ProductDetailsPage() {
               <span>based on 63 ratings by</span>
               <CheckCircle className="w-3.5 h-3.5" />
               <span>Verified Buyers</span>
+            </div>
+
+            {/* Approved Video Review Reels list */}
+            {productReels.length > 0 && (
+              <div className="mb-6 border-b border-slate-100 pb-4">
+                <h4 className="text-[13px] font-bold text-slate-800 mb-2.5 uppercase tracking-wider">Video Reviews (Reels)</h4>
+                <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2">
+                  {productReels.map((reel) => {
+                    const videoUrl = reel.video.startsWith('http') ? reel.video : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${reel.video}`;
+                    return (
+                      <div 
+                        key={reel._id}
+                        onClick={() => setSelectedReviewMedia({ type: 'video', url: videoUrl, reel })}
+                        className="relative w-24 h-40 rounded-xl overflow-hidden flex-shrink-0 bg-black cursor-pointer shadow-md group border border-slate-100"
+                      >
+                        <div className="absolute inset-0 bg-black/15 flex items-center justify-center group-hover:bg-black/35 transition-colors z-10">
+                          <Play className="w-8 h-8 text-white fill-white opacity-85" />
+                        </div>
+                        <video src={videoUrl} className="w-full h-full object-cover opacity-80" muted playsInline />
+                        
+                        <div className="absolute bottom-0 left-0 right-0 p-1.5 bg-gradient-to-t from-black/90 to-transparent text-white text-[9px] z-10">
+                          <p className="font-bold truncate">@{reel.username}</p>
+                          <div className="flex items-center gap-0.5 mt-0.5 font-bold">
+                            <span>{reel.rating}</span>
+                            <Star className="w-2 h-2 fill-amber-400 text-amber-400" />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Upload Reel button */}
+            <div className="mb-6">
+              <button 
+                onClick={() => {
+                  if (!user) {
+                    navigate('/login');
+                  } else {
+                    setIsUploadReelOpen(true);
+                  }
+                }}
+                className="w-full py-3 bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs rounded-xl hover:bg-indigo-100 transition-colors flex items-center justify-center gap-2"
+              >
+                <Play className="w-4 h-4 text-indigo-600 fill-indigo-600" />
+                Submit Video Review (Reel)
+              </button>
             </div>
 
             <h4 className="text-[13px] text-slate-800 mb-2">Features customers loved</h4>
@@ -741,17 +978,84 @@ export default function ProductDetailsPage() {
                   }}
                   className="w-full h-full object-cover" 
                 />
-                <div className="absolute bottom-4 left-4 right-4 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/10 text-white z-10">
+                <div className="absolute bottom-4 left-4 right-4 bg-black/50 backdrop-blur-md p-3 rounded-xl border border-white/10 text-white z-10">
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-[10px] font-bold">A</div>
-                    <span className="text-xs font-bold shadow-sm">Aman Sharma</span>
+                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-[10px] font-bold">
+                      {(selectedReviewMedia.reel?.username || 'A').charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-xs font-bold shadow-sm">@{selectedReviewMedia.reel?.username || 'Aman Sharma'}</span>
                   </div>
-                  <p className="text-[10px] line-clamp-2 text-white/90">Amazing quality! The fabric feels premium and the fit is exactly as shown.</p>
+                  <p className="text-[10px] line-clamp-2 text-white/90">{selectedReviewMedia.reel?.caption || 'Amazing quality! The fabric feels premium and the fit is exactly as shown.'}</p>
                 </div>
               </div>
             ) : (
               <img src={selectedReviewMedia.url} alt="Review" className="w-full max-w-sm rounded-xl object-contain max-h-[80vh] shadow-2xl" />
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Upload Video Reel Modal */}
+      {isUploadReelOpen && (
+        <div className="fixed inset-0 z-[150] bg-slate-900/60 backdrop-blur-sm flex items-end justify-center p-4">
+          <div className="bg-white rounded-t-3xl rounded-b-3xl w-full max-w-md p-6 space-y-5 shadow-2xl animate-slide-up pb-8">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-slate-800 text-base uppercase tracking-wider">Submit video review (reel)</h3>
+              <button onClick={() => setIsUploadReelOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleUploadReel} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Rating (1-5 Stars)</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      type="button"
+                      key={star}
+                      onClick={() => setReelRating(star)}
+                      className="text-amber-400 hover:scale-110 transition-transform"
+                    >
+                      <Star className={`w-8 h-8 ${star <= reelRating ? 'fill-amber-400' : 'text-slate-200'}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Review Caption / Text</label>
+                <textarea
+                  required
+                  rows={3}
+                  value={reelCaption}
+                  onChange={(e) => setReelCaption(e.target.value)}
+                  placeholder="Tell us what you loved about this product..."
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-bold focus:ring-4 focus:ring-indigo-50 outline-none text-slate-800 placeholder:text-slate-300"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Select Video File</label>
+                <input
+                  required
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => setReelVideoFile(e.target.files[0])}
+                  className="w-full text-xs font-bold text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 file:cursor-pointer hover:file:bg-indigo-100"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={isUploadingReel}
+                  className="w-full py-3 bg-[#ee4923] text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-100 flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:shadow-none"
+                >
+                  {isUploadingReel ? 'Uploading Video...' : 'Submit Reel Review'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

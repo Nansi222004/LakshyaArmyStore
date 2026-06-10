@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBag, Trash2, ShieldCheck, ChevronLeft, ChevronDown, Star, Truck, Bookmark, Zap, Percent, CheckCircle2, Info, MapPin, X } from 'lucide-react';
+import { ShoppingBag, Trash2, ShieldCheck, ChevronLeft, ChevronDown, Star, Truck, Bookmark, Zap, Percent, CheckCircle2, Info, MapPin, X, Plus } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import Lottie from 'lottie-react';
 import addToCartAnimation from '../assets/Lotties/AddToCart.json';
@@ -17,24 +17,72 @@ export default function CartPage() {
     }
   };
 
-  // Mock addresses for selection
-  const addresses = [
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [dbAddresses, setDbAddresses] = useState([]);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  
+  // Add new address form state
+  const [isAddingAddress, setIsAddingAddress] = useState(false);
+  const [newAddrName, setNewAddrName] = useState('');
+  const [newAddrType, setNewAddrType] = useState('Home');
+  const [newAddrText, setNewAddrText] = useState('');
+  const [newAddrPincode, setNewAddrPincode] = useState('');
+
+  // Promo code states
+  const [promoInput, setPromoInput] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [promoError, setPromoError] = useState('');
+  
+  const [isQtyModalOpen, setIsQtyModalOpen] = useState(false);
+  const [qtyModalItemId, setQtyModalItemId] = useState(null);
+  const [customQtyInput, setCustomQtyInput] = useState('');
+
+  // Fetch addresses from DB
+  const fetchAddresses = async () => {
+    if (user && user.id) {
+      try {
+        const token = localStorage.getItem('userToken');
+        if (!token) return;
+        const res = await fetch(`${API_BASE}/api/addresses`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          setDbAddresses(data.data);
+          if (data.data.length > 0) {
+            setSelectedAddressId(data.data[0]._id);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching addresses:", err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchAddresses();
+  }, [user]);
+
+  const mockAddresses = [
     {
-      id: 1,
+      _id: 'mock-1',
       type: 'WORK',
       name: 'Chirag Jeevanani',
       pincode: '452001',
       address: 'Corporate house, South Tukoganj, Jhabua Tower, Indore'
     },
     {
-      id: 2,
+      _id: 'mock-2',
       type: 'HOME',
       name: 'Vini',
       pincode: '452012',
       address: 'AH-49, Kadambari Nagar, Near Maa Annapurna Ice And Cold Storage, Indore'
     },
     {
-      id: 3,
+      _id: 'mock-3',
       type: 'OTHER',
       name: 'Chirag',
       pincode: '484001',
@@ -42,13 +90,15 @@ export default function CartPage() {
     }
   ];
 
-  const [selectedAddressId, setSelectedAddressId] = useState(1);
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [couponApplied, setCouponApplied] = useState(false);
+  const addressesList = (dbAddresses.length > 0) ? dbAddresses : mockAddresses;
   
-  const [isQtyModalOpen, setIsQtyModalOpen] = useState(false);
-  const [qtyModalItemId, setQtyModalItemId] = useState(null);
-  const [customQtyInput, setCustomQtyInput] = useState('');
+  useEffect(() => {
+    if (!selectedAddressId && addressesList.length > 0) {
+      setSelectedAddressId(addressesList[0]._id || addressesList[0].id);
+    }
+  }, [addressesList, selectedAddressId]);
+
+  const selectedAddress = addressesList.find(a => (a._id === selectedAddressId || a.id === selectedAddressId)) || addressesList[0] || mockAddresses[0];
 
   const handleApplyCustomQty = () => {
     const qty = parseInt(customQtyInput);
@@ -60,14 +110,112 @@ export default function CartPage() {
       alert("Please enter a valid quantity greater than 0.");
     }
   };
-  
-  const selectedAddress = addresses.find(a => a.id === selectedAddressId) || addresses[0];
+
+  const handleAddAddress = async (e) => {
+    e.preventDefault();
+    if (!newAddrName || !newAddrText || !newAddrPincode) {
+      alert("Please fill all required fields");
+      return;
+    }
+    if (!user || !user.id) {
+      alert("Please log in to save addresses");
+      return;
+    }
+    try {
+      const token = localStorage.getItem('userToken');
+      const res = await fetch(`${API_BASE}/api/addresses`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: newAddrName,
+          type: newAddrType,
+          address: newAddrText,
+          pincode: newAddrPincode
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.data) {
+        setDbAddresses(prev => [...prev, data.data]);
+        setSelectedAddressId(data.data._id);
+        setIsAddingAddress(false);
+        setNewAddrName('');
+        setNewAddrType('Home');
+        setNewAddrText('');
+        setNewAddrPincode('');
+      } else {
+        alert(data.message || "Failed to add address");
+      }
+    } catch (err) {
+      console.error("Error adding address:", err);
+      alert("Failed to add address due to server error");
+    }
+  };
+
+  const handleApplyPromo = async () => {
+    if (!promoInput.trim()) {
+      setPromoError('Please enter a coupon code.');
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/promotions/coupons`);
+      const data = await res.json();
+      if (data.success && data.coupons) {
+        const found = data.coupons.find(c => c.code.toUpperCase() === promoInput.trim().toUpperCase());
+        if (!found) {
+          setPromoError('Invalid coupon code.');
+          setAppliedCoupon(null);
+          setDiscountAmount(0);
+          return;
+        }
+        if (found.status !== 'Active') {
+          setPromoError('This coupon is no longer active.');
+          return;
+        }
+        if (new Date(found.expiry) < new Date()) {
+          setPromoError('This coupon has expired.');
+          return;
+        }
+        if (totalCartPrice < found.minOrder) {
+          setPromoError(`Minimum order amount of ₹${found.minOrder} required.`);
+          return;
+        }
+
+        setAppliedCoupon(found);
+        setPromoError('');
+        let discount = 0;
+        if (found.type === 'Percentage') {
+          discount = Math.round((totalCartPrice * found.value) / 100);
+        } else {
+          discount = found.value;
+        }
+        setDiscountAmount(discount);
+      } else {
+        setPromoError('Failed to validate coupon.');
+      }
+    } catch (err) {
+      console.error("Error applying promo:", err);
+      setPromoError('Server error validating coupon.');
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedCoupon(null);
+    setDiscountAmount(0);
+    setPromoInput('');
+    setPromoError('');
+  };
 
   const mockSavings = 2458;
+  const gstAmount = Math.round(Math.max(0, totalCartPrice - discountAmount) * 0.18);
+  const platformCommission = 15;
+  const finalTotal = Math.max(0, totalCartPrice - discountAmount + gstAmount + platformCommission);
   const mockOriginalTotal = totalCartPrice + mockSavings;
 
   return (
-    <div className="flex-grow flex flex-col bg-slate-100 min-h-[100dvh] pb-24 relative font-sans">
+    <div className="flex-grow flex flex-col bg-slate-100 pb-40 relative font-sans">
       {/* Header - Kept identical to original Mynzo theme per request */}
       <header className="sticky top-0 bg-orange-100 border-b border-orange-200/50 px-4 py-3 flex items-center justify-between z-40 shadow-sm">
         <div className="flex items-center gap-3">
@@ -100,24 +248,6 @@ export default function CartPage() {
       <div className="flex-grow animate-fade-in flex flex-col gap-2 pt-2">
         {cart.length > 0 ? (
           <>
-            {/* Delivery Header */}
-            <div className="bg-white px-4 py-3 flex items-center justify-between shadow-sm gap-3">
-              <div className="flex flex-col flex-1 min-w-0">
-                <div className="flex items-center flex-wrap gap-x-1.5 gap-y-0.5 text-xs leading-tight">
-                  <span className="text-slate-500 whitespace-nowrap">Deliver to:</span>
-                  <span className="font-bold text-slate-800 truncate max-w-[140px]">{selectedAddress.name}, {selectedAddress.pincode}</span> 
-                  <span className="bg-slate-100 text-[9px] px-1.5 py-0.5 rounded text-slate-600 font-bold align-middle uppercase">{selectedAddress.type}</span>
-                </div>
-                <span className="text-[11px] text-slate-400 mt-1 truncate">{selectedAddress.address}</span>
-              </div>
-              <button 
-                onClick={() => setIsAddressModalOpen(true)}
-                className="text-[#02006c] font-bold text-xs border border-slate-200 px-3 py-1.5 rounded shadow-sm hover:bg-slate-50 transition-colors whitespace-nowrap flex-shrink-0"
-              >
-                Change
-              </button>
-            </div>
-
             {/* Cart Items */}
             <div className="flex flex-col gap-2">
               {cart.map((item, index) => (
@@ -205,32 +335,6 @@ export default function CartPage() {
                 </div>
               ))}
             </div>
-
-            {/* Coupon Apply Banner */}
-            <div className="px-4 py-3 bg-white mt-0.5 shadow-sm">
-              <div className="border border-slate-200 rounded-lg flex items-center justify-between p-3 bg-slate-50/50">
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded bg-[#02006c]/10 text-[#02006c] flex items-center justify-center border border-[#02006c]/20">
-                    <Percent className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs text-slate-700 font-medium">Save extra <span className="font-bold">₹210</span> with Coupon</span>
-                </div>
-                <button 
-                  onClick={() => setCouponApplied(!couponApplied)}
-                  className={`font-black text-sm active:scale-95 transition-all ${
-                    couponApplied ? 'text-emerald-600' : 'text-[#02006c]'
-                  }`}
-                >
-                  {couponApplied ? 'Applied' : 'Apply'}
-                </button>
-              </div>
-            </div>
-
-            {/* Green Savings Banner */}
-            <div className="bg-green-50 px-4 py-2.5 flex justify-center items-center gap-1.5 border-b border-green-100">
-              <CheckCircle2 className="w-4 h-4 text-green-600 fill-green-100" />
-              <span className="text-xs text-green-700 font-medium">You'll save <span className="font-bold">₹{mockSavings}</span> on this order!</span>
-            </div>
             
             {/* Safe seal */}
             <div className="flex items-center justify-center gap-2 py-6">
@@ -243,17 +347,14 @@ export default function CartPage() {
             {/* Bottom sticky bar */}
             <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-3 z-50 flex items-center justify-between max-w-md mx-auto shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
               <div className="flex flex-col justify-center">
-                <span className="text-[11px] text-slate-400 line-through font-medium -mb-0.5">₹{mockOriginalTotal}</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xl font-black text-slate-800 tracking-tight leading-none">₹{totalCartPrice}</span>
-                  <Info className="w-3 h-3 text-slate-400 cursor-pointer" />
-                </div>
+                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Subtotal</span>
+                <span className="text-xl font-black text-slate-800 tracking-tight leading-none">₹{totalCartPrice}</span>
               </div>
               <button 
                 onClick={handleCheckout} 
                 className="w-1/2 bg-[#ee4923] active:bg-[#d8401e] text-white py-3.5 rounded-lg font-black text-[15px] shadow-sm transition-all"
               >
-                Place Order
+                Checkout
               </button>
             </div>
           </>
@@ -320,7 +421,10 @@ export default function CartPage() {
             <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
               <h2 className="text-base font-black text-[#02006c]">Select Delivery Address</h2>
               <button 
-                onClick={() => setIsAddressModalOpen(false)}
+                onClick={() => {
+                  setIsAddressModalOpen(false);
+                  setIsAddingAddress(false);
+                }}
                 className="p-1.5 bg-slate-50 rounded-full text-slate-500 hover:text-slate-800 transition-colors active:scale-95"
               >
                 <X className="w-5 h-5" />
@@ -329,38 +433,124 @@ export default function CartPage() {
             
             {/* Modal Body / List */}
             <div className="overflow-y-auto p-4 flex flex-col gap-3 pb-safe">
-              {addresses.map(addr => (
-                <div 
-                  key={addr.id}
-                  onClick={() => {
-                    setSelectedAddressId(addr.id);
-                    setIsAddressModalOpen(false);
-                  }}
-                  className={`border rounded-xl p-4 cursor-pointer transition-all ${
-                    selectedAddressId === addr.id 
-                      ? 'border-[#ee4923] bg-orange-50/30' 
-                      : 'border-slate-200 hover:border-slate-300 bg-white'
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="pt-0.5">
-                      <div className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center ${
-                        selectedAddressId === addr.id ? 'border-[#ee4923]' : 'border-slate-300'
-                      }`}>
-                        {selectedAddressId === addr.id && <div className="w-2 h-2 rounded-full bg-[#ee4923]" />}
+              {!isAddingAddress ? (
+                <>
+                  {addressesList.map(addr => {
+                    const idVal = addr._id || addr.id;
+                    const isSelected = selectedAddressId === idVal;
+                    return (
+                      <div 
+                        key={idVal}
+                        onClick={() => {
+                          setSelectedAddressId(idVal);
+                          setIsAddressModalOpen(false);
+                        }}
+                        className={`border rounded-xl p-4 cursor-pointer transition-all ${
+                          isSelected 
+                            ? 'border-[#ee4923] bg-orange-50/30' 
+                            : 'border-slate-200 hover:border-slate-300 bg-white'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="pt-0.5">
+                            <div className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center ${
+                              isSelected ? 'border-[#ee4923]' : 'border-slate-300'
+                            }`}>
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-[#ee4923]" />}
+                            </div>
+                          </div>
+                          <div className="flex-1 flex flex-col">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-[13px] font-bold text-slate-800">{addr.name}</span>
+                              <span className="bg-slate-100 text-[9px] px-1.5 py-0.5 rounded text-slate-600 font-bold uppercase">{addr.type}</span>
+                            </div>
+                            <span className="text-[11px] text-slate-500 leading-snug">{addr.address}</span>
+                            <span className="text-[11px] font-bold text-slate-600 mt-1">Pincode: {addr.pincode}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex-1 flex flex-col">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[13px] font-bold text-slate-800">{addr.name}</span>
-                        <span className="bg-slate-100 text-[9px] px-1.5 py-0.5 rounded text-slate-600 font-bold uppercase">{addr.type}</span>
-                      </div>
-                      <span className="text-[11px] text-slate-500 leading-snug">{addr.address}</span>
-                      <span className="text-[11px] font-bold text-slate-600 mt-1">Pincode: {addr.pincode}</span>
+                    );
+                  })}
+
+                  {user && (
+                    <button 
+                      onClick={() => setIsAddingAddress(true)}
+                      className="mt-2 w-full border border-dashed border-[#02006c] hover:bg-slate-50 text-[#02006c] py-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-colors"
+                    >
+                      <Plus className="w-4 h-4" /> Add New Address
+                    </button>
+                  )}
+                </>
+              ) : (
+                <form onSubmit={handleAddAddress} className="flex flex-col gap-3.5 p-1 animate-fade-in">
+                  <div>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-wide">Receiver Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. Vini Sharma" 
+                      value={newAddrName} 
+                      onChange={(e) => setNewAddrName(e.target.value)}
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-wide">Address Type</label>
+                    <div className="flex gap-2 mt-1">
+                      {['Home', 'Work', 'Other'].map(t => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setNewAddrType(t)}
+                          className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-all ${
+                            newAddrType === t 
+                              ? 'border-[#ee4923] bg-orange-50/30 text-[#ee4923]' 
+                              : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      ))}
                     </div>
                   </div>
-                </div>
-              ))}
+                  <div>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-wide">Detailed Address</label>
+                    <textarea 
+                      placeholder="e.g. Flat/House No, Building, Street, Area" 
+                      value={newAddrText} 
+                      onChange={(e) => setNewAddrText(e.target.value)}
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923] min-h-[70px]"
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-wide">Pincode</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. 452001" 
+                      value={newAddrPincode} 
+                      onChange={(e) => setNewAddrPincode(e.target.value)}
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      required 
+                    />
+                  </div>
+                  <div className="flex gap-3 mt-4">
+                    <button 
+                      type="button" 
+                      onClick={() => setIsAddingAddress(false)}
+                      className="flex-1 py-3 bg-slate-100 rounded-xl text-slate-600 text-xs font-bold hover:bg-slate-200 transition-colors"
+                    >
+                      Back
+                    </button>
+                    <button 
+                      type="submit"
+                      className="flex-1 py-3 bg-[#ee4923] text-white text-xs font-black rounded-xl hover:bg-orange-600 transition-colors shadow-sm"
+                    >
+                      Save Address
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>

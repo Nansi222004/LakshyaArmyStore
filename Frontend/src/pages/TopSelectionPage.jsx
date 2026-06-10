@@ -1,53 +1,46 @@
-import React from 'react';
-import { ArrowLeft, Search, Camera, ShoppingCart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-import imgTee from '../assets/CrazyDeals/CrazyDeals2.jpg';
-import imgNecklace from '../assets/CrazyDeals/CrazyDeals3.jpg';
-import imgWatch from '../assets/CrazyDeals/CrazyDeals4.jpg';
-import imgTint from '../assets/CrazyDeals/CrazyDeals5.jpg';
-
-const topOffers = [
-  {
-    id: 1,
-    image: imgTee,
-    title: 'XXTRENDZ',
-    subtitle: 'Best Selling Products',
-  },
-  {
-    id: 2,
-    image: imgNecklace,
-    title: 'Cotton Blend',
-    subtitle: 'Best Selling Products',
-  },
-  {
-    id: 3,
-    image: imgWatch,
-    title: 'Vintage Watch',
-    subtitle: 'Best Selling Products',
-  },
-  {
-    id: 4,
-    image: imgTint,
-    title: 'Benetint Lip Tint',
-    subtitle: 'Widest Range',
-  },
-  {
-    id: 5,
-    image: imgTee,
-    title: 'Classic Fit Tee',
-    subtitle: 'Top Selection',
-  },
-  {
-    id: 6,
-    image: imgNecklace,
-    title: 'Gold Plated Jewelry',
-    subtitle: 'Best Selling Products',
-  }
-];
 
 export default function TopSelectionPage() {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTopSelections = async () => {
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/products?status=Approved`);
+        const data = await res.json();
+        if (res.ok && data.success && data.products) {
+          const topSelected = data.products.filter(p => p.flags?.topSection);
+          setProducts(topSelected);
+        }
+      } catch (err) {
+        console.error('Error fetching top picks:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopSelections();
+  }, []);
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (
+      imagePath.startsWith('http://') || 
+      imagePath.startsWith('https://') || 
+      imagePath.startsWith('data:') ||
+      imagePath.startsWith('/src/') ||
+      imagePath.startsWith('/assets/')
+    ) {
+      return imagePath;
+    }
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${apiBase}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col pb-20 animate-fade-in">
@@ -61,19 +54,41 @@ export default function TopSelectionPage() {
 
       {/* Grid */}
       <div className="grid grid-cols-2 bg-slate-50 gap-3 p-3">
-        {topOffers.map((offer) => (
-          <div 
-            key={offer.id} 
-            onClick={() => navigate(`/product/deal-${offer.id}`)}
-            className="bg-white flex flex-col items-center pt-0 px-0 pb-3 cursor-pointer hover:shadow-md transition-all shadow-sm"
-          >
-            <div className="w-full aspect-[4/5] mb-2 flex items-center justify-center overflow-hidden">
-              <img src={offer.image} alt={offer.title} className="w-full h-full object-cover" />
+        {loading ? (
+          [1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="bg-white flex flex-col items-center pb-3 animate-pulse shadow-sm rounded-lg overflow-hidden">
+              <div className="w-full aspect-[4/5] bg-slate-200 mb-2" />
+              <div className="w-3/4 h-3 bg-slate-200 rounded mb-1.5" />
+              <div className="w-1/2 h-2.5 bg-slate-200 rounded" />
             </div>
-            <h3 className="text-[12px] font-medium text-slate-600 text-center tracking-wide" style={{ fontFamily: "'Times New Roman', Times, serif" }}>{offer.title}</h3>
-            <p className="text-[10px] text-emerald-600 mt-1 text-center font-medium tracking-wide" style={{ fontFamily: "'Times New Roman', Times, serif" }}>{offer.subtitle}</p>
+          ))
+        ) : products.length > 0 ? (
+          products.map((product) => (
+            <div 
+              key={product._id || product.id} 
+              onClick={() => navigate(`/product/${product._id || product.id}`)}
+              className="bg-white flex flex-col items-center pt-0 px-0 pb-3 cursor-pointer hover:shadow-md transition-all shadow-sm"
+            >
+              <div className="w-full aspect-[4/5] mb-2 flex items-center justify-center overflow-hidden">
+                <img 
+                  src={getImageUrl((product.images && product.images[0]) ? product.images[0] : '')} 
+                  alt={product.name} 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+              <h3 className="text-[12px] font-medium text-slate-600 text-center tracking-wide font-sans truncate w-full px-2" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                {product.brandName || 'Mynzo Originals'}
+              </h3>
+              <p className="text-[10px] text-emerald-600 mt-1 text-center font-medium tracking-wide font-sans truncate w-full px-2" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+                {product.name}
+              </p>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-2 py-10 text-center text-slate-400 text-xs font-medium">
+            No Top Picks available at this moment.
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

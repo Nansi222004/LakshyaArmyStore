@@ -26,8 +26,9 @@ const sendOtp = async (req, res) => {
   try {
     const { phone } = req.body;
 
-    if (!phone || phone.length < 10) {
-      return res.status(400).json({ success: false, message: 'Valid phone number required' });
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phone || !phoneRegex.test(phone)) {
+      return res.status(400).json({ success: false, message: 'Valid 10-digit phone number is required' });
     }
 
     // Find or create user (auto-register logic)
@@ -45,9 +46,43 @@ const sendOtp = async (req, res) => {
     user.otpExpiry = otpExpiry;
     await user.save();
 
-    // In production, send SMS here
-    // For staging, OTP is static - just return success
     console.log(`📱 OTP for ${phone}: ${otp} [ENV: ${process.env.ENV}]`);
+
+    // In production, send SMS using SMS India Hub
+    if (process.env.ENV === 'production') {
+      const smsUser = process.env.SMS_INDIA_HUB_USER;
+      const smsPassword = process.env.SMS_INDIA_HUB_PASSWORD;
+      const smsSenderId = process.env.SMS_INDIA_HUB_SENDER_ID;
+      const smsGwid = process.env.SMS_INDIA_HUB_GWID || '2';
+      
+      const message = `Welcome to the ${smsUser} powered by SMSINDIAHUB. Your OTP for registration is ${otp}`;
+      const encodedMsg = encodeURIComponent(message);
+      
+      // Determine if smsPassword is an API Key (typically long string) or a standard password
+      const isApiKey = smsPassword && smsPassword.length > 15;
+      let smsUrl = '';
+      let maskedUrl = '';
+
+      if (isApiKey) {
+        // API Key query parameters: APIKey, sid, msisdn, msg, fl, gwid
+        smsUrl = `http://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=${smsPassword}&sid=${smsSenderId}&msisdn=91${phone}&msg=${encodedMsg}&fl=0&gwid=${smsGwid}`;
+        maskedUrl = `http://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=******&sid=${smsSenderId}&msisdn=91${phone}&msg=${encodedMsg}&fl=0&gwid=${smsGwid}`;
+      } else {
+        // Classic User/Password parameters: user, password, msisdn, sid, msg, fl, gwid
+        smsUrl = `http://cloud.smsindiahub.in/vendorsms/pushsms.aspx?user=${smsUser}&password=${smsPassword}&msisdn=91${phone}&sid=${smsSenderId}&msg=${encodedMsg}&fl=0&gwid=${smsGwid}`;
+        maskedUrl = `http://cloud.smsindiahub.in/vendorsms/pushsms.aspx?user=${smsUser}&password=******&msisdn=91${phone}&sid=${smsSenderId}&msg=${encodedMsg}&fl=0&gwid=${smsGwid}`;
+      }
+      
+      console.log(`📡 Sending SMS via SMS India Hub to 91${phone}...`);
+      console.log(`📡 Request URL (Masked): ${maskedUrl}`);
+      try {
+        const smsRes = await fetch(smsUrl);
+        const smsText = await smsRes.text();
+        console.log(`📡 SMS India Hub Response:`, smsText);
+      } catch (smsErr) {
+        console.error('📡 SMS India Hub Error:', smsErr);
+      }
+    }
 
     res.status(200).json({
       success: true,
@@ -146,4 +181,146 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { sendOtp, verifyOtp, getMe };
+// @desc    Update current logged in user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateProfile = async (req, res) => {
+  try {
+    const { name, email, phone, dob, gender } = req.body;
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if (name !== undefined) user.name = name;
+    if (email !== undefined) {
+      const emailExists = await User.findOne({ email: email.toLowerCase(), _id: { $ne: req.user.id } });
+      if (emailExists) {
+        return res.status(400).json({ success: false, message: 'This email address is already in use by another account.' });
+      }
+      user.email = email.toLowerCase();
+    }
+    if (phone !== undefined) {
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(phone)) {
+        return res.status(400).json({ success: false, message: 'Phone number must be exactly 10 digits.' });
+      }
+      const phoneExists = await User.findOne({ phone, _id: { $ne: req.user.id } });
+      if (phoneExists) {
+        return res.status(400).json({ success: false, message: 'This phone number is already in use by another account.' });
+      }
+      user.phone = phone;
+    }
+    if (dob !== undefined) user.dob = dob;
+    
+    if (gender !== undefined) {
+      if (gender === 'male' || gender === 'Male') user.gender = 'Male';
+      else if (gender === 'female' || gender === 'Female') user.gender = 'Female';
+      else if (gender === 'other' || gender === 'Other') user.gender = 'Other';
+      else user.gender = null;
+    }
+
+    if (req.file) {
+      const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
+      user.avatar = `${backendUrl}${req.file.url}`;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully!',
+      user: {
+        id: user._id,
+        phone: user.phone,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        gender: user.gender,
+        dob: user.dob,
+        joinedAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    console.error('Update Profile Error:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+};
+
+// @desc    Change / set password
+// @route   PUT /api/auth/change-password
+// @access  Private
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!newPassword || !confirmPassword) {
+      return res.status(400).json({ success: false, message: 'New password and confirm password are required' });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long' });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // If user already has a password, verify the current one
+    if (user.password) {
+      if (!currentPassword) {
+        return res.status(400).json({ success: false, message: 'Current password is required' });
+      }
+      const isMatch = await user.matchPassword(currentPassword);
+      if (!isMatch) {
+        return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+      }
+    }
+
+    user.password = newPassword; // will be hashed by pre-save hook
+    await user.save();
+
+    res.status(200).json({ success: true, message: 'Password updated successfully!' });
+  } catch (error) {
+    console.error('Change Password Error:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+};
+
+const getWallet = async (req, res) => {
+  try {
+    const CoinTransaction = require('../Models/CoinTransaction');
+    const User = require('../Models/User');
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const transactions = await CoinTransaction.find({ userId: req.user.id })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      coins: user.referralCoins || 0,
+      transactions: transactions.map(t => ({
+        id: t._id,
+        type: t.type,
+        title: t.title,
+        amount: t.amount,
+        createdAt: t.createdAt
+      }))
+    });
+  } catch (error) {
+    console.error('Get Wallet Error:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { sendOtp, verifyOtp, getMe, updateProfile, changePassword, getWallet };
+

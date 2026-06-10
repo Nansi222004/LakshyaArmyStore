@@ -28,10 +28,20 @@ export default function SpeedTapGame({ onClose, addCoins }) {
       localStorage.setItem('speedTapBest', finalScore.toString());
     }
     setGameState('result');
+    
+    // Calculate and award coins automatically when game finishes
+    let rewardAmount = 5;
+    if (finalScore >= 100) rewardAmount = 100;
+    else if (finalScore >= 80) rewardAmount = 80;
+    else if (finalScore >= 40) rewardAmount = 40;
+    
+    if (addCoins) {
+      addCoins(rewardAmount);
+    }
   };
 
   const claimReward = (amount) => {
-    addCoins(amount);
+    // Coins already added onGameEnd, just proceed to rewards view
   };
 
   return (

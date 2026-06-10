@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Gift, Gamepad2, Gem, Heart, LayoutGrid, Compass, HelpCircle, Layers, MapPin, Trophy, ShieldAlert, Truck, RotateCcw, ShieldCheck, Tag, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { CATEGORIES, BANNERS, VALUE_PROPS, CRAZY_DEALS } from '../data/mockData';
+import { CATEGORIES, BANNERS, VALUE_PROPS } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ui/ProductCard';
 
@@ -24,13 +24,175 @@ export default function Home() {
   const [activeFlashTab, setActiveFlashTab] = useState('All');
   const [budgetFilter, setBudgetFilter] = useState(null);
 
+  const [categories, setCategories] = useState(CATEGORIES);
+  const [dynamicBanners, setDynamicBanners] = useState([]);
+
+  // Dynamic Products from API
+  const [rawAllProducts, setRawAllProducts] = useState([]);
+  const [crazyDealsProducts, setCrazyDealsProducts] = useState([]);
+  const [flashSaleProducts, setFlashSaleProducts] = useState([]);
+  const [topSelectionProducts, setTopSelectionProducts] = useState([]);
+  const [subCategoryChips, setSubCategoryChips] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState('all');
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [topBuys, setTopBuys] = useState([]);
+  const [trendingBrands, setTrendingBrands] = useState([]);
+
+  useEffect(() => {
+    const fetchCategoryChips = async () => {
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/chips`);
+        const data = await res.json();
+        if (res.ok && data.success && data.chips && data.chips.length > 0) {
+          const activeChips = data.chips.filter(c => c.active && c.id !== 'for-you');
+          const forYouChip = CATEGORIES.find(c => c.id === 'for-you');
+          console.log('Fetched chips:', activeChips);
+          console.log('For You chip:', forYouChip);
+          setCategories([forYouChip, ...activeChips]);
+        }
+      } catch (err) {
+        console.error('Error fetching category chips:', err);
+      }
+    };
+    
+    const fetchBanners = async () => {
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/banners`);
+        const data = await res.json();
+        if (res.ok && data.success && data.banners) {
+          setDynamicBanners(data.banners.filter(b => b.active));
+        }
+      } catch (err) {
+        console.error('Error fetching banners:', err);
+      }
+    };
+
+    const fetchProducts = async () => {
+      try {
+        setProductsLoading(true);
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        
+        const [resProducts, resTopBuys, resTrending] = await Promise.all([
+          fetch(`${apiBase}/api/admin/catalog/products?status=Approved`),
+          fetch(`${apiBase}/api/admin/catalog/products/top-buys`),
+          fetch(`${apiBase}/api/admin/catalog/products/trending-brands`)
+        ]);
+
+        const dataProducts = await resProducts.json();
+        if (resProducts.ok && dataProducts.success && dataProducts.products) {
+          const allProducts = dataProducts.products;
+          setRawAllProducts(allProducts);
+          setCrazyDealsProducts(allProducts.filter(p => p.flags?.crazyDeals));
+          setFlashSaleProducts(allProducts.filter(p => p.flags?.flashSale));
+          setTopSelectionProducts(allProducts.filter(p => p.flags?.topSection));
+        }
+
+        if (resTopBuys.ok) {
+          const dataTopBuys = await resTopBuys.json();
+          if (dataTopBuys.success && dataTopBuys.products) {
+            setTopBuys(dataTopBuys.products.map(normaliseProduct));
+          }
+        }
+
+        if (resTrending.ok) {
+          const dataTrending = await resTrending.json();
+          if (dataTrending.success && dataTrending.brands) {
+            setTrendingBrands(dataTrending.brands.map((b, idx) => ({
+              id: idx + 1,
+              brand: b.brand,
+              discount: "Trending Choice",
+              badgeColor: "text-indigo-600",
+              image: getImageUrl(b.image) || "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200"
+            })));
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching products:', err);
+      } finally {
+        setProductsLoading(false);
+      }
+    };
+
+    const fetchSubCategoryChips = async () => {
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/subchips`);
+        const data = await res.json();
+        if (res.ok && data.success && data.subchips) {
+          setSubCategoryChips(data.subchips.filter(sc => sc.active));
+        }
+      } catch (err) {
+        console.error('Error fetching subcategory chips:', err);
+      }
+    };
+
+    fetchCategoryChips();
+    fetchBanners();
+    fetchProducts();
+    fetchSubCategoryChips();
+  }, []);
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (
+      imagePath.startsWith('http://') || 
+      imagePath.startsWith('https://') || 
+      imagePath.startsWith('data:') ||
+      imagePath.startsWith('/src/') ||
+      imagePath.startsWith('/assets/') ||
+      imagePath.includes('categoryForU') ||
+      imagePath.includes('Category')
+    ) {
+      return imagePath;
+    }
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${apiBase}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  };
+
+  // Reset subcategory selection when the main category selection changes
+  useEffect(() => {
+    setSelectedSubCategory('all');
+  }, [selectedCategory]);
+
+  const getFilteredCategoryProducts = () => {
+    if (selectedCategory === 'for-you') {
+      return [];
+    }
+    let filtered = rawAllProducts.filter(
+      p => p.category?.toLowerCase() === selectedCategory.toLowerCase()
+    );
+    if (selectedSubCategory !== 'all') {
+      filtered = filtered.filter(
+        p => p.subCategory?.toLowerCase() === selectedSubCategory.toLowerCase()
+      );
+    }
+    return filtered.map(normaliseProduct);
+  };
+
+  const getActiveBanners = () => {
+    if (dynamicBanners.length > 0) {
+      return dynamicBanners;
+    }
+    return BANNERS;
+  };
+
+  const activeBannersList = getActiveBanners();
+
+  // Reset active banner index when active banners change
+  useEffect(() => {
+    setActiveBanner(0);
+  }, [activeBannersList.length]);
+
   // Auto-slide Banners
   useEffect(() => {
+    if (activeBannersList.length === 0) return;
     const timer = setInterval(() => {
-      setActiveBanner((prev) => (prev + 1) % BANNERS.length);
+      setActiveBanner((prev) => (prev + 1) % activeBannersList.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, []);
+  }, [activeBannersList.length]);
 
   // 1. Live Countdown Timer State for Crazy Deals (ticking down from 2h 45m 30s)
   const [timeLeft, setTimeLeft] = useState(9930); // 9930 seconds = 02 hours, 45 minutes, 30 seconds
@@ -139,46 +301,74 @@ export default function Home() {
     }
   };
 
+  // Normalise API product to match the shape the UI expects
+  const normaliseProduct = (p) => ({
+    id: p._id || p.id,
+    name: p.name,
+    desc: p.description || '',
+    price: p.sellingPrice,
+    originalPrice: p.mrp || p.sellingPrice,
+    discount: p.discountLabel || (p.mrp ? `-${Math.round((1 - p.sellingPrice / p.mrp) * 100)}%` : '0%'),
+    rating: p.rating || 4.5,
+    type: (p.category || '').toLowerCase(),
+    image: (p.images && p.images[0]) ? p.images[0] : '',
+    brandName: p.brandName || 'Mynzo Originals',
+    flags: p.flags || {},
+    stock: p.stock || 0,
+    sales: p.sales || 0,
+  });
+
+  // Dynamic trending brands aggregated from all products, sorted by total sales of the brand's products
+  const getTrendingBrands = () => {
+    if (trendingBrands && trendingBrands.length > 0) {
+      return trendingBrands;
+    }
+    const brandSales = {};
+    rawAllProducts.forEach(p => {
+      const brand = p.brandName || 'Generic';
+      const sales = p.sales || 0;
+      const image = p.images?.[0] || '';
+      if (!brandSales[brand]) {
+        brandSales[brand] = { brand, sales: 0, image, maxProductSales: 0 };
+      }
+      brandSales[brand].sales += sales;
+      if (sales >= brandSales[brand].maxProductSales) {
+        brandSales[brand].maxProductSales = sales;
+        brandSales[brand].image = image;
+      }
+    });
+
+    return Object.values(brandSales)
+      .sort((a, b) => b.sales - a.sales)
+      .slice(0, 6)
+      .map((b, idx) => ({
+        id: idx + 1,
+        brand: b.brand,
+        discount: "Trending Choice",
+        badgeColor: "text-indigo-600",
+        image: getImageUrl(b.image) || "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200"
+      }));
+  };
+
   // Filter deals in-place on the Home page based on search bar query AND active category tab
   const getHomeFilteredDeals = () => {
-    let items = CRAZY_DEALS;
+    let items = crazyDealsProducts.map(normaliseProduct);
 
     // 1. Search Query filter
     if (searchQuery) {
       items = items.filter((deal) =>
         deal.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        deal.desc.toLowerCase().includes(searchQuery.toLowerCase())
+        (deal.desc && deal.desc.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
 
-    switch (selectedCategory) {
-      case 'for-you':
-        return items;
-      case 'beauty':
-        return items.filter((p) => ['tint', 'makeup', 'skincare', 'haircare'].includes(p.type));
-      case 'gifting':
-        return items.filter((p) => ['tee', 'necklace', 'watch', 'mug', 'tumbler', 'keychain', 'hamper', 'bouquet'].includes(p.type));
-      case 'electronics':
-        return items.filter((p) => ['earbuds', 'powerbank', 'fan', 'headphones', 'smartwatch'].includes(p.type));
-      case 'jewellery':
-        return items.filter((p) => ['necklace', 'bracelet', 'watch'].includes(p.type));
-      case 'toys':
-        return items.filter((p) => ['plush', 'toy', 'nightlight'].includes(p.type));
-      case 'stationery':
-        return items.filter((p) => ['notebook', 'pen', 'stapler'].includes(p.type));
-      case 'fashion':
-        return items.filter((p) => ['tee', 'necklace', 'watch', 'pants', 'blouse', 'outfit'].includes(p.type));
-      case 'electrical':
-        return items.filter((p) => ['bulb', 'wire', 'fan', 'iron'].includes(p.type));
-      default:
-        return items;
-    }
+    return items;
   };
 
   const filteredDeals = getHomeFilteredDeals();
 
   const getFlashFilteredDeals = () => {
-    let items = CRAZY_DEALS;
+    let items = flashSaleProducts.map(normaliseProduct);
     switch (activeFlashTab) {
       case 'All':
         return items;
@@ -186,22 +376,17 @@ export default function Home() {
         return items.slice().reverse();
       case 'Popular':
         return items.filter(d => d.rating >= 4.8);
-      case 'Clothes':
-        return items.filter(d => d.type === 'tee');
-      case 'Beauty':
-        return items.filter(d => d.type === 'tint');
-      case 'Gifts':
-        return items.filter(d => d.type === 'necklace' || d.type === 'watch' || d.type === 'tint');
-      case 'Electronics':
-        return items.filter(d => d.type === 'watch');
-      case 'Toys':
-        return []; // placeholder
       default:
-        return items;
+        return items.filter(d =>
+          activeFlashTab === 'All' ||
+          (d.type || '').toLowerCase().includes(activeFlashTab.toLowerCase()) ||
+          (d.name || '').toLowerCase().includes(activeFlashTab.toLowerCase())
+        );
     }
   };
 
   const flashDeals = getFlashFilteredDeals();
+  const topSelectionNormalised = topSelectionProducts.map(normaliseProduct);
 
   // Helper custom inline vector display for horizontal scrolling slider
   const renderDealGraphic = (type) => {
@@ -337,13 +522,75 @@ export default function Home() {
     { id: 5, brand: "PERSONAL TOUCH", discount: "Up to 70% Off", badgeColor: "text-slate-800", image: beauty5 }
   ];
 
+
+
+  if (productsLoading) {
+    return (
+      <div className="flex-grow space-y-5 pb-10 animate-fade-in bg-slate-50">
+        {/* 1. Category Strip Skeleton */}
+        <div className="flex items-center gap-4 overflow-x-auto px-4 py-3.5 bg-white border-b border-slate-100 scrollbar-none">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="flex flex-col items-center gap-2 flex-shrink-0 w-[60px] animate-pulse">
+              <div className="w-12 h-12 rounded-2xl bg-slate-200" />
+              <div className="w-10 h-2.5 bg-slate-200 rounded" />
+            </div>
+          ))}
+        </div>
+
+        {/* 2. Banner Skeleton */}
+        <div className="px-3 animate-pulse">
+          <div className="w-full aspect-[21/9] rounded-2xl bg-slate-200 shadow-sm" />
+        </div>
+
+        {/* 3. Flash Sale / Crazy Deals Header Skeleton */}
+        <div className="px-4 space-y-3 animate-pulse">
+          <div className="flex justify-between items-center">
+            <div className="w-28 h-5 bg-slate-200 rounded" />
+            <div className="w-20 h-4 bg-slate-200 rounded-full" />
+          </div>
+          <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="w-32 aspect-[3/4.2] bg-slate-200 rounded-2xl flex-shrink-0" />
+            ))}
+          </div>
+        </div>
+
+        {/* 4. Top 10 Buys Skeleton */}
+        <div className="px-4 space-y-3 animate-pulse">
+          <div className="flex justify-between items-center">
+            <div className="w-24 h-5 bg-slate-200 rounded" />
+            <div className="w-16 h-4 bg-slate-200 rounded-full" />
+          </div>
+          <div className="flex gap-3 overflow-x-auto scrollbar-none">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-32 h-44 bg-slate-200 rounded-2xl flex-shrink-0" />
+            ))}
+          </div>
+        </div>
+
+        {/* 5. Trending Brands Skeleton */}
+        <div className="px-4 space-y-3 animate-pulse">
+          <div className="flex justify-between items-center">
+            <div className="w-32 h-5 bg-slate-200 rounded" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-full aspect-[4/3] bg-slate-200 rounded-2xl" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-grow space-y-3.5 pb-6 animate-fade-in">
       
       {/* 1. Ultra-Compact Category strip with minimized gaps and in-place active states */}
       <div className="flex items-center gap-1 overflow-x-auto px-2 py-1.5 bg-white border-b border-slate-50 scrollbar-none scroll-smooth mt-2">
-        {CATEGORIES.map((cat) => {
+        {categories.map((cat) => {
           const isActive = selectedCategory === cat.id;
+          const labelText = cat.categoryName || cat.name;
 
           return (
             <button
@@ -351,7 +598,7 @@ export default function Home() {
               onClick={() => {
                 setSelectedCategory(cat.id);
               }}
-              className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer transition-all duration-300 min-w-[50px] px-1"
+              className="flex flex-col items-center gap-1 flex-shrink-0 cursor-pointer transition-all duration-300 w-[72px]"
             >
               {/* Image Box */}
               <div className={`w-14 h-14 flex items-center justify-center rounded-2xl border transition-all duration-300 overflow-hidden ${
@@ -360,27 +607,27 @@ export default function Home() {
                   : 'bg-[#FFF0ED] border-[#FFF0ED] text-[#02006c] hover:border-[#ee4923]/40'
               }`}>
                 {cat.image ? (
-                  <img src={cat.image} alt={cat.name} className="w-full h-full object-contain p-1" />
+                  <img src={getImageUrl(cat.image)} alt={labelText} className="w-full h-full object-contain p-1" />
                 ) : (
                   renderCategoryIcon(cat.id, isActive)
                 )}
               </div>
 
               {/* Label */}
-              <div className="flex flex-col items-center">
-                <span className={`text-[11px] px-2 py-0.5 rounded-full transition-colors ${
+              <div className="w-full text-center px-1">
+                <span className={`text-[10px] block truncate rounded-full transition-colors py-0.5 ${
                   isActive 
-                    ? 'font-bold text-[#ee4923] border border-[#ee4923]' 
+                    ? 'font-bold text-[#ee4923] border border-[#ee4923] px-1' 
                     : 'font-semibold text-[#02006c] border border-transparent'
-                }`}>
-                  {cat.name}
+                }`} title={labelText}>
+                  {labelText}
                 </span>
               </div>
             </button>
           );
         })}
       </div>
-
+      
       {/* 2. Banner Slider (Hero Banner Section) */}
       <div className="px-2 relative">
         <div className="overflow-hidden rounded-xl shadow-sm relative aspect-[21/9] w-full">
@@ -388,30 +635,32 @@ export default function Home() {
             className="flex w-full h-full transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${activeBanner * 100}%)` }}
           >
-            {BANNERS.map((banner) => (
+            {activeBannersList.map((banner) => (
               <div
-                key={banner.id}
+                key={banner.id || banner._id}
                 className="w-full h-full flex-shrink-0 cursor-pointer"
-                onClick={() => navigate('/categories')}
+                onClick={() => navigate(banner.link || '/categories')}
               >
-                <img src={banner.image} alt="Banner" className="w-full h-full object-cover" />
+                <img src={getImageUrl(banner.image)} alt="Banner" className="w-full h-full object-cover" />
               </div>
             ))}
           </div>
         </div>
 
         {/* Indicators */}
-        <div className="flex justify-center items-center gap-1.5 mt-1">
-          {BANNERS.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveBanner(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                idx === activeBanner ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
-              }`}
-            ></button>
-          ))}
-        </div>
+        {activeBannersList.length > 1 && (
+          <div className="flex justify-center items-center gap-1.5 mt-1">
+            {activeBannersList.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveBanner(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  idx === activeBanner ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
+                }`}
+              ></button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* CONDITIONAL RENDER: "For You" vs Other Categories */}
@@ -523,79 +772,35 @@ export default function Home() {
 
           {/* 2x2 Premium Grid */}
           <div className="grid grid-cols-2 gap-3">
-            
-            {/* 1. Oversized Tee (Comfort Fit Tee) */}
-            <div 
-              onClick={() => navigate('/categories')}
-              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
-            >
-              <div>
-                <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
-                  <img src={CrazyDeals2} alt="Vintage Oversized Tee" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            {topSelectionNormalised.length > 0 ? (
+              topSelectionNormalised.slice(0, 4).map((deal) => (
+                <div 
+                  key={deal.id}
+                  onClick={() => navigate(`/product/${deal.id}`)}
+                  className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300 group"
+                >
+                  <div>
+                    <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden">
+                      <img 
+                        src={getImageUrl(deal.image)} 
+                        alt={deal.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                    </div>
+                    <span className="text-[9.5px] font-medium text-slate-400 tracking-tight leading-normal px-1 block truncate">
+                      {deal.brandName}
+                    </span>
+                  </div>
+                  <h4 className="text-[12.5px] font-bold text-slate-800 leading-tight mt-0.5 px-1 truncate">
+                    {deal.name}
+                  </h4>
                 </div>
-                <span className="text-[9.5px] font-medium text-slate-400 tracking-tight leading-normal px-1">
-                  Vintage Oversized Tee
-                </span>
+              ))
+            ) : (
+              <div className="col-span-2 py-6 text-center text-slate-400 text-xs font-medium border border-dashed border-slate-200 rounded-xl">
+                No top selections found
               </div>
-              <h4 className="text-[12.5px] font-bold text-slate-800 leading-tight mt-0.5 px-1">
-                Comfort Fit Tee
-              </h4>
-            </div>
-
-            {/* 2. Layered Necklace (Gold Plated Jewelry) */}
-            <div 
-              onClick={() => navigate('/categories')}
-              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
-            >
-              <div>
-                <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
-                  <img src={CrazyDeals3} alt="Layered Charm Necklace" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <span className="text-[9.5px] font-medium text-slate-400 tracking-tight leading-normal px-1">
-                  Layered Charm Necklace
-                </span>
-              </div>
-              <h4 className="text-[12.5px] font-bold text-slate-800 leading-tight mt-0.5 px-1">
-                Gold Plated Jewelry
-              </h4>
-            </div>
-
-            {/* 3. Vintage Watch (Gold Chain Dial) */}
-            <div 
-              onClick={() => navigate('/categories')}
-              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
-            >
-              <div>
-                <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
-                  <img src={CrazyDeals4} alt="Vintage Luxury Watch" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <span className="text-[9.5px] font-medium text-slate-400 tracking-tight leading-normal px-1">
-                  Vintage Luxury Watch
-                </span>
-              </div>
-              <h4 className="text-[12.5px] font-bold text-slate-800 leading-tight mt-0.5 px-1">
-                Gold Chain Dial
-              </h4>
-            </div>
-
-            {/* 4. Benetint Lip Tint (Cheek & Lip Stain) */}
-            <div 
-              onClick={() => navigate('/categories')}
-              className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300"
-            >
-              <div>
-                <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden group">
-                  <img src={CrazyDeals5} alt="Benetint Lip Tint" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <span className="text-[9.5px] font-medium text-slate-400 tracking-tight leading-normal px-1">
-                  Benetint Lip Tint
-                </span>
-              </div>
-              <h4 className="text-[12.5px] font-bold text-slate-800 leading-tight mt-0.5 px-1">
-                Cheek & Lip Stain
-              </h4>
-            </div>
-
+            )}
           </div>
 
         </div>
@@ -659,7 +864,7 @@ export default function Home() {
                 </button>
                 
                 <div className="aspect-square bg-transparent rounded-lg mb-2 flex items-center justify-center overflow-hidden">
-                  <img src={deal.image} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={getImageUrl(deal.image)} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="px-1">
                   <h4 className="text-[11px] font-bold text-[#02006c] truncate">{deal.name}</h4>
@@ -677,36 +882,52 @@ export default function Home() {
           )}
         </div>
       </div>
-      </>
-      ) : selectedCategory === 'beauty' ? (
-        <div className="px-4 py-2 animate-fade-in space-y-8 pb-10">
-          
-          {/* 1. Sub-categories */}
-          <div className="flex gap-4 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 mt-2">
-            {BEAUTY_SUB_CATEGORIES.map(sub => (
-              <div key={sub.id} className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
-                <div className="w-14 h-14 rounded-xl overflow-hidden border border-orange-100 shadow-sm hover:shadow-md transition-shadow">
-                  <img src={sub.icon} alt={sub.name} className="w-full h-full object-cover" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-700">{sub.name}</span>
-              </div>
-            ))}
-          </div>
 
-          {/* 2. Top 10 beauty buys */}
-          <div>
-            <h3 className="text-[15px] font-black text-slate-800 mb-3 tracking-tight">Top 10 beauty buys</h3>
-            <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4">
-              {TOP_10_BUYS.map(buy => (
-                <div key={buy.id} className={`flex-shrink-0 w-32 h-44 rounded-xl p-2.5 flex flex-col justify-between ${buy.bg} text-white relative shadow-sm cursor-pointer hover:-translate-y-1 transition-transform`}>
+      {/* 6.5 Top 10 Buys Section (Sorted by Sales) */}
+      <div className="px-4 py-2 space-y-3">
+        <div className="flex items-center justify-between px-1">
+          <h3 className="text-[19px] font-bold text-[#02006c] font-sans">
+            TOP 10 BUYS
+          </h3>
+          <span className="text-[10px] bg-orange-50 text-[#ee4923] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+            Most Popular
+          </span>
+        </div>
+
+        <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4">
+          {(topBuys.length > 0 ? topBuys : rawAllProducts
+            .map(normaliseProduct)
+            .filter((p, index, self) => self.findIndex(t => t.id === p.id) === index)
+            .sort((a, b) => (b.sales || 0) - (a.sales || 0))
+            .slice(0, 10))
+            .map((buy, idx) => {
+              const gradients = [
+                'bg-gradient-to-b from-[#FFA781] to-[#F3557A]',
+                'bg-gradient-to-b from-[#81F5FF] to-[#0A5FA6]',
+                'bg-gradient-to-b from-[#E2F5FF] to-[#3B82F6]',
+                'bg-gradient-to-b from-[#FFF5C6] to-[#D97706]',
+                'bg-gradient-to-b from-[#D1FAE5] to-[#059669]',
+                'bg-gradient-to-b from-[#F3E8FF] to-[#7C3AED]',
+                'bg-gradient-to-b from-[#FFF1F2] to-[#E11D48]',
+                'bg-gradient-to-b from-[#F0FDF4] to-[#16A34A]',
+                'bg-gradient-to-b from-[#ECFDF5] to-[#047857]',
+                'bg-gradient-to-b from-[#FFFBEB] to-[#D97706]'
+              ];
+              const bgGradient = gradients[idx % gradients.length];
+              return (
+                <div 
+                  key={`top-buy-${buy.id}`} 
+                  onClick={() => navigate(`/product/${buy.id}`)}
+                  className={`flex-shrink-0 w-32 h-44 rounded-xl p-2.5 flex flex-col justify-between ${bgGradient} text-white relative shadow-sm cursor-pointer hover:-translate-y-1 transition-transform`}
+                >
                   <div className="absolute top-1 left-2.5 text-[42px] font-black opacity-90 leading-none" style={{ fontFamily: 'sans-serif' }}>
-                    {buy.rank}.
+                    {idx + 1}.
                   </div>
                   
                   <div className="mt-8 flex-grow flex items-center justify-center relative z-10">
                     <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shadow-inner overflow-hidden">
                       {buy.image ? (
-                        <img src={buy.image} alt={buy.name} className="w-full h-full object-cover" />
+                        <img src={getImageUrl(buy.image)} alt={buy.name} className="w-full h-full object-cover" />
                       ) : (
                         <Sparkles className="w-8 h-8 text-white/80" />
                       )}
@@ -715,232 +936,196 @@ export default function Home() {
 
                   <div className="z-10 mt-2">
                     <h4 className="text-[10px] font-medium leading-tight truncate">{buy.name}</h4>
-                    <p className="text-[11px] font-black">{buy.discount}</p>
+                    <p className="text-[11px] font-black">{buy.discount} OFF</p>
                   </div>
                 </div>
-              ))}
+              );
+            })}
+        </div>
+      </div>
+
+      {/* 6.7 Trending Brands Section */}
+      <div className="px-4 py-2 space-y-3">
+        <div className="flex items-center justify-between px-1">
+          <h3 className="text-[19px] font-bold text-[#02006c] font-sans">
+            TRENDING BRANDS
+          </h3>
+          <span className="text-[10px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+            Featured
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-3 gap-y-4">
+          {getTrendingBrands().map(brand => (
+            <div key={`home-brand-${brand.id}`} className="flex flex-col cursor-pointer group" onClick={() => navigate('/categories')}>
+              <div className="w-full aspect-[4/3] rounded-xl bg-slate-100 relative shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center overflow-hidden border border-slate-100">
+                {/* Brand Badge */}
+                <div className="absolute top-0 left-2 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-b-lg shadow-sm z-10">
+                  <span className={`text-[10px] font-black ${brand.badgeColor}`}>{brand.brand.toUpperCase()}</span>
+                </div>
+
+                {/* Real Product Image Covering the Card */}
+                <img src={brand.image} alt={brand.brand} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              </div>
+              <div className="mt-1.5 text-center">
+                <p className="text-[11px] font-black text-slate-800">{brand.discount}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      </>
+      ) : (
+        <div className="px-4 py-2 animate-fade-in pb-10 mt-1 space-y-6">
+          {/* Sub-categories row */}
+          {(() => {
+            const subs = subCategoryChips.filter(
+              sc => sc.categoryId === selectedCategory
+            );
+            if (subs.length === 0) return null;
+
+            return (
+              <div className="flex gap-4 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 mt-2">
+                {/* 'All' option for subcategory filter */}
+                <div 
+                  className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer"
+                  onClick={() => setSelectedSubCategory('all')}
+                >
+                  <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all flex items-center justify-center bg-slate-50 ${selectedSubCategory === 'all' ? 'border-[#ee4923] ring-2 ring-orange-100 scale-105' : 'border-slate-100'}`}>
+                    <LayoutGrid className="w-6 h-6 text-slate-400" />
+                  </div>
+                  <span className={`text-[10px] font-bold ${selectedSubCategory === 'all' ? 'text-[#ee4923]' : 'text-slate-700'}`}>All</span>
+                </div>
+
+                {subs.map(sub => {
+                  const isSubActive = selectedSubCategory.toLowerCase() === sub.subCategoryName.toLowerCase();
+                  return (
+                    <div 
+                      key={sub._id || sub.id} 
+                      className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer w-16 text-center"
+                      onClick={() => setSelectedSubCategory(sub.subCategoryName)}
+                    >
+                      <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all ${isSubActive ? 'border-[#ee4923] ring-2 ring-orange-100 scale-105' : 'border-orange-100 shadow-sm'}`}>
+                        <img src={getImageUrl(sub.image)} alt={sub.subCategoryName} className="w-full h-full object-cover" />
+                      </div>
+                      <span className={`text-[10px] font-bold block truncate w-full ${isSubActive ? 'text-[#ee4923]' : 'text-slate-700'}`} title={sub.subCategoryName}>
+                        {sub.subCategoryName}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
+
+          {/* Category UI: Filtered Product Grid */}
+          <div>
+            <div className="flex items-center justify-between mb-4 mt-2 px-1">
+              <h3 className="text-[17px] font-bold text-[#02006c] capitalize">
+                {selectedCategory.replace('-', ' ')} {selectedSubCategory !== 'all' ? `> ${selectedSubCategory}` : ''}
+              </h3>
+              <span className="text-[10px] text-[#ee4923] font-bold bg-orange-50 border border-orange-100 px-2.5 py-1 rounded-lg">
+                {getFilteredCategoryProducts().length} Items
+              </span>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3 px-1">
+              {getFilteredCategoryProducts().length > 0 ? (
+                getFilteredCategoryProducts().map((deal) => (
+                  <ProductCard key={deal.id} product={deal} />
+                ))
+              ) : (
+                <div className="col-span-2 py-12 flex flex-col items-center justify-center text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                  <LayoutGrid className="w-8 h-8 text-slate-300 mb-3" />
+                  <h4 className="text-xs font-bold text-slate-800 mb-1">Nothing here yet</h4>
+                  <p className="text-[10px] text-slate-400 max-w-[200px]">
+                    We are updating our catalog for this category. Check back soon!
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* 3. Trending brands */}
-          <div>
-            <h3 className="text-[15px] font-black text-slate-800 mb-3 tracking-tight">Trending brands</h3>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-4">
-              {TRENDING_BRANDS.map(brand => (
-                <div key={brand.id} className="flex flex-col cursor-pointer group">
-                  <div className="w-full aspect-[4/3] rounded-xl bg-slate-100 relative shadow-sm hover:shadow-md transition-shadow flex items-center justify-center overflow-hidden">
-                    {/* Brand Badge */}
-                    <div className="absolute top-0 left-2 bg-white/95 backdrop-blur-md px-2 py-1 rounded-b-lg shadow-sm z-10">
-                      <span className={`text-[10px] font-black ${brand.badgeColor}`}>{brand.brand}</span>
-                    </div>
+          {/* Dynamically append Top 10 Buys and Trending Brands */}
+          
+          {/* Top 10 Buys Section */}
+          <div className="space-y-3 pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-between px-1">
+              <h3 className="text-[17px] font-bold text-[#02006c] font-sans">
+                TOP 10 BUYS
+              </h3>
+              <span className="text-[9px] bg-orange-50 text-[#ee4923] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                Popular
+              </span>
+            </div>
 
-                    {/* Real Product Image Covering the Card */}
+            <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4">
+              {(topBuys.length > 0 ? topBuys : [...crazyDealsProducts, ...flashSaleProducts, ...topSelectionProducts]
+                .map(normaliseProduct)
+                .filter((p, index, self) => self.findIndex(t => t.id === p.id) === index)
+                .sort((a, b) => (b.sales || 0) - (a.sales || 0))
+                .slice(0, 10))
+                .map((buy, idx) => {
+                  const gradients = [
+                    'bg-gradient-to-b from-[#FFA781] to-[#F3557A]',
+                    'bg-gradient-to-b from-[#81F5FF] to-[#0A5FA6]',
+                    'bg-gradient-to-b from-[#E2F5FF] to-[#3B82F6]'
+                  ];
+                  return (
+                    <div 
+                      key={`cat-top-buy-${buy.id}`} 
+                      onClick={() => navigate(`/product/${buy.id}`)}
+                      className={`flex-shrink-0 w-28 h-40 rounded-xl p-2 flex flex-col justify-between ${gradients[idx % gradients.length]} text-white relative shadow-sm cursor-pointer`}
+                    >
+                      <div className="absolute top-1 left-2 text-[32px] font-black opacity-90 leading-none">
+                        {idx + 1}.
+                      </div>
+                      <div className="mt-6 flex-grow flex items-center justify-center overflow-hidden">
+                        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center overflow-hidden">
+                          <img src={getImageUrl(buy.image)} alt={buy.name} className="w-full h-full object-cover" />
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-[9px] font-medium leading-tight truncate">{buy.name}</h4>
+                        <p className="text-[10px] font-black">{buy.discount} OFF</p>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+
+          {/* Trending Brands Section */}
+          <div className="space-y-3 pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-between px-1">
+              <h3 className="text-[17px] font-bold text-[#02006c] font-sans">
+                TRENDING BRANDS
+              </h3>
+              <span className="text-[9px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                Featured
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-3 gap-y-4">
+              {getTrendingBrands().map(brand => (
+                <div key={`cat-brand-${brand.id}`} className="flex flex-col cursor-pointer group" onClick={() => navigate('/categories')}>
+                  <div className="w-full aspect-[4/3] rounded-xl bg-slate-100 relative overflow-hidden">
+                    <div className="absolute top-0 left-2 bg-white/95 backdrop-blur-md px-2 py-1 rounded-b-lg shadow-sm z-10">
+                      <span className={`text-[9px] font-black ${brand.badgeColor}`}>{brand.brand.toUpperCase()}</span>
+                    </div>
                     <img src={brand.image} alt={brand.brand} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                   </div>
                   <div className="mt-1.5 text-center">
-                    <p className="text-[11px] font-black text-slate-800">{brand.discount}</p>
+                    <p className="text-[10px] font-black text-slate-800">{brand.discount}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          
-        </div>
-      ) : selectedCategory === 'electronics' ? (
-        <div className="px-3 py-2 animate-fade-in pb-10 mt-1">
-          <div className="grid grid-cols-5 gap-x-3 gap-y-5 pt-2 pb-2 w-full">
-            {filteredDeals.map((deal) => (
-              <div 
-                key={deal.id} 
-                className="flex flex-col items-center gap-1 cursor-pointer group w-full" 
-                onClick={() => navigate(`/product/${deal.id}`)}
-              >
-                {/* Small 3D Base Platform */}
-                <div className="w-full aspect-square bg-[#F3E8FF] rounded-xl relative shadow-[0_3px_0_0_#E9D5FF] flex items-center justify-center group-hover:translate-y-0.5 group-hover:shadow-[0_1px_0_0_#E9D5FF] transition-all">
-                  <img 
-                    src={deal.image} 
-                    alt={deal.name} 
-                    className="absolute bottom-[5%] w-[85%] h-[85%] object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-300" 
-                  />
-                </div>
-                <span className="text-[8.5px] font-bold text-slate-800 text-center leading-tight line-clamp-2 px-0.5 mt-0.5 w-full">
-                  {deal.name}
-                </span>
-              </div>
-            ))}
-          </div>
 
-          {/* Top Electronics Section */}
-          <div className="mt-8 px-1">
-            <h3 className="text-[17px] font-black text-slate-900 tracking-tight mb-4">Top Electronics</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {filteredDeals.map((deal) => (
-                <ProductCard key={`elec-top-${deal.id}`} product={deal} />
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : selectedCategory === 'gifting' ? (
-        <div className="px-3 py-2 animate-fade-in pb-10 mt-1">
-          <div className="grid grid-cols-5 gap-x-3 gap-y-5 pt-2 pb-2 w-full">
-            {filteredDeals.map((deal) => (
-              <div 
-                key={deal.id} 
-                className="flex flex-col items-center gap-1 cursor-pointer group w-full" 
-                onClick={() => navigate(`/product/${deal.id}`)}
-              >
-                {/* Small 3D Base Platform */}
-                <div className="w-full aspect-square bg-[#F3E8FF] rounded-xl relative shadow-[0_3px_0_0_#E9D5FF] flex items-center justify-center group-hover:translate-y-0.5 group-hover:shadow-[0_1px_0_0_#E9D5FF] transition-all">
-                  <img 
-                    src={deal.image} 
-                    alt={deal.name} 
-                    className="absolute bottom-[5%] w-[85%] h-[85%] object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-300" 
-                  />
-                </div>
-                <span className="text-[8.5px] font-bold text-slate-800 text-center leading-tight line-clamp-2 px-0.5 mt-0.5 w-full">
-                  {deal.name}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* BEST ON A BUDGET SECTION */}
-          <div className="mt-8 px-1 pb-4">
-            <div className="flex items-center justify-between mb-4 pr-1">
-              <h3 className="text-[17px] font-black text-slate-900 tracking-tight">Best on a budget</h3>
-              <button 
-                onClick={() => setBudgetFilter(null)}
-                className={`text-[10px] font-bold px-3 py-1 rounded-full transition-colors shadow-sm ${
-                  budgetFilter === null 
-                    ? 'bg-[#CD97FE] text-white' 
-                    : 'bg-slate-100 text-slate-500 hover:bg-purple-50 hover:text-purple-600'
-                }`}
-              >
-                All
-              </button>
-            </div>
-            <div className="grid grid-cols-3 gap-x-3 gap-y-5">
-              {[
-                { id: 1, line1: 'From', line2: '₹99', coin: 'bottom-left', coinSize: 'w-6 h-6', coinPos: '-bottom-1.5 -left-1' },
-                { id: 2, line1: 'From', line2: '₹299', coin: 'top-right', coinSize: 'w-5 h-5', coinPos: '-top-1.5 right-0' },
-                { id: 3, line1: 'From', line2: '₹499', coin: 'bottom-left', coinSize: 'w-5 h-5', coinPos: '-bottom-1 -left-1' },
-                { id: 4, line1: 'Min.', line2: '70%', line3: 'Off', coin: 'top-right', coinSize: 'w-4 h-4', coinPos: '-top-0.5 -right-0.5' },
-                { id: 5, line1: 'From', line2: '₹999', coin: 'top-top', coinSize: 'w-5 h-5', coinPos: '-top-1.5 right-4' },
-                { id: 6, line1: 'Min.', line2: '50%', line3: 'Off', coin: 'bottom-right', coinSize: 'w-3.5 h-3.5', coinPos: 'bottom-1 -right-0.5' }
-              ].map(badge => {
-                const isSelected = budgetFilter === badge.id;
-                return (
-                <div 
-                  key={badge.id} 
-                  className={`relative w-full aspect-square cursor-pointer transition-transform flex items-center justify-center group ${isSelected ? 'scale-105 drop-shadow-md ring-2 ring-purple-400 rounded-full' : 'hover:scale-105'}`}
-                  onClick={() => setBudgetFilter(budgetFilter === badge.id ? null : badge.id)}
-                >
-                  {/* Scalloped SVG Background */}
-                  <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full text-[#CD97FE] drop-shadow-sm">
-                    <path fill="currentColor" d="M50 3 C 58 3 61 9 67 11 C 74 13 78 8 83 14 C 88 20 83 25 86 31 C 88 38 95 40 95 48 C 95 56 88 58 86 65 C 83 71 88 76 83 82 C 78 88 74 83 67 85 C 61 87 58 93 50 93 C 42 93 39 87 33 85 C 26 83 22 88 17 82 C 12 76 17 71 14 65 C 12 58 5 56 5 48 C 5 40 12 38 14 31 C 17 25 12 20 17 14 C 22 8 26 13 33 11 C 39 9 42 3 50 3 Z" />
-                    {/* Dotted texture overlay */}
-                    <circle cx="30" cy="30" r="1.5" fill="white" opacity="0.25" />
-                    <circle cx="70" cy="30" r="1.5" fill="white" opacity="0.25" />
-                    <circle cx="30" cy="70" r="1.5" fill="white" opacity="0.25" />
-                    <circle cx="70" cy="70" r="1.5" fill="white" opacity="0.25" />
-                    <circle cx="50" cy="20" r="1.5" fill="white" opacity="0.25" />
-                    <circle cx="50" cy="80" r="1.5" fill="white" opacity="0.25" />
-                    <circle cx="20" cy="50" r="1.5" fill="white" opacity="0.25" />
-                    <circle cx="80" cy="50" r="1.5" fill="white" opacity="0.25" />
-                  </svg>
-                  
-                  {/* Content */}
-                  <div className="relative z-10 flex flex-col items-center justify-center text-white drop-shadow-sm mt-1">
-                    <span className="text-[11px] font-extrabold leading-tight">{badge.line1}</span>
-                    <span className="text-[18px] font-black leading-none my-0.5 tracking-tight" style={{textShadow: '1px 1px 0px rgba(0,0,0,0.1)'}}>{badge.line2}</span>
-                    {badge.line3 && <span className="text-[11px] font-extrabold leading-tight">{badge.line3}</span>}
-                  </div>
-
-                  {/* Coin Decoration */}
-                  <div className={`absolute ${badge.coinPos} ${badge.coinSize} bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full border-b-[2px] border-r-[1px] border-yellow-600 shadow-md z-20 group-hover:rotate-12 transition-transform`} />
-                </div>
-              )})}
-            </div>
-          </div>
-
-          {/* GIFTS YOU LIKE SECTION */}
-          <div className="mt-8 px-1">
-            <h3 className="text-[17px] font-black text-slate-900 tracking-tight mb-4">Gifts you like</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {(() => {
-                let displayDeals = filteredDeals;
-                if (budgetFilter === 1) displayDeals = displayDeals.filter(d => d.price < 299);
-                if (budgetFilter === 2) displayDeals = displayDeals.filter(d => d.price >= 299 && d.price < 499);
-                if (budgetFilter === 3) displayDeals = displayDeals.filter(d => d.price >= 499 && d.price < 999);
-                if (budgetFilter === 5) displayDeals = displayDeals.filter(d => d.price >= 999);
-                if (budgetFilter === 4) displayDeals = displayDeals.filter(d => (parseInt(d.discount.replace(/\D/g, '')) || 0) >= 70);
-                if (budgetFilter === 6) displayDeals = displayDeals.filter(d => (parseInt(d.discount.replace(/\D/g, '')) || 0) >= 50);
-
-                if (displayDeals.length === 0) {
-                  return <div className="col-span-2 text-center text-slate-400 text-sm py-4">No gifts found for this filter.</div>;
-                }
-
-                return displayDeals.map((deal) => (
-                  <ProductCard key={`gift-like-${deal.id}`} product={deal} />
-                ));
-              })()}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="px-3 py-2 animate-fade-in pb-10 mt-1">
-          {/* Dynamic Top Horizontal Grid (Purple 3D Blocks) */}
-          <div className="grid grid-cols-5 gap-x-3 gap-y-5 pt-2 pb-6 w-full">
-            {filteredDeals.map((deal) => (
-              <div 
-                key={`top-${deal.id}`} 
-                className="flex flex-col items-center gap-1 cursor-pointer group w-full" 
-                onClick={() => navigate(`/product/${deal.id}`)}
-              >
-                {/* Small 3D Base Platform */}
-                <div className="w-full aspect-square bg-[#F3E8FF] rounded-xl relative shadow-[0_3px_0_0_#E9D5FF] flex items-center justify-center group-hover:translate-y-0.5 group-hover:shadow-[0_1px_0_0_#E9D5FF] transition-all">
-                  <img 
-                    src={deal.image} 
-                    alt={deal.name} 
-                    className="absolute bottom-[5%] w-[85%] h-[85%] object-contain drop-shadow-sm group-hover:scale-110 transition-transform duration-300" 
-                  />
-                </div>
-                <span className="text-[8.5px] font-bold text-slate-800 text-center leading-tight line-clamp-2 px-0.5 mt-0.5 w-full">
-                  {deal.name}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Category UI: Filtered Product Grid */}
-          <div className="flex items-center justify-between mb-4 mt-2 px-1">
-            <h3 className="text-[17px] font-bold text-[#02006c] capitalize">
-              {selectedCategory.replace('-', ' ')}
-            </h3>
-            <span className="text-[10px] text-[#ee4923] font-bold bg-orange-50 border border-orange-100 px-2.5 py-1 rounded-lg">
-              {filteredDeals.length} Items
-            </span>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3 pb-8 px-1">
-            {filteredDeals.length > 0 ? (
-              filteredDeals.map((deal) => (
-                <ProductCard key={deal.id} product={deal} />
-              ))
-            ) : (
-              <div className="col-span-2 py-12 flex flex-col items-center justify-center text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
-                <LayoutGrid className="w-8 h-8 text-slate-300 mb-3" />
-                <h4 className="text-xs font-bold text-slate-800 mb-1">Nothing here yet</h4>
-                <p className="text-[10px] text-slate-400 max-w-[200px]">
-                  We are updating our catalog for this category. Check back soon!
-                </p>
-              </div>
-            )}
-          </div>
         </div>
       )}
 
     </div>
   );
 }
-

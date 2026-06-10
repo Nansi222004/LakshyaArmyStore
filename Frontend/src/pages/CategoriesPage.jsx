@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, Search, ChevronLeft } from 'lucide-react';
+import { Filter, Search, ChevronLeft, LayoutGrid } from 'lucide-react';
 import { CATEGORIES, CRAZY_DEALS } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ui/ProductCard';
@@ -21,17 +21,95 @@ export default function CategoriesPage() {
   const { searchQuery, setSearchQuery } = useApp();
   const [searchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState('for-you');
+  const [selectedSubCategory, setSelectedSubCategory] = useState('all');
 
   const [sortBy, setSortBy] = useState('none'); // 'none', 'price-low', 'price-high', 'rating'
   const [showSortDropdown, setShowSortDropdown] = useState(false);
 
+  const [categories, setCategories] = useState(CATEGORIES);
+  const [subCategories, setSubCategories] = useState([]);
+  const [rawProducts, setRawProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategoryChips = async () => {
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/chips`);
+        const data = await res.json();
+        if (res.ok && data.success && data.chips && data.chips.length > 0) {
+          const activeChips = data.chips.filter(c => c.active && c.id !== 'for-you');
+          const forYouChip = CATEGORIES.find(c => c.id === 'for-you');
+          setCategories([forYouChip, ...activeChips]);
+        }
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+
+    const fetchSubCategoryChips = async () => {
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/subchips`);
+        const data = await res.json();
+        if (res.ok && data.success && data.subchips) {
+          const activeSubChips = data.subchips.filter(sc => sc.active);
+          setSubCategories(activeSubChips);
+        }
+      } catch (err) {
+        console.error('Error fetching subcategories:', err);
+      }
+    };
+
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/products?status=Approved`);
+        const data = await res.json();
+        if (res.ok && data.success && data.products) {
+          setRawProducts(data.products);
+        }
+      } catch (err) {
+        console.error('Error fetching products (CategoriesPage):', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategoryChips();
+    fetchSubCategoryChips();
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    setSelectedSubCategory('all');
+  }, [selectedCategory]);
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (
+      imagePath.startsWith('http://') || 
+      imagePath.startsWith('https://') || 
+      imagePath.startsWith('data:') ||
+      imagePath.startsWith('/src/') ||
+      imagePath.startsWith('/assets/') ||
+      imagePath.includes('categoryForU') ||
+      imagePath.includes('Category')
+    ) {
+      return imagePath;
+    }
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${apiBase}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  };
+
   // Sync with URL parameter (e.g. when navigated from Home category capsule)
   useEffect(() => {
     const catParam = searchParams.get('cat');
-    if (catParam && CATEGORIES.some(c => c.id === catParam)) {
+    if (catParam && categories.some(c => c.id === catParam)) {
       setSelectedCategory(catParam);
     }
-  }, [searchParams]);
+  }, [searchParams, categories]);
 
   // Category Image drawer
   const renderCatIcon = (id, isActive) => {
@@ -60,9 +138,27 @@ export default function CategoriesPage() {
     );
   };
 
+  // Normalise API product to match the shape the UI expects
+  const normaliseProduct = (p) => ({
+    id: p._id || p.id,
+    name: p.name,
+    desc: p.description || '',
+    price: p.sellingPrice,
+    originalPrice: p.mrp || p.sellingPrice,
+    discount: p.discountLabel || (p.mrp ? `-${Math.round((1 - p.sellingPrice / p.mrp) * 100)}%` : '0%'),
+    rating: p.rating || 0,
+    type: (p.category || '').toLowerCase(),
+    subCategory: p.subCategory ? p.subCategory.toLowerCase() : '',
+    image: p.images && p.images[0] ? p.images[0] : '',
+    brandName: p.brandName || 'Mynzo Originals',
+    flags: p.flags || {},
+    stock: p.stock || 0,
+    sales: p.sales || 0,
+  });
+
   // Category product filter mapper
   const getFilteredProducts = () => {
-    let items = CRAZY_DEALS;
+    let items = rawProducts.map(normaliseProduct);
     if (searchQuery) {
       items = items.filter((p) =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -71,36 +167,25 @@ export default function CategoriesPage() {
     }
 
     let filtered = [];
-    switch (selectedCategory) {
-      case 'for-you':
-        filtered = items;
-        break;
-      case 'beauty':
-        filtered = items.filter((p) => ['tint', 'makeup', 'skincare', 'haircare'].includes(p.type));
-        break;
-      case 'gifting':
-        filtered = items.filter((p) => ['tee', 'necklace', 'watch', 'mug', 'tumbler', 'keychain', 'hamper', 'bouquet'].includes(p.type));
-        break;
-      case 'electronics':
-        filtered = items.filter((p) => ['earbuds', 'powerbank', 'fan', 'headphones', 'smartwatch'].includes(p.type));
-        break;
-      case 'jewellery':
-        filtered = items.filter((p) => ['necklace', 'bracelet', 'watch'].includes(p.type));
-        break;
-      case 'toys':
-        filtered = items.filter((p) => ['plush', 'toy', 'nightlight'].includes(p.type));
-        break;
-      case 'stationery':
-        filtered = items.filter((p) => ['notebook', 'pen', 'stapler'].includes(p.type));
-        break;
-      case 'fashion':
-        filtered = items.filter((p) => ['tee', 'necklace', 'watch', 'pants', 'blouse', 'outfit'].includes(p.type));
-        break;
-      case 'electrical':
-        filtered = items.filter((p) => ['bulb', 'wire', 'fan', 'iron'].includes(p.type));
-        break;
-      default:
-        filtered = items;
+    if (selectedCategory === 'for-you') {
+      filtered = items;
+    } else {
+      filtered = items.filter((p) => p.type.toLowerCase() === selectedCategory.toLowerCase());
+    }
+
+    // Filter by subcategory if one is active
+    if (selectedSubCategory !== 'all') {
+      const activeSubChip = subCategories.find(sc => sc.id === selectedSubCategory);
+      if (activeSubChip) {
+        const targetName = activeSubChip.subCategoryName.toLowerCase();
+        filtered = filtered.filter(
+          (p) => p.subCategory.toLowerCase() === targetName || p.subCategory.toLowerCase() === selectedSubCategory.toLowerCase()
+        );
+      } else {
+        filtered = filtered.filter(
+          (p) => p.subCategory.toLowerCase() === selectedSubCategory.toLowerCase()
+        );
+      }
     }
 
     // Apply sorting
@@ -149,43 +234,54 @@ export default function CategoriesPage() {
         
         {/* 1. Vertical Sidebar Category Navigation */}
         <div className="w-[72px] bg-[#02006c]/[0.02] border-r border-slate-100 flex flex-col items-center pt-2 pb-2 overflow-y-auto scrollbar-none gap-3 flex-shrink-0">
-          {CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
+            const labelText = cat.categoryName || cat.name;
 
             return (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className="flex flex-col items-center gap-1 w-full relative pb-1.5 group cursor-pointer"
+                className="flex flex-col items-center w-full relative pb-1 group cursor-pointer"
               >
-                {/* Capsule Background */}
-                {isActive ? (
-                  <motion.div 
-                    layoutId="activeCategoryCapsule"
-                    className="w-[56px] h-[28px] rounded-[10px] absolute bottom-[20px] bg-[#ee4923] shadow-md shadow-[#ee4923]/30"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                ) : (
-                  <div className="w-[56px] h-[28px] rounded-[10px] absolute bottom-[20px] bg-orange-100 group-hover:bg-orange-200 transition-colors duration-300"></div>
-                )}
-                
-                {/* Image Icon popping out */}
-                <div className="relative z-10 h-10 flex items-center justify-center transform translate-y-1 mb-1">
-                  {renderCatIcon(cat.id, isActive)}
+                <div className="relative w-[52px] h-[52px] flex items-center justify-center">
+                  {/* Background Cover */}
+                  {isActive ? (
+                    <motion.div 
+                      layoutId="activeCategoryCapsule"
+                      className="absolute inset-0 rounded-xl bg-[#ee4923] shadow-md shadow-[#ee4923]/30"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 rounded-xl bg-orange-50 group-hover:bg-orange-100 transition-colors duration-300" />
+                  )}
+                  
+                  {/* Image Icon */}
+                  <div className="relative z-10 flex items-center justify-center">
+                    {cat.image ? (
+                      <img 
+                        src={getImageUrl(cat.image)} 
+                        alt={labelText} 
+                        className={`w-[36px] h-[36px] object-contain drop-shadow-sm transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`} 
+                      />
+                    ) : (
+                      renderCatIcon(cat.id, isActive)
+                    )}
+                  </div>
                 </div>
 
                 {/* Text Label */}
-                <span className={`text-[10px] leading-tight font-bold tracking-tight select-none px-1 transition-colors ${
+                <span className={`text-[10px] leading-tight font-bold tracking-tight select-none px-1 text-center mt-1 transition-colors ${
                   isActive ? 'text-[#0F172A] font-bold' : 'text-slate-500 font-semibold'
                 }`}>
-                  {cat.name}
+                  {labelText}
                 </span>
                 
                 {/* Active Indicator Line (Vertical Left) */}
                 {isActive && (
                   <motion.div 
                     layoutId="activeCategoryLine"
-                    className="absolute left-0 top-1 bottom-1 w-1 bg-[#02006c] rounded-r-full"
+                    className="absolute left-0 top-1 bottom-1 w-1 bg-[#02006c] rounded-r-full z-20"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -201,7 +297,7 @@ export default function CategoriesPage() {
         <div className="flex items-center justify-between border-b border-slate-50 pb-2 relative z-20 px-1">
           <div className="space-y-0.5">
             <h3 className="text-xs font-bold text-[#02006c] uppercase tracking-wider">
-              {CATEGORIES.find((c) => c.id === selectedCategory)?.name || "Catalog"}
+              {categories.find((c) => c.id === selectedCategory)?.categoryName || categories.find((c) => c.id === selectedCategory)?.name || "Catalog"}
             </h3>
             <p className="text-[8px] text-[#02006c]/60 font-bold uppercase tracking-widest">
               {filteredProducts.length} items found
@@ -243,8 +339,78 @@ export default function CategoriesPage() {
           </div>
         </div>
 
+        {/* Horizontal Subcategories Scroll */}
+        {selectedCategory !== 'for-you' && subCategories.filter(sc => sc.categoryId.toLowerCase() === selectedCategory.toLowerCase()).length > 0 && (
+          <div className="flex overflow-x-auto gap-3 py-2.5 scrollbar-none snap-x relative z-20 px-1.5 flex-shrink-0 bg-white/40 backdrop-blur-md rounded-2xl border border-white/50 shadow-3xs">
+            <button
+              onClick={() => setSelectedSubCategory('all')}
+              className="flex flex-col items-center w-[48px] group cursor-pointer flex-shrink-0 snap-start"
+            >
+              <div className="relative w-[44px] h-[44px] flex items-center justify-center">
+                {selectedSubCategory === 'all' ? (
+                  <div className="absolute inset-0 rounded-lg bg-[#ee4923] shadow-md shadow-[#ee4923]/25" />
+                ) : (
+                  <div className="absolute inset-0 rounded-lg bg-orange-50 group-hover:bg-orange-100 transition-colors duration-300" />
+                )}
+                <div className="relative z-10 flex items-center justify-center">
+                  <LayoutGrid className={`w-5 h-5 transition-all duration-300 ${selectedSubCategory === 'all' ? 'text-white scale-110' : 'text-[#ee4923]'}`} />
+                </div>
+              </div>
+              <span className={`text-[8.5px] leading-tight font-black tracking-tight select-none px-0.5 text-center mt-1 transition-colors ${
+                selectedSubCategory === 'all' ? 'text-[#0F172A]' : 'text-slate-500'
+              }`}>
+                ALL
+              </span>
+            </button>
+            {subCategories.filter(sc => sc.categoryId.toLowerCase() === selectedCategory.toLowerCase()).map((sub) => {
+              const isSubActive = selectedSubCategory === sub.id;
+              return (
+                <button
+                  key={sub.id}
+                  onClick={() => setSelectedSubCategory(sub.id)}
+                  className="flex flex-col items-center w-[48px] group cursor-pointer flex-shrink-0 snap-start"
+                >
+                  <div className="relative w-[44px] h-[44px] flex items-center justify-center">
+                    {isSubActive ? (
+                      <div className="absolute inset-0 rounded-lg bg-[#ee4923] shadow-md shadow-[#ee4923]/25 animate-scale-up" />
+                    ) : (
+                      <div className="absolute inset-0 rounded-lg bg-orange-50 group-hover:bg-orange-100 transition-colors duration-300" />
+                    )}
+                    <div className="relative z-10 flex items-center justify-center">
+                      {sub.image ? (
+                        <img 
+                          src={getImageUrl(sub.image)} 
+                          alt="" 
+                          className={`w-[28px] h-[28px] object-contain drop-shadow-xs transition-transform duration-300 ${isSubActive ? 'scale-110' : 'scale-100'}`} 
+                        />
+                      ) : (
+                        <div className="w-[28px] h-[28px] bg-slate-200 rounded" />
+                      )}
+                    </div>
+                  </div>
+                  <span className={`text-[8.5px] leading-tight font-black tracking-tight select-none px-0.5 text-center truncate w-full mt-1 transition-colors ${
+                    isSubActive ? 'text-[#0F172A]' : 'text-slate-500'
+                  }`}>
+                    {sub.subCategoryName}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {/* Dynamic product list */}
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-2 gap-2 pb-8">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <div key={i} className="bg-white flex flex-col items-center pb-3 animate-pulse shadow-sm border border-slate-100 rounded-lg overflow-hidden">
+                <div className="w-full aspect-[4/5] bg-slate-200 mb-2" />
+                <div className="w-3/4 h-3 bg-slate-200 rounded mb-1.5" />
+                <div className="w-1/2 h-2.5 bg-slate-200 rounded" />
+              </div>
+            ))}
+          </div>
+        ) : filteredProducts.length > 0 ? (
           <motion.div 
             key={selectedCategory + sortBy}
             initial={{ opacity: 0, y: 10 }}

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateProduct, deleteProduct, approveProduct } from '../../../store/slices/productSlice';
+import React, { useState, useEffect } from 'react';
 import {
-  Search, Filter, Plus, Package, Edit3, Trash2, Eye,
+  Search, Plus, Package, Edit3, Trash2,
   CheckCircle2, XCircle, AlertTriangle, ChevronDown,
-  ArrowUpDown, MoreVertical, Tag, Download, RefreshCw
+  ArrowUpDown, Download, RefreshCw
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 const CATEGORIES = ['All', 'Electronics', 'Fashion', 'Beauty', 'Home & Kitchen', 'Toys', 'Stationery', 'Jewellery', 'Gifting', 'Electrical'];
 const STATUSES = ['All', 'Approved', 'Pending', 'Out of Stock'];
@@ -26,25 +26,7 @@ const MOCK_PRODUCTS = [
   { id: 'P004', name: 'Benetint Lip Tint', category: 'Beauty', price: 1299, originalPrice: 1999, stock: 200, sales: 312, status: 'Approved', discount: '-35%', sku: 'BTY-001' },
   { id: 'P005', name: 'Pink Lip Gloss', category: 'Beauty', price: 899, originalPrice: 1199, stock: 180, sales: 210, status: 'Approved', discount: '-20%', sku: 'BTY-002' },
   { id: 'P006', name: 'Peptide Serum', category: 'Beauty', price: 2499, originalPrice: 2999, stock: 60, sales: 88, status: 'Approved', discount: '-15%', sku: 'BTY-003' },
-  { id: 'P007', name: 'Sunscreen SPF 50', category: 'Beauty', price: 599, originalPrice: 799, stock: 150, sales: 175, status: 'Approved', discount: '-25%', sku: 'BTY-004' },
-  { id: 'P008', name: 'Pink Bow Mug', category: 'Gifting', price: 399, originalPrice: 469, stock: 300, sales: 420, status: 'Approved', discount: '-15%', sku: 'GFT-001' },
-  { id: 'P009', name: 'Glass Bow Tumbler', category: 'Gifting', price: 599, originalPrice: 749, stock: 90, sales: 120, status: 'Approved', discount: '-20%', sku: 'GFT-002' },
-  { id: 'P010', name: 'Accessories Bouquet', category: 'Gifting', price: 1499, originalPrice: 2499, stock: 25, sales: 54, status: 'Approved', discount: '-40%', sku: 'GFT-003' },
-  { id: 'P011', name: 'Wireless Earbuds', category: 'Electronics', price: 1599, originalPrice: 2299, stock: 75, sales: 180, status: 'Approved', discount: '-30%', sku: 'ELC-001' },
-  { id: 'P012', name: '20W Power Bank', category: 'Electronics', price: 1299, originalPrice: 1749, stock: 110, sales: 220, status: 'Approved', discount: '-25%', sku: 'ELC-002' },
-  { id: 'P013', name: 'Cat Ear Headphones', category: 'Electronics', price: 1899, originalPrice: 2899, stock: 0, sales: 95, status: 'Out of Stock', discount: '-35%', sku: 'ELC-003' },
-  { id: 'P014', name: 'Fitness Smartwatch', category: 'Electronics', price: 999, originalPrice: 1999, stock: 55, sales: 140, status: 'Approved', discount: '-50%', sku: 'ELC-004' },
-  { id: 'P015', name: 'Reversible Octopus', category: 'Toys', price: 399, originalPrice: 699, stock: 200, sales: 360, status: 'Approved', discount: '-40%', sku: 'TOY-001' },
-  { id: 'P016', name: 'Strawberry Bunny', category: 'Toys', price: 799, originalPrice: 1199, stock: 130, sales: 210, status: 'Approved', discount: '-30%', sku: 'TOY-002' },
-  { id: 'P017', name: 'Panda Night Light', category: 'Toys', price: 699, originalPrice: 849, stock: 8, sales: 72, status: 'Approved', discount: '-15%', sku: 'TOY-003' },
-  { id: 'P018', name: 'Dino Mini Notebooks', category: 'Stationery', price: 199, originalPrice: 249, stock: 350, sales: 500, status: 'Approved', discount: '-20%', sku: 'STN-001' },
-  { id: 'P019', name: 'Fluffy Bear Diary', category: 'Stationery', price: 499, originalPrice: 699, stock: 160, sales: 195, status: 'Approved', discount: '-30%', sku: 'STN-002' },
-  { id: 'P020', name: 'Pink Bow Pants', category: 'Fashion', price: 1299, originalPrice: 1849, stock: 0, sales: 88, status: 'Out of Stock', discount: '-30%', sku: 'FSH-002' },
-  { id: 'P021', name: 'Red Bow Blouse', category: 'Fashion', price: 1499, originalPrice: 1999, stock: 70, sales: 115, status: 'Approved', discount: '-25%', sku: 'FSH-003' },
-  { id: 'P022', name: 'Electric Steam Iron', category: 'Electrical', price: 999, originalPrice: 1549, stock: 45, sales: 62, status: 'Pending', discount: '-35%', sku: 'ELL-001' },
-  { id: 'P023', name: 'Table Fan', category: 'Electrical', price: 1299, originalPrice: 1899, stock: 30, sales: 48, status: 'Pending', discount: '-30%', sku: 'ELL-002' },
-  { id: 'P024', name: 'Ocean Pearl Necklace', category: 'Jewellery', price: 899, originalPrice: 1299, stock: 90, sales: 134, status: 'Approved', discount: '-30%', sku: 'JWL-003' },
-  { id: 'P025', name: 'EELHOE Hair Mask', category: 'Beauty', price: 499, originalPrice: 999, stock: 220, sales: 290, status: 'Approved', discount: '-50%', sku: 'BTY-005' },
+  { id: 'P007', name: 'Sunscreen SPF 50', category: 'Beauty', price: 599, originalPrice: 799, stock: 150, sales: 175, status: 'Approved', discount: '-25%', sku: 'BTY-004' }
 ];
 
 const StatCard = ({ label, value, sub, icon: Icon, color }) => (
@@ -61,21 +43,99 @@ const StatCard = ({ label, value, sub, icon: Icon, color }) => (
 );
 
 export default function InventoryList() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { allProducts } = useSelector(state => state.products);
-
-  // Merge redux products with mock data
-  const allProductsCombined = [...MOCK_PRODUCTS, ...allProducts.filter(p => !MOCK_PRODUCTS.find(m => m.id === p.id))];
+  const [dbProducts, setDbProducts] = useState([]);
 
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [flagFilter, setFlagFilter] = useState('All');
   const [sortBy, setSortBy] = useState('name');
   const [sortDir, setSortDir] = useState('asc');
   const [editingStock, setEditingStock] = useState(null);
   const [stockValue, setStockValue] = useState('');
   const [selectedIds, setSelectedIds] = useState([]);
+
+  // Confirm Modal state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmTitle, setConfirmTitle] = useState('');
+  const [confirmMessage, setConfirmMessage] = useState('');
+
+  const triggerConfirm = (title, message, action) => {
+    setConfirmTitle(title);
+    setConfirmMessage(message);
+    setConfirmAction(() => action);
+    setConfirmOpen(true);
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/admin/catalog/products`);
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setDbProducts(data.products.map(p => ({
+          id: p._id,
+          sku: p.sku,
+          name: p.name,
+          category: p.category,
+          price: p.sellingPrice,
+          originalPrice: p.mrp,
+          stock: p.stock,
+          sales: p.sales,
+          status: p.status,
+          discount: p.discountLabel,
+          image: p.images && p.images[0] ? p.images[0] : '',
+          flags: p.flags || { topSection: false, crazyDeals: false, flashSale: false }
+        })));
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to load products from server');
+    }
+  };
+
+  const handleExport = () => {
+    if (allProductsCombined.length === 0) {
+      toast.error('No products to export');
+      return;
+    }
+    const headers = ['ID', 'SKU', 'Name', 'Category', 'Price (INR)', 'Original Price (INR)', 'Stock', 'Sales', 'Status', 'Discount'];
+    const rows = allProductsCombined.map(p => [
+      p.id || '',
+      p.sku || '',
+      `"${(p.name || '').replace(/"/g, '""')}"`,
+      p.category || '',
+      p.price || 0,
+      p.originalPrice || 0,
+      p.stock || 0,
+      p.sales || 0,
+      p.status || '',
+      p.discount || ''
+    ]);
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `inventory_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Inventory exported successfully!');
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // Show only database products
+  const allProductsCombined = dbProducts;
 
   // Stats
   const totalProducts = allProductsCombined.length;
@@ -89,7 +149,17 @@ export default function InventoryList() {
       const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.sku?.toLowerCase().includes(search.toLowerCase());
       const matchCat = categoryFilter === 'All' || p.category === categoryFilter;
       const matchStatus = statusFilter === 'All' || p.status === statusFilter;
-      return matchSearch && matchCat && matchStatus;
+      
+      let matchFlag = true;
+      if (flagFilter === 'Top Selection') {
+        matchFlag = p.flags?.topSection === true;
+      } else if (flagFilter === 'Crazy Deals') {
+        matchFlag = p.flags?.crazyDeals === true;
+      } else if (flagFilter === 'Flash Sale') {
+        matchFlag = p.flags?.flashSale === true;
+      }
+      
+      return matchSearch && matchCat && matchStatus && matchFlag;
     })
     .sort((a, b) => {
       let valA = a[sortBy], valB = b[sortBy];
@@ -114,8 +184,185 @@ export default function InventoryList() {
     else setSelectedIds(filtered.map(p => p.id));
   };
 
+  const handleDeleteProduct = async (id) => {
+    triggerConfirm(
+      'Delete Product',
+      'Are you sure you want to permanently delete this product from your inventory?',
+      async () => {
+        if (String(id).startsWith('P0')) {
+          toast.success('Mock product removed');
+          return;
+        }
+        const token = localStorage.getItem('adminToken');
+        if (!token) return;
+        try {
+          const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const res = await fetch(`${apiBase}/api/admin/catalog/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            toast.success('Product deleted successfully');
+            fetchProducts();
+          } else {
+            toast.error(data.message || 'Failed to delete product');
+          }
+        } catch (err) {
+          console.error(err);
+          toast.error('Could not connect to backend server');
+        }
+      }
+    );
+  };
+
+  const handleApproveProduct = async (id) => {
+    if (String(id).startsWith('P0')) {
+      toast.success('Mock product approved');
+      return;
+    }
+
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/admin/catalog/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: 'Approved' })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success('Product approved successfully');
+        fetchProducts();
+      } else {
+        toast.error(data.message || 'Failed to approve product');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
+  };
+
+  const handleBulkApprove = async () => {
+    if (selectedIds.length === 0) return;
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+    toast.loading('Approving selected products...', { id: 'bulk-action' });
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const promises = selectedIds.map(id => {
+        if (String(id).startsWith('P0')) return Promise.resolve();
+        return fetch(`${apiBase}/api/admin/catalog/products/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ status: 'Approved' })
+        });
+      });
+      await Promise.all(promises);
+      toast.dismiss('bulk-action');
+      toast.success('Selected products approved successfully');
+      setSelectedIds([]);
+      fetchProducts();
+    } catch (err) {
+      console.error(err);
+      toast.dismiss('bulk-action');
+      toast.error('Bulk approval failed');
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    triggerConfirm(
+      'Delete Selected Products',
+      `Are you sure you want to permanently delete all ${selectedIds.length} selected products?`,
+      async () => {
+        const token = localStorage.getItem('adminToken');
+        if (!token) return;
+        toast.loading('Deleting selected products...', { id: 'bulk-action' });
+        try {
+          const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const promises = selectedIds.map(id => {
+            if (String(id).startsWith('P0')) return Promise.resolve();
+            return fetch(`${apiBase}/api/admin/catalog/products/${id}`, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+          });
+          await Promise.all(promises);
+          toast.dismiss('bulk-action');
+          toast.success('Selected products deleted successfully');
+          setSelectedIds([]);
+          fetchProducts();
+        } catch (err) {
+          console.error(err);
+          toast.dismiss('bulk-action');
+          toast.error('Bulk deletion failed');
+        }
+      }
+    );
+  };
+
+  const handleSaveStock = async (id, newStock) => {
+    if (String(id).startsWith('P0')) {
+      toast.success('Mock product stock updated');
+      return;
+    }
+
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/admin/catalog/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ stock: newStock })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success('Stock updated successfully');
+        fetchProducts();
+      } else {
+        toast.error(data.message || 'Failed to update stock');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
+  };
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (
+      imagePath.startsWith('http://') || 
+      imagePath.startsWith('https://') || 
+      imagePath.startsWith('data:') ||
+      imagePath.startsWith('/src/') ||
+      imagePath.startsWith('/assets/')
+    ) {
+      return imagePath;
+    }
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${apiBase}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  };
+
   const SortIcon = ({ col }) => (
-    <ArrowUpDown size={13} className={`ml-1 inline ${sortBy === col ? 'text-blue-500' : 'text-slate-300'}`} />
+    <ArrowUpDown size={13} className={`ml-1 inline ${sortBy === col ? 'text-[#ee4923]' : 'text-slate-300'}`} />
   );
 
   return (
@@ -127,13 +374,16 @@ export default function InventoryList() {
           <p className="text-slate-500 font-medium mt-1 font-raleway">Manage all inventory, stock levels and product status.</p>
         </div>
         <div className="flex gap-3 shrink-0">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
+          <button 
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
+          >
             <Download size={15} />
             Export
           </button>
           <button
             onClick={() => navigate('/admin/inventory/add')}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#ee4923] text-white rounded-xl text-sm font-bold shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Plus size={16} />
             Add Product
@@ -143,7 +393,7 @@ export default function InventoryList() {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Total Products" value={totalProducts} sub="In Inventory" icon={Package} color="bg-blue-50 text-blue-500" />
+        <StatCard label="Total Products" value={totalProducts} sub="In Inventory" icon={Package} color="bg-orange-50 text-[#ee4923]" />
         <StatCard label="Live / Approved" value={approvedCount} sub="Currently active" icon={CheckCircle2} color="bg-green-50 text-green-500" />
         <StatCard label="Pending Review" value={pendingCount} sub="Awaiting approval" icon={AlertTriangle} color="bg-amber-50 text-amber-500" />
         <StatCard label="Out of Stock" value={outOfStockCount} sub="Needs restock" icon={XCircle} color="bg-red-50 text-red-400" />
@@ -154,13 +404,13 @@ export default function InventoryList() {
         <div className="flex flex-col md:flex-row gap-3">
           {/* Search */}
           <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={16} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#ee4923] transition-colors" size={16} />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search by product name or SKU..."
-              className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 pl-11 pr-5 text-sm font-bold focus:ring-4 focus:ring-blue-50 outline-none transition-all text-slate-900 placeholder:text-slate-300"
+              className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 pl-11 pr-5 text-sm font-bold focus:ring-4 focus:ring-orange-50 outline-none transition-all text-slate-900 placeholder:text-slate-300"
             />
           </div>
 
@@ -169,7 +419,7 @@ export default function InventoryList() {
             <select
               value={categoryFilter}
               onChange={e => setCategoryFilter(e.target.value)}
-              className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-blue-50 transition-all cursor-pointer"
+              className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-orange-50 transition-all cursor-pointer"
             >
               {CATEGORIES.map(c => <option key={c}>{c}</option>)}
             </select>
@@ -181,15 +431,27 @@ export default function InventoryList() {
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-blue-50 transition-all cursor-pointer"
+              className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-orange-50 transition-all cursor-pointer"
             >
               {STATUSES.map(s => <option key={s}>{s}</option>)}
             </select>
             <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
 
+          {/* Deal / Section Filter */}
+          <div className="relative">
+            <select
+              value={flagFilter}
+              onChange={e => setFlagFilter(e.target.value)}
+              className="appearance-none bg-slate-50 border border-slate-100 rounded-xl py-3 pl-4 pr-10 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-orange-50 transition-all cursor-pointer"
+            >
+              {['All Deals', 'Top Selection', 'Crazy Deals', 'Flash Sale'].map(f => <option key={f}>{f}</option>)}
+            </select>
+            <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+          </div>
+
           <button
-            onClick={() => { setSearch(''); setCategoryFilter('All'); setStatusFilter('All'); }}
+            onClick={() => { setSearch(''); setCategoryFilter('All'); setStatusFilter('All'); setFlagFilter('All'); }}
             className="flex items-center gap-2 px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100 transition-all"
           >
             <RefreshCw size={14} />
@@ -207,11 +469,17 @@ export default function InventoryList() {
               className="overflow-hidden"
             >
               <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-3">
-                <span className="text-[11px] font-black text-blue-500 uppercase tracking-widest">{selectedIds.length} selected</span>
-                <button className="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-black border border-green-100 hover:bg-green-100 transition-all">
+                <span className="text-[11px] font-black text-[#ee4923] uppercase tracking-widest">{selectedIds.length} selected</span>
+                <button 
+                  onClick={handleBulkApprove}
+                  className="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-black border border-green-100 hover:bg-green-100 transition-all"
+                >
                   Approve All
                 </button>
-                <button className="px-3 py-1.5 bg-red-50 text-red-500 rounded-lg text-xs font-black border border-red-100 hover:bg-red-100 transition-all">
+                <button 
+                  onClick={handleBulkDelete}
+                  className="px-3 py-1.5 bg-red-50 text-red-500 rounded-lg text-xs font-black border border-red-100 hover:bg-red-100 transition-all"
+                >
                   Delete All
                 </button>
               </div>
@@ -241,7 +509,7 @@ export default function InventoryList() {
                     type="checkbox"
                     checked={selectedIds.length === filtered.length && filtered.length > 0}
                     onChange={toggleSelectAll}
-                    className="w-4 h-4 rounded accent-blue-500 cursor-pointer"
+                    className="w-4 h-4 rounded accent-orange-500 cursor-pointer"
                   />
                 </th>
                 <th onClick={() => toggleSort('sku')} className="px-3 py-3.5 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest cursor-pointer select-none">
@@ -272,7 +540,7 @@ export default function InventoryList() {
             </thead>
             <tbody className="divide-y divide-slate-50">
               <AnimatePresence>
-                {filtered.map((product, i) => {
+                {filtered.map((product) => {
                   const isLowStock = product.stock > 0 && product.stock <= 20;
                   const isOutOfStock = product.stock === 0 || product.status === 'Out of Stock';
                   const statusInfo = statusConfig[isOutOfStock ? 'Out of Stock' : product.status] || statusConfig['Pending'];
@@ -291,7 +559,7 @@ export default function InventoryList() {
                           type="checkbox"
                           checked={selectedIds.includes(product.id)}
                           onChange={() => toggleSelect(product.id)}
-                          className="w-4 h-4 rounded accent-blue-500 cursor-pointer"
+                          className="w-4 h-4 rounded accent-orange-500 cursor-pointer"
                         />
                       </td>
 
@@ -303,14 +571,29 @@ export default function InventoryList() {
                       {/* Product */}
                       <td className="px-3 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-orange-50 border border-orange-100 rounded-xl flex items-center justify-center shrink-0">
-                            <Package size={16} className="text-blue-400" />
+                          <div className="w-10 h-10 bg-orange-50 border border-orange-100 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                            {product.image ? (
+                              <img src={getImageUrl(product.image)} alt={product.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <Package size={16} className="text-[#ee4923]" />
+                            )}
                           </div>
                           <div>
                             <p className="text-sm font-black text-slate-900 leading-none">{product.name}</p>
-                            {product.discount && (
-                              <span className="text-[9px] font-black text-blue-500 mt-1 inline-block">{product.discount} OFF</span>
-                            )}
+                            <div className="flex flex-wrap gap-1 mt-1.5 items-center">
+                              {product.discount && (
+                                <span className="text-[9px] font-black text-[#ee4923]">{product.discount} OFF</span>
+                              )}
+                              {product.flags?.topSection && (
+                                <span className="text-[8px] font-black bg-blue-50 text-blue-600 px-1 py-0.5 rounded border border-blue-100 uppercase tracking-tight scale-95 origin-left">Top</span>
+                              )}
+                              {product.flags?.crazyDeals && (
+                                <span className="text-[8px] font-black bg-purple-50 text-purple-600 px-1 py-0.5 rounded border border-purple-100 uppercase tracking-tight scale-95 origin-left">Crazy</span>
+                              )}
+                              {product.flags?.flashSale && (
+                                <span className="text-[8px] font-black bg-rose-50 text-rose-600 px-1 py-0.5 rounded border border-rose-100 uppercase tracking-tight scale-95 origin-left">Flash</span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -340,12 +623,12 @@ export default function InventoryList() {
                               type="number"
                               value={stockValue}
                               onChange={e => setStockValue(e.target.value)}
-                              className="w-16 border border-blue-200 rounded-lg py-1 px-2 text-xs font-black outline-none focus:ring-2 focus:ring-blue-100"
+                              className="w-16 border border-orange-200 rounded-lg py-1 px-2 text-xs font-black outline-none focus:ring-2 focus:ring-orange-100"
                               autoFocus
                             />
                             <button
                               onClick={() => {
-                                dispatch(updateProduct({ id: product.id, stock: Number(stockValue) }));
+                                handleSaveStock(product.id, Number(stockValue));
                                 setEditingStock(null);
                               }}
                               className="p-1 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-all"
@@ -391,7 +674,7 @@ export default function InventoryList() {
                       <td className="px-3 py-4 pr-5">
                         <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
-                            onClick={() => navigate(`/admin/inventory/add`)}
+                            onClick={() => navigate(`/admin/inventory/edit/${product.id}`)}
                             className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all"
                             title="Edit Product"
                           >
@@ -399,7 +682,7 @@ export default function InventoryList() {
                           </button>
                           {product.status === 'Pending' && (
                             <button
-                              onClick={() => dispatch(approveProduct(product.id))}
+                              onClick={() => handleApproveProduct(product.id)}
                               className="p-2 bg-green-50 text-green-500 rounded-lg hover:bg-green-100 transition-all"
                               title="Approve"
                             >
@@ -407,7 +690,7 @@ export default function InventoryList() {
                             </button>
                           )}
                           <button
-                            onClick={() => dispatch(deleteProduct(product.id))}
+                            onClick={() => handleDeleteProduct(product.id)}
                             className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all"
                             title="Delete"
                           >
@@ -445,6 +728,13 @@ export default function InventoryList() {
           </div>
         )}
       </div>
+      <ConfirmModal
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={confirmAction}
+        title={confirmTitle}
+        message={confirmMessage}
+      />
     </div>
   );
 }

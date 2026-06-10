@@ -7,6 +7,7 @@ import ProductModeration from '../modules/admin/products/ProductModeration';
 import CategoryManager from '../modules/admin/catalog/CategoryManager';
 import BannerManager from '../modules/admin/catalog/BannerManager';
 import CategoryChipsManager from '../modules/admin/catalog/CategoryChipsManager';
+import SubCategoryChipsManager from '../modules/admin/catalog/SubCategoryChipsManager';
 import HomeSectionsManager from '../modules/admin/catalog/HomeSectionsManager';
 import InventoryList from '../pages/admin/inventory/InventoryList';
 import ThirdPartyDelivery from '../pages/admin/delivery/ThirdPartyDelivery';
@@ -33,6 +34,7 @@ import Coupons from '../pages/admin/promotions/Coupons';
 import FlashSale from '../pages/admin/promotions/FlashSale';
 import FeaturedProducts from '../pages/admin/promotions/FeaturedProducts';
 import GameManager from '../pages/admin/promotions/GameManager';
+import ReferralProgram from '../pages/admin/promotions/ReferralProgram';
 
 // Comms
 import Notifications from '../pages/admin/comms/Notifications';
@@ -65,11 +67,13 @@ const AdminRoutes = () => {
         <Route path="categories" element={<CategoryManager />} />
         <Route path="storefront/banners" element={<BannerManager />} />
         <Route path="storefront/chips" element={<CategoryChipsManager />} />
+        <Route path="storefront/subchips" element={<SubCategoryChipsManager />} />
         <Route path="storefront/sections/:section" element={<HomeSectionsManager />} />
         
         {/* Business Ops */}
         <Route path="inventory/all" element={<InventoryList />} />
         <Route path="inventory/add" element={<AddProduct />} />
+        <Route path="inventory/edit/:id" element={<AddProduct />} />
         <Route path="inventory/alerts" element={<StockAlerts />} />
         <Route path="orders" element={<Orders />} />
         <Route path="orders/:orderId" element={<OrderDetail />} />
@@ -85,6 +89,7 @@ const AdminRoutes = () => {
         <Route path="promotions/flash-sale" element={<FlashSale />} />
         <Route path="promotions/featured" element={<FeaturedProducts />} />
         <Route path="promotions/games" element={<GameManager />} />
+        <Route path="promotions/referrals" element={<ReferralProgram />} />
 
         {/* Comms */}
         <Route path="comms/notifications" element={<Notifications />} />

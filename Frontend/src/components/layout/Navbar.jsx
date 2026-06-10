@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Heart, ShoppingCart, MapPin, ChevronDown, Search, Camera, Mic, Scan, X, Crosshair, MoreHorizontal, Home, Plus, Gamepad2 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import toast from 'react-hot-toast';
 import { NOTIFICATIONS } from '../../data/mockData';
 
 export default function Navbar() {
@@ -40,6 +41,8 @@ export default function Navbar() {
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const fileInputRef = useRef(null);
 
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
   const [savedAddresses, setSavedAddresses] = useState([
     { id: 1, name: 'Mukesh Jinodiya', type: 'Home', address: '83 kishan pura mataji mandir, sector no. 5 new harsud...', pincode: '450001' },
     { id: 2, name: 'Vini Jinodiya', type: 'Home', address: '36, narmada kirana store abhinandan nagar mr10 ind...', pincode: '452010' }
@@ -49,6 +52,52 @@ export default function Navbar() {
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
   const [newAddressForm, setNewAddressForm] = useState({ name: '', address: '', pincode: '' });
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      if (!user) {
+        setSavedAddresses([
+          { id: 1, name: 'Mukesh Jinodiya', type: 'Home', address: '83 kishan pura mataji mandir, sector no. 5 new harsud...', pincode: '450001' },
+          { id: 2, name: 'Vini Jinodiya', type: 'Home', address: '36, narmada kirana store abhinandan nagar mr10 ind...', pincode: '452010' }
+        ]);
+        return;
+      }
+      try {
+        const token = localStorage.getItem('userToken');
+        if (!token) return;
+        const res = await fetch(`${API_BASE}/api/addresses`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.status === 401) {
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('userInfo');
+          sessionStorage.removeItem('isLoggedIn');
+          setUser(null);
+          toast.error("Session expired. Please log in again.");
+          return;
+        }
+        const data = await res.json();
+        if (data.success) {
+          const mapped = data.data.map(addr => ({
+            id: addr._id,
+            name: addr.name,
+            type: addr.type,
+            address: addr.address,
+            pincode: addr.pincode
+          }));
+          setSavedAddresses(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch addresses:", err);
+      }
+    };
+
+    if (isLocationModalOpen) {
+      fetchAddresses();
+    }
+  }, [user, isLocationModalOpen]);
 
   const filteredAddresses = savedAddresses.filter(addr => 
     addr.name.toLowerCase().includes(addressSearchQuery.toLowerCase()) || 
@@ -89,11 +138,15 @@ export default function Navbar() {
   const handleImageCapture = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('Image size cannot exceed 10MB!');
+        return;
+      }
       setSearchQuery("Camera search result");
       if (window.location.pathname !== '/categories') {
         navigate('/categories');
       }
-      alert("Image captured! In a real app, this would perform a visual search.");
+      toast.success("Image captured! Performing visual search...");
     }
   };
 
@@ -143,7 +196,7 @@ export default function Navbar() {
               className="relative p-1 hover:bg-white/20 rounded-full transition-colors"
             >
               <ShoppingCart className="w-5.5 h-5.5 stroke-[1.8]" />
-              {user && totalCartItems > 0 && (
+              {totalCartItems > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-white text-[8.5px] font-black text-[#EE4923] ring-1.5 ring-[#EE4923] animate-pulse">
                   {totalCartItems}
                 </span>
@@ -189,23 +242,11 @@ export default function Navbar() {
                   }
                 }}
               />
-              {/* Voice search Mic option added next to Camera inside input capsule */}
+              {/* Voice search Mic option inside input capsule */}
               <div className="flex items-center gap-2 ml-2.5">
-                <Camera 
-                  onClick={handleCameraClick}
-                  className="w-4.5 h-4.5 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
-                />
                 <Mic 
                   onClick={handleVoiceSearch}
                   className="w-4.5 h-4.5 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
-                />
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  capture="environment" 
-                  ref={fileInputRef} 
-                  className="hidden" 
-                  onChange={handleImageCapture} 
                 />
               </div>
             </div>
@@ -243,7 +284,7 @@ export default function Navbar() {
               </button>
             </div>
 
-            <div className="overflow-y-auto scrollbar-none pb-4 flex-grow space-y-5">
+            <div className="overflow-y-auto scrollbar-none pb-24 flex-grow space-y-5">
               {/* Search Bar */}
               <div className="relative flex items-center bg-white rounded-xl border border-slate-200 px-3 py-2.5 shadow-3xs focus-within:border-[#ee4923] focus-within:ring-2 focus-within:ring-orange-100 transition-all">
                 <Search className="w-4 h-4 text-slate-400 mr-2.5" />
@@ -323,31 +364,100 @@ export default function Navbar() {
                       />
                     </div>
                     <button 
-                      onClick={() => {
-                        if(newAddressForm.name && newAddressForm.address && newAddressForm.pincode) {
-                          if (editingAddressId) {
-                            setSavedAddresses(savedAddresses.map(a => 
-                              a.id === editingAddressId 
-                                ? { ...a, name: newAddressForm.name, address: newAddressForm.address, pincode: newAddressForm.pincode }
-                                : a
-                            ));
+                      onClick={async () => {
+                        if (!newAddressForm.name || !newAddressForm.address || !newAddressForm.pincode) {
+                          toast.error("Please fill in all mandatory fields, including the Pin Code.");
+                          return;
+                        }
+                        if (!user) {
+                          toast.error("Please login to save addresses.");
+                          return;
+                        }
+                        try {
+                          const token = localStorage.getItem('userToken');
+                          const url = editingAddressId 
+                            ? `${API_BASE}/api/addresses/${editingAddressId}`
+                            : `${API_BASE}/api/addresses`;
+                          const method = editingAddressId ? 'PUT' : 'POST';
+
+                          const res = await fetch(url, {
+                            method,
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                              name: newAddressForm.name,
+                              type: 'Home',
+                              address: newAddressForm.address,
+                              pincode: newAddressForm.pincode
+                            })
+                          });
+                          const data = await res.json();
+                          if (data.success) {
+                            toast.success(editingAddressId ? "Address updated!" : "Address saved!");
+                            // Refresh addresses
+                            const updatedRes = await fetch(`${API_BASE}/api/addresses`, {
+                              headers: { 'Authorization': `Bearer ${token}` }
+                            });
+                            const updatedData = await updatedRes.json();
+                            if (updatedData.success) {
+                              setSavedAddresses(updatedData.data.map(addr => ({
+                                id: addr._id,
+                                name: addr.name,
+                                type: addr.type,
+                                address: addr.address,
+                                pincode: addr.pincode
+                              })));
+                            }
+                            setIsAddingNewAddress(false);
+                            setEditingAddressId(null);
+                            setNewAddressForm({ name: '', address: '', pincode: '' });
                           } else {
-                            setSavedAddresses([
-                              ...savedAddresses, 
-                              { id: Date.now(), name: newAddressForm.name, type: 'Home', address: newAddressForm.address, pincode: newAddressForm.pincode }
-                            ]);
+                            toast.error(data.message || "Failed to save address");
                           }
-                          setIsAddingNewAddress(false);
-                          setEditingAddressId(null);
-                          setNewAddressForm({ name: '', address: '', pincode: '' });
-                        } else {
-                          alert("Please fill in all mandatory fields, including the Pin Code.");
+                        } catch (err) {
+                          console.error(err);
+                          toast.error("Failed to save address.");
                         }
                       }}
                       className="w-full bg-[#ee4923] text-white text-sm font-bold py-2.5 rounded-lg hover:bg-orange-600 transition-colors"
                     >
                       {editingAddressId ? "Update Address" : "Save Address"}
                     </button>
+                    {editingAddressId && (
+                      <button
+                        onClick={async () => {
+                          if (!user) return;
+                          if (!confirm("Are you sure you want to delete this address?")) return;
+                          try {
+                            const token = localStorage.getItem('userToken');
+                            const res = await fetch(`${API_BASE}/api/addresses/${editingAddressId}`, {
+                              method: 'DELETE',
+                              headers: {
+                                'Authorization': `Bearer ${token}`
+                              }
+                            });
+                            const data = await res.json();
+                            if (data.success) {
+                              toast.success("Address deleted!");
+                              setSavedAddresses(prev => prev.filter(a => a.id !== editingAddressId));
+                              setIsAddingNewAddress(false);
+                              setEditingAddressId(null);
+                              setNewAddressForm({ name: '', address: '', pincode: '' });
+                            } else {
+                              toast.error(data.message || "Failed to delete address");
+                            }
+                          } catch (err) {
+                            console.error(err);
+                            toast.error("Failed to delete address");
+                          }
+                        }}
+                        className="w-full bg-red-500 text-white text-sm font-bold py-2.5 rounded-lg hover:bg-red-600 transition-colors mt-2"
+                      >
+                        Delete Address
+                      </button>
+                    )}
                   </div>
                 ) : (
                   filteredAddresses.map((addr) => {
@@ -413,7 +523,7 @@ export default function Navbar() {
               </button>
             </div>
 
-            <div className="space-y-3 overflow-y-auto pb-4 scrollbar-none">
+            <div className="space-y-3 overflow-y-auto pb-24 scrollbar-none">
               {NOTIFICATIONS.map((notif) => (
                 <div key={notif.id} className={`p-3 rounded-xl border ${notif.read ? 'bg-white border-slate-100' : 'bg-orange-50/50 border-orange-200'}`}>
                   <div className="flex items-start justify-between">

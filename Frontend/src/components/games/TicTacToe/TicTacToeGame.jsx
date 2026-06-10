@@ -19,12 +19,15 @@ export default function TicTacToeGame({ onClose, addCoins }) {
   const onGameEnd = (endResult) => {
     setResult(endResult);
     setGameState('result');
+    // Log play immediately!
+    let rewardAmount = endResult.winner === 'X' ? 50 : 10;
+    if (addCoins) {
+      addCoins(rewardAmount);
+    }
   };
 
   const handleClaimReward = (amount) => {
-    if (amount > 0) {
-      addCoins(amount);
-    }
+    // Coins already added onGameEnd
   };
 
   return (

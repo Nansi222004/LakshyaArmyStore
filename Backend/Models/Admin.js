@@ -27,6 +27,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  phone: {
+    type: String,
+    default: ''
+  },
   isActive: {
     type: Boolean,
     default: true

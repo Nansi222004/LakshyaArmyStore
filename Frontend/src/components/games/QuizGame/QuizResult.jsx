@@ -35,7 +35,7 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
     frame();
     
     // Automatically add coins for playing
-    if (coinsEarned > 0) {
+    if (addCoins) {
       addCoins(coinsEarned);
     }
   }, [coinsEarned, addCoins]);

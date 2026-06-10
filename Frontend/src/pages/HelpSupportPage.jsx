@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, PhoneCall, Mail, MessageSquare, Clock, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function HelpSupportPage() {
   const navigate = useNavigate();
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [faqs, setFaqs] = useState([]);
+  const [supportEmail, setSupportEmail] = useState('support@mynzo.com');
+  const [supportPhone, setSupportPhone] = useState('+1 (800) 123-4567');
 
-  const faqs = [
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const fallbackFaqs = [
     {
       question: "How do I track my order?",
       answer: "You can track your order by going to the 'Orders' section in your profile and clicking on the 'Track Order' button next to your recent purchase."
@@ -25,9 +30,43 @@ export default function HelpSupportPage() {
     }
   ];
 
+  useEffect(() => {
+    const fetchFaqsAndSettings = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/content/qna`);
+        const data = await res.json();
+        if (data.success && data.qnas && data.qnas.length > 0) {
+          setFaqs(data.qnas);
+        } else {
+          setFaqs(fallbackFaqs);
+        }
+      } catch (err) {
+        console.error("Error fetching FAQs:", err);
+        setFaqs(fallbackFaqs);
+      }
+
+      try {
+        const resSettings = await fetch(`${API_BASE}/api/admin/settings`);
+        const dataSettings = await resSettings.json();
+        if (dataSettings.success && dataSettings.settings) {
+          if (dataSettings.settings.supportEmail) {
+            setSupportEmail(dataSettings.settings.supportEmail);
+          }
+          if (dataSettings.settings.helpline) {
+            setSupportPhone(dataSettings.settings.helpline);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching settings:", err);
+      }
+    };
+    fetchFaqsAndSettings();
+  }, []);
+
   const toggleFaq = (index) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
+
 
   return (
     <div className="bg-slate-50 min-h-[100dvh] font-sans animate-fade-in flex flex-col">
@@ -57,26 +96,26 @@ export default function HelpSupportPage() {
         <div className="space-y-4">
           <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Contact Us</h3>
           
-          <a href="tel:+18001234567" className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
+          <a href={`tel:${supportPhone}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
             <div className="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <PhoneCall className="w-5 h-5" />
             </div>
             <div className="flex-1">
               <h4 className="text-sm font-bold text-[#02006c]">Call Us</h4>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">+1 (800) 123-4567</p>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">{supportPhone}</p>
             </div>
             <div className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 flex items-center gap-1">
               <Clock className="w-3 h-3" /> 24/7
             </div>
           </a>
 
-          <a href="mailto:support@mynzo.com" className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
+          <a href={`mailto:${supportEmail}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
             <div className="w-12 h-12 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <Mail className="w-5 h-5" />
             </div>
             <div className="flex-1">
               <h4 className="text-sm font-bold text-[#02006c]">Email Us</h4>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">support@mynzo.com</p>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">{supportEmail}</p>
             </div>
             <div className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 flex items-center gap-1">
               <Clock className="w-3 h-3" /> Fast

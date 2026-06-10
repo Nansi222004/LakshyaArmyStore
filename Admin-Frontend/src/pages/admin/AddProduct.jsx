@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Package, Upload, Plus, X, 
   Save, CheckCircle2,
@@ -7,6 +7,35 @@ import {
   Truck, ShieldCheck, ToggleLeft, ToggleRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
+import { useParams, useNavigate } from 'react-router-dom';
+
+const generateCombinations = (attrs) => {
+  if (attrs.length === 0) return [];
+  const helper = (acc, index) => {
+    if (index === attrs.length) return acc;
+    const currentAttr = attrs[index];
+    const currentValues = currentAttr.values || [];
+    if (currentValues.length === 0) return helper(acc, index + 1);
+    if (acc.length === 0) {
+      const newAcc = currentValues.map(val => ({
+        [currentAttr.name]: val
+      }));
+      return helper(newAcc, index + 1);
+    }
+    const newAcc = [];
+    acc.forEach(combo => {
+      currentValues.forEach(val => {
+        newAcc.push({
+          ...combo,
+          [currentAttr.name]: val
+        });
+      });
+    });
+    return helper(newAcc, index + 1);
+  };
+  return helper([], 0);
+};
 
 const Label = ({ children, required }) => (
   <label className="block text-sm font-semibold text-slate-600 mb-2">
@@ -26,24 +55,342 @@ const SectionTitle = ({ icon: Icon, color, children }) => (
 const inputCls = "w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm font-medium text-slate-800 focus:ring-4 focus:ring-orange-50 focus:border-orange-300 transition-all outline-none placeholder:text-slate-400";
 
 const AddProduct = () => {
-  const [images, setImages] = useState([]);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const isEditMode = !!id;
+  
   const [saved, setSaved] = useState(false);
+  
+  // State variables for form inputs
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
+  const [sellingPrice, setSellingPrice] = useState('');
+  const [mrp, setMrp] = useState('');
+  const [stock, setStock] = useState(1);
+  const [discountLabel, setDiscountLabel] = useState('');
+  const [sku, setSku] = useState('');
+
+  // Key Highlights specs
+  const [highlights, setHighlights] = useState({
+    packOf: '',
+    fabric: '',
+    sleeve: '',
+    pattern: '',
+    collar: '',
+    color: ''
+  });
+
+  // Technical specs
+  const [techSpecs, setTechSpecs] = useState({
+    fit: '',
+    fabricCare: '',
+    suitableFor: '',
+    hem: ''
+  });
+
+  // Shipping specs
+  const [shippingSpecs, setShippingSpecs] = useState({
+    weight: '',
+    length: '',
+    width: '',
+    height: ''
+  });
+
+  // Flags state
   const [flags, setFlags] = useState({ topSection: false, crazyDeals: false, flashSale: false });
+
+  // Organization state
+  const [brandName, setBrandName] = useState('');
+  const [tags, setTags] = useState('');
+  const [manufacturerInfo, setManufacturerInfo] = useState('');
+
+  // Tax compliance
+  const [hsnCode, setHsnCode] = useState('');
+
+  useEffect(() => {
+    if (!isEditMode) return;
+    const fetchProduct = async () => {
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiBase}/api/admin/catalog/products/${id}`);
+        const data = await res.json();
+        if (res.ok && data.success && data.product) {
+          const p = data.product;
+          setName(p.name || '');
+          setCategory(p.category || '');
+          setDescription(p.description || '');
+          setSellingPrice(p.sellingPrice || '');
+          setMrp(p.mrp || '');
+          setStock(p.stock || 1);
+          setDiscountLabel(p.discountLabel || '');
+          setSku(p.sku || '');
+          setBrandName(p.brandName || '');
+          setTags(Array.isArray(p.tags) ? p.tags.join(', ') : '');
+          setManufacturerInfo(p.manufacturerInfo || '');
+          setHsnCode(p.hsnCode || '');
+          setImages(p.images || []);
+          
+          if (p.highlights) {
+            const h = {};
+            Object.keys(p.highlights).forEach(k => {
+              h[k] = p.highlights[k];
+            });
+            setHighlights(prev => ({ ...prev, ...h }));
+          }
+          if (p.technicalSpecs) {
+            const ts = {};
+            Object.keys(p.technicalSpecs).forEach(k => {
+              ts[k] = p.technicalSpecs[k];
+            });
+            setTechSpecs(prev => ({ ...prev, ...ts }));
+          }
+          if (p.shippingSpecs) {
+            setShippingSpecs(prev => ({ ...prev, ...p.shippingSpecs }));
+          }
+          if (p.flags) {
+            setFlags(prev => ({ ...prev, ...p.flags }));
+          }
+          if (Array.isArray(p.variations) && p.variations.length > 0) {
+            setVariations(p.variations);
+            const attrMap = {};
+            p.variations.forEach(v => {
+              if (v.attributes) {
+                Object.entries(v.attributes).forEach(([key, val]) => {
+                  if (!attrMap[key]) attrMap[key] = new Set();
+                  attrMap[key].add(val);
+                });
+              }
+            });
+            const attrs = Object.entries(attrMap).map(([name, set]) => ({
+              name,
+              values: Array.from(set)
+            }));
+            setAttributes(attrs);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load product details:', err);
+        toast.error('Failed to load product details for editing');
+      }
+    };
+    fetchProduct();
+  }, [id, isEditMode]);
+
+  // Variations state
+  const [attributes, setAttributes] = useState([]);
+  const [isAddingAttr, setIsAddingAttr] = useState(false);
+  const [newAttrName, setNewAttrName] = useState('');
+  const [newAttrVal, setNewAttrVal] = useState('');
+  const [variations, setVariations] = useState([]);
+
+  useEffect(() => {
+    const combos = generateCombinations(attributes);
+    const newVariations = combos.map(combo => {
+      const attrString = Object.values(combo).join('-');
+      const computedSku = sku ? `${sku}-${attrString}` : `SKU-${attrString}`;
+      
+      const existing = variations.find(v => {
+        if (!v.attributes) return false;
+        return Object.entries(combo).every(([k, val]) => v.attributes[k] === val);
+      });
+      
+      return {
+        sku: existing?.sku || computedSku,
+        price: existing?.price !== undefined ? existing.price : (Number(sellingPrice) || 0),
+        stock: existing?.stock !== undefined ? existing.stock : (Number(stock) || 1),
+        attributes: combo
+      };
+    });
+    setVariations(newVariations);
+  }, [attributes, sku, sellingPrice, stock]);
+
+  const handleAddAttribute = () => {
+    if (!newAttrName.trim()) {
+      toast.error('Attribute name is required!');
+      return;
+    }
+    if (attributes.some(attr => attr.name.toLowerCase() === newAttrName.trim().toLowerCase())) {
+      toast.error('Attribute already exists!');
+      return;
+    }
+    const parsedValues = newAttrVal
+      .split(',')
+      .map(v => v.trim())
+      .filter(Boolean);
+
+    setAttributes([...attributes, { name: newAttrName.trim(), values: parsedValues }]);
+    setNewAttrName('');
+    setNewAttrVal('');
+    setIsAddingAttr(false);
+  };
+
+  const handleAddValueToAttribute = (attrIndex, val) => {
+    if (!val.trim()) return;
+    const updated = [...attributes];
+    if (updated[attrIndex].values.includes(val.trim())) {
+      toast.error('Value already exists!');
+      return;
+    }
+    updated[attrIndex].values.push(val.trim());
+    setAttributes(updated);
+  };
+
+  const handleRemoveValueFromAttribute = (attrIndex, valIndex) => {
+    const updated = [...attributes];
+    updated[attrIndex].values.splice(valIndex, 1);
+    setAttributes(updated);
+  };
+
+  const handleRemoveAttribute = (attrIndex) => {
+    setAttributes(attributes.filter((_, i) => i !== attrIndex));
+  };
+
+  const handleVariationChange = (index, field, value) => {
+    const updated = [...variations];
+    if (field === 'price' || field === 'stock') {
+      updated[index][field] = Number(value);
+    } else {
+      updated[index][field] = value;
+    }
+    setVariations(updated);
+  };
+
+  // Visuals State
+  const [images, setImages] = useState([]); // holds urls or previews
+  const [imageFiles, setImageFiles] = useState([]); // holds files for multipart uploading
 
   const categories = ['Fashion', 'Electronics', 'Beauty', 'Home Decor', 'Toys', 'Stationery', 'Jewellery', 'Gifting', 'Electrical'];
 
-  const handleAddImage = () => {
+  const handleAddImageUrl = () => {
     const url = prompt('Enter Image URL');
-    if (url) setImages([...images, url]);
+    if (url) {
+      setImages([...images, url]);
+    }
+  };
+
+  const handleAddImageFile = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('Image size cannot exceed 10MB!');
+        return;
+      }
+      const previewUrl = URL.createObjectURL(file);
+      setImages([...images, previewUrl]);
+      setImageFiles([...imageFiles, { previewUrl, file }]);
+    }
   };
 
   const handleRemoveImage = (index) => {
+    const target = images[index];
     setImages(images.filter((_, i) => i !== index));
+    setImageFiles(imageFiles.filter(item => item.previewUrl !== target));
   };
 
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+  const handleSave = async () => {
+    if (!name || !category || !sellingPrice) {
+      toast.error('Product Name, Category, and Selling Price are required!');
+      return;
+    }
+
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      toast.error('Please login as admin first');
+      return;
+    }
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const bodyFormData = new FormData();
+
+      bodyFormData.append('name', name);
+      bodyFormData.append('category', category);
+      bodyFormData.append('description', description);
+      bodyFormData.append('sellingPrice', sellingPrice);
+      if (mrp) bodyFormData.append('mrp', mrp);
+      bodyFormData.append('stock', stock);
+      bodyFormData.append('discountLabel', discountLabel);
+      bodyFormData.append('sku', sku);
+      bodyFormData.append('hsnCode', hsnCode);
+      bodyFormData.append('brandName', brandName || 'Generic');
+      bodyFormData.append('manufacturerInfo', manufacturerInfo);
+
+      bodyFormData.append('highlights', JSON.stringify(highlights));
+      bodyFormData.append('technicalSpecs', JSON.stringify(techSpecs));
+      bodyFormData.append('shippingSpecs', JSON.stringify(shippingSpecs));
+      bodyFormData.append('flags', JSON.stringify(flags));
+
+      const parsedTags = tags.split(',').map(t => t.trim()).filter(Boolean);
+      bodyFormData.append('tags', JSON.stringify(parsedTags));
+      bodyFormData.append('variations', JSON.stringify(variations));
+
+      // Append files and standard image URL strings
+      const rawImageUrls = [];
+      images.forEach(img => {
+        if (typeof img === 'string' && !img.startsWith('blob:')) {
+          rawImageUrls.push(img);
+        }
+      });
+      bodyFormData.append('images', JSON.stringify(rawImageUrls));
+
+      imageFiles.forEach(fileObj => {
+        bodyFormData.append('images', fileObj.file);
+      });
+
+      toast.loading(isEditMode ? 'Updating product...' : 'Publishing product to catalog...', { id: 'publish' });
+      const saveUrl = isEditMode ? `${apiBase}/api/admin/catalog/products/${id}` : `${apiBase}/api/admin/catalog/products`;
+      const res = await fetch(saveUrl, {
+        method: isEditMode ? 'PUT' : 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: bodyFormData
+      });
+
+      const data = await res.json();
+      toast.dismiss('publish');
+
+      if (res.ok && data.success) {
+        toast.success(data.message || (isEditMode ? 'Product updated successfully!' : 'Product published successfully!'));
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2500);
+
+        if (isEditMode) {
+          setTimeout(() => navigate('/admin/inventory/all'), 1000);
+          return;
+        }
+
+        // Reset all states
+        setName('');
+        setCategory('');
+        setDescription('');
+        setSellingPrice('');
+        setMrp('');
+        setStock(1);
+        setDiscountLabel('');
+        setSku('');
+        setHighlights({ packOf: '', fabric: '', sleeve: '', pattern: '', collar: '', color: '' });
+        setTechSpecs({ fit: '', fabricCare: '', suitableFor: '', hem: '' });
+        setShippingSpecs({ weight: '', length: '', width: '', height: '' });
+        setFlags({ topSection: false, crazyDeals: false, flashSale: false });
+        setBrandName('');
+        setTags('');
+        setManufacturerInfo('');
+        setImages([]);
+        setImageFiles([]);
+        setHsnCode('');
+        setAttributes([]);
+        setVariations([]);
+        setIsAddingAttr(false);
+      } else {
+        toast.error(data.message || 'Failed to publish product');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.dismiss('publish');
+      toast.error('Could not connect to backend server');
+    }
   };
 
   const toggleFlag = (key) => setFlags(p => ({ ...p, [key]: !p[key] }));
@@ -53,8 +400,8 @@ const AddProduct = () => {
       {/* Header */}
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-semibold text-slate-900 tracking-tight font-montserrat">Add New Product</h1>
-          <p className="text-slate-500 mt-1">Fill in the details below to publish a product to the catalog.</p>
+          <h1 className="text-3xl font-semibold text-slate-900 tracking-tight font-montserrat">{isEditMode ? 'Edit Product' : 'Add New Product'}</h1>
+          <p className="text-slate-500 mt-1">{isEditMode ? 'Modify the product details and save changes.' : 'Fill in the details below to publish a product to the catalog.'}</p>
         </div>
         <div className="flex gap-3">
           <button className="px-5 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-all shadow-sm">
@@ -62,10 +409,10 @@ const AddProduct = () => {
           </button>
           <button
             onClick={handleSave}
-            className={`flex items-center gap-2 px-7 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-blue-500 text-white shadow-blue-100 hover:scale-105'}`}
+            className={`flex items-center gap-2 px-7 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-[#ee4923] text-white hover:scale-105'}`}
           >
             {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
-            {saved ? 'Product Published!' : 'Publish to Catalog'}
+            {saved ? (isEditMode ? 'Product Updated!' : 'Product Published!') : (isEditMode ? 'Save Changes' : 'Publish to Catalog')}
           </button>
         </div>
       </div>
@@ -76,31 +423,37 @@ const AddProduct = () => {
 
           {/* 1. Product Specification */}
           <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7 space-y-5">
-            <SectionTitle icon={FileText} color="bg-orange-50 text-orange-500">Product Specification</SectionTitle>
+            <SectionTitle icon={FileText} color="bg-orange-50 text-[#ee4923]">Product Specification</SectionTitle>
 
             <div>
               <Label required>Product Name</Label>
-              <input type="text" placeholder="e.g. Premium Leather Satchel" className={inputCls} />
+              <input 
+                type="text" 
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="e.g. Premium Leather Satchel" 
+                className={inputCls} 
+              />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label required>Category</Label>
-                <select className={inputCls}>
-                  <option value="">Select Category</option>
-                  {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-              <div>
-                <Label>Sub-Category</Label>
-                <input type="text" placeholder="e.g. Bags & Backpacks" className={inputCls} />
-              </div>
+            <div>
+              <Label required>Category</Label>
+              <select 
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+                className={inputCls}
+              >
+                <option value="">Select Category</option>
+                {categories.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
             </div>
 
             <div>
               <Label>Detailed Description</Label>
               <textarea
                 rows={5}
+                value={description}
+                onChange={e => setDescription(e.target.value)}
                 placeholder="Tell customers about the product features, materials, and unique selling points..."
                 className={`${inputCls} resize-none`}
               />
@@ -114,26 +467,56 @@ const AddProduct = () => {
             <div className="grid grid-cols-3 gap-5">
               <div>
                 <Label required>Selling Price (₹)</Label>
-                <input type="number" placeholder="0.00" className={inputCls} />
+                <input 
+                  type="number" 
+                  value={sellingPrice}
+                  onChange={e => setSellingPrice(e.target.value)}
+                  placeholder="0.00" 
+                  className={inputCls} 
+                />
               </div>
               <div>
                 <Label>MRP / Strike-off (₹)</Label>
-                <input type="number" placeholder="0.00" className={inputCls} />
+                <input 
+                  type="number" 
+                  value={mrp}
+                  onChange={e => setMrp(e.target.value)}
+                  placeholder="0.00" 
+                  className={inputCls} 
+                />
               </div>
               <div>
                 <Label required>Initial Stock</Label>
-                <input type="number" placeholder="1" className={inputCls} />
+                <input 
+                  type="number" 
+                  value={stock}
+                  onChange={e => setStock(e.target.value)}
+                  placeholder="1" 
+                  className={inputCls} 
+                />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>Discount Label</Label>
-                <input type="text" placeholder="e.g. -40% OFF" className={inputCls} />
+                <input 
+                  type="text" 
+                  value={discountLabel}
+                  onChange={e => setDiscountLabel(e.target.value)}
+                  placeholder="e.g. -40% OFF" 
+                  className={inputCls} 
+                />
               </div>
               <div>
                 <Label>SKU / Product Code</Label>
-                <input type="text" placeholder="e.g. FSH-001" className={inputCls} />
+                <input 
+                  type="text" 
+                  value={sku}
+                  onChange={e => setSku(e.target.value)}
+                  placeholder="e.g. FSH-001" 
+                  className={inputCls} 
+                />
               </div>
             </div>
           </section>
@@ -146,10 +529,23 @@ const AddProduct = () => {
               <div className="space-y-4">
                 <p className="text-sm font-semibold text-indigo-500">Key Highlights</p>
                 <div className="grid grid-cols-2 gap-3">
-                  {['Pack Of', 'Fabric', 'Sleeve', 'Pattern', 'Collar', 'Color'].map(f => (
-                    <div key={f}>
-                      <Label>{f}</Label>
-                      <input type="text" placeholder={`e.g. ${f}`} className={inputCls} />
+                  {[
+                    { key: 'packOf', label: 'Pack Of' },
+                    { key: 'fabric', label: 'Fabric' },
+                    { key: 'sleeve', label: 'Sleeve' },
+                    { key: 'pattern', label: 'Pattern' },
+                    { key: 'collar', label: 'Collar' },
+                    { key: 'color', label: 'Color' }
+                  ].map(f => (
+                    <div key={f.key}>
+                      <Label>{f.label}</Label>
+                      <input 
+                        type="text" 
+                        value={highlights[f.key]}
+                        onChange={e => setHighlights(p => ({ ...p, [f.key]: e.target.value }))}
+                        placeholder={`e.g. ${f.label}`} 
+                        className={inputCls} 
+                      />
                     </div>
                   ))}
                 </div>
@@ -157,10 +553,21 @@ const AddProduct = () => {
               <div className="space-y-4">
                 <p className="text-sm font-semibold text-indigo-500">Technical Specs</p>
                 <div className="space-y-3">
-                  {['Fit', 'Fabric Care', 'Suitable For', 'Hem'].map(f => (
-                    <div key={f}>
-                      <Label>{f}</Label>
-                      <input type="text" placeholder={`e.g. ${f}`} className={inputCls} />
+                  {[
+                    { key: 'fit', label: 'Fit' },
+                    { key: 'fabricCare', label: 'Fabric Care' },
+                    { key: 'suitableFor', label: 'Suitable For' },
+                    { key: 'hem', label: 'Hem' }
+                  ].map(f => (
+                    <div key={f.key}>
+                      <Label>{f.label}</Label>
+                      <input 
+                        type="text" 
+                        value={techSpecs[f.key]}
+                        onChange={e => setTechSpecs(p => ({ ...p, [f.key]: e.target.value }))}
+                        placeholder={`e.g. ${f.label}`} 
+                        className={inputCls} 
+                      />
                     </div>
                   ))}
                 </div>
@@ -175,13 +582,172 @@ const AddProduct = () => {
                 <div className="p-2 bg-purple-50 text-purple-500 rounded-xl"><Layers size={17} /></div>
                 <h3 className="text-base font-semibold text-slate-700">Variations (SKUs)</h3>
               </div>
-              <button className="text-sm font-semibold text-blue-500 hover:underline">+ Add Attribute</button>
+              {!isAddingAttr && (
+                <button 
+                  onClick={() => setIsAddingAttr(true)}
+                  className="text-sm font-semibold text-blue-500 hover:underline flex items-center gap-1"
+                >
+                  <Plus size={16} /> Add Attribute
+                </button>
+              )}
             </div>
 
-            <div className="p-10 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400 gap-3">
-              <Layers size={32} />
-              <p className="text-sm font-medium text-center text-slate-400">No variations defined.<br />Add Size, Color or Material to create SKUs.</p>
-            </div>
+            {/* Inline form to add a new Attribute */}
+            {isAddingAttr && (
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+                <h4 className="text-sm font-semibold text-slate-700">New Attribute</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label required>Attribute Name</Label>
+                    <input 
+                      type="text"
+                      value={newAttrName}
+                      onChange={e => setNewAttrName(e.target.value)}
+                      placeholder="e.g. Size, Color, Material"
+                      className={inputCls}
+                    />
+                  </div>
+                  <div>
+                    <Label>Values (Comma Separated)</Label>
+                    <input 
+                      type="text"
+                      value={newAttrVal}
+                      onChange={e => setNewAttrVal(e.target.value)}
+                      placeholder="e.g. S, M, L or Red, Blue"
+                      className={inputCls}
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <button 
+                    onClick={() => {
+                      setIsAddingAttr(false);
+                      setNewAttrName('');
+                      setNewAttrVal('');
+                    }}
+                    className="px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-slate-100"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={handleAddAttribute}
+                    className="px-4 py-2 bg-[#ee4923] text-white rounded-lg text-xs font-semibold hover:bg-orange-600"
+                  >
+                    Add Attribute
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* List of currently defined attributes */}
+            {attributes.length > 0 && (
+              <div className="space-y-4">
+                {attributes.map((attr, attrIndex) => {
+                  return (
+                    <div key={attrIndex} className="p-4 border border-slate-200 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-sm font-bold text-slate-700">{attr.name}</span>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {attr.values.map((val, valIndex) => (
+                            <span key={valIndex} className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium border border-slate-200">
+                              {val}
+                              <button 
+                                onClick={() => handleRemoveValueFromAttribute(attrIndex, valIndex)}
+                                className="text-slate-400 hover:text-red-500"
+                              >
+                                <X size={12} />
+                              </button>
+                            </span>
+                          ))}
+                          {/* Inline tag input */}
+                          <input 
+                            type="text"
+                            placeholder="+ Add value"
+                            className="bg-transparent border-b border-dashed border-slate-300 focus:border-blue-500 outline-none text-xs px-1 py-0.5 w-20"
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleAddValueToAttribute(attrIndex, e.target.value);
+                                e.target.value = '';
+                              }
+                            }}
+                            onBlur={e => {
+                              handleAddValueToAttribute(attrIndex, e.target.value);
+                              e.target.value = '';
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => handleRemoveAttribute(attrIndex)}
+                        className="text-xs text-red-500 hover:underline flex items-center gap-1 self-start md:self-center"
+                      >
+                        Remove Attribute
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Combinations list */}
+            {variations.length > 0 ? (
+              <div className="space-y-3">
+                <p className="text-xs font-bold text-slate-500 tracking-wide uppercase">Generated SKUs / Combinations</p>
+                <div className="overflow-x-auto border border-slate-200 rounded-xl">
+                  <table className="w-full text-left border-collapse text-sm">
+                    <thead>
+                      <tr className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+                        <th className="p-3">Combination</th>
+                        <th className="p-3">SKU Code</th>
+                        <th className="p-3">Price (₹)</th>
+                        <th className="p-3">Stock</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-700">
+                      {variations.map((v, i) => (
+                        <tr key={i} className="hover:bg-slate-50/50">
+                          <td className="p-3 font-medium">
+                            {Object.entries(v.attributes).map(([key, val]) => `${key}: ${val}`).join(', ')}
+                          </td>
+                          <td className="p-3">
+                            <input 
+                              type="text" 
+                              value={v.sku} 
+                              onChange={e => handleVariationChange(i, 'sku', e.target.value)}
+                              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-blue-100 outline-none"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input 
+                              type="number" 
+                              value={v.price} 
+                              onChange={e => handleVariationChange(i, 'price', e.target.value)}
+                              className="w-24 bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-blue-100 outline-none"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input 
+                              type="number" 
+                              value={v.stock} 
+                              onChange={e => handleVariationChange(i, 'stock', e.target.value)}
+                              className="w-20 bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-blue-100 outline-none"
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              !isAddingAttr && (
+                <div className="p-10 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400 gap-3">
+                  <Layers size={32} />
+                  <p className="text-sm font-medium text-center text-slate-400">No variations defined.<br />Add Size, Color or Material to create SKUs.</p>
+                </div>
+              )
+            )}
           </section>
 
           {/* 5. Shipping & Logistics */}
@@ -189,10 +755,21 @@ const AddProduct = () => {
             <SectionTitle icon={Truck} color="bg-blue-50 text-blue-500">Shipping & Logistics</SectionTitle>
 
             <div className="grid grid-cols-4 gap-4">
-              {['Weight (kg)', 'Length (cm)', 'Width (cm)', 'Height (cm)'].map((f, i) => (
-                <div key={f}>
-                  <Label>{f}</Label>
-                  <input type="number" placeholder={['0.5', '10', '10', '5'][i]} className={inputCls} />
+              {[
+                { key: 'weight', label: 'Weight (kg)', def: '0.5' },
+                { key: 'length', label: 'Length (cm)', def: '10' },
+                { key: 'width', label: 'Width (cm)', def: '10' },
+                { key: 'height', label: 'Height (cm)', def: '5' }
+              ].map((f) => (
+                <div key={f.key}>
+                  <Label>{f.label}</Label>
+                  <input 
+                    type="number" 
+                    value={shippingSpecs[f.key]}
+                    onChange={e => setShippingSpecs(p => ({ ...p, [f.key]: e.target.value }))}
+                    placeholder={f.def} 
+                    className={inputCls} 
+                  />
                 </div>
               ))}
             </div>
@@ -231,17 +808,14 @@ const AddProduct = () => {
             <SectionTitle icon={ShieldCheck} color="bg-green-50 text-green-600">Tax & Compliance</SectionTitle>
 
             <div>
-              <Label>GST Category</Label>
-              <select className={inputCls}>
-                <option>GST 18% (Standard)</option>
-                <option>GST 12%</option>
-                <option>GST 5%</option>
-                <option>GST 0% (Exempt)</option>
-              </select>
-            </div>
-            <div>
               <Label>HSN Code</Label>
-              <input type="text" placeholder="e.g. 4202" className={inputCls} />
+              <input 
+                type="text" 
+                value={hsnCode}
+                onChange={e => setHsnCode(e.target.value)}
+                placeholder="e.g. 4202" 
+                className={inputCls} 
+              />
             </div>
           </section>
 
@@ -268,13 +842,27 @@ const AddProduct = () => {
                 </div>
               ))}
               {images.length < 5 && (
-                <button
-                  onClick={handleAddImage}
-                  className="aspect-square border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-blue-400 hover:bg-blue-50/20 transition-all text-slate-400"
-                >
-                  <Upload size={22} />
-                  <span className="text-xs font-semibold">Add URL</span>
-                </button>
+                <div className="flex gap-2 col-span-2">
+                  <label
+                    className="flex-1 aspect-square border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-blue-400 hover:bg-blue-50/20 transition-all text-slate-400 cursor-pointer"
+                  >
+                    <Upload size={22} />
+                    <span className="text-xs font-semibold">Upload File</span>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      onChange={handleAddImageFile} 
+                    />
+                  </label>
+                  <button
+                    onClick={handleAddImageUrl}
+                    className="flex-1 aspect-square border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-blue-400 hover:bg-blue-50/20 transition-all text-slate-400"
+                  >
+                    <Plus size={22} />
+                    <span className="text-xs font-semibold">Add URL</span>
+                  </button>
+                </div>
               )}
             </div>
             <p className="text-xs text-slate-500 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
@@ -288,15 +876,33 @@ const AddProduct = () => {
 
             <div>
               <Label>Brand Name</Label>
-              <input type="text" placeholder="Generic" className={inputCls} />
+              <input 
+                type="text" 
+                value={brandName}
+                onChange={e => setBrandName(e.target.value)}
+                placeholder="Generic" 
+                className={inputCls} 
+              />
             </div>
             <div>
               <Label>Tags (Comma Separated)</Label>
-              <input type="text" placeholder="new, trending, summer" className={inputCls} />
+              <input 
+                type="text" 
+                value={tags}
+                onChange={e => setTags(e.target.value)}
+                placeholder="new, trending, summer" 
+                className={inputCls} 
+              />
             </div>
             <div>
               <Label>Manufacturer Info</Label>
-              <textarea rows={3} placeholder="Manufacturer details, origin, etc." className={`${inputCls} resize-none`} />
+              <textarea 
+                rows={3} 
+                value={manufacturerInfo}
+                onChange={e => setManufacturerInfo(e.target.value)}
+                placeholder="Manufacturer details, origin, etc." 
+                className={`${inputCls} resize-none`} 
+              />
             </div>
           </section>
 

@@ -6,11 +6,24 @@ import {
   Tag, Layers, ArrowRight, AlertCircle, Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 const ProductModeration = () => {
   const { allProducts } = useSelector(state => state.products);
   const pendingProducts = allProducts.filter(p => p.status === 'Pending');
   const dispatch = useDispatch();
+
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [confirmAction, setConfirmAction] = React.useState(null);
+  const [confirmTitle, setConfirmTitle] = React.useState('');
+  const [confirmMessage, setConfirmMessage] = React.useState('');
+
+  const triggerConfirm = (title, message, action) => {
+    setConfirmTitle(title);
+    setConfirmMessage(message);
+    setConfirmAction(() => action);
+    setConfirmOpen(true);
+  };
 
   return (
     <div className="space-y-8 pb-10">
@@ -67,7 +80,13 @@ const ProductModeration = () => {
 
                    <div className="flex gap-3 pt-2">
                       <button 
-                        onClick={() => dispatch(deleteProduct(product.id))}
+                        onClick={() => {
+                          triggerConfirm(
+                            'Delete Product',
+                            'Are you sure you want to permanently delete this product from catalog?',
+                            () => dispatch(deleteProduct(product.id))
+                          );
+                        }}
                         className="p-4 border border-red-100 text-red-500 rounded-2xl hover:bg-red-50 transition-all flex items-center justify-center flex-1"
                       >
                          <Trash2 size={18} />
@@ -94,6 +113,13 @@ const ProductModeration = () => {
           )}
         </AnimatePresence>
       </div>
+      <ConfirmModal
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={confirmAction}
+        title={confirmTitle}
+        message={confirmMessage}
+      />
     </div>
   );
 };

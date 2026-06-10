@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Search, SlidersHorizontal, ChevronRight, Star, PenLine, Package, X, Image as ImageIcon, Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import toast from 'react-hot-toast';
 import { BANNERS } from '../data/mockData';
 
 // Mock data matching the new design
@@ -63,6 +64,31 @@ export default function OrdersPage() {
     setReviewText('');
     setReviewModalOpen(true);
   };
+
+  const handlePhotoUpload = (e) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      const invalidFile = filesArray.find(f => f.size > 10 * 1024 * 1024);
+      if (invalidFile) {
+        toast.error('Image size cannot exceed 10MB!');
+        e.target.value = '';
+        return;
+      }
+      toast.success('Photos selected successfully!');
+    }
+  };
+
+  const handleVideoUpload = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error('Video size cannot exceed 10MB!');
+        e.target.value = '';
+        return;
+      }
+      toast.success('Video selected successfully!');
+    }
+  };
   
   const fallbackImages = [
     'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=200', // Shoes
@@ -73,15 +99,13 @@ export default function OrdersPage() {
   // Transform appOrders to match the required UI structure, or use MOCK_ORDERS
   let rawOrders = appOrders && appOrders.length > 0 ? appOrders.map((o, idx) => ({
     id: o.id || `ORD-MOCK-${idx}`,
-    // Enforce first as undelivered (In Transit), rest as Delivered
-    date: idx === 0 ? 'Arriving by May 10' : 'Delivered on Apr 13',
-    status: idx === 0 ? 'In Transit' : 'Delivered',
+    date: o.date || (idx === 0 ? 'Arriving by May 10' : 'Delivered on Apr 13'),
+    status: o.status || (idx === 0 ? 'In Transit' : 'Delivered'),
     name: o.items && o.items[0] ? o.items[0].name : 'Product',
-    // Use actual image if available, else fallback
     image: (o.items && o.items[0] && o.items[0].image) ? o.items[0].image : fallbackImages[idx % fallbackImages.length],
     rating: idx === 1 ? 3 : 0,
     ratingText: idx === 1 ? 'Okay' : (idx === 0 ? '' : 'Rate & Review')
-  })) : MOCK_ORDERS;
+  })) : [];
 
   // Apply Search
   if (searchQuery.trim() !== '') {
@@ -108,38 +132,7 @@ export default function OrdersPage() {
         <h1 className="text-[#02006c] text-[18px] font-semibold tracking-wide">My Orders</h1>
       </div>
 
-      {/* Banner Slider */}
-      <div className="px-3 py-2 relative mt-1">
-        <div className="overflow-hidden rounded-xl shadow-sm relative aspect-[21/9] w-full">
-          <div 
-            className="flex w-full h-full transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${activeBanner * 100}%)` }}
-          >
-            {BANNERS.map((banner) => (
-              <div
-                key={banner.id}
-                className="w-full h-full flex-shrink-0 cursor-pointer"
-                onClick={() => navigate('/categories')}
-              >
-                <img src={banner.image} alt="Banner" className="w-full h-full object-cover" />
-              </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Indicators */}
-        <div className="flex justify-center items-center gap-1.5 mt-2">
-          {BANNERS.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveBanner(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === activeBanner ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
-              }`}
-            ></button>
-          ))}
-        </div>
-      </div>
 
       {/* Search and Filters */}
       <div className="px-4 py-3 mt-2 flex items-center gap-2 relative z-40">
@@ -292,12 +285,12 @@ export default function OrdersPage() {
                 <label className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed border-slate-300 bg-slate-50 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
                   <ImageIcon className="w-6 h-6 text-slate-400 mb-2" />
                   <span className="text-[11px] font-medium text-slate-600">Add Photos</span>
-                  <input type="file" accept="image/jpeg, image/png, image/webp" multiple className="hidden" />
+                  <input type="file" accept="image/jpeg, image/png, image/webp" multiple className="hidden" onChange={handlePhotoUpload} />
                 </label>
                 <label className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed border-slate-300 bg-slate-50 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
                   <Video className="w-6 h-6 text-slate-400 mb-2" />
                   <span className="text-[11px] font-medium text-slate-600">Add Reel</span>
-                  <input type="file" accept="video/mp4, video/webm" className="hidden" />
+                  <input type="file" accept="video/mp4, video/webm" className="hidden" onChange={handleVideoUpload} />
                 </label>
               </div>
             </div>

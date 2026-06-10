@@ -1,41 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Plus, Trash2, Edit2, Eye, EyeOff, Image as ImageIcon,
-  GripVertical, ToggleLeft, ToggleRight, Save, X, Upload,
-  ChevronDown, CheckCircle2, Layers
+  Plus, Trash2, Edit2, GripVertical, Save, X,
+  CheckCircle2, Image as ImageIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
+import ConfirmModal from '../../../components/ConfirmModal';
 
-// These match the exact category banners used in Home.jsx
-const INITIAL_BANNERS = {
-  'Home': [
-    { id: 1, title: 'Summer Sale', subtitle: 'Up to 70% Off', image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=300&fit=crop', link: '/home', active: true },
-    { id: 2, title: 'New Arrivals', subtitle: 'Fresh Collections', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&h=300&fit=crop', link: '/home', active: true },
-    { id: 3, title: 'Electronics Deal', subtitle: 'Best Tech Prices', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&h=300&fit=crop', link: '/home', active: true },
-    { id: 4, title: 'Grocery Offers', subtitle: 'Daily Essentials', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&h=300&fit=crop', link: '/home', active: false },
-  ],
-  'Fashion': [
-    { id: 5, title: 'Premium Fashion', subtitle: 'Designer Wear', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&h=300&fit=crop', link: '/vendor/toys', active: true },
-    { id: 6, title: 'Summer Collection', subtitle: 'New Season', image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&h=300&fit=crop', link: '/home', active: true },
-  ],
-  'Beauty': [
-    { id: 7, title: 'Skin Care', subtitle: 'Glow Up Series', image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&h=300&fit=crop', link: '/vendor/beauty', active: true },
-    { id: 8, title: 'Makeup Kits', subtitle: 'Best Brands', image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&h=300&fit=crop', link: '/vendor/beauty', active: true },
-  ],
-  'Toys': [
-    { id: 9, title: 'Toy World', subtitle: 'Kids Favorites', image: 'https://images.unsplash.com/photo-1532330393533-443990a51d10?w=800&h=300&fit=crop', link: '/vendor/toys', active: true },
-    { id: 10, title: 'LEGO Sale', subtitle: '50% Off', image: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800&h=300&fit=crop', link: '/vendor/toys', active: false },
-  ],
-  'Electronics': [
-    { id: 11, title: 'Tech Deals', subtitle: 'Latest Gadgets', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&h=300&fit=crop', link: '/home', active: true },
-  ],
-};
+const EMPTY_BANNER = { title: '', subtitle: '', image: '', active: true };
 
-const CATEGORY_TABS = ['Home', 'Fashion', 'Beauty', 'Toys', 'Electronics'];
-
-const EMPTY_BANNER = { title: '', subtitle: '', image: '', link: '/home', active: true, targetCategory: 'Home' };
-
-const BannerForm = ({ formData, setFormData, onSave, onCancel, label, categories }) => (
+// Define BannerForm OUTSIDE of BannerManager to prevent recreating the component on every state change.
+const BannerForm = ({
+  formData,
+  setFormData,
+  onSave,
+  onCancel,
+  label,
+  imagePreview,
+  setImageFile,
+  setImagePreview
+}) => (
   <motion.div
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
@@ -44,16 +28,6 @@ const BannerForm = ({ formData, setFormData, onSave, onCancel, label, categories
   >
     <div className="flex justify-between items-center border-b border-blue-100 pb-2">
       <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{label}</p>
-      <div className="flex items-center gap-2">
-         <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Show in:</label>
-         <select 
-            value={formData.targetCategory}
-            onChange={e => setFormData(p => ({ ...p, targetCategory: e.target.value }))}
-            className="bg-white border border-slate-200 rounded-lg px-2 py-1 text-[10px] font-bold outline-none"
-         >
-            {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-         </select>
-      </div>
     </div>
     <div className="grid grid-cols-2 gap-3">
       <div>
@@ -75,24 +49,46 @@ const BannerForm = ({ formData, setFormData, onSave, onCancel, label, categories
         />
       </div>
       <div className="col-span-2">
-        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Image URL *</label>
-        <input
-          value={formData.image}
-          onChange={e => setFormData(p => ({ ...p, image: e.target.value }))}
-          placeholder="https://... or upload image"
-          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
-        />
+        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Banner Image *</label>
+        <div className="flex items-center gap-2">
+          {imagePreview ? (
+            <img src={imagePreview} className="w-20 h-10 rounded-lg object-cover border border-slate-200" alt="Preview" />
+          ) : (
+            <div className="w-20 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-[9px] leading-tight font-black uppercase text-center">No img</div>
+          )}
+          <label className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[9px] font-black uppercase tracking-widest cursor-pointer hover:bg-slate-50 transition-all select-none">
+            Upload File
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  if (file.size > 10 * 1024 * 1024) {
+                    toast.error('Image size cannot exceed 10MB!');
+                    return;
+                  }
+                  setImageFile(file);
+                  setImagePreview(URL.createObjectURL(file));
+                }
+              }}
+            />
+          </label>
+          <span className="text-[9px] text-slate-400 font-bold">Or URL:</span>
+          <input
+            value={formData.image || ''}
+            onChange={e => {
+              setFormData(p => ({ ...p, image: e.target.value }));
+              setImagePreview(e.target.value);
+              setImageFile(null);
+            }}
+            placeholder="https://..."
+            className="flex-1 border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-bold outline-none"
+          />
+        </div>
       </div>
-      <div>
-        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Link (on click)</label>
-        <input
-          value={formData.link}
-          onChange={e => setFormData(p => ({ ...p, link: e.target.value }))}
-          placeholder="/home or /vendor/beauty"
-          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
-        />
-      </div>
-      <div className="flex items-end gap-3">
+      <div className="flex items-end gap-3 col-span-2">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
@@ -104,17 +100,6 @@ const BannerForm = ({ formData, setFormData, onSave, onCancel, label, categories
         </label>
       </div>
     </div>
-    {/* Preview */}
-    {formData.image && (
-      <div className="relative rounded-lg overflow-hidden h-20 bg-slate-100 border border-slate-200">
-        <img src={formData.image} alt="Preview" className="w-full h-full object-cover" onError={e => e.target.style.display='none'} />
-        <div className="absolute bottom-2 left-3 text-white">
-          <p className="text-[11px] font-black">{formData.title}</p>
-          <p className="text-[9px] opacity-80">{formData.subtitle}</p>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-      </div>
-    )}
     <div className="flex gap-2">
       <button onClick={onSave} className="px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
         <Save size={12} /> Save Banner
@@ -127,89 +112,199 @@ const BannerForm = ({ formData, setFormData, onSave, onCancel, label, categories
 );
 
 const BannerManager = () => {
-  const [banners, setBanners] = useState(INITIAL_BANNERS);
-  const [activeTab, setActiveTab] = useState('Home');
+  const [banners, setBanners] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(EMPTY_BANNER);
   const [saved, setSaved] = useState(false);
 
-  const currentBanners = banners[activeTab] || [];
+  // File Upload State
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+
+  // Confirm Modal state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmTitle, setConfirmTitle] = useState('');
+  const [confirmMessage, setConfirmMessage] = useState('');
+
+  const triggerConfirm = (title, message, action) => {
+    setConfirmTitle(title);
+    setConfirmMessage(message);
+    setConfirmAction(() => action);
+    setConfirmOpen(true);
+  };
+
+  const fetchBanners = async () => {
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/admin/catalog/banners`);
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setBanners(data.banners.map(b => ({
+          id: b._id,
+          title: b.title,
+          subtitle: b.subtitle,
+          image: b.image,
+          active: b.active
+        })));
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to load banners from server');
+    }
+  };
+
+  useEffect(() => {
+    fetchBanners();
+  }, []);
+
+  const uploadBannerImage = async (file) => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) throw new Error('Unauthorized');
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const bodyFormData = new FormData();
+    bodyFormData.append('image', file);
+    const res = await fetch(`${apiBase}/api/admin/catalog/banners/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: bodyFormData
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Image upload failed');
+    }
+    return data.url;
+  };
 
   const handleToggle = (id) => {
-    setBanners(prev => ({
-      ...prev,
-      [activeTab]: prev[activeTab].map(b => b.id === id ? { ...b, active: !b.active } : b)
-    }));
+    setBanners(prev => prev.map(b => b.id === id ? { ...b, active: !b.active } : b));
+    toast.success('Visibility changed in draft!');
   };
 
   const handleDelete = (id) => {
-    setBanners(prev => ({
-      ...prev,
-      [activeTab]: prev[activeTab].filter(b => b.id !== id)
-    }));
+    triggerConfirm(
+      'Delete Banner',
+      'Are you sure you want to permanently delete this banner from draft?',
+      () => {
+        setBanners(prev => prev.filter(b => b.id !== id));
+        toast.success('Banner deleted from draft!');
+      }
+    );
   };
 
   const handleEdit = (banner) => {
     setEditingId(banner.id);
-    setFormData({ 
-      title: banner.title, 
-      subtitle: banner.subtitle, 
-      image: banner.image, 
-      link: banner.link, 
-      active: banner.active,
-      targetCategory: activeTab
+    setFormData({
+      title: banner.title,
+      subtitle: banner.subtitle,
+      image: banner.image,
+      active: banner.active
     });
+    setImagePreview(banner.image || '');
+    setImageFile(null);
     setIsAdding(false);
   };
 
-  const handleSaveEdit = () => {
-    if (!formData.title || !formData.image) return;
-    
-    const originalCategory = activeTab;
-    const newCategory = formData.targetCategory;
-
-    setBanners(prev => {
-      const updatedBanners = { ...prev };
-      
-      if (originalCategory === newCategory) {
-        // Simple update within same category
-        updatedBanners[originalCategory] = prev[originalCategory].map(b => 
-          b.id === editingId ? { ...b, ...formData } : b
-        );
-      } else {
-        // Move to different category
-        const bannerToMove = { ...prev[originalCategory].find(b => b.id === editingId), ...formData };
-        updatedBanners[originalCategory] = prev[originalCategory].filter(b => b.id !== editingId);
-        updatedBanners[newCategory] = [...(prev[newCategory] || []), bannerToMove];
-        setActiveTab(newCategory); // Switch to the new category to show the moved banner
+  const handleSaveEdit = async () => {
+    if (!formData.title) return;
+    try {
+      let imageUrl = formData.image;
+      if (imageFile) {
+        toast.loading('Uploading banner image...', { id: 'upload' });
+        imageUrl = await uploadBannerImage(imageFile);
+        toast.dismiss('upload');
       }
-      
-      return updatedBanners;
-    });
-    
-    setEditingId(null);
-    setFormData(EMPTY_BANNER);
+
+      setBanners(prev => prev.map(b => b.id === editingId ? {
+        ...b,
+        title: formData.title,
+        subtitle: formData.subtitle || '',
+        image: imageUrl,
+        active: formData.active
+      } : b));
+
+      setEditingId(null);
+      setFormData(EMPTY_BANNER);
+      setImageFile(null);
+      setImagePreview('');
+      toast.success('Banner updated in draft! Click Publish to save changes.');
+    } catch (err) {
+      console.error(err);
+      toast.dismiss('upload');
+      toast.error(err.message || 'Failed to update banner');
+    }
   };
 
-  const handleAddNew = () => {
-    if (!formData.title || !formData.image) return;
-    const newId = Date.now();
-    const targetCat = formData.targetCategory;
+  const handleAddNew = async () => {
+    if (!formData.title) return;
+    try {
+      let imageUrl = formData.image;
+      if (imageFile) {
+        toast.loading('Uploading banner image...', { id: 'upload' });
+        imageUrl = await uploadBannerImage(imageFile);
+        toast.dismiss('upload');
+      }
 
-    setBanners(prev => ({
-      ...prev,
-      [targetCat]: [...(prev[targetCat] || []), { id: newId, ...formData }]
-    }));
-    
-    setActiveTab(targetCat); // Switch to the target category
-    setIsAdding(false);
-    setFormData(EMPTY_BANNER);
+      if (!imageUrl) {
+        toast.error('Image is required');
+        return;
+      }
+
+      const newBanner = {
+        id: 'temp-' + Date.now(),
+        title: formData.title,
+        subtitle: formData.subtitle || '',
+        image: imageUrl,
+        active: formData.active
+      };
+
+      setBanners(prev => [...prev, newBanner]);
+      setIsAdding(false);
+      setFormData(EMPTY_BANNER);
+      setImageFile(null);
+      setImagePreview('');
+      toast.success('Banner added in draft! Click Publish to save changes.');
+    } catch (err) {
+      console.error(err);
+      toast.dismiss('upload');
+      toast.error(err.message || 'Failed to add banner');
+    }
   };
 
-  const handleSaveAll = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+  const handleSaveAll = async () => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      toast.error('Unauthorized');
+      return;
+    }
+
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/admin/catalog/banners/publish`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ banners })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success('All banner changes published live!');
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2500);
+        fetchBanners();
+      } else {
+        toast.error(data.message || 'Failed to publish changes');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not connect to backend server');
+    }
   };
 
   return (
@@ -222,7 +317,7 @@ const BannerManager = () => {
         </div>
         <div className="flex gap-2">
           <button
-            onClick={() => { setIsAdding(true); setEditingId(null); setFormData(EMPTY_BANNER); }}
+            onClick={() => { setIsAdding(true); setEditingId(null); setFormData(EMPTY_BANNER); setImagePreview(''); setImageFile(null); }}
             className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Plus size={13} /> Add Banner
@@ -237,22 +332,6 @@ const BannerManager = () => {
         </div>
       </div>
 
-      {/* Category Tabs */}
-      <div className="flex gap-1.5 flex-wrap">
-        {CATEGORY_TABS.map(tab => (
-          <button
-            key={tab}
-            onClick={() => { setActiveTab(tab); setIsAdding(false); setEditingId(null); }}
-            className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab ? 'bg-blue-500 text-white shadow-md shadow-blue-100' : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300'}`}
-          >
-            {tab}
-            <span className={`ml-1.5 px-1.5 py-0.5 rounded text-[8px] ${activeTab === tab ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-400'}`}>
-              {(banners[tab] || []).length}
-            </span>
-          </button>
-        ))}
-      </div>
-
       {/* Add Form */}
       <AnimatePresence>
         {isAdding && (
@@ -260,9 +339,11 @@ const BannerManager = () => {
             label={`Creating new banner`}
             formData={formData}
             setFormData={setFormData}
-            categories={CATEGORY_TABS}
+            imagePreview={imagePreview}
+            setImageFile={setImageFile}
+            setImagePreview={setImagePreview}
             onSave={handleAddNew}
-            onCancel={() => { setIsAdding(false); setFormData(EMPTY_BANNER); }}
+            onCancel={() => { setIsAdding(false); setFormData(EMPTY_BANNER); setImagePreview(''); setImageFile(null); }}
           />
         )}
       </AnimatePresence>
@@ -270,7 +351,7 @@ const BannerManager = () => {
       {/* Banner List */}
       <div className="space-y-3">
         <AnimatePresence mode="popLayout">
-          {currentBanners.map((banner, index) => (
+          {banners.map((banner, index) => (
             <motion.div
               key={banner.id}
               layout
@@ -284,9 +365,11 @@ const BannerManager = () => {
                   label={`Editing banner`}
                   formData={formData}
                   setFormData={setFormData}
-                  categories={CATEGORY_TABS}
+                  imagePreview={imagePreview}
+                  setImageFile={setImageFile}
+                  setImagePreview={setImagePreview}
                   onSave={handleSaveEdit}
-                  onCancel={() => { setEditingId(null); setFormData(EMPTY_BANNER); }}
+                  onCancel={() => { setEditingId(null); setFormData(EMPTY_BANNER); setImagePreview(''); setImageFile(null); }}
                 />
               ) : (
                 <div className={`bg-white border rounded-xl overflow-hidden flex items-stretch gap-0 shadow-sm hover:shadow-md transition-all group ${!banner.active ? 'opacity-50' : 'border-slate-100'}`}>
@@ -312,16 +395,21 @@ const BannerManager = () => {
                   <div className="flex-1 px-4 py-3 flex flex-col justify-center">
                     <h3 className="text-[13px] font-bold text-slate-900 font-montserrat">{banner.title}</h3>
                     <p className="text-[10px] text-slate-400 font-bold mt-0.5">{banner.subtitle || '—'}</p>
-                    <p className="text-[9px] text-blue-400 font-black mt-1.5 uppercase tracking-tighter">→ {banner.link}</p>
-                  </div>
-                  {/* Position */}
-                  <div className="px-4 flex items-center">
-                    <span className="text-[10px] font-black text-slate-300 font-roboto">#{index + 1}</span>
                   </div>
                   {/* Actions */}
-                  <div className="flex items-center gap-1.5 px-4">
-                    <button onClick={() => handleToggle(banner.id)} className={`p-2 rounded-lg transition-all ${banner.active ? 'bg-green-50 text-green-500 hover:bg-green-100' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`} title={banner.active ? 'Deactivate' : 'Activate'}>
-                      {banner.active ? <Eye size={15} /> : <EyeOff size={15} />}
+                  <div className="flex items-center gap-2 px-4">
+                    {/* Toggle Switch */}
+                    <button
+                      onClick={() => handleToggle(banner.id)}
+                      className={`w-7 h-4 rounded-full p-0.5 transition-colors duration-200 focus:outline-none flex items-center ${
+                        banner.active ? 'bg-green-500 justify-end' : 'bg-slate-300 justify-start'
+                      }`}
+                    >
+                      <motion.div
+                        layout
+                        className="w-3 h-3 rounded-full bg-white shadow-sm"
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      />
                     </button>
                     <button onClick={() => handleEdit(banner)} className="p-2 bg-slate-50 text-slate-600 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
                       <Edit2 size={15} />
@@ -336,11 +424,11 @@ const BannerManager = () => {
           ))}
         </AnimatePresence>
 
-        {currentBanners.length === 0 && (
+        {banners.length === 0 && (
           <div className="bg-white border-2 border-dashed border-slate-100 rounded-xl py-16 flex flex-col items-center gap-3 text-slate-300">
             <ImageIcon size={36} />
-            <p className="text-[11px] font-black uppercase tracking-widest">No banners for {activeTab} tab</p>
-            <button onClick={() => setIsAdding(true)} className="px-4 py-2 bg-blue-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all flex items-center gap-1.5">
+            <p className="text-[11px] font-black uppercase tracking-widest">No banners created yet</p>
+            <button onClick={() => { setIsAdding(true); setFormData(EMPTY_BANNER); setImagePreview(''); setImageFile(null); }} className="px-4 py-2 bg-blue-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all flex items-center gap-1.5">
               <Plus size={12} /> Add First Banner
             </button>
           </div>
@@ -349,14 +437,21 @@ const BannerManager = () => {
 
       {/* Info Box */}
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
-        <Layers size={18} className="text-blue-400 mt-0.5 flex-shrink-0" />
+        <ImageIcon size={18} className="text-blue-400 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">How it works</p>
           <p className="text-[11px] text-blue-400 font-medium mt-1 leading-relaxed">
-            Banners are shown in the carousel on the <strong>user home page</strong> when a category tab is selected. The <strong>Home</strong> tab banners are shown by default. Toggle visibility to control what buyers see live.
+            Banners are shown in the carousel on the <strong>user home page</strong>. Make changes in draft and click <strong>Publish</strong> to save changes live to the database.
           </p>
         </div>
       </div>
+      <ConfirmModal
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={confirmAction}
+        title={confirmTitle}
+        message={confirmMessage}
+      />
     </div>
   );
 };
