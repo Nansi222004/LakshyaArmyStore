@@ -1,37 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AppProvider, useApp } from './context/AppContext';
 import Layout from './components/layout/Layout';
 
-// Pages
-import Home from './pages/Home';
-import CategoriesPage from './pages/CategoriesPage';
-import StudioPage from './pages/StudioPage';
-import GamesPage from './pages/GamesPage';
-import CartPage from './pages/CartPage';
-import ProfilePage from './pages/ProfilePage';
-import LoginPage from './pages/LoginPage';
-import WishlistPage from './pages/WishlistPage';
-import OrdersPage from './pages/OrdersPage';
-import CrazyDealsPage from './pages/CrazyDealsPage';
-import CheckoutPage from './pages/CheckoutPage';
-import ReviewOrderPage from './pages/ReviewOrderPage';
-import ProductDetailsPage from './pages/ProductDetailsPage';
-import TopSelectionPage from './pages/TopSelectionPage';
-import SimilarProductsPage from './pages/SimilarProductsPage';
-import HelpSupportPage from './pages/HelpSupportPage';
-import AccountInfoPage from './pages/AccountInfoPage';
-import SecurityPage from './pages/SecurityPage';
-import SettingsPage from './pages/SettingsPage';
-import WalletPage from './pages/WalletPage';
-import CouponsPage from './pages/CouponsPage';
-import ReferEarnPage from './pages/ReferEarnPage';
-import SavedAddressesPage from './pages/SavedAddressesPage';
-import TrackOrderPage from './pages/TrackOrderPage';
-import OrderDetailsPage from './pages/OrderDetailsPage';
+// Lazy-loaded pages — each becomes its own JS chunk (code splitting)
+const Home               = lazy(() => import('./pages/Home'));
+const CategoriesPage     = lazy(() => import('./pages/CategoriesPage'));
+const StudioPage         = lazy(() => import('./pages/StudioPage'));
+const GamesPage          = lazy(() => import('./pages/GamesPage'));
+const CartPage           = lazy(() => import('./pages/CartPage'));
+const ProfilePage        = lazy(() => import('./pages/ProfilePage'));
+const LoginPage          = lazy(() => import('./pages/LoginPage'));
+const WishlistPage       = lazy(() => import('./pages/WishlistPage'));
+const OrdersPage         = lazy(() => import('./pages/OrdersPage'));
+const CrazyDealsPage     = lazy(() => import('./pages/CrazyDealsPage'));
+const CheckoutPage       = lazy(() => import('./pages/CheckoutPage'));
+const ReviewOrderPage    = lazy(() => import('./pages/ReviewOrderPage'));
+const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
+const TopSelectionPage   = lazy(() => import('./pages/TopSelectionPage'));
+const SimilarProductsPage= lazy(() => import('./pages/SimilarProductsPage'));
+const HelpSupportPage    = lazy(() => import('./pages/HelpSupportPage'));
+const AccountInfoPage    = lazy(() => import('./pages/AccountInfoPage'));
+const SecurityPage       = lazy(() => import('./pages/SecurityPage'));
+const SettingsPage       = lazy(() => import('./pages/SettingsPage'));
+const WalletPage         = lazy(() => import('./pages/WalletPage'));
+const CouponsPage        = lazy(() => import('./pages/CouponsPage'));
+const ReferEarnPage      = lazy(() => import('./pages/ReferEarnPage'));
+const SavedAddressesPage = lazy(() => import('./pages/SavedAddressesPage'));
+const TrackOrderPage     = lazy(() => import('./pages/TrackOrderPage'));
+const OrderDetailsPage   = lazy(() => import('./pages/OrderDetailsPage'));
+
+// Minimal route-level loading skeleton (shown while a page chunk loads)
+const PageSkeleton = () => (
+  <div className="flex-grow flex items-center justify-center min-h-[60vh]">
+    <div className="flex flex-col items-center gap-3">
+      <div className="w-10 h-10 rounded-full border-4 border-orange-100 border-t-[#ee4923] animate-spin" />
+      <p className="text-[11px] text-slate-400 font-medium">Loading…</p>
+    </div>
+  </div>
+);
 
 import './App.css';
+
 
 function AppContent() {
   const { user } = useApp();
@@ -62,7 +73,7 @@ function AppContent() {
   useEffect(() => {
     // Once splash screen video completes, run hierarchical route matching
     if (!showSplash) {
-      const protectedRoutes = ['/wishlist', '/orders', '/games', '/profile', '/refer', '/saved-addresses', '/wallet', '/checkout'];
+      const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/profile', '/refer', '/saved-addresses', '/wallet', '/checkout'];
       const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
 
       if (!user && isProtectedRoute) {
@@ -101,6 +112,7 @@ function AppContent() {
       
       <Toaster position="bottom-center" toastOptions={{ duration: 3000 }} />
       <Layout>
+      <Suspense fallback={<PageSkeleton />}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<CategoriesPage />} />
@@ -128,10 +140,12 @@ function AppContent() {
         <Route path="/track-order/:orderId" element={<TrackOrderPage />} />
         <Route path="/order-details/:orderId" element={<OrderDetailsPage />} />
       </Routes>
+      </Suspense>
     </Layout>
     </>
   );
 }
+
 
 function App() {
   return (

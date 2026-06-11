@@ -28,7 +28,7 @@ export const AppProvider = ({ children }) => {
   });
   const [orderReviews, setOrderReviews] = useState({});
   const [user, setUser] = useState(() => {
-    const loggedIn = sessionStorage.getItem('isLoggedIn');
+    const loggedIn = localStorage.getItem('isLoggedIn');
     const userInfo = localStorage.getItem('userInfo');
     if (loggedIn === 'true' && userInfo) {
       try {
@@ -81,7 +81,7 @@ export const AppProvider = ({ children }) => {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userInfo');
     localStorage.removeItem('fcmToken');
-    sessionStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isLoggedIn');
     setUser(null);
   };
 

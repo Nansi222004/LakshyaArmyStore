@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Heart, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import OptimizedImage from '../components/ui/OptimizedImage';
+import { cachedFetch } from '../utils/apiCache';
 
 export default function CrazyDealsPage() {
   const navigate = useNavigate();
@@ -10,12 +12,11 @@ export default function CrazyDealsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchDeals = async () => {
       try {
-        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiBase}/admin/catalog/products?status=Approved`);
-        const data = await res.json();
-        if (res.ok && data.success && data.products) {
+        const data = await cachedFetch('/admin/catalog/products?status=Approved', { ttl: 300, signal: controller.signal });
+        if (data.success && data.products) {
           const crazy = data.products.filter(p => p.flags?.crazyDeals);
           setDeals(crazy.map(p => ({
             id: p._id || p.id,
@@ -31,13 +32,13 @@ export default function CrazyDealsPage() {
           })));
         }
       } catch (err) {
-        console.error('Error fetching crazy deals:', err);
+        if (err.name !== 'AbortError') console.error('Error fetching crazy deals:', err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchDeals();
+    return () => controller.abort();
   }, []);
 
   const getImageUrl = (imagePath) => {
@@ -118,8 +119,8 @@ export default function CrazyDealsPage() {
                 </button>
                 
                 {/* Image */}
-                <div className="aspect-square w-full bg-[#F8F9FD] flex items-center justify-center overflow-hidden">
-                  <img src={getImageUrl(deal.image)} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="aspect-square w-full bg-[#F8F9FD] relative overflow-hidden">
+                  <OptimizedImage src={getImageUrl(deal.image)} alt={deal.name} type="product" className="absolute inset-0 group-hover:scale-105 transition-transform duration-500" />
                 </div>
 
                 {/* Product Details */}

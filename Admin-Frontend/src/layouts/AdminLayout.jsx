@@ -212,7 +212,7 @@ const AdminLayout = () => {
                         >
                           <div className="flex items-center gap-3">
                             <span className={`flex-shrink-0 ${isActive ? 'text-blue-500' : ''}`}>{item.icon}</span>
-                            {isSidebarOpen && <span className="font-bold text-[17px] font-raleway">{item.name}</span>}
+                            {isSidebarOpen && <span className="font-bold text-[17px] font-raleway whitespace-nowrap">{item.name}</span>}
                           </div>
                           {isSidebarOpen && (
                             <span className="opacity-40">{isMenuOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}</span>
@@ -254,7 +254,7 @@ const AdminLayout = () => {
                         }`}
                     >
                       <span className="flex-shrink-0">{item.icon}</span>
-                      {isSidebarOpen && <span className="font-bold text-[17px] font-raleway">{item.name}</span>}
+                      {isSidebarOpen && <span className="font-bold text-[17px] font-raleway whitespace-nowrap">{item.name}</span>}
                     </Link>
                   );
                 })}
@@ -296,7 +296,7 @@ const AdminLayout = () => {
       </aside>
 
       {/* Main Content */}
-      <div className={`flex-1 transition-all duration-500 ease-in-out ${isSidebarOpen ? 'ml-72' : 'ml-24'}`}>
+      <div className={`flex-1 min-w-0 transition-all duration-500 ease-in-out ${isSidebarOpen ? 'pl-72' : 'pl-24'}`}>
         {/* Topbar */}
         <header className="h-24 bg-white border-b border-slate-100 sticky top-0 z-40 px-10 flex items-center justify-between">
           <div className="flex items-center gap-8">

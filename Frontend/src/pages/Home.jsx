@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { CATEGORIES, BANNERS, VALUE_PROPS } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ui/ProductCard';
+import OptimizedImage from '../components/ui/OptimizedImage';
+import { cachedFetch } from '../utils/apiCache';
 
 import CrazyDeals2 from '../assets/CrazyDeals/CrazyDeals2.webp';
 import CrazyDeals3 from '../assets/CrazyDeals/CrazyDeals3.webp';
@@ -39,49 +41,43 @@ export default function Home() {
   const [trendingBrands, setTrendingBrands] = useState([]);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchCategoryChips = async () => {
       try {
-        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiBase}/admin/catalog/chips`);
-        const data = await res.json();
-        if (res.ok && data.success && data.chips && data.chips.length > 0) {
+        const data = await cachedFetch('/admin/catalog/chips', { ttl: 600, signal: controller.signal });
+        if (data.success && data.chips && data.chips.length > 0) {
           const activeChips = data.chips.filter(c => c.active && c.id !== 'for-you');
           const forYouChip = CATEGORIES.find(c => c.id === 'for-you');
-          console.log('Fetched chips:', activeChips);
-          console.log('For You chip:', forYouChip);
           setCategories([forYouChip, ...activeChips]);
         }
       } catch (err) {
-        console.error('Error fetching category chips:', err);
+        if (err.name !== 'AbortError') console.error('Error fetching category chips:', err);
       }
     };
-    
+
     const fetchBanners = async () => {
       try {
-        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiBase}/admin/catalog/banners`);
-        const data = await res.json();
-        if (res.ok && data.success && data.banners) {
+        const data = await cachedFetch('/admin/catalog/banners', { ttl: 600, signal: controller.signal });
+        if (data.success && data.banners) {
           setDynamicBanners(data.banners.filter(b => b.active));
         }
       } catch (err) {
-        console.error('Error fetching banners:', err);
+        if (err.name !== 'AbortError') console.error('Error fetching banners:', err);
       }
     };
 
     const fetchProducts = async () => {
       try {
         setProductsLoading(true);
-        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        
-        const [resProducts, resTopBuys, resTrending] = await Promise.all([
-          fetch(`${apiBase}/admin/catalog/products?status=Approved`),
-          fetch(`${apiBase}/admin/catalog/products/top-buys`),
-          fetch(`${apiBase}/admin/catalog/products/trending-brands`)
+
+        const [dataProducts, dataTopBuys, dataTrending] = await Promise.all([
+          cachedFetch('/admin/catalog/products?status=Approved', { ttl: 300, signal: controller.signal }),
+          cachedFetch('/admin/catalog/products/top-buys', { ttl: 300, signal: controller.signal }),
+          cachedFetch('/admin/catalog/products/trending-brands', { ttl: 300, signal: controller.signal }),
         ]);
 
-        const dataProducts = await resProducts.json();
-        if (resProducts.ok && dataProducts.success && dataProducts.products) {
+        if (dataProducts.success && dataProducts.products) {
           const allProducts = dataProducts.products;
           setRawAllProducts(allProducts);
           setCrazyDealsProducts(allProducts.filter(p => p.flags?.crazyDeals));
@@ -89,27 +85,21 @@ export default function Home() {
           setTopSelectionProducts(allProducts.filter(p => p.flags?.topSection));
         }
 
-        if (resTopBuys.ok) {
-          const dataTopBuys = await resTopBuys.json();
-          if (dataTopBuys.success && dataTopBuys.products) {
-            setTopBuys(dataTopBuys.products.map(normaliseProduct));
-          }
+        if (dataTopBuys.success && dataTopBuys.products) {
+          setTopBuys(dataTopBuys.products.map(normaliseProduct));
         }
 
-        if (resTrending.ok) {
-          const dataTrending = await resTrending.json();
-          if (dataTrending.success && dataTrending.brands) {
-            setTrendingBrands(dataTrending.brands.map((b, idx) => ({
-              id: idx + 1,
-              brand: b.brand,
-              discount: "Trending Choice",
-              badgeColor: "text-indigo-600",
-              image: getImageUrl(b.image) || "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200"
-            })));
-          }
+        if (dataTrending.success && dataTrending.brands) {
+          setTrendingBrands(dataTrending.brands.map((b, idx) => ({
+            id: idx + 1,
+            brand: b.brand,
+            discount: "Trending Choice",
+            badgeColor: "text-indigo-600",
+            image: getImageUrl(b.image) || "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200"
+          })));
         }
       } catch (err) {
-        console.error('Error fetching products:', err);
+        if (err.name !== 'AbortError') console.error('Error fetching products:', err);
       } finally {
         setProductsLoading(false);
       }
@@ -117,14 +107,12 @@ export default function Home() {
 
     const fetchSubCategoryChips = async () => {
       try {
-        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiBase}/admin/catalog/subchips`);
-        const data = await res.json();
-        if (res.ok && data.success && data.subchips) {
+        const data = await cachedFetch('/admin/catalog/subchips', { ttl: 600, signal: controller.signal });
+        if (data.success && data.subchips) {
           setSubCategoryChips(data.subchips.filter(sc => sc.active));
         }
       } catch (err) {
-        console.error('Error fetching subcategory chips:', err);
+        if (err.name !== 'AbortError') console.error('Error fetching subcategory chips:', err);
       }
     };
 
@@ -132,6 +120,8 @@ export default function Home() {
     fetchBanners();
     fetchProducts();
     fetchSubCategoryChips();
+
+    return () => controller.abort(); // cleanup on unmount
   }, []);
 
   const getImageUrl = (imagePath) => {
@@ -607,7 +597,7 @@ export default function Home() {
                   : 'bg-[#FFF0ED] border-[#FFF0ED] text-[#02006c] hover:border-[#ee4923]/40'
               }`}>
                 {cat.image ? (
-                  <img src={getImageUrl(cat.image)} alt={labelText} className="w-full h-full object-contain p-1" />
+                  <OptimizedImage src={getImageUrl(cat.image)} alt={labelText} type="category" objectFit="contain" className="w-full h-full p-1" />
                 ) : (
                   renderCategoryIcon(cat.id, isActive)
                 )}
@@ -641,7 +631,7 @@ export default function Home() {
                 className="w-full h-full flex-shrink-0 cursor-pointer"
                 onClick={() => navigate(banner.link || '/categories')}
               >
-                <img src={getImageUrl(banner.image)} alt="Banner" className="w-full h-full object-cover" />
+                <OptimizedImage src={getImageUrl(banner.image)} alt="Banner" type="banner" className="w-full h-full" />
               </div>
             ))}
           </div>
@@ -718,10 +708,11 @@ export default function Home() {
                     </span>
 
                     {/* Real Image loaded from assets/CrazyDeals */}
-                    <img 
-                      src={deal.image} 
+                    <OptimizedImage
+                      src={deal.image}
                       alt={deal.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      type="product"
+                      className="absolute inset-0 group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
 
@@ -781,10 +772,11 @@ export default function Home() {
                 >
                   <div>
                     <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden">
-                      <img 
-                        src={getImageUrl(deal.image)} 
-                        alt={deal.name} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      <OptimizedImage
+                        src={getImageUrl(deal.image)}
+                        alt={deal.name}
+                        type="product"
+                        className="absolute inset-0 group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <span className="text-[9.5px] font-medium text-slate-400 tracking-tight leading-normal px-1 block truncate">
@@ -863,8 +855,8 @@ export default function Home() {
                   <Heart className={`w-3.5 h-3.5 ${isInWishlist(deal.id) ? 'fill-current' : ''}`} />
                 </button>
                 
-                <div className="aspect-square bg-transparent rounded-lg mb-2 flex items-center justify-center overflow-hidden">
-                  <img src={getImageUrl(deal.image)} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="aspect-square bg-transparent rounded-lg mb-2 relative overflow-hidden">
+                  <OptimizedImage src={getImageUrl(deal.image)} alt={deal.name} type="product" className="absolute inset-0 group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="px-1">
                   <h4 className="text-[11px] font-bold text-[#02006c] truncate">{deal.name}</h4>
@@ -927,7 +919,7 @@ export default function Home() {
                   <div className="mt-8 flex-grow flex items-center justify-center relative z-10">
                     <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shadow-inner overflow-hidden">
                       {buy.image ? (
-                        <img src={getImageUrl(buy.image)} alt={buy.name} className="w-full h-full object-cover" />
+                        <OptimizedImage src={getImageUrl(buy.image)} alt={buy.name} type="product" className="w-full h-full" />
                       ) : (
                         <Sparkles className="w-8 h-8 text-white/80" />
                       )}
@@ -965,7 +957,7 @@ export default function Home() {
                 </div>
 
                 {/* Real Product Image Covering the Card */}
-                <img src={brand.image} alt={brand.brand} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <OptimizedImage src={brand.image} alt={brand.brand} type="product" className="absolute inset-0 group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="mt-1.5 text-center">
                 <p className="text-[11px] font-black text-slate-800">{brand.discount}</p>
@@ -1005,8 +997,8 @@ export default function Home() {
                       className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer w-16 text-center"
                       onClick={() => setSelectedSubCategory(sub.subCategoryName)}
                     >
-                      <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all ${isSubActive ? 'border-[#ee4923] ring-2 ring-orange-100 scale-105' : 'border-orange-100 shadow-sm'}`}>
-                        <img src={getImageUrl(sub.image)} alt={sub.subCategoryName} className="w-full h-full object-cover" />
+                      <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all relative ${isSubActive ? 'border-[#ee4923] ring-2 ring-orange-100 scale-105' : 'border-orange-100 shadow-sm'}`}>
+                        <OptimizedImage src={getImageUrl(sub.image)} alt={sub.subCategoryName} type="subcategory" className="absolute inset-0" />
                       </div>
                       <span className={`text-[10px] font-bold block truncate w-full ${isSubActive ? 'text-[#ee4923]' : 'text-slate-700'}`} title={sub.subCategoryName}>
                         {sub.subCategoryName}
@@ -1081,8 +1073,8 @@ export default function Home() {
                         {idx + 1}.
                       </div>
                       <div className="mt-6 flex-grow flex items-center justify-center overflow-hidden">
-                        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center overflow-hidden">
-                          <img src={getImageUrl(buy.image)} alt={buy.name} className="w-full h-full object-cover" />
+                        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center relative overflow-hidden">
+                          <OptimizedImage src={getImageUrl(buy.image)} alt={buy.name} type="product" className="absolute inset-0" />
                         </div>
                       </div>
                       <div>
@@ -1113,7 +1105,7 @@ export default function Home() {
                     <div className="absolute top-0 left-2 bg-white/95 backdrop-blur-md px-2 py-1 rounded-b-lg shadow-sm z-10">
                       <span className={`text-[9px] font-black ${brand.badgeColor}`}>{brand.brand.toUpperCase()}</span>
                     </div>
-                    <img src={brand.image} alt={brand.brand} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <OptimizedImage src={brand.image} alt={brand.brand} type="product" className="absolute inset-0 group-hover:scale-110 transition-transform duration-500" />
                   </div>
                   <div className="mt-1.5 text-center">
                     <p className="text-[10px] font-black text-slate-800">{brand.discount}</p>

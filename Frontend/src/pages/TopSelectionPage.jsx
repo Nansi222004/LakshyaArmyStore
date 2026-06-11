@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import OptimizedImage from '../components/ui/OptimizedImage';
+import { cachedFetch } from '../utils/apiCache';
 
 export default function TopSelectionPage() {
   const navigate = useNavigate();
@@ -8,23 +10,21 @@ export default function TopSelectionPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchTopSelections = async () => {
       try {
-        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiBase}/admin/catalog/products?status=Approved`);
-        const data = await res.json();
-        if (res.ok && data.success && data.products) {
-          const topSelected = data.products.filter(p => p.flags?.topSection);
-          setProducts(topSelected);
+        const data = await cachedFetch('/admin/catalog/products?status=Approved', { ttl: 300, signal: controller.signal });
+        if (data.success && data.products) {
+          setProducts(data.products.filter(p => p.flags?.topSection));
         }
       } catch (err) {
-        console.error('Error fetching top picks:', err);
+        if (err.name !== 'AbortError') console.error('Error fetching top picks:', err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchTopSelections();
+    return () => controller.abort();
   }, []);
 
   const getImageUrl = (imagePath) => {
@@ -69,11 +69,12 @@ export default function TopSelectionPage() {
               onClick={() => navigate(`/product/${product._id || product.id}`)}
               className="bg-white flex flex-col items-center pt-0 px-0 pb-3 cursor-pointer hover:shadow-md transition-all shadow-sm"
             >
-              <div className="w-full aspect-[4/5] mb-2 flex items-center justify-center overflow-hidden">
-                <img 
-                  src={getImageUrl((product.images && product.images[0]) ? product.images[0] : '')} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover" 
+              <div className="w-full aspect-[4/5] mb-2 relative overflow-hidden">
+                <OptimizedImage
+                  src={getImageUrl((product.images && product.images[0]) ? product.images[0] : '')}
+                  alt={product.name}
+                  type="product"
+                  className="absolute inset-0"
                 />
               </div>
               <h3 className="text-[12px] font-medium text-slate-600 text-center tracking-wide font-sans truncate w-full px-2" style={{ fontFamily: "'Times New Roman', Times, serif" }}>

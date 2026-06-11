@@ -3,12 +3,29 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Mynzo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Primary Meta -->
+  <title>Mynzo – Shop Smarter</title>
+  <meta name="description" content="India's smartest shopping app. Crazy deals, gifting, electronics & more. Shop now on Mynzo!" />
+  <meta name="theme-color" content="#ee4923" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Mynzo" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Performance: DNS prefetch & preconnect for backend API -->
+  <link rel="dns-prefetch" href="http://localhost:5000" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Fonts (display=swap already set — no render blocking) -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
 </head>
 
 <body>
@@ -16,4 +33,4 @@
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
-</html>
+</html>

@@ -4,11 +4,12 @@ import { ArrowLeft, Search, ShoppingCart, Heart, Send, Star, ChevronRight, Home,
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useApp } from '../context/AppContext';
 import { CRAZY_DEALS } from '../data/mockData';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { totalCartItems, addToCart, cart, toggleWishlist, isInWishlist, user, setSearchQuery } = useApp();
+  const { totalCartItems, addToCart, cart, toggleWishlist, isInWishlist, user, setSearchQuery, location: userLocation } = useApp();
   
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('M');
@@ -330,13 +331,13 @@ export default function ProductDetailsPage() {
             }}
           >
             {(product.images && product.images.length > 0 ? product.images : [product.image]).map((img, idx) => (
-              <img 
-                key={idx} 
-                src={img} 
+              <div
+                key={idx}
+                className="w-full h-full flex-shrink-0 snap-center relative overflow-hidden cursor-pointer"
                 onClick={() => setFullscreenImage(img)}
-                alt={`${product.name} - view ${idx + 1}`} 
-                className="w-full h-full flex-shrink-0 object-cover snap-center cursor-pointer" 
-              />
+              >
+                <OptimizedImage src={img} alt={`${product.name} - view ${idx + 1}`} type="product" className="absolute inset-0" />
+              </div>
             ))}
           </div>
 
@@ -418,7 +419,7 @@ export default function ProductDetailsPage() {
         {product.images && product.images.length > 1 && (
           <div className="flex justify-center gap-2 mt-3 px-4 overflow-x-auto scrollbar-none">
             {product.images.map((img, idx) => (
-              <button
+                <button
                 key={idx}
                 onClick={() => {
                   setActiveImageIndex(idx);
@@ -430,11 +431,11 @@ export default function ProductDetailsPage() {
                     });
                   }
                 }}
-                className={`w-12 h-16 rounded-md overflow-hidden border-2 transition-all flex-shrink-0 ${
+                className={`w-12 h-16 rounded-md overflow-hidden border-2 transition-all flex-shrink-0 relative ${
                   activeImageIndex === idx ? 'border-[#ee4923] scale-105 shadow-sm' : 'border-slate-200 opacity-60'
                 }`}
               >
-                <img src={img} alt="" className="w-full h-full object-cover" />
+                <OptimizedImage src={img} alt="" type="product" className="absolute inset-0" />
               </button>
             ))}
           </div>
@@ -504,15 +505,27 @@ export default function ProductDetailsPage() {
         
         <div className="flex flex-col -mx-1 rounded-xl overflow-hidden">
           {/* Home Address */}
-          <div className="bg-[#FFE4D6] flex items-center justify-between py-2.5 px-3.5 border-b border-white/60">
-            <div className="flex items-center gap-2 overflow-hidden">
-              <Home className="w-4 h-4 text-[#02006c] flex-shrink-0" />
-              <div className="flex items-center gap-1.5 truncate">
-                <span className="text-xs font-bold text-slate-800 flex-shrink-0">HOME</span>
-                <span className="text-xs text-slate-500 truncate">83 kishan pura mataji mandir, sector n...</span>
+          {user ? (
+            <div className="bg-[#FFE4D6] flex items-center justify-between py-2.5 px-3.5 border-b border-white/60">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <Home className="w-4 h-4 text-[#02006c] flex-shrink-0" />
+                <div className="flex items-center gap-1.5 truncate">
+                  <span className="text-xs font-bold text-slate-800 flex-shrink-0">HOME</span>
+                  <span className="text-xs text-slate-500 truncate">{userLocation || "83 kishan pura mataji mandir, sector n..."}</span>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="bg-[#FFE4D6] flex items-center justify-between py-2.5 px-3.5 border-b border-white/60 cursor-pointer" onClick={() => navigate('/login')}>
+              <div className="flex items-center gap-2 overflow-hidden">
+                <Home className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                <div className="flex items-center gap-1.5 truncate">
+                  <span className="text-xs font-bold text-[#ee4923] flex-shrink-0">LOGIN</span>
+                  <span className="text-xs text-slate-500 truncate">Login to view delivery address</span>
+                </div>
+              </div>
+            </div>
+          )}
           
           {/* Delivery Date */}
           <div className="bg-[#FFE4D6] flex items-center gap-2 py-2.5 px-3.5 border-b border-white/60">
@@ -581,9 +594,9 @@ export default function ProductDetailsPage() {
         {/* Horizontal Scroll List */}
         <div className="flex overflow-x-auto gap-4 pl-6 pr-4 pb-2 snap-x scroll-pl-6 scrollbar-none">
           {CRAZY_DEALS.map((deal) => (
-            <div key={deal.id} className="w-32 flex-shrink-0 snap-start flex flex-col cursor-pointer" onClick={() => { navigate(`/product/${deal.id}`); window.scrollTo(0,0); }}>
+              <div key={deal.id} className="w-32 flex-shrink-0 snap-start flex flex-col cursor-pointer" onClick={() => { navigate(`/product/${deal.id}`); window.scrollTo(0,0); }}>
               <div className="aspect-[3/4] bg-slate-100 rounded-lg overflow-hidden relative mb-2">
-                <img src={deal.image} alt={deal.name} className="w-full h-full object-cover" />
+                <OptimizedImage src={deal.image} alt={deal.name} type="product" className="absolute inset-0" />
                 <div className="absolute bottom-1 left-1 bg-white/90 px-1.5 rounded flex items-center gap-0.5">
                   <span className="text-[9px] font-bold text-slate-800">4.2</span>
                   <Star className="w-2 h-2 fill-emerald-600 text-emerald-600" />

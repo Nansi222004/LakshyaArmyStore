@@ -174,7 +174,13 @@ export default function Navbar() {
           {/* Color theme updated to white for dark bg */}
           <div className="flex items-center gap-3 text-white">
             <button 
-              onClick={() => setIsNotificationModalOpen(true)}
+              onClick={() => {
+                if (!user) {
+                  navigate('/login');
+                } else {
+                  setIsNotificationModalOpen(true);
+                }
+              }}
               className="relative p-1 hover:bg-white/20 rounded-full transition-colors"
             >
               <Bell className="w-5.5 h-5.5 stroke-[1.8]" />

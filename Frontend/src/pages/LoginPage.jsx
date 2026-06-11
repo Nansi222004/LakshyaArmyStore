@@ -131,7 +131,7 @@ export default function LoginPage() {
       // Store token and user info
       localStorage.setItem('userToken', data.token);
       localStorage.setItem('userInfo', JSON.stringify(data.user));
-      sessionStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('isLoggedIn', 'true');
 
       // Update app context
       if (setUser) {

@@ -4,6 +4,7 @@ import { ShoppingBag, Trash2, ShieldCheck, ChevronLeft, ChevronDown, Star, Truck
 import { useApp } from '../context/AppContext';
 import Lottie from 'lottie-react';
 import addToCartAnimation from '../assets/Lotties/AddToCart.json';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -264,8 +265,8 @@ export default function CartPage() {
                   <div className="flex gap-4 px-4">
                     {/* Left side: Image and Qty */}
                     <div className="flex flex-col gap-3 w-[84px] flex-shrink-0">
-                      <div className="aspect-[4/5] bg-white border border-slate-200 p-1 rounded overflow-hidden">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <div className="aspect-[4/5] bg-white border border-slate-200 p-1 rounded relative overflow-hidden">
+                        <OptimizedImage src={item.image} alt={item.name} type="product" className="absolute inset-0" />
                       </div>
                       
                       <div className="relative border border-slate-300 rounded flex items-center justify-between px-2 py-1 bg-white shadow-sm cursor-pointer hover:border-slate-400">
