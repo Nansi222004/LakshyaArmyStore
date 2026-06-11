@@ -220,7 +220,7 @@ export const AppProvider = ({ children }) => {
           setWishlist((prev) => prev.filter((item) => item.id !== productId));
         }
       });
-
+//
       return () => {
         socket.disconnect();
         socketRef.current = null;
