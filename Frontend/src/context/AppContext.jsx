@@ -57,6 +57,7 @@ export const AppProvider = ({ children }) => {
     return null;
   });
 
+  const socketRef = useRef(null);
   const [isForceLoggedOut, setIsForceLoggedOut] = useState(() => {
     return localStorage.getItem('forceLogoutState') === 'true';
   });
