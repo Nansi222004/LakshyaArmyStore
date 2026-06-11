@@ -29,6 +29,7 @@ export default function CartPage() {
   const [newAddrName, setNewAddrName] = useState('');
   const [newAddrType, setNewAddrType] = useState('Home');
   const [newAddrText, setNewAddrText] = useState('');
+  const [newAddrPhone, setNewAddrPhone] = useState('');
   const [newAddrPincode, setNewAddrPincode] = useState('');
 
   // Promo code states
@@ -114,8 +115,13 @@ export default function CartPage() {
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
-    if (!newAddrName || !newAddrText || !newAddrPincode) {
+    if (!newAddrName || !newAddrText || !newAddrPincode || !newAddrPhone) {
       alert("Please fill all required fields");
+      return;
+    }
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(newAddrPhone)) {
+      alert("Phone number must be exactly 10 digits");
       return;
     }
     if (!user || !user.id) {
@@ -132,6 +138,7 @@ export default function CartPage() {
         },
         body: JSON.stringify({
           name: newAddrName,
+          phone: newAddrPhone,
           type: newAddrType,
           address: newAddrText,
           pincode: newAddrPincode
@@ -143,6 +150,7 @@ export default function CartPage() {
         setSelectedAddressId(data.data._id);
         setIsAddingAddress(false);
         setNewAddrName('');
+        setNewAddrPhone('');
         setNewAddrType('Home');
         setNewAddrText('');
         setNewAddrPincode('');
@@ -493,6 +501,18 @@ export default function CartPage() {
                       onChange={(e) => setNewAddrName(e.target.value)}
                       className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
                       required 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-wide">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      placeholder="e.g. 9876543210" 
+                      value={newAddrPhone} 
+                      onChange={(e) => setNewAddrPhone(e.target.value)}
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      required 
+                      maxLength={10}
                     />
                   </div>
                   <div>
