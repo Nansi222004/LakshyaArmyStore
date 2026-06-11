@@ -59,7 +59,20 @@ export const AppProvider = ({ children }) => {
 
   const socketRef = useRef(null);
 
+  const [isForceLoggedOut, setIsForceLoggedOut] = useState(false);
+  
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const triggerForceLogoutUI = async () => {
+    // Clear tokens immediately in background
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('fcmToken');
+    localStorage.removeItem('isLoggedIn');
+    setUser(null);
+    // Show undismissable modal
+    setIsForceLoggedOut(true);
+  };
 
   const logout = async () => {
     localStorage.removeItem('userToken');
@@ -119,9 +132,7 @@ export const AppProvider = ({ children }) => {
         console.log('Foreground message received:', payload);
         
         if (payload.data?.type === 'FORCE_LOGOUT') {
-          logout();
-          alert('Session Expired: Your account has been logged out by the administrator.');
-          window.location.href = '/login';
+          triggerForceLogoutUI();
           return;
         }
 
@@ -140,9 +151,7 @@ export const AppProvider = ({ children }) => {
 
       const handleSwMessage = (event) => {
         if (event.data?.type === 'FORCE_LOGOUT') {
-          logout();
-          alert('Session Expired: Your account has been logged out by the administrator.');
-          window.location.href = '/login';
+          triggerForceLogoutUI();
         }
       };
 
@@ -234,8 +243,7 @@ export const AppProvider = ({ children }) => {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.status === 401) {
-          logout();
-          window.location.href = '/login';
+          triggerForceLogoutUI();
           return;
         }
         const data = await res.json();
@@ -281,8 +289,7 @@ export const AppProvider = ({ children }) => {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.status === 401) {
-          logout();
-          window.location.href = '/login';
+          triggerForceLogoutUI();
           return;
         }
         const data = await res.json();
@@ -326,8 +333,7 @@ export const AppProvider = ({ children }) => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 401) {
-        logout();
-        window.location.href = '/login';
+        triggerForceLogoutUI();
         return;
       }
       const data = await res.json();
@@ -671,6 +677,32 @@ export const AppProvider = ({ children }) => {
       }}
     >
       {children}
+      {isForceLoggedOut && (
+        <div className="fixed inset-0 z-[99999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl flex flex-col items-center text-center animate-in zoom-in duration-300">
+            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </div>
+            <h2 className="text-xl font-black text-slate-800 mb-2">Session Expired</h2>
+            <p className="text-sm text-slate-500 mb-8 font-medium">
+              Your account has been logged out by the administrator for security reasons.
+            </p>
+            <button 
+              onClick={() => {
+                setIsForceLoggedOut(false);
+                window.location.href = '/login';
+              }}
+              className="w-full bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-red-200"
+            >
+              LOGOUT NOW
+            </button>
+          </div>
+        </div>
+      )}
     </AppContext.Provider>
   );
 };
