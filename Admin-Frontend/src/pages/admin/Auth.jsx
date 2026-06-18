@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Eye, EyeOff, ShieldCheck, Loader2 } from 'lucide-react';
 
-const API_URL = `${import.meta.env.VITE_API_URL || 'https://mynzoworld.com'}/api/admin/auth`;
+const API_URL = `${import.meta.env.VITE_API_URL || 'https://mynzoworld.com'}/admin/auth`;
 
 const Auth = () => {
   const [email, setEmail] = useState('admin@gmail.com');
