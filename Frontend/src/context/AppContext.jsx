@@ -2,6 +2,8 @@ import React, { createContext, useState, useContext, useEffect, useRef } from 'r
 import { io } from 'socket.io-client';
 import { CRAZY_DEALS } from '../data/mockData';
 import toast from 'react-hot-toast';
+import { requestFcmToken, messaging } from '../firebase';
+import { onMessage } from 'firebase/messaging';
 
 const AppContext = createContext();
 
@@ -26,7 +28,7 @@ export const AppProvider = ({ children }) => {
   });
   const [orderReviews, setOrderReviews] = useState({});
   const [user, setUser] = useState(() => {
-    const loggedIn = sessionStorage.getItem('isLoggedIn');
+    const loggedIn = localStorage.getItem('isLoggedIn');
     const userInfo = localStorage.getItem('userInfo');
     if (loggedIn === 'true' && userInfo) {
       try {
@@ -56,6 +58,117 @@ export const AppProvider = ({ children }) => {
   });
 
   const socketRef = useRef(null);
+  const [isForceLoggedOut, setIsForceLoggedOut] = useState(() => {
+    return localStorage.getItem('forceLogoutState') === 'true';
+  });
+  
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const triggerForceLogoutUI = async () => {
+    // Clear tokens immediately in background
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('fcmToken');
+    localStorage.removeItem('isLoggedIn');
+    setUser(null);
+    // Show undismissable modal and persist it across reloads
+    localStorage.setItem('forceLogoutState', 'true');
+    setIsForceLoggedOut(true);
+  };
+
+  const logout = async () => {
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('fcmToken');
+    localStorage.removeItem('isLoggedIn');
+    setUser(null);
+
+    try {
+      const token = localStorage.getItem('fcmToken');
+      const userToken = localStorage.getItem('userToken');
+      if (token && userToken) {
+        await fetch(`${API_BASE}/auth/fcm-token`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userToken}`
+          },
+          body: JSON.stringify({ token, platform: 'web' })
+        });
+      }
+    } catch (err) {
+      console.error('Error deleting FCM token:', err);
+    }
+  };
+
+  useEffect(() => {
+    const registerFcm = async () => {
+      if (user && user.id) {
+        try {
+          const token = await requestFcmToken();
+          if (token) {
+            localStorage.setItem('fcmToken', token);
+            const userToken = localStorage.getItem('userToken');
+            if (userToken) {
+              await fetch(`${API_BASE}/auth/fcm-token`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${userToken}`
+                },
+                body: JSON.stringify({ token, platform: 'web' })
+              });
+            }
+          }
+        } catch (err) {
+          console.error('Error during FCM registration:', err);
+        }
+      }
+    };
+    registerFcm();
+  }, [user]);
+
+  useEffect(() => {
+    if (user && user.id && messaging) {
+      const unsubscribe = onMessage(messaging, (payload) => {
+        console.log('Foreground message received:', payload);
+        
+        if (payload.data?.type === 'FORCE_LOGOUT') {
+          triggerForceLogoutUI();
+          return;
+        }
+
+        const title = payload.notification?.title || 'Notification';
+        const body = payload.notification?.body || '';
+        toast((t) => (
+          <div className="flex flex-col gap-1">
+            <span className="font-bold text-[#02006c]">{title}</span>
+            <span className="text-xs text-slate-600">{body}</span>
+          </div>
+        ), {
+          icon: '🔔',
+          duration: 6000
+        });
+      });
+
+      const handleSwMessage = (event) => {
+        if (event.data?.type === 'FORCE_LOGOUT') {
+          triggerForceLogoutUI();
+        }
+      };
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('message', handleSwMessage);
+      }
+
+      return () => {
+        unsubscribe();
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.removeEventListener('message', handleSwMessage);
+        }
+      };
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user && user.id) {
@@ -109,7 +222,7 @@ export const AppProvider = ({ children }) => {
           setWishlist((prev) => prev.filter((item) => item.id !== productId));
         }
       });
-
+//
       return () => {
         socket.disconnect();
         socketRef.current = null;
@@ -119,7 +232,6 @@ export const AppProvider = ({ children }) => {
     }
   }, [user]);
 
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -132,6 +244,10 @@ export const AppProvider = ({ children }) => {
         const res = await fetch(`${API_BASE}/cart`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        if (res.status === 401) {
+          triggerForceLogoutUI();
+          return;
+        }
         const data = await res.json();
         if (data.success && data.data && data.data.items) {
           const mapped = data.data.items.map(item => {
@@ -174,6 +290,10 @@ export const AppProvider = ({ children }) => {
         const res = await fetch(`${API_BASE}/orders`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        if (res.status === 401) {
+          triggerForceLogoutUI();
+          return;
+        }
         const data = await res.json();
         if (data.success && data.orders) {
           const mappedOrders = data.orders.map(o => ({
@@ -214,6 +334,10 @@ export const AppProvider = ({ children }) => {
       const res = await fetch(`${API_BASE}/addresses`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
+      if (res.status === 401) {
+        triggerForceLogoutUI();
+        return;
+      }
       const data = await res.json();
       if (data.success && data.data) {
         setAddresses(data.data);
@@ -544,6 +668,7 @@ export const AppProvider = ({ children }) => {
         getOrderReview,
         user,
         setUser,
+        logout,
         addresses,
         addressesLoading,
         fetchAddresses,
@@ -554,6 +679,33 @@ export const AppProvider = ({ children }) => {
       }}
     >
       {children}
+      {isForceLoggedOut && (
+        <div className="fixed inset-0 z-[99999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl flex flex-col items-center text-center animate-in zoom-in duration-300">
+            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </div>
+            <h2 className="text-xl font-black text-slate-800 mb-2">Session Expired</h2>
+            <p className="text-sm text-slate-500 mb-8 font-medium">
+              Your account has been logged out by the administrator for security reasons.
+            </p>
+            <button 
+              onClick={() => {
+                localStorage.removeItem('forceLogoutState');
+                setIsForceLoggedOut(false);
+                window.location.href = '/login';
+              }}
+              className="w-full bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-red-200"
+            >
+              LOGOUT NOW
+            </button>
+          </div>
+        </div>
+      )}
     </AppContext.Provider>
   );
 };

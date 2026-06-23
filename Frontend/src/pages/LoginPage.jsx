@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { ArrowLeft, Edit2, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import dollImage from '../assets/DollMynzo-removebg-preview.png';
+import dollImage from '../assets/DollMynzo-removebg-preview.webp';
 
 const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth`;
 
@@ -131,7 +131,7 @@ export default function LoginPage() {
       // Store token and user info
       localStorage.setItem('userToken', data.token);
       localStorage.setItem('userInfo', JSON.stringify(data.user));
-      sessionStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('isLoggedIn', 'true');
 
       // Update app context
       if (setUser) {
@@ -260,7 +260,7 @@ export default function LoginPage() {
         {/* Logo Container */}
         <div className="relative z-10 h-28 flex items-center justify-center mb-2 animate-fade-in drop-shadow-xl">
           <img
-            src="/HopeFinal.png"
+            src="/HopeFinal.webp"
             alt="Mynzo Logo"
             className="h-full w-auto object-contain rounded-3xl"
             onError={(e) => { e.target.style.display = 'none'; }}

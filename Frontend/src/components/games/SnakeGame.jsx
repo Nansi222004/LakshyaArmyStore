@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowLeft, Trophy, ArrowUp, ArrowDown, ArrowLeft as ArrowLeftIcon, ArrowRight, Gift, Pause, Play } from 'lucide-react';
-import DollMynzo from '../../assets/DollMynzo-removebg-preview.png';
+import DollMynzo from '../../assets/DollMynzo-removebg-preview.webp';
 
 const GRID_W = 16;
 const GRID_H = 20;

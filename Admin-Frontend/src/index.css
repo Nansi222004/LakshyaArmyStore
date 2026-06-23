@@ -60,7 +60,7 @@
   }
 
   html {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   body {
@@ -70,6 +70,7 @@
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    zoom: 0.9;
   }
 
   /* Globally lighten font weights */

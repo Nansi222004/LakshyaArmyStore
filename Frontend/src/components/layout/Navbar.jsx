@@ -34,7 +34,8 @@ export default function Navbar() {
     searchQuery,
     setSearchQuery,
     isLocationModalOpen,
-    setIsLocationModalOpen
+    setIsLocationModalOpen,
+    logout
   } = useApp();
 
   const [tempLocation, setTempLocation] = useState(location);
@@ -71,10 +72,7 @@ export default function Navbar() {
           }
         });
         if (res.status === 401) {
-          localStorage.removeItem('userToken');
-          localStorage.removeItem('userInfo');
-          sessionStorage.removeItem('isLoggedIn');
-          setUser(null);
+          logout();
           toast.error("Session expired. Please log in again.");
           return;
         }
@@ -164,7 +162,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 cursor-pointer animate-fade-in" onClick={() => navigate('/')}>
             {/* Logo image */}
             <img
-              src="/HopeFinal.png"
+              src="/HopeFinal.webp"
               alt="Mynzo Logo"
               className="h-12 bg-white p-1 rounded-lg shadow-sm object-contain hover:scale-105 transition-transform duration-300"
               onError={(e) => {
@@ -176,7 +174,13 @@ export default function Navbar() {
           {/* Color theme updated to white for dark bg */}
           <div className="flex items-center gap-3 text-white">
             <button 
-              onClick={() => setIsNotificationModalOpen(true)}
+              onClick={() => {
+                if (!user) {
+                  navigate('/login');
+                } else {
+                  setIsNotificationModalOpen(true);
+                }
+              }}
               className="relative p-1 hover:bg-white/20 rounded-full transition-colors"
             >
               <Bell className="w-5.5 h-5.5 stroke-[1.8]" />

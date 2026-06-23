@@ -63,6 +63,18 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     default: null
+  },
+  fcmWebTokens: {
+    type: [String],
+    default: []
+  },
+  fcmMobileTokens: {
+    type: [String],
+    default: []
+  },
+  tokenVersion: {
+    type: Number,
+    default: 0
   }
 }, { timestamps: true });
 

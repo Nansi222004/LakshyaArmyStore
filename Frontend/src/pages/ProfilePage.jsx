@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import toast from 'react-hot-toast';
-import avtarImage from '../assets/AvatarProfile-removebg-preview.png';
+import avtarImage from '../assets/AvatarProfile-removebg-preview.webp';
 import { 
   ChevronLeft, User, Lock, Settings, Phone, LogOut, Camera, 
   ChevronRight, Coins, Gift, ShoppingBag, Sparkles, X,
@@ -130,7 +130,7 @@ function DynamicAvatar({ config, size = "w-20 h-20" }) {
 }
 
 export default function ProfilePage() {
-  const { coins, user, setUser } = useApp();
+  const { coins, user, setUser, logout } = useApp();
   const navigate = useNavigate();
 
   // Load avatar config from sessionStorage
@@ -641,7 +641,7 @@ export default function ProfilePage() {
           {/* Logout Button */}
           <button 
             onClick={() => {
-              setUser(null);
+              logout();
               navigate('/login');
             }}
             className="w-full flex items-center justify-between p-3.5 rounded hover:bg-rose-50/60 active:scale-[0.98] transition-all duration-300 text-left cursor-pointer group"

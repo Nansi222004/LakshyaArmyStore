@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, Heart } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import OptimizedImage from './OptimizedImage';
 
-export default function ProductCard({ product }) {
+function ProductCard({ product }) {
   const { toggleWishlist, isInWishlist, user } = useApp();
   const navigate = useNavigate();
 
@@ -52,17 +53,12 @@ export default function ProductCard({ product }) {
     >
       {/* Image container */}
       <div className="relative aspect-[1/1.1] w-full bg-slate-100">
-        {product.image ? (
-          <img 
-            src={product.image} 
-            alt={product.name} 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" 
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-300">
-            No Image
-          </div>
-        )}
+        <OptimizedImage
+          src={product.image}
+          alt={product.name}
+          type="product"
+          className="absolute inset-0 group-hover:scale-105 transition-transform duration-500 ease-out"
+        />
         
         {/* Top Left Badge */}
         <div className="absolute top-0 left-0 bg-[#6b52a3] text-white text-[8px] font-bold px-2 py-1 rounded-br-lg shadow-sm z-10 uppercase tracking-wide">
@@ -126,3 +122,6 @@ export default function ProductCard({ product }) {
     </div>
   );
 }
+
+// Only re-render when the product id or wishlist state changes
+export default memo(ProductCard, (prev, next) => prev.product.id === next.product.id);

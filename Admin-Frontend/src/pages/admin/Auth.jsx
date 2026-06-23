@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Eye, EyeOff, ShieldCheck, Loader2 } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/admin/auth';
+const API_URL = `${import.meta.env.VITE_API_URL || 'https://mynzoworld.com'}/admin/auth`;
 
 const Auth = () => {
   const [email, setEmail] = useState('admin@gmail.com');
@@ -42,7 +42,7 @@ const Auth = () => {
 
       navigate('/admin/dashboard');
     } catch (err) {
-      setError('Server se connect nahi ho pa raha. Backend chal raha hai?');
+      setError('Unable to connect to the server. Please check if the backend is running.');
       console.error('Login error:', err);
     } finally {
       setLoading(false);
@@ -56,7 +56,7 @@ const Auth = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
             <img 
-              src="/HopeFinal.png" 
+              src="/HopeFinal.webp" 
               alt="Cocia Logo" 
               className="h-12 w-auto object-contain"
               onError={(e) => {

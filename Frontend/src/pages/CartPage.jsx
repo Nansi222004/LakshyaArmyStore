@@ -4,6 +4,7 @@ import { ShoppingBag, Trash2, ShieldCheck, ChevronLeft, ChevronDown, Star, Truck
 import { useApp } from '../context/AppContext';
 import Lottie from 'lottie-react';
 import addToCartAnimation from '../assets/Lotties/AddToCart.json';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function CartPage() {
   const [newAddrName, setNewAddrName] = useState('');
   const [newAddrType, setNewAddrType] = useState('Home');
   const [newAddrText, setNewAddrText] = useState('');
+  const [newAddrPhone, setNewAddrPhone] = useState('');
   const [newAddrPincode, setNewAddrPincode] = useState('');
 
   // Promo code states
@@ -113,8 +115,13 @@ export default function CartPage() {
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
-    if (!newAddrName || !newAddrText || !newAddrPincode) {
+    if (!newAddrName || !newAddrText || !newAddrPincode || !newAddrPhone) {
       alert("Please fill all required fields");
+      return;
+    }
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(newAddrPhone)) {
+      alert("Phone number must be exactly 10 digits");
       return;
     }
     if (!user || !user.id) {
@@ -131,6 +138,7 @@ export default function CartPage() {
         },
         body: JSON.stringify({
           name: newAddrName,
+          phone: newAddrPhone,
           type: newAddrType,
           address: newAddrText,
           pincode: newAddrPincode
@@ -142,6 +150,7 @@ export default function CartPage() {
         setSelectedAddressId(data.data._id);
         setIsAddingAddress(false);
         setNewAddrName('');
+        setNewAddrPhone('');
         setNewAddrType('Home');
         setNewAddrText('');
         setNewAddrPincode('');
@@ -264,8 +273,8 @@ export default function CartPage() {
                   <div className="flex gap-4 px-4">
                     {/* Left side: Image and Qty */}
                     <div className="flex flex-col gap-3 w-[84px] flex-shrink-0">
-                      <div className="aspect-[4/5] bg-white border border-slate-200 p-1 rounded overflow-hidden">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <div className="aspect-[4/5] bg-white border border-slate-200 p-1 rounded relative overflow-hidden">
+                        <OptimizedImage src={item.image} alt={item.name} type="product" className="absolute inset-0" />
                       </div>
                       
                       <div className="relative border border-slate-300 rounded flex items-center justify-between px-2 py-1 bg-white shadow-sm cursor-pointer hover:border-slate-400">
@@ -492,6 +501,18 @@ export default function CartPage() {
                       onChange={(e) => setNewAddrName(e.target.value)}
                       className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
                       required 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-wide">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      placeholder="e.g. 9876543210" 
+                      value={newAddrPhone} 
+                      onChange={(e) => setNewAddrPhone(e.target.value)}
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      required 
+                      maxLength={10}
                     />
                   </div>
                   <div>

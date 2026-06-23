@@ -39,9 +39,21 @@ const processImage = async (req, res, next) => {
     const filename = `img-${Date.now()}-${Math.round(Math.random() * 1e9)}.webp`;
     const outputPath = path.join(uploadDir, filename);
 
-    // Convert to webp using sharp
-    await sharp(req.file.buffer)
-      .webp({ quality: 80 })
+    // Get image metadata to decide on resize strategy
+    const meta = await sharp(req.file.buffer).metadata();
+    let pipeline = sharp(req.file.buffer);
+
+    // Smart resize: cap very large images to keep file size reasonable,
+    // but never upscale. Maintains aspect ratio.
+    const MAX_DIM = 1200;
+    if ((meta.width && meta.width > MAX_DIM) || (meta.height && meta.height > MAX_DIM)) {
+      pipeline = pipeline.resize(MAX_DIM, MAX_DIM, { fit: 'inside', withoutEnlargement: true });
+    }
+
+    // Sharpen slightly for crispness, then convert to webp at high quality
+    await pipeline
+      .sharpen({ sigma: 0.5 })
+      .webp({ quality: 85, effort: 4 })
       .toFile(outputPath);
 
     // Save details to req.file
@@ -79,8 +91,17 @@ const processImages = async (req, res, next) => {
       const filename = `img-${Date.now()}-${Math.round(Math.random() * 1e9)}.webp`;
       const outputPath = path.join(uploadDir, filename);
 
-      await sharp(file.buffer)
-        .webp({ quality: 80 })
+      const meta = await sharp(file.buffer).metadata();
+      let pipeline = sharp(file.buffer);
+
+      const MAX_DIM = 1200;
+      if ((meta.width && meta.width > MAX_DIM) || (meta.height && meta.height > MAX_DIM)) {
+        pipeline = pipeline.resize(MAX_DIM, MAX_DIM, { fit: 'inside', withoutEnlargement: true });
+      }
+
+      await pipeline
+        .sharpen({ sigma: 0.5 })
+        .webp({ quality: 85, effort: 4 })
         .toFile(outputPath);
 
       req.processedFiles.push({

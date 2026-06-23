@@ -4,10 +4,10 @@ import { ChevronLeft, Lock, ChevronDown, ChevronUp, CreditCard, Banknote, Gift, 
 import { useApp } from '../context/AppContext';
 import Lottie from 'lottie-react';
 import orderProcessingAnimation from '../assets/Lotties/OrderProcessing.json';
-import paytmLogo from '../assets/UPI/Paytm-removebg-preview.png';
-import phonepeLogo from '../assets/UPI/PhonePay-removebg-preview.png';
-import upiLogo from '../assets/UPI/UPI-removebg-preview.png';
-import cardsLogo from '../assets/UPI/Cards-removebg-preview.png';
+import paytmLogo from '../assets/UPI/Paytm-removebg-preview.webp';
+import phonepeLogo from '../assets/UPI/PhonePay-removebg-preview.webp';
+import upiLogo from '../assets/UPI/UPI-removebg-preview.webp';
+import cardsLogo from '../assets/UPI/Cards-removebg-preview.webp';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
