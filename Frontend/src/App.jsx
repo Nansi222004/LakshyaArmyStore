@@ -76,7 +76,7 @@ function AppContent() {
   useEffect(() => {
     // Once splash screen video completes, run hierarchical route matching
     if (!showSplash) {
-      const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/profile', '/refer', '/saved-addresses', '/wallet', '/checkout'];
+      const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/refer', '/saved-addresses', '/wallet', '/checkout'];
       const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
 
       if (!user && isProtectedRoute) {

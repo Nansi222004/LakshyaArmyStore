@@ -264,7 +264,7 @@ export default function ProfilePage() {
             {[
               { icon: FileText, label: 'Terms, Policies and Licenses', id: 'terms' },
               { icon: HelpCircle, label: 'Browse FAQs', id: 'faq' },
-              { icon: Phone, label: 'Help & Support', path: '/support' }
+              { icon: Phone, label: 'Help & Support', path: '/help' }
             ].map((item, idx) => (
               <div 
                 key={idx} 
