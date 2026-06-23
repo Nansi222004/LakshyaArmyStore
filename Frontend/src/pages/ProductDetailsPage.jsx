@@ -113,7 +113,16 @@ export default function ProductDetailsPage() {
   // Review Media Viewer State
   const [selectedReviewMedia, setSelectedReviewMedia] = useState(null);
   const videoRef = useRef(null);
+  useEffect(() => {
+    if (selectedReviewMedia?.type === 'video' && videoRef.current) {
+      videoRef.current.play().catch(e => console.error("Autoplay prevented:", e));
+    }
+  }, [selectedReviewMedia]);
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setIsLoading(true);
+      try {
         const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         const res = await fetch(`${apiBase}/admin/catalog/products/${id}`);
         const data = await res.json();
@@ -760,7 +769,7 @@ export default function ProductDetailsPage() {
                 <h4 className="text-[13px] font-bold text-slate-800 mb-2.5 uppercase tracking-wider">Video Reviews (Reels)</h4>
                 <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2">
                   {productReels.map((reel) => {
-                    const videoUrl = reel.video.startsWith('http') ? reel.video : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${reel.video}`;
+                    const videoUrl = getImageUrl(reel.video);
                     return (
                       <div 
                         key={reel._id}

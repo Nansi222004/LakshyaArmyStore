@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import OptimizedImage from '../components/ui/OptimizedImage';
 import { cachedFetch } from '../utils/apiCache';
+import { getImageUrl } from '../utils/imageHelper';
 
 export default function TopSelectionPage() {
   const navigate = useNavigate();
@@ -27,20 +28,6 @@ export default function TopSelectionPage() {
     return () => controller.abort();
   }, []);
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (
-      imagePath.startsWith('http://') || 
-      imagePath.startsWith('https://') || 
-      imagePath.startsWith('data:') ||
-      imagePath.startsWith('/src/') ||
-      imagePath.startsWith('/assets/')
-    ) {
-      return imagePath;
-    }
-    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    return `${apiBase}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
-  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col pb-20 animate-fade-in">

@@ -15,6 +15,8 @@ const app = express();
 const ALLOWED_ORIGINS = [
   'https://mynzo.com',
   'https://admin.mynzo.com',
+  'https://mynzoworld.com',
+  'https://admin.mynzoworld.com',
   'http://localhost:5173',
   'http://localhost:5174'
 ];

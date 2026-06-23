@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Lock, ChevronDown, ChevronUp, CreditCard, Banknote, Gift, CalendarOff, ArrowRight, CheckCircle2, Smile, Loader2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getImageUrl } from '../utils/imageHelper';
 import Lottie from 'lottie-react';
 import orderProcessingAnimation from '../assets/Lotties/OrderProcessing.json';
 import paytmLogo from '../assets/UPI/Paytm-removebg-preview.webp';
@@ -403,7 +404,7 @@ export default function CheckoutPage() {
                 <div key={item.id} className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
                   <div className="flex items-center gap-3">
                     {item.image ? (
-                      <img src={item.image} alt={item.name} className="w-10 h-10 object-cover rounded-md shadow-xs" />
+                      <img src={getImageUrl(item.image)} alt={item.name} className="w-10 h-10 object-cover rounded-md shadow-xs" />
                     ) : (
                       <div className="w-10 h-10 bg-white rounded-md shadow-xs border border-slate-100 flex items-center justify-center text-[8px] text-slate-400">Image</div>
                     )}
