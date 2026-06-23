@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const StockAlerts = () => {
   const [products, setProducts] = useState([]);
@@ -209,11 +210,7 @@ const StockAlerts = () => {
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
                          <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-[#ee4923] border border-orange-100 overflow-hidden shrink-0">
-                            {item.image ? (
-                              <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <ShoppingBag size={20} />
-                            )}
+                            <OptimizedImage src={item.image} alt={item.name} type="product" className="w-full h-full" />
                           </div>
                          <div>
                             <p className="font-black text-slate-900 font-montserrat uppercase tracking-tight leading-tight">{item.name}</p>

@@ -3,6 +3,7 @@ import { ArrowLeft, Copy, CheckCircle2, Star, MapPin, Receipt, Download, Chevron
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import toast from 'react-hot-toast';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 export default function OrderDetailsPage() {
   const navigate = useNavigate();
@@ -175,8 +176,8 @@ Thank you for shopping with Mynzo!
           <div className="flex flex-col gap-3 mb-3">
             {orderItems.map((item, idx) => (
               <div key={item.id || idx} className="flex gap-3 items-center p-2.5 bg-slate-50 rounded-xl border border-slate-100">
-                <div className="w-14 h-14 bg-pink-50 rounded-lg p-1.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-200/50 shadow-sm">
-                   <img src={item.image} alt={item.name} className="w-full h-full object-contain mix-blend-multiply" />
+                <div className="w-14 h-14 bg-pink-50 rounded-lg p-1.5 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-200/50 shadow-sm relative">
+                   <OptimizedImage src={item.image} alt={item.name} type="product" className="absolute inset-0 p-0.5 object-contain mix-blend-multiply" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] text-slate-800 line-clamp-1 font-semibold">
@@ -269,7 +270,7 @@ Thank you for shopping with Mynzo!
                       <div className="flex gap-2 mb-3 flex-wrap">
                         {reviewPhotos.map((p, i) => (
                           <div key={i} className="w-14 h-14 rounded-lg border border-slate-200 overflow-hidden relative">
-                            <img src={p} className="w-full h-full object-cover" />
+                            <OptimizedImage src={p} alt="" type="default" className="absolute inset-0" />
                             <button onClick={() => setReviewPhotos(prev => prev.filter((_, idx) => idx !== i))} className="absolute top-1 right-1 bg-white rounded-full p-0.5 text-slate-500 shadow-sm"><X className="w-3 h-3" /></button>
                           </div>
                         ))}
@@ -351,8 +352,8 @@ Thank you for shopping with Mynzo!
                   {(submittedReview.photos.length > 0 || submittedReview.video) && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {submittedReview.photos.map((p, i) => (
-                        <div key={i} onClick={() => setSelectedMedia({ type: 'image', url: p })} className="w-12 h-12 rounded-md border border-slate-200 overflow-hidden bg-white cursor-pointer hover:opacity-80 transition-opacity">
-                          <img src={p} className="w-full h-full object-cover" />
+                        <div key={i} onClick={() => setSelectedMedia({ type: 'image', url: p })} className="w-12 h-12 rounded-md border border-slate-200 overflow-hidden bg-white cursor-pointer hover:opacity-80 transition-opacity relative">
+                          <OptimizedImage src={p} alt="" type="default" className="absolute inset-0" />
                         </div>
                       ))}
                       {submittedReview.video && (
@@ -527,7 +528,7 @@ Thank you for shopping with Mynzo!
           
           <div className="max-w-full max-h-full flex items-center justify-center">
             {selectedMedia.type === 'image' ? (
-              <img src={selectedMedia.url} className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" alt="Review Media" />
+              <OptimizedImage src={selectedMedia.url} className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" alt="Review Media" type="default" />
             ) : (
               <video src={selectedMedia.url} controls autoPlay className="max-w-full max-h-[85vh] rounded-lg shadow-2xl" />
             )}

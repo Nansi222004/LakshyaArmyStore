@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import OptimizedImage from '../../components/common/OptimizedImage';
 
 const StatusBadge = ({ status }) => {
   const styles = {
@@ -539,13 +540,12 @@ const Orders = () => {
                 <div className="divide-y divide-slate-100">
                   {selectedOrder.items?.map((item, index) => (
                     <div key={index} className="py-3 flex items-center gap-4">
-                      {item.image && (
-                        <img 
-                          src={item.image.startsWith('http') ? item.image : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${item.image}`} 
-                          alt={item.name} 
-                          className="w-12 h-12 rounded-xl object-cover bg-slate-100 border border-slate-100 shadow-sm"
-                        />
-                      )}
+                      <OptimizedImage 
+                        src={item.image} 
+                        alt={item.name} 
+                        type="product"
+                        className="w-12 h-12 rounded-xl object-cover bg-slate-100 border border-slate-100 shadow-sm"
+                      />
                       <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-bold text-slate-900 truncate">{item.name}</h4>
                         <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-0.5">₹{item.price.toLocaleString()} x {item.quantity}</p>

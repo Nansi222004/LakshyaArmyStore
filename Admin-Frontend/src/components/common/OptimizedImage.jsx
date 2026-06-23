@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 /**
- * OptimizedImage – A reusable image component with:
+ * OptimizedImage – A reusable image component for the Admin panel with:
  *   • Native lazy loading (loading="lazy")
  *   • Tiny blur placeholder while loading
  *   • Error fallback (per image type)
@@ -102,4 +102,3 @@ export default function OptimizedImage({
     </div>
   );
 }
-

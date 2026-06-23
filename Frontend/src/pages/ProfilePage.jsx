@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CRAZY_DEALS, VALUE_PROPS } from '../data/mockData';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 // Dynamic SVG Avatar Component
 function DynamicAvatar({ config, size = "w-20 h-20" }) {
@@ -481,11 +482,11 @@ export default function ProfilePage() {
             <div className="relative p-1.5 bg-white rounded-full shadow-md border border-orange-100 transition-transform duration-300 group-hover:scale-105">
               <div className="w-20 h-20 rounded-full border-2 border-orange-50 overflow-hidden bg-slate-50 flex items-center justify-center relative">
                 {uploadedImage ? (
-                  <img src={uploadedImage} alt="Uploaded Profile" className="w-full h-full object-cover" />
+                  <OptimizedImage src={uploadedImage} alt="Uploaded Profile" type="default" className="w-full h-full" />
                 ) : avatarConfig ? (
                   <DynamicAvatar config={avatarConfig} size="w-full h-full object-cover" />
                 ) : (
-                  <img src={avtarImage} alt="Profile Avatar" className="w-full h-full object-cover" />
+                  <OptimizedImage src={avtarImage} alt="Profile Avatar" type="default" className="w-full h-full" />
                 )}
               </div>
               
@@ -784,7 +785,7 @@ export default function ProfilePage() {
 
               <div className="w-full pt-3 flex justify-center">
                 <div className="relative w-full rounded-[24px] overflow-hidden shadow-inner bg-slate-50 aspect-[4/3] flex items-center justify-center">
-                  <img src={avtarImage} alt="Style Model" className="w-full h-full object-cover" />
+                  <OptimizedImage src={avtarImage} alt="Style Model" type="default" className="w-full h-full" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 </div>
               </div>

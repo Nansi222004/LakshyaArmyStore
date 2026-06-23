@@ -149,15 +149,18 @@ const updateProduct = async (req, res) => {
     if (req.body.variations !== undefined) product.variations = parseJsonField(req.body.variations, []);
 
     // Process Images
+    let updatedImages = product.images || [];
+    if (req.body.images !== undefined) {
+      updatedImages = parseJsonField(req.body.images);
+    }
+
     if (req.processedFiles && req.processedFiles.length > 0) {
       const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
       const newUrls = req.processedFiles.map(f => `${backendUrl}${f.url}`);
-      product.images = [...product.images, ...newUrls];
+      updatedImages = [...updatedImages, ...newUrls];
     }
 
-    if (req.body.images !== undefined) {
-      product.images = parseJsonField(req.body.images);
-    }
+    product.images = updatedImages;
 
     await product.save();
     res.status(200).json({ success: true, message: 'Product updated successfully', product });

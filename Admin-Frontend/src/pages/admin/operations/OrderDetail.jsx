@@ -7,6 +7,7 @@ import {
   ShieldCheck, Smartphone, Mail
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -66,7 +67,7 @@ const OrderDetail = () => {
                   {items.map((item) => (
                     <div key={item.id} className="p-6 flex items-center gap-6">
                        <div className="w-20 h-20 bg-slate-50 rounded-2xl border border-slate-100 flex-shrink-0 overflow-hidden">
-                          <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                          <OptimizedImage src={item.img} alt={item.name} type="product" className="w-full h-full" />
                        </div>
                        <div className="flex-1">
                           <h4 className="font-black text-slate-900 font-montserrat uppercase tracking-tight text-sm">{item.name}</h4>

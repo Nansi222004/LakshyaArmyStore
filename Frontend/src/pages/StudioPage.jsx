@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, ShoppingBag, Gift, ArrowLeft, CheckCircle2, Play, Edit2, Trash2, X, Copy, Volume2, VolumeX } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 // Optimized Video component with preloading and unmuting control
 const ReelVideo = ({ src, onVisible, isMuted, toggleMute, active, onDoubleTap }) => {
@@ -525,7 +526,7 @@ export default function StudioPage() {
                     onClick={(e) => { e.stopPropagation(); navigate(`/product/${post.product.id}`); }}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                      <img src={post.product.image} className="w-10 h-10 rounded-lg object-cover bg-white shrink-0" alt="product" />
+                      <OptimizedImage src={post.product.image} type="product" className="w-10 h-10 rounded-lg bg-white shrink-0" alt="product" />
                       <div className="flex flex-col min-w-0 flex-1">
                         <span className="text-[11px] font-bold truncate text-white drop-shadow-md">{post.product.name}</span>
                         <div className="flex items-center gap-1.5 mt-0.5">

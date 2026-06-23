@@ -1,14 +1,17 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 const ProductCard = ({ product }) => {
   return (
     <div className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer border border-slate-100 flex flex-col h-full">
       <div className="relative aspect-square overflow-hidden bg-white p-4">
-        <img
-          src={product.image || "https://via.placeholder.com/300x300"}
+        <OptimizedImage
+          src={product.image}
           alt={product.title}
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+          type="product"
+          objectFit="contain"
+          className="w-full h-full group-hover:scale-105 transition-transform duration-500"
         />
         <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-slate-300 hover:text-red-500 transition-colors shadow-sm">
           <Heart size={18} />

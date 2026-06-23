@@ -6,6 +6,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../../../components/ConfirmModal';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const EMPTY_BANNER = { title: '', subtitle: '', image: '', active: true };
 
@@ -51,11 +52,7 @@ const BannerForm = ({
       <div className="col-span-2">
         <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Banner Image *</label>
         <div className="flex items-center gap-2">
-          {imagePreview ? (
-            <img src={imagePreview} className="w-20 h-10 rounded-lg object-cover border border-slate-200" alt="Preview" />
-          ) : (
-            <div className="w-20 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-[9px] leading-tight font-black uppercase text-center">No img</div>
-          )}
+          <OptimizedImage src={imagePreview} className="w-20 h-10 rounded-lg object-cover border border-slate-200" alt="Preview" type="banner" />
           <label className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[9px] font-black uppercase tracking-widest cursor-pointer hover:bg-slate-50 transition-all select-none">
             Upload File
             <input
@@ -379,13 +376,7 @@ const BannerManager = () => {
                   </div>
                   {/* Image Preview */}
                   <div className="w-32 h-20 bg-slate-100 flex-shrink-0 overflow-hidden relative">
-                    {banner.image ? (
-                      <img src={banner.image} alt={banner.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-300">
-                        <ImageIcon size={24} />
-                      </div>
-                    )}
+                    <OptimizedImage src={banner.image} alt={banner.title} type="banner" className="w-full h-full" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                     <span className={`absolute bottom-1.5 left-2 text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${banner.active ? 'bg-green-500 text-white' : 'bg-slate-500 text-white'}`}>
                       {banner.active ? 'Live' : 'Hidden'}

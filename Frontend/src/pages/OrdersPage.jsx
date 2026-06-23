@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import { BANNERS } from '../data/mockData';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 // Mock data matching the new design
 const MOCK_ORDERS = [
@@ -186,8 +187,8 @@ export default function OrdersPage() {
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => navigate(`/order-details/${order.id}`)}
               >
-                <div className="w-16 h-16 rounded-lg bg-slate-50 p-1.5 flex-shrink-0 flex items-center justify-center border border-slate-100">
-                  <img src={order.image} alt={order.name} className="w-full h-full object-contain mix-blend-multiply" />
+                <div className="w-16 h-16 rounded-lg bg-slate-50 p-1.5 flex-shrink-0 flex items-center justify-center border border-slate-100 relative">
+                  <OptimizedImage src={order.image} alt={order.name} type="product" className="absolute inset-0 p-1 object-contain mix-blend-multiply" />
                 </div>
                 <div className="flex-1 flex flex-col justify-center">
                   <h3 className="font-bold text-slate-800 text-[14px]">{order.date}</h3>
@@ -246,8 +247,8 @@ export default function OrdersPage() {
             
             {selectedOrderForReview && (
               <div className="flex items-center gap-3 mb-6 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                <div className="w-12 h-12 rounded-lg bg-white p-1 flex-shrink-0 border border-slate-100 flex items-center justify-center">
-                  <img src={selectedOrderForReview.image} alt="" className="w-full h-full object-contain mix-blend-multiply" />
+                <div className="w-12 h-12 rounded-lg bg-white p-1 flex-shrink-0 border border-slate-100 flex items-center justify-center relative">
+                  <OptimizedImage src={selectedOrderForReview.image} alt="" type="product" className="absolute inset-0 p-0.5 object-contain mix-blend-multiply" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium text-[13px] text-slate-800 line-clamp-1">{selectedOrderForReview.name}</h3>

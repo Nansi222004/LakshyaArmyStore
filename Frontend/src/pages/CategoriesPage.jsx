@@ -5,6 +5,7 @@ import { Filter, Search, ChevronLeft, LayoutGrid } from 'lucide-react';
 import { CATEGORIES, CRAZY_DEALS } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ui/ProductCard';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 // Category Images
 import catForYou from '../assets/CategorySection/categoryForU-removebg-preview.webp';
@@ -318,10 +319,12 @@ export default function CategoriesPage() {
                   {/* Image Icon */}
                   <div className="relative z-10 flex items-center justify-center">
                     {cat.image ? (
-                      <img
-                        src={getImageUrl(cat.image)}
+                      <OptimizedImage
+                        src={cat.image}
                         alt={labelText}
-                        className={`w-[36px] h-[36px] object-contain drop-shadow-sm transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`}
+                        type="category"
+                        objectFit="contain"
+                        className={`w-[36px] h-[36px] drop-shadow-sm transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`}
                       />
                     ) : (
                       renderCatIcon(cat.id, isActive)
@@ -435,10 +438,12 @@ export default function CategoriesPage() {
                       )}
                       <div className="relative z-10 flex items-center justify-center">
                         {sub.image ? (
-                          <img
-                            src={getImageUrl(sub.image)}
+                          <OptimizedImage
+                            src={sub.image}
                             alt=""
-                            className={`w-[28px] h-[28px] object-contain drop-shadow-xs transition-transform duration-300 ${isSubActive ? 'scale-110' : 'scale-100'}`}
+                            type="subcategory"
+                            objectFit="contain"
+                            className={`w-[28px] h-[28px] drop-shadow-xs transition-transform duration-300 ${isSubActive ? 'scale-110' : 'scale-100'}`}
                           />
                         ) : (
                           <div className="w-[28px] h-[28px] bg-slate-200 rounded" />

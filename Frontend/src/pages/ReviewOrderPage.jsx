@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Tag, Banknote, ShieldCheck, X, CheckCircle2, Plus } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import toast from 'react-hot-toast';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 export default function ReviewOrderPage() {
   const navigate = useNavigate();
@@ -371,9 +372,11 @@ export default function ReviewOrderPage() {
             </button>
             
             <div className="space-y-2 mt-2">
-              {cart && cart.map((item, idx) => (
+               {cart && cart.map((item, idx) => (
                 <div key={item.id || idx} className="flex items-center gap-3 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
-                  <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded shadow-sm border border-slate-200" />
+                  <div className="w-12 h-12 relative flex-shrink-0">
+                    <OptimizedImage src={item.image} alt={item.name} type="product" className="absolute inset-0 rounded shadow-sm border border-slate-200" />
+                  </div>
                   <div className="flex-grow flex flex-col">
                     <span className="text-xs font-bold text-slate-800 line-clamp-1">{item.name}</span>
                     <span className="text-[10px] text-slate-500 mt-0.5">Qty: {item.quantity} • Size: Standard</span>

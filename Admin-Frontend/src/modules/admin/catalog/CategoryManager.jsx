@@ -5,6 +5,7 @@ import {
   CheckCircle2, XCircle, AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const CategoryManager = () => {
   const [categories, setCategories] = useState([
@@ -90,10 +91,11 @@ const CategoryManager = () => {
               className="group bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col"
             >
               <div className="relative h-20 overflow-hidden bg-slate-50">
-                <img 
+                <OptimizedImage 
                   src={category.image} 
                   alt={category.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  type="category"
+                  className="w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90"
                 />
                 <div className="absolute top-2 right-2">
                   <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-widest shadow-sm ${

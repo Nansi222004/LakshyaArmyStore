@@ -6,6 +6,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../../../components/ConfirmModal';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const EMPTY_SUB = { categoryId: '', subCategoryName: '', image: '', active: true };
 
@@ -60,11 +61,7 @@ const SubCategoryForm = ({ onSave, onCancel, label, formData, setFormData, image
       <div>
         <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Image Upload *</label>
         <div className="flex items-center gap-2">
-          {imagePreview ? (
-            <img src={getImageUrl(imagePreview)} className="w-9 h-9 rounded-lg object-cover border border-slate-200" alt="Preview" />
-          ) : (
-            <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-[9px] leading-tight font-black uppercase text-center">No img</div>
-          )}
+          <OptimizedImage src={imagePreview} className="w-9 h-9 rounded-lg object-cover border border-slate-200" alt="Preview" type="subcategory" />
           <label className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[9px] font-black uppercase tracking-widest cursor-pointer hover:bg-slate-50 transition-all select-none">
             Upload
             <input
@@ -456,11 +453,7 @@ const SubCategoryChipsManager = () => {
                       <span className="text-[10px] font-black text-slate-300 w-5 text-center font-roboto">#{index + 1}</span>
                       {/* Image */}
                       <div className="w-9 h-9 bg-slate-50 rounded-lg overflow-hidden flex items-center justify-center border border-slate-100 flex-shrink-0">
-                        {sub.image ? (
-                          <img src={getImageUrl(sub.image)} className="w-full h-full object-cover" alt="icon" />
-                        ) : (
-                          <Layers size={14} className="text-slate-400" />
-                        )}
+                        <OptimizedImage src={sub.image} className="w-full h-full" alt="icon" type="subcategory" />
                       </div>
                       {/* Info */}
                       <div className="flex-1">

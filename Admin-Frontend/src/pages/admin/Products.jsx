@@ -1,5 +1,6 @@
 import React from 'react';
 import { Edit, Trash2, Plus, Search, Filter, MoreVertical } from 'lucide-react';
+import OptimizedImage from '../../components/common/OptimizedImage';
 
 const Products = () => {
   const products = [
@@ -73,8 +74,8 @@ const Products = () => {
                 <tr key={product.id} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-contain p-1" />
+                      <div className="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 relative">
+                        <OptimizedImage src={product.image} alt={product.name} type="product" className="absolute inset-0 p-1" objectFit="contain" />
                       </div>
                       <div>
                         <p className="font-bold text-slate-800 text-sm">{product.name}</p>

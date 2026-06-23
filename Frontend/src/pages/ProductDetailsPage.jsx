@@ -1006,7 +1006,7 @@ export default function ProductDetailsPage() {
                 </div>
               </div>
             ) : (
-              <img src={selectedReviewMedia.url} alt="Review" className="w-full max-w-sm rounded-xl object-contain max-h-[80vh] shadow-2xl" />
+              <OptimizedImage src={selectedReviewMedia.url} alt="Review" type="product" className="w-full max-w-sm rounded-xl object-contain max-h-[80vh] shadow-2xl" />
             )}
           </div>
         </div>
@@ -1100,10 +1100,12 @@ export default function ProductDetailsPage() {
             >
               {({ zoomIn, zoomOut, resetTransform }) => (
                 <TransformComponent wrapperStyle={{ width: '100vw', height: '100vh' }} contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img 
+                  <OptimizedImage 
                     src={fullscreenImage} 
                     alt="Zoomed Product" 
-                    className="w-full h-auto max-h-[100dvh] object-contain pointer-events-auto" 
+                    type="product"
+                    objectFit="contain"
+                    className="w-full h-auto max-h-[100dvh] pointer-events-auto" 
                   />
                 </TransformComponent>
               )}

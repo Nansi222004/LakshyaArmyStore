@@ -6,6 +6,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../../../components/ConfirmModal';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const BANNER_TABS = ['Home', 'Fashion', 'Beauty', 'Toys', 'Electronics', 'Jewellery', 'Art. Jewellery', '1g Gold', 'Cosmetics'];
 
@@ -47,11 +48,7 @@ const CategoryForm = ({ onSave, onCancel, label, formData, setFormData, imagePre
       <div>
         <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Image Upload *</label>
         <div className="flex items-center gap-2">
-          {imagePreview ? (
-            <img src={getImageUrl(imagePreview)} className="w-9 h-9 rounded-lg object-cover border border-slate-200" alt="Preview" />
-          ) : (
-            <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-[9px] leading-tight font-black uppercase text-center">No img</div>
-          )}
+          <OptimizedImage src={imagePreview} className="w-9 h-9 rounded-lg object-cover border border-slate-200" alt="Preview" type="category" />
           <label className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[9px] font-black uppercase tracking-widest cursor-pointer hover:bg-slate-50 transition-all select-none">
             Upload
             <input
@@ -364,11 +361,7 @@ const CategoryChipsManager = () => {
             {categories.filter(c => c.active).map((cat) => (
               <div key={cat.id} className="flex flex-col items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/30 border border-slate-100 flex-shrink-0 transition-all cursor-pointer hover:scale-[1.03]">
                 <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200/50 shadow-inner">
-                  {cat.image ? (
-                    <img src={getImageUrl(cat.image)} className="w-full h-full object-cover" alt="" />
-                  ) : (
-                    <Layers size={14} className="text-slate-400" />
-                  )}
+                  <OptimizedImage src={cat.image} className="w-full h-full" alt="" type="category" />
                 </div>
                 <span className="text-[9px] font-bold text-slate-700 whitespace-nowrap">{cat.categoryName}</span>
               </div>
@@ -424,11 +417,7 @@ const CategoryChipsManager = () => {
                     <span className="text-[11px] font-black text-slate-300 w-6 text-center font-roboto">#{index + 1}</span>
                     {/* Image */}
                     <div className="w-10 h-10 bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center border border-slate-100 flex-shrink-0 shadow-sm">
-                      {cat.image ? (
-                        <img src={getImageUrl(cat.image)} className="w-full h-full object-cover" alt="icon" />
-                      ) : (
-                        <Layers size={16} className="text-slate-400" />
-                      )}
+                      <OptimizedImage src={cat.image} className="w-full h-full" alt="icon" type="category" />
                     </div>
                     {/* Info */}
                     <div className="flex-1 min-w-0">

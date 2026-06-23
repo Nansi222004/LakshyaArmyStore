@@ -9,6 +9,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useParams, useNavigate } from 'react-router-dom';
+import OptimizedImage from '../../components/common/OptimizedImage';
 
 const generateCombinations = (attrs) => {
   if (attrs.length === 0) return [];
@@ -832,7 +833,7 @@ const AddProduct = () => {
             <div className="grid grid-cols-2 gap-3">
               {images.map((img, i) => (
                 <div key={i} className="relative aspect-square bg-slate-50 rounded-xl border border-slate-200 overflow-hidden group">
-                  <img src={img} alt="Product" className="w-full h-full object-cover" />
+                  <OptimizedImage src={img} alt="Product" type="product" className="w-full h-full" />
                   <button
                     onClick={() => handleRemoveImage(i)}
                     className="absolute top-2 right-2 p-1.5 bg-white/90 text-red-500 rounded-lg shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"

@@ -5,6 +5,7 @@ import {
   AlertCircle, LayoutGrid
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const MOCK_FEATURED = [
   { id: 1, name: 'Premium Leather Satchel', category: 'Fashion', price: '₹4,500', img: 'https://via.placeholder.com/80' },
@@ -56,7 +57,7 @@ const FeaturedProducts = () => {
                     <div key={item.id} className="p-4 flex items-center gap-4 group hover:bg-slate-50/50 transition-colors">
                        <GripVertical size={16} className="text-slate-200 cursor-grab active:cursor-grabbing" />
                        <div className="w-14 h-14 bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
-                          <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                          <OptimizedImage src={item.img} alt={item.name} type="product" className="w-full h-full" />
                        </div>
                        <div className="flex-1">
                           <p className="text-sm font-black text-slate-900 font-montserrat leading-tight truncate">{item.name}</p>
@@ -94,7 +95,7 @@ const FeaturedProducts = () => {
                     <div key={item.id} className="p-4 flex items-center gap-4 group hover:bg-slate-50/50 transition-colors">
                        <GripVertical size={16} className="text-slate-200 cursor-grab active:cursor-grabbing" />
                        <div className="w-14 h-14 bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
-                          <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                          <OptimizedImage src={item.img} alt={item.name} type="product" className="w-full h-full" />
                        </div>
                        <div className="flex-1">
                           <p className="text-sm font-black text-slate-900 font-montserrat leading-tight truncate">{item.name}</p>

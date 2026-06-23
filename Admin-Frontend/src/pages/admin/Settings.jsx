@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import OptimizedImage from '../../components/common/OptimizedImage';
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState('Profile');
@@ -287,7 +288,7 @@ const Settings = () => {
                       <div className="relative group cursor-pointer" onClick={() => fileInputRef.current.click()}>
                         <div className="w-24 h-24 bg-blue-600 rounded-3xl flex items-center justify-center text-white text-3xl font-black font-montserrat shadow-xl shadow-blue-100 overflow-hidden relative">
                           {avatar ? (
-                            <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
+                            <OptimizedImage src={avatar} alt="Avatar" type="default" className="w-full h-full" />
                           ) : (
                             adminName ? adminName.charAt(0).toUpperCase() : 'A'
                           )}

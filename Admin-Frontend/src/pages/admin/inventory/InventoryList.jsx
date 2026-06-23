@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import ConfirmModal from '../../../components/ConfirmModal';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const CATEGORIES = ['All', 'Electronics', 'Fashion', 'Beauty', 'Home & Kitchen', 'Toys', 'Stationery', 'Jewellery', 'Gifting', 'Electrical'];
 const STATUSES = ['All', 'Approved', 'Pending', 'Out of Stock'];
@@ -572,11 +573,7 @@ export default function InventoryList() {
                       <td className="px-3 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-orange-50 border border-orange-100 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
-                            {product.image ? (
-                              <img src={getImageUrl(product.image)} alt={product.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <Package size={16} className="text-[#ee4923]" />
-                            )}
+                            <OptimizedImage src={product.image} alt={product.name} type="product" className="w-full h-full" />
                           </div>
                           <div>
                             <p className="text-sm font-black text-slate-900 leading-none">{product.name}</p>

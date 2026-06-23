@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, User, Mail, Phone, Calendar, Camera } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import toast from 'react-hot-toast';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth`;
 
@@ -178,7 +179,7 @@ export default function AccountInfoPage() {
           <div className="relative">
             <div className="w-24 h-24 rounded-full border-4 border-white shadow-md bg-orange-50 overflow-hidden flex items-center justify-center">
               {uploadedImage ? (
-                <img src={uploadedImage} alt="Profile" className="w-full h-full object-cover" />
+                <OptimizedImage src={uploadedImage} alt="Profile" type="default" className="w-full h-full" />
               ) : (
                 <User className="w-10 h-10 text-orange-200" />
               )}

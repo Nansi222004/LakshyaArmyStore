@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useVendorStore from '../../../store/useVendorStore';
+import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const SectionHeader = ({ title, icon: Icon, count }) => (
   <div className="flex items-center gap-3 mb-4">
@@ -146,7 +147,7 @@ const HomeSectionsManager = () => {
                       <GripVertical size={16} />
                     </div>
                     <div className="w-16 h-16 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 flex-shrink-0">
-                      <img src={item.img} alt="" className="w-full h-full object-cover" />
+                      <OptimizedImage src={item.img} alt="" type="product" className="w-full h-full" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-black text-slate-900 font-montserrat leading-tight">
@@ -249,7 +250,7 @@ const HomeSectionsManager = () => {
                              {sections[activeView]?.slice(0, 4).map((item, i) => (
                                 <div key={i} className="w-16 h-20 bg-white rounded-lg p-1 flex-shrink-0">
                                    <div className="aspect-square bg-slate-100 rounded-md overflow-hidden mb-1">
-                                      <img src={item.img} className="w-full h-full object-cover" />
+                                      <OptimizedImage src={item.img} className="w-full h-full" type="product" />
                                    </div>
                                    <p className="text-[6px] font-black text-slate-900 truncate leading-tight">{item.label}</p>
                                 </div>
@@ -268,7 +269,7 @@ const HomeSectionsManager = () => {
                              {sections[activeView]?.slice(0, 4).map((item, i) => (
                                 <div key={i} className="bg-white rounded-lg p-1 aspect-[3/4] flex flex-col gap-0.5">
                                    <div className="flex-1 bg-slate-100 rounded overflow-hidden">
-                                      <img src={item.img} className="w-full h-full object-cover" />
+                                      <OptimizedImage src={item.img} className="w-full h-full" type="product" />
                                    </div>
                                    <p className="text-[5px] font-black text-slate-400 truncate leading-none">{item.name}</p>
                                    <p className="text-[7px] font-black text-slate-900 truncate leading-none">{item.tag}</p>
@@ -285,7 +286,7 @@ const HomeSectionsManager = () => {
                              {sections.brandsSpotlight?.slice(0, 6).map((item, i) => (
                                 <div key={i} className="flex flex-col gap-0.5">
                                    <div className="aspect-square bg-white rounded-lg overflow-hidden relative border border-white/10">
-                                      <img src={item.img} className="w-full h-full object-cover" />
+                                      <OptimizedImage src={item.img} className="w-full h-full" type="product" />
                                       <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-[5px] font-black py-0.5 text-center leading-none">
                                          {item.title}
                                       </div>

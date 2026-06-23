@@ -9,6 +9,7 @@ import {
   Banknote, Percent, AlertCircle, CheckCircle2, GitBranch
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import OptimizedImage from '../components/common/OptimizedImage';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -271,7 +272,7 @@ const AdminLayout = () => {
             >
               <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-xs text-blue-500 border border-blue-100 overflow-hidden">
                  {adminInfo.avatar ? (
-                    <img src={adminInfo.avatar} alt="Admin" className="w-full h-full object-cover" />
+                    <OptimizedImage src={adminInfo.avatar} alt="Admin" type="default" className="w-full h-full" />
                  ) : (
                     adminInfo.name?.charAt(0).toUpperCase() || 'A'
                  )}
@@ -411,7 +412,7 @@ const AdminLayout = () => {
                  className={`w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white font-semibold text-lg shadow-xl cursor-pointer hover:scale-105 active:scale-95 transition-all overflow-hidden`}
                >
                  {adminInfo.avatar ? (
-                    <img src={adminInfo.avatar} alt="Admin" className="w-full h-full object-cover" />
+                    <OptimizedImage src={adminInfo.avatar} alt="Admin" type="default" className="w-full h-full" />
                  ) : (
                     adminInfo.name?.charAt(0).toUpperCase() || 'A'
                  )}
