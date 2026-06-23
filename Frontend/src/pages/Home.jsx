@@ -23,6 +23,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { searchQuery, toggleWishlist, isInWishlist, user } = useApp();
   const [activeBanner, setActiveBanner] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('for-you');
   const [activeFlashTab, setActiveFlashTab] = useState('All');
   const [budgetFilter, setBudgetFilter] = useState(null);
@@ -159,16 +160,30 @@ export default function Home() {
   // Reset active banner index when active banners change
   useEffect(() => {
     setActiveBanner(0);
+    setIsTransitioning(true);
   }, [activeBannersList.length]);
 
-  // Auto-slide Banners
+  // Auto-slide Banners with infinite loop logic
   useEffect(() => {
     if (activeBannersList.length === 0) return;
     const timer = setInterval(() => {
-      setActiveBanner((prev) => (prev + 1) % activeBannersList.length);
+      setIsTransitioning(true);
+      setActiveBanner((prev) => prev + 1);
     }, 4500);
     return () => clearInterval(timer);
   }, [activeBannersList.length]);
+
+  // Handle seamless loop rewind without animation
+  useEffect(() => {
+    if (activeBannersList.length === 0) return;
+    if (activeBanner === activeBannersList.length) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false); // Turn off transition temporarily
+        setActiveBanner(0);        // Snap back to real first slide
+      }, 700); // 700ms matches the CSS transition duration
+      return () => clearTimeout(timer);
+    }
+  }, [activeBanner, activeBannersList.length]);
 
   // 1. Live Countdown Timer State for Crazy Deals (ticking down from 2h 45m 30s)
   const [timeLeft, setTimeLeft] = useState(9930); // 9930 seconds = 02 hours, 45 minutes, 30 seconds
@@ -608,12 +623,12 @@ export default function Home() {
       <div className="px-2 relative">
         <div className="overflow-hidden rounded-xl shadow-sm relative aspect-[21/9] w-full">
           <div 
-            className="flex w-full h-full transition-transform duration-700 ease-in-out"
+            className={`flex w-full h-full ${isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
             style={{ transform: `translateX(-${activeBanner * 100}%)` }}
           >
-            {activeBannersList.map((banner) => (
+            {activeBannersList.length > 0 && [...activeBannersList, activeBannersList[0]].map((banner, idx) => (
               <div
-                key={banner.id || banner._id}
+                key={`banner-${banner.id || banner._id || idx}-${idx}`}
                 className="w-full h-full flex-shrink-0 cursor-pointer"
                 onClick={() => navigate(banner.link || '/categories')}
               >
@@ -629,9 +644,12 @@ export default function Home() {
             {activeBannersList.map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => setActiveBanner(idx)}
+                onClick={() => {
+                  setIsTransitioning(true);
+                  setActiveBanner(idx);
+                }}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === activeBanner ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
+                  idx === (activeBanner % activeBannersList.length) ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
                 }`}
               ></button>
             ))}
@@ -772,6 +790,12 @@ export default function Home() {
                   <h4 className="text-[12.5px] font-bold text-slate-800 leading-tight mt-0.5 px-1 truncate">
                     {deal.name}
                   </h4>
+                  <div className="flex items-center gap-1.5 mt-0.5 px-1">
+                    <span className="text-[13px] font-black text-[#ee4923]">₹{deal.price}</span>
+                    {deal.originalPrice && deal.originalPrice > deal.price && (
+                      <span className="text-[10px] text-slate-400 font-semibold line-through mt-0.5">₹{deal.originalPrice}</span>
+                    )}
+                  </div>
                 </div>
               ))
             ) : (

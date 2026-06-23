@@ -12,6 +12,13 @@ import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   const { systemStats, pendingVendors } = useSelector(state => state.admin);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulate loading for the dashboard
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const salesData = [
     { name: 'Mon', sales: 4000 },
@@ -54,6 +61,19 @@ const Dashboard = () => {
     </motion.div>
   );
 
+  const StatCardSkeleton = () => (
+    <div className="bg-white p-5 rounded-2xl border border-blue-50 shadow-sm animate-pulse">
+      <div className="flex justify-between items-start mb-4">
+        <div className="w-12 h-12 bg-slate-200 rounded-2xl"></div>
+        <div className="w-12 h-4 bg-slate-200 rounded"></div>
+      </div>
+      <div>
+        <div className="w-24 h-4 bg-slate-200 rounded mb-2"></div>
+        <div className="w-32 h-8 bg-slate-200 rounded"></div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6 pb-6">
       <div className="flex justify-between items-end">
@@ -73,10 +93,21 @@ const Dashboard = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Total Revenue" value={`₹${systemStats.totalRevenue.toLocaleString()}`} change="+12.5%" icon={DollarSign} isPositive={true} />
-        <StatCard title="Total Orders" value={systemStats.totalOrders.toLocaleString()} change="+5.2%" icon={ShoppingBag} isPositive={true} />
-        <StatCard title="Active Vendors" value={systemStats.activeVendors} change="+8.1%" icon={Users} isPositive={true} />
-        <StatCard title="Platform Comm." value={`₹${systemStats.platformCommission.toLocaleString()}`} change="-2.4%" icon={TrendingUp} isPositive={false} />
+        {loading ? (
+          <>
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </>
+        ) : (
+          <>
+            <StatCard title="Total Revenue" value={`₹${systemStats.totalRevenue.toLocaleString()}`} change="+12.5%" icon={DollarSign} isPositive={true} />
+            <StatCard title="Total Orders" value={systemStats.totalOrders.toLocaleString()} change="+5.2%" icon={ShoppingBag} isPositive={true} />
+            <StatCard title="Active Vendors" value={systemStats.activeVendors} change="+8.1%" icon={Users} isPositive={true} />
+            <StatCard title="Platform Comm." value={`₹${systemStats.platformCommission.toLocaleString()}`} change="-2.4%" icon={TrendingUp} isPositive={false} />
+          </>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -89,62 +120,78 @@ const Dashboard = () => {
               <option>Last 30 Days</option>
             </select>
           </div>
-          <div className="h-[350px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={salesData}>
-                <defs>
-                  <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 600}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 600}} dx={-10} />
-                <Tooltip 
-                  contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold'}}
-                  cursor={{stroke: '#3b82f6', strokeWidth: 2}}
-                />
-                <Area type="monotone" dataKey="sales" stroke="#3b82f6" strokeWidth={4} fillOpacity={1} fill="url(#colorSales)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          {loading ? (
+            <div className="h-[350px] w-full bg-slate-100 rounded-xl animate-pulse"></div>
+          ) : (
+            <div className="h-[350px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={salesData}>
+                  <defs>
+                    <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 600}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12, fontWeight: 600}} dx={-10} />
+                  <Tooltip 
+                    contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold'}}
+                    cursor={{stroke: '#3b82f6', strokeWidth: 2}}
+                  />
+                  <Area type="monotone" dataKey="sales" stroke="#3b82f6" strokeWidth={4} fillOpacity={1} fill="url(#colorSales)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </div>
 
         {/* Category Share */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col">
           <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight mb-6 font-montserrat">Category Share</h3>
-          <div className="flex-1 flex items-center justify-center">
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="mt-6 space-y-3">
-            {categoryData.map((item, i) => (
-              <div key={i} className="flex justify-between items-center p-3 bg-slate-50 rounded-2xl">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full" style={{backgroundColor: COLORS[i]}} />
-                  <span className="text-sm font-bold text-blue-700 font-raleway">{item.name}</span>
-                </div>
-                <span className="text-sm font-black text-blue-900 font-roboto">{item.value}%</span>
+          {loading ? (
+            <div className="flex-1 flex flex-col items-center justify-center animate-pulse gap-6">
+              <div className="w-48 h-48 rounded-full bg-slate-100"></div>
+              <div className="w-full space-y-3">
+                <div className="h-10 bg-slate-100 rounded-xl"></div>
+                <div className="h-10 bg-slate-100 rounded-xl"></div>
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <>
+              <div className="flex-1 flex items-center justify-center">
+                <ResponsiveContainer width="100%" height={250}>
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {categoryData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="mt-6 space-y-3">
+                {categoryData.map((item, i) => (
+                  <div key={i} className="flex justify-between items-center p-3 bg-slate-50 rounded-2xl">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 rounded-full" style={{backgroundColor: COLORS[i]}} />
+                      <span className="text-sm font-bold text-blue-700 font-raleway">{item.name}</span>
+                    </div>
+                    <span className="text-sm font-black text-blue-900 font-roboto">{item.value}%</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -154,31 +201,46 @@ const Dashboard = () => {
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight font-montserrat">Pending Approvals</h3>
             <span className="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest">
-              {pendingVendors.length} New Requests
+              {loading ? '-' : pendingVendors.length} New Requests
             </span>
           </div>
           <div className="space-y-4">
-            {pendingVendors.map((vendor) => (
-              <div key={vendor.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-100 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-black text-slate-900 shadow-sm border border-slate-100">
-                    {vendor.name.charAt(0)}
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl animate-pulse">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-slate-200 rounded-xl"></div>
+                    <div className="space-y-2">
+                      <div className="w-24 h-4 bg-slate-200 rounded"></div>
+                      <div className="w-32 h-3 bg-slate-200 rounded"></div>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-black text-slate-900 text-sm">{vendor.name}</h4>
-                    <p className="text-xs text-slate-400 font-medium">{vendor.email}</p>
+                  <div className="w-16 h-8 bg-slate-200 rounded-lg"></div>
+                </div>
+              ))
+            ) : (
+              pendingVendors.map((vendor) => (
+                <div key={vendor.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-100 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-black text-slate-900 shadow-sm border border-slate-100">
+                      {vendor.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-black text-slate-900 text-sm">{vendor.name}</h4>
+                      <p className="text-xs text-slate-400 font-medium">{vendor.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                      <AlertCircle size={20} />
+                    </button>
+                    <button className="p-2 text-green-500 hover:bg-green-50 rounded-lg transition-colors">
+                      <CheckCircle2 size={20} />
+                    </button>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <button className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                    <AlertCircle size={20} />
-                  </button>
-                  <button className="p-2 text-green-500 hover:bg-green-50 rounded-lg transition-colors">
-                    <CheckCircle2 size={20} />
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           <button className="w-full mt-6 py-4 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-lg shadow-blue-100">
             View All Requests
@@ -189,26 +251,39 @@ const Dashboard = () => {
         <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6">
           <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight mb-6 font-montserrat">Live Activity</h3>
           <div className="space-y-8 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
-            {[
-              { title: 'New Payout Request', desc: 'Elite Electronics requested ₹50,000', time: '2 mins ago', icon: DollarSign, color: 'text-blue-500', bg: 'bg-blue-50' },
-              { title: 'New Product Upload', desc: 'Fashion Hub added "Summer Dress"', time: '15 mins ago', icon: ShoppingBag, color: 'text-green-500', bg: 'bg-green-50' },
-              { title: 'Order Disputed', desc: 'Order #OD1234 by Customer ID #542', time: '1 hour ago', icon: AlertCircle, color: 'text-red-500', bg: 'bg-red-50' },
-              { title: 'Vendor Verified', desc: 'Global Tech verification completed', time: '2 hours ago', icon: CheckCircle2, color: 'text-indigo-500', bg: 'bg-indigo-50' },
-            ].map((activity, i) => (
-              <div key={i} className="relative flex gap-6">
-                <div className={`z-10 w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${activity.bg} ${activity.color} shadow-sm border border-white`}>
-                  <activity.icon size={18} />
-                </div>
-                <div>
-                  <h4 className="font-black text-slate-900 text-sm leading-none">{activity.title}</h4>
-                  <p className="text-xs text-slate-400 font-medium mt-1.5">{activity.desc}</p>
-                  <div className="flex items-center gap-2 mt-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                    <Clock size={10} />
-                    {activity.time}
+            {loading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="relative flex gap-6 animate-pulse">
+                  <div className="z-10 w-9 h-9 rounded-xl flex-shrink-0 bg-slate-200 border border-white"></div>
+                  <div className="space-y-2 pt-1 w-full">
+                    <div className="h-3 w-32 bg-slate-200 rounded"></div>
+                    <div className="h-3 w-48 bg-slate-200 rounded"></div>
+                    <div className="h-2 w-16 bg-slate-200 rounded mt-2"></div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              [
+                { title: 'New Payout Request', desc: 'Elite Electronics requested ₹50,000', time: '2 mins ago', icon: DollarSign, color: 'text-blue-500', bg: 'bg-blue-50' },
+                { title: 'New Product Upload', desc: 'Fashion Hub added "Summer Dress"', time: '15 mins ago', icon: ShoppingBag, color: 'text-green-500', bg: 'bg-green-50' },
+                { title: 'Order Disputed', desc: 'Order #OD1234 by Customer ID #542', time: '1 hour ago', icon: AlertCircle, color: 'text-red-500', bg: 'bg-red-50' },
+                { title: 'Vendor Verified', desc: 'Global Tech verification completed', time: '2 hours ago', icon: CheckCircle2, color: 'text-indigo-500', bg: 'bg-indigo-50' },
+              ].map((activity, i) => (
+                <div key={i} className="relative flex gap-6">
+                  <div className={`z-10 w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${activity.bg} ${activity.color} shadow-sm border border-white`}>
+                    <activity.icon size={18} />
+                  </div>
+                  <div>
+                    <h4 className="font-black text-slate-900 text-sm leading-none">{activity.title}</h4>
+                    <p className="text-xs text-slate-400 font-medium mt-1.5">{activity.desc}</p>
+                    <div className="flex items-center gap-2 mt-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                      <Clock size={10} />
+                      {activity.time}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

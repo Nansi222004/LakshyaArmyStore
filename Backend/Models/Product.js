@@ -42,7 +42,7 @@ const productSchema = new mongoose.Schema({
     of: String
   },
   shippingSpecs: {
-    weight: Number,
+    weight: { type: Number, required: true },
     length: Number,
     width: Number,
     height: Number

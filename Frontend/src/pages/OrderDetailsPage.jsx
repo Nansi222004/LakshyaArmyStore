@@ -442,7 +442,9 @@ Thank you for shopping with Mynzo!
                 </div>
                 <div className="flex justify-between items-center text-slate-700">
                   <span className="flex items-center gap-1">Delivery Charges</span>
-                  <span className="text-emerald-600 font-medium">FREE</span>
+                  <span className={globalOrder?.deliveryCharge ? "font-medium text-slate-900" : "text-emerald-600 font-medium"}>
+                    {globalOrder?.deliveryCharge ? `₹${globalOrder.deliveryCharge}` : 'FREE'}
+                  </span>
                 </div>
              </div>
              

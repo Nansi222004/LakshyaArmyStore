@@ -3,6 +3,9 @@ const router = express.Router();
 const { protectAdmin } = require('../Middlewares/authMiddleware');
 const shiprocketController = require('../Controllers/shiprocketController');
 
+// Public APIs
+router.post('/estimate', shiprocketController.estimateShipping);
+
 // Admin APIs
 router.post('/serviceability', protectAdmin, shiprocketController.checkServiceability);
 router.post('/assign-awb', protectAdmin, shiprocketController.assignAWB);

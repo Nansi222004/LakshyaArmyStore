@@ -248,7 +248,7 @@ const changeAdminPassword = async (req, res) => {
 const forceLogoutUser = async (req, res) => {
   try {
     const User = require('../Models/User');
-    const { sendNotificationToUser } = require('../Utils/firebaseAdmin');
+    const { sendNotificationToUser } = require('../Router/firebaseAdmin');
 
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -279,7 +279,7 @@ const forceLogoutUser = async (req, res) => {
     
     // We send directly via admin to the old tokens since we just cleared them from DB
     const { getMessaging } = require('firebase-admin/messaging');
-    const { adminApp } = require('../Utils/firebaseAdmin');
+    const { adminApp } = require('../Router/firebaseAdmin');
     
     const allOldTokens = [...new Set([...oldWebTokens, ...oldMobileTokens])];
     
@@ -336,7 +336,7 @@ const forceLogoutAllUsers = async (req, res) => {
     
     if (allOldTokens.length > 0) {
       const { getMessaging } = require('firebase-admin/messaging');
-      const { adminApp } = require('../Utils/firebaseAdmin');
+      const { adminApp } = require('../Router/firebaseAdmin');
       
       const sendPromises = allOldTokens.map(token => 
         getMessaging(adminApp).send({

@@ -3,7 +3,7 @@ const Cart = require('../Models/Cart');
 const Coupon = require('../Models/Coupon');
 const Product = require('../Models/Product');
 const User = require('../Models/User');
-const shiprocketService = require('../Utils/shiprocketService');
+const shiprocketService = require('../Router/shiprocketService');
 // @desc    Create a new order
 // @route   POST /api/orders
 // @access  Private
@@ -17,6 +17,7 @@ exports.createOrder = async (req, res) => {
 
     // Verify and decrement stock atomically BEFORE creating the order
     const decrementedProducts = [];
+    let totalOrderWeight = 0;
     try {
       for (const item of items) {
         if (item.productId) {
@@ -38,6 +39,9 @@ exports.createOrder = async (req, res) => {
             throw new Error(`"${item.name}" is out of stock or does not have enough quantity.`);
           }
           decrementedProducts.push({ productId: item.productId, quantity: qty });
+          
+          const productWeight = (result.shippingSpecs && result.shippingSpecs.weight) ? result.shippingSpecs.weight : 0.5;
+          totalOrderWeight += (productWeight * qty);
         }
       }
 
@@ -89,7 +93,7 @@ exports.createOrder = async (req, res) => {
       const shiprocketOrderData = {
         order_id: `ORD_${order._id}`,
         order_date: new Date().toISOString().slice(0, 16).replace('T', ' '),
-        pickup_location: 'Primary', // Must be configured in Shiprocket dashboard
+        pickup_location: 'Home', // Must be configured in Shiprocket dashboard
         billing_customer_name: user.name || deliveryAddress.name || 'Customer',
         billing_last_name: '',
         billing_address: deliveryAddress.address,
@@ -98,7 +102,7 @@ exports.createOrder = async (req, res) => {
         billing_state: 'State',
         billing_country: 'India',
         billing_email: user.email || 'customer@mynzo.com',
-        billing_phone: user.phone || '9999999999',
+        billing_phone: user.phone || '9876543210',
         shipping_is_billing: true,
         order_items: items.map(item => ({
             name: item.name,
@@ -114,15 +118,36 @@ exports.createOrder = async (req, res) => {
         length: 10,
         breadth: 10,
         height: 10,
-        weight: 0.5
+        weight: totalOrderWeight || 0.5
       };
 
       const srResponse = await shiprocketService.createShiprocketOrder(shiprocketOrderData);
-      if (srResponse && srResponse.order_id) {
-        order.shiprocketOrderId = srResponse.order_id;
-        order.shipmentId = srResponse.shipment_id;
-        await order.save();
+      
+      if (srResponse) {
+        order.shiprocketResponses.push({ type: 'CREATE_ORDER', data: srResponse });
+        if (srResponse.order_id) {
+          order.shiprocketOrderId = srResponse.order_id;
+          order.shipmentId = srResponse.shipment_id;
+        }
       }
+
+      // Fetch delivery charges (serviceability) and store it
+      try {
+        const serviceResponse = await shiprocketService.checkServiceability('201301', deliveryAddress.pincode, totalOrderWeight || 0.5, paymentMethod === 'COD' ? 1 : 0);
+        order.shiprocketResponses.push({ type: 'SERVICEABILITY', data: serviceResponse });
+        
+        if (serviceResponse && serviceResponse.data && serviceResponse.data.available_courier_companies) {
+          const couriers = serviceResponse.data.available_courier_companies;
+          if (couriers.length > 0) {
+            const minFreight = Math.min(...couriers.map(c => c.freight_charge));
+            order.deliveryCharge = minFreight;
+          }
+        }
+      } catch (svcErr) {
+        console.error('Serviceability check failed:', svcErr.message);
+      }
+
+      await order.save();
     } catch (srError) {
       console.error('Shiprocket order creation failed, will need manual sync:', srError.message);
     }
@@ -248,3 +273,19 @@ exports.getUserOrderById = async (req, res) => {
   }
 };
 
+// @desc    Track order by ID (Public)
+// @route   GET /api/orders/track/:id
+// @access  Public
+exports.trackOrderById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+    // We return the order so users can track without being logged in (via SMS/Email link)
+    res.status(200).json({ success: true, order });
+  } catch (error) {
+    console.error("Error tracking order:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

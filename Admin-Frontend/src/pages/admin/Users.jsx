@@ -20,6 +20,7 @@ const MOCK_USERS = [
 const Users = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [usersList, setUsersList] = useState([]);
   const [filterStatus, setFilterStatus] = useState('All');
@@ -35,6 +36,7 @@ const Users = () => {
     const token = localStorage.getItem('adminToken');
     if (!token) return;
 
+    setLoading(true);
     try {
       const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const res = await fetch(`${apiBase}/admin/auth/users`, {
@@ -61,6 +63,8 @@ const Users = () => {
     } catch (err) {
       console.error(err);
       toast.error('Could not connect to backend server');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -325,7 +329,26 @@ const Users = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50 text-sm">
-              {filteredUsers.length > 0 ? filteredUsers.map((user, i) => (
+              {loading ? (
+                Array.from({ length: 5 }).map((_, idx) => (
+                  <tr key={`skeleton-${idx}`} className="animate-pulse">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-4">
+                         <div className="w-10 h-10 bg-slate-200 rounded-full border border-slate-100"></div>
+                         <div className="space-y-2">
+                            <div className="w-32 h-4 bg-slate-200 rounded"></div>
+                            <div className="w-48 h-3 bg-slate-200 rounded"></div>
+                         </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5"><div className="w-16 h-4 bg-slate-200 rounded"></div></td>
+                    <td className="px-6 py-5"><div className="w-20 h-6 bg-slate-200 rounded-lg"></div></td>
+                    <td className="px-6 py-5"><div className="w-24 h-4 bg-slate-200 rounded"></div></td>
+                    <td className="px-6 py-5"><div className="w-16 h-6 bg-slate-200 rounded-full"></div></td>
+                    <td className="px-6 py-5"><div className="w-8 h-8 bg-slate-200 rounded-lg ml-auto"></div></td>
+                  </tr>
+                ))
+              ) : filteredUsers.length > 0 ? filteredUsers.map((user, i) => (
                 <tr 
                   key={user.id} 
                   onClick={() => navigate(`/admin/users/${user.id}`)}

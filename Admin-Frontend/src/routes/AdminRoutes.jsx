@@ -10,6 +10,7 @@ import CategoryChipsManager from '../modules/admin/catalog/CategoryChipsManager'
 import SubCategoryChipsManager from '../modules/admin/catalog/SubCategoryChipsManager';
 import HomeSectionsManager from '../modules/admin/catalog/HomeSectionsManager';
 import InventoryList from '../pages/admin/inventory/InventoryList';
+import ProductDetails from '../pages/admin/inventory/ProductDetails';
 import ThirdPartyDelivery from '../pages/admin/delivery/ThirdPartyDelivery';
 
 // New Admin Pages
@@ -55,6 +56,7 @@ const AdminRoutes = () => {
   return (
     <Routes>
       <Route path="auth" element={<Auth />} />
+      <Route path="login" element={<Navigate to="/admin/auth" replace />} />
 
       <Route element={<AdminLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
@@ -74,6 +76,7 @@ const AdminRoutes = () => {
         <Route path="inventory/all" element={<InventoryList />} />
         <Route path="inventory/add" element={<AddProduct />} />
         <Route path="inventory/edit/:id" element={<AddProduct />} />
+        <Route path="inventory/view/:id" element={<ProductDetails />} />
         <Route path="inventory/alerts" element={<StockAlerts />} />
         <Route path="orders" element={<Orders />} />
         <Route path="orders/:orderId" element={<OrderDetail />} />

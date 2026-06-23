@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const uploadCSV = multer({ storage: multer.memoryStorage() });
 const {
   getProducts,
   getProductById,
@@ -8,7 +10,8 @@ const {
   deleteProduct,
   getTopBuys,
   getTrendingBrands,
-  getCombinedCatalog
+  getCombinedCatalog,
+  bulkUploadProducts
 } = require('../Controllers/productController');
 const { protectAdmin } = require('../Middlewares/authMiddleware');
 const { uploadImages, processImages, handleUploadError } = require('../Middlewares/uploadMiddleware');
@@ -21,6 +24,7 @@ router.get('/trending-brands', getTrendingBrands);
 router.get('/:id', getProductById);
 
 // Admin protected routes
+router.post('/bulk-upload', protectAdmin, uploadCSV.single('file'), bulkUploadProducts);
 router.post('/', protectAdmin, uploadImages, processImages, handleUploadError, createProduct);
 router.put('/:id', protectAdmin, uploadImages, processImages, handleUploadError, updateProduct);
 router.delete('/:id', protectAdmin, deleteProduct);

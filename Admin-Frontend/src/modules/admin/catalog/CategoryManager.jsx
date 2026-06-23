@@ -19,6 +19,12 @@ const CategoryManager = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredCategories = categories.filter(cat => 
     cat.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -79,71 +85,91 @@ const CategoryManager = () => {
 
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-        <AnimatePresence>
-          {filteredCategories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              layout
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ delay: index * 0.02 }}
-              className="group bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col"
-            >
-              <div className="relative h-20 overflow-hidden bg-slate-50">
-                <OptimizedImage 
-                  src={category.image} 
-                  alt={category.name}
-                  type="category"
-                  className="w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90"
-                />
-                <div className="absolute top-2 right-2">
-                  <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-widest shadow-sm ${
-                    category.status === 'Active' ? 'bg-green-500 text-white' : 
-                    category.status === 'Draft' ? 'bg-amber-500 text-white' : 'bg-slate-400 text-white'
-                  }`}>
-                    {category.status}
-                  </span>
-                </div>
-              </div>
-              
+        {loading ? (
+          Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-xl border border-slate-100 shadow-sm animate-pulse flex flex-col h-[180px]">
+              <div className="h-20 bg-slate-200"></div>
               <div className="p-3 flex-1 flex flex-col gap-2.5">
-                <div>
-                  <h3 className="text-[12px] font-bold text-slate-900 uppercase tracking-tight font-montserrat line-clamp-1 leading-tight">{category.name}</h3>
-                  <p className="text-[8px] text-slate-400 font-bold uppercase tracking-tighter mt-0.5 font-roboto leading-none">/{category.slug}</p>
+                <div className="space-y-2">
+                  <div className="h-4 bg-slate-200 rounded w-3/4"></div>
+                  <div className="h-2 bg-slate-200 rounded w-1/2"></div>
                 </div>
-
-                <div className="flex items-center gap-1.5">
-                  <Package size={10} className="text-blue-500" />
-                  <span className="text-[9px] font-bold text-slate-500 font-raleway leading-none">{category.count} Products</span>
-                </div>
-
-                <div className="pt-2 border-t border-slate-50 flex gap-1.5">
-                  <button className="flex-1 py-1.5 bg-slate-50 text-slate-700 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center gap-1">
-                    <Edit2 size={10} />
-                    Manage
-                  </button>
-                  <button className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">
-                    <Trash2 size={12} />
-                  </button>
+                <div className="h-3 bg-slate-200 rounded w-1/3 mt-2"></div>
+                <div className="mt-auto flex gap-1.5 pt-2 border-t border-slate-50">
+                  <div className="h-6 flex-1 bg-slate-200 rounded-lg"></div>
+                  <div className="h-6 w-6 bg-slate-200 rounded-lg"></div>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+            </div>
+          ))
+        ) : (
+          <AnimatePresence>
+            {filteredCategories.map((category, index) => (
+              <motion.div
+                key={category.id}
+                layout
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ delay: index * 0.02 }}
+                className="group bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col"
+              >
+                <div className="relative h-20 overflow-hidden bg-slate-50">
+                  <OptimizedImage 
+                    src={category.image} 
+                    alt={category.name}
+                    type="category"
+                    className="w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90"
+                  />
+                  <div className="absolute top-2 right-2">
+                    <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-widest shadow-sm ${
+                      category.status === 'Active' ? 'bg-green-500 text-white' : 
+                      category.status === 'Draft' ? 'bg-amber-500 text-white' : 'bg-slate-400 text-white'
+                    }`}>
+                      {category.status}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="p-3 flex-1 flex flex-col gap-2.5">
+                  <div>
+                    <h3 className="text-[12px] font-bold text-slate-900 uppercase tracking-tight font-montserrat line-clamp-1 leading-tight">{category.name}</h3>
+                    <p className="text-[8px] text-slate-400 font-bold uppercase tracking-tighter mt-0.5 font-roboto leading-none">/{category.slug}</p>
+                  </div>
 
-        {/* Add Category Card - Also Compact */}
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="group border-2 border-dashed border-slate-100 rounded-xl flex flex-col items-center justify-center p-4 gap-2 hover:border-blue-500 hover:bg-blue-50/20 transition-all min-h-[160px]"
-        >
-          <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-sm">
-            <Plus size={20} />
-          </div>
-          <div className="text-center">
-            <p className="text-[9px] font-black text-slate-400 group-hover:text-blue-600 uppercase tracking-widest font-montserrat">New Category</p>
-          </div>
-        </button>
+                  <div className="flex items-center gap-1.5">
+                    <Package size={10} className="text-blue-500" />
+                    <span className="text-[9px] font-bold text-slate-500 font-raleway leading-none">{category.count} Products</span>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-50 flex gap-1.5">
+                    <button className="flex-1 py-1.5 bg-slate-50 text-slate-700 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center gap-1">
+                      <Edit2 size={10} />
+                      Manage
+                    </button>
+                    <button className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        )}
+
+        {!loading && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="group border-2 border-dashed border-slate-100 rounded-xl flex flex-col items-center justify-center p-4 gap-2 hover:border-blue-500 hover:bg-blue-50/20 transition-all min-h-[160px]"
+          >
+            <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-sm">
+              <Plus size={20} />
+            </div>
+            <div className="text-center">
+              <p className="text-[9px] font-black text-slate-400 group-hover:text-blue-600 uppercase tracking-widest font-montserrat">New Category</p>
+            </div>
+          </button>
+        )}
       </div>
     </div>
   );

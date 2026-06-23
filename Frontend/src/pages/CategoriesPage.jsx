@@ -345,22 +345,22 @@ export default function CategoriesPage() {
 
           {/* Horizontal Subcategories Scroll */}
           {selectedCategory !== 'for-you' && subCategories.filter(sc => sc.categoryId.toLowerCase() === selectedCategory.toLowerCase()).length > 0 && (
-            <div className="flex overflow-x-auto gap-3 py-2.5 scrollbar-none snap-x relative z-20 px-1.5 flex-shrink-0 bg-white/40 backdrop-blur-md rounded-2xl border border-white/50 shadow-3xs">
+            <div className="flex overflow-x-auto gap-3 py-2.5 scrollbar-none snap-x relative z-20 px-1.5 flex-shrink-0 bg-white/40 backdrop-blur-md rounded-2xl border border-white/50 shadow-3xs items-start">
               <button
                 onClick={() => setSelectedSubCategory('all')}
-                className="flex flex-col items-center w-[48px] group cursor-pointer flex-shrink-0 snap-start"
+                className="flex flex-col items-center w-[68px] group cursor-pointer flex-shrink-0 snap-start"
               >
-                <div className="relative w-[44px] h-[44px] flex items-center justify-center">
+                <div className="relative w-[52px] h-[52px] flex items-center justify-center">
                   {selectedSubCategory === 'all' ? (
                     <div className="absolute inset-0 rounded-lg bg-[#ee4923] shadow-md shadow-[#ee4923]/25" />
                   ) : (
                     <div className="absolute inset-0 rounded-lg bg-orange-50 group-hover:bg-orange-100 transition-colors duration-300" />
                   )}
                   <div className="relative z-10 flex items-center justify-center">
-                    <LayoutGrid className={`w-5 h-5 transition-all duration-300 ${selectedSubCategory === 'all' ? 'text-white scale-110' : 'text-[#ee4923]'}`} />
+                    <LayoutGrid className={`w-6 h-6 transition-all duration-300 ${selectedSubCategory === 'all' ? 'text-white scale-110' : 'text-[#ee4923]'}`} />
                   </div>
                 </div>
-                <span className={`text-[8.5px] leading-tight font-black tracking-tight select-none px-0.5 text-center mt-1 transition-colors ${selectedSubCategory === 'all' ? 'text-[#0F172A]' : 'text-slate-500'
+                <span className={`text-[9px] leading-[1.1] font-black tracking-tight select-none px-0.5 text-center mt-1.5 w-full transition-colors ${selectedSubCategory === 'all' ? 'text-[#0F172A]' : 'text-slate-500'
                   }`}>
                   ALL
                 </span>
@@ -371,9 +371,9 @@ export default function CategoriesPage() {
                   <button
                     key={sub.id}
                     onClick={() => setSelectedSubCategory(sub.id)}
-                    className="flex flex-col items-center w-[48px] group cursor-pointer flex-shrink-0 snap-start"
+                    className="flex flex-col items-center w-[68px] group cursor-pointer flex-shrink-0 snap-start"
                   >
-                    <div className="relative w-[44px] h-[44px] flex items-center justify-center">
+                    <div className="relative w-[52px] h-[52px] flex items-center justify-center">
                       {isSubActive ? (
                         <div className="absolute inset-0 rounded-lg bg-[#ee4923] shadow-md shadow-[#ee4923]/25 animate-scale-up" />
                       ) : (
@@ -386,14 +386,14 @@ export default function CategoriesPage() {
                             alt=""
                             type="subcategory"
                             objectFit="contain"
-                            className={`w-[28px] h-[28px] drop-shadow-xs transition-transform duration-300 ${isSubActive ? 'scale-110' : 'scale-100'}`}
+                            className={`w-[34px] h-[34px] drop-shadow-xs transition-transform duration-300 ${isSubActive ? 'scale-110' : 'scale-100'}`}
                           />
                         ) : (
-                          <div className="w-[28px] h-[28px] bg-slate-200 rounded" />
+                          <div className="w-[34px] h-[34px] bg-slate-200 rounded" />
                         )}
                       </div>
                     </div>
-                    <span className={`text-[8.5px] leading-tight font-black tracking-tight select-none px-0.5 text-center truncate w-full mt-1 transition-colors ${isSubActive ? 'text-[#0F172A]' : 'text-slate-500'
+                    <span className={`text-[9px] leading-[1.1] font-black tracking-tight select-none px-0.5 text-center line-clamp-2 w-full mt-1.5 transition-colors ${isSubActive ? 'text-[#0F172A]' : 'text-slate-500'
                       }`}>
                       {sub.subCategoryName}
                     </span>

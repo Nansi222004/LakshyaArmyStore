@@ -65,6 +65,7 @@ const AddProduct = () => {
   // State variables for form inputs
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
+  const [subCategory, setSubCategory] = useState('');
   const [description, setDescription] = useState('');
   const [sellingPrice, setSellingPrice] = useState('');
   const [mrp, setMrp] = useState('');
@@ -120,6 +121,7 @@ const AddProduct = () => {
           const p = data.product;
           setName(p.name || '');
           setCategory(p.category || '');
+          setSubCategory(p.subCategory || '');
           setDescription(p.description || '');
           setSellingPrice(p.sellingPrice || '');
           setMrp(p.mrp || '');
@@ -262,6 +264,17 @@ const AddProduct = () => {
   const [imageFiles, setImageFiles] = useState([]); // holds files for multipart uploading
 
   const categories = ['Fashion', 'Electronics', 'Beauty', 'Home Decor', 'Toys', 'Stationery', 'Jewellery', 'Gifting', 'Electrical'];
+  const subCategoriesMap = {
+    'Fashion': ['Men', 'Women', 'Kids', 'Accessories'],
+    'Electronics': ['Mobiles', 'Laptops', 'Audio', 'Accessories'],
+    'Beauty': ['Makeup', 'Skincare', 'Haircare', 'Fragrances'],
+    'Home Decor': ['Furniture', 'Lighting', 'Furnishings', 'Decor'],
+    'Toys': ['Action Figures', 'Board Games', 'Educational', 'Soft Toys'],
+    'Stationery': ['Pens', 'Notebooks', 'Art Supplies', 'Office'],
+    'Jewellery': ['Necklaces', 'Earrings', 'Rings', 'Bracelets'],
+    'Gifting': ['Corporate', 'Personalized', 'Festive', 'Hampers'],
+    'Electrical': ['Appliances', 'Lighting', 'Wiring', 'Tools']
+  };
 
   const handleAddImageUrl = () => {
     const url = prompt('Enter Image URL');
@@ -294,6 +307,11 @@ const AddProduct = () => {
       toast.error('Product Name, Category, and Selling Price are required!');
       return;
     }
+    
+    if (!shippingSpecs.weight) {
+      toast.error('Product Weight is mandatory for shipping calculation!');
+      return;
+    }
 
     const token = localStorage.getItem('adminToken');
     if (!token) {
@@ -307,6 +325,7 @@ const AddProduct = () => {
 
       bodyFormData.append('name', name);
       bodyFormData.append('category', category);
+      if (subCategory) bodyFormData.append('subCategory', subCategory);
       bodyFormData.append('description', description);
       bodyFormData.append('sellingPrice', sellingPrice);
       if (mrp) bodyFormData.append('mrp', mrp);
@@ -365,6 +384,7 @@ const AddProduct = () => {
         // Reset all states
         setName('');
         setCategory('');
+        setSubCategory('');
         setDescription('');
         setSellingPrice('');
         setMrp('');
@@ -437,16 +457,33 @@ const AddProduct = () => {
               />
             </div>
 
-            <div>
-              <Label required>Category</Label>
-              <select 
-                value={category}
-                onChange={e => setCategory(e.target.value)}
-                className={inputCls}
-              >
-                <option value="">Select Category</option>
-                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label required>Category</Label>
+                <select 
+                  value={category}
+                  onChange={e => {
+                    setCategory(e.target.value);
+                    setSubCategory('');
+                  }}
+                  className={inputCls}
+                >
+                  <option value="">Select Category</option>
+                  {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div>
+                <Label>Sub Category</Label>
+                <select 
+                  value={subCategory}
+                  onChange={e => setSubCategory(e.target.value)}
+                  className={inputCls}
+                  disabled={!category}
+                >
+                  <option value="">Select Sub Category</option>
+                  {category && subCategoriesMap[category]?.map(sc => <option key={sc} value={sc}>{sc}</option>)}
+                </select>
+              </div>
             </div>
 
             <div>
@@ -763,7 +800,7 @@ const AddProduct = () => {
                 { key: 'height', label: 'Height (cm)', def: '5' }
               ].map((f) => (
                 <div key={f.key}>
-                  <Label>{f.label}</Label>
+                  <Label required={f.key === 'weight'}>{f.label}</Label>
                   <input 
                     type="number" 
                     value={shippingSpecs[f.key]}

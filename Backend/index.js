@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 const http = require('http');
 const socketIo = require('socket.io');
-const socketHandler = require('./Utils/socketHandler');
+const socketHandler = require('./Router/socketHandler');
 
 const PORT = process.env.PORT || 5000;
 

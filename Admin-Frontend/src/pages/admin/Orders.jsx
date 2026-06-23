@@ -299,25 +299,43 @@ const Orders = () => {
           </div>
         </div>
 
-        {loading ? (
-          <div className="py-20 text-center text-slate-400 font-black text-xs uppercase tracking-widest animate-pulse">
-            Loading Live Platform Orders...
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  <th className="px-6 py-4">Order ID</th>
-                  <th className="px-6 py-4">Customer</th>
-                  <th className="px-6 py-4">Total</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">Payment</th>
-                  <th className="px-6 py-4">Date</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <th className="px-6 py-4">Order ID</th>
+                <th className="px-6 py-4">Customer</th>
+                <th className="px-6 py-4">Total</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Payment</th>
+                <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {loading ? (
+                Array.from({ length: 5 }).map((_, idx) => (
+                  <tr key={`skeleton-${idx}`} className="animate-pulse hover:bg-transparent">
+                    <td className="px-6 py-5"><div className="w-16 h-4 bg-slate-200 rounded"></div></td>
+                    <td className="px-6 py-5">
+                      <div className="space-y-2">
+                        <div className="w-24 h-4 bg-slate-200 rounded"></div>
+                        <div className="w-32 h-3 bg-slate-200 rounded"></div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
+                      <div className="space-y-2">
+                        <div className="w-16 h-4 bg-slate-200 rounded"></div>
+                        <div className="w-10 h-3 bg-slate-200 rounded"></div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5"><div className="w-20 h-6 bg-slate-200 rounded-full"></div></td>
+                    <td className="px-6 py-5"><div className="w-24 h-4 bg-slate-200 rounded"></div></td>
+                    <td className="px-6 py-5"><div className="w-32 h-4 bg-slate-200 rounded"></div></td>
+                    <td className="px-6 py-5"><div className="w-20 h-8 bg-slate-200 rounded-lg ml-auto"></div></td>
+                  </tr>
+                ))
+              ) : (
                 <AnimatePresence>
                   {filteredOrders.length > 0 ? (
                     filteredOrders.map((order, i) => (
@@ -411,10 +429,10 @@ const Orders = () => {
                     </tr>
                   )}
                 </AnimatePresence>
-              </tbody>
-            </table>
-          </div>
-        )}
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Order Detail Modal */}
@@ -577,6 +595,11 @@ const Orders = () => {
                       <option value="Failed">Failed</option>
                     </select>
                   </div>
+                </div>
+
+                <div className="flex justify-between items-center text-xs font-bold text-slate-500">
+                  <span>Est. Delivery Charge:</span>
+                  <span className="font-black text-slate-900">₹{(selectedOrder.deliveryCharge || 0).toLocaleString()}</span>
                 </div>
 
                 {selectedOrder.couponCode && (

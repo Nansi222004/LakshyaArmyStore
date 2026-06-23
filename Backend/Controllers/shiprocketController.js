@@ -1,4 +1,4 @@
-const shiprocketService = require('../Utils/shiprocketService');
+const shiprocketService = require('../Router/shiprocketService');
 const Order = require('../Models/Order');
 
 exports.checkServiceability = async (req, res) => {
@@ -6,6 +6,26 @@ exports.checkServiceability = async (req, res) => {
         const { pickupPincode, deliveryPincode, weight, cod } = req.body;
         const data = await shiprocketService.checkServiceability(pickupPincode, deliveryPincode, weight, cod);
         res.status(200).json({ success: true, data });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+exports.estimateShipping = async (req, res) => {
+    try {
+        const { deliveryPincode, weight, cod } = req.body;
+        // '201301' is the hardcoded pickup pincode for 'Home'
+        const data = await shiprocketService.checkServiceability('201301', deliveryPincode, weight || 0.5, cod || 0);
+        
+        let minFreight = 0;
+        let etd = '';
+        if (data && data.data && data.data.available_courier_companies && data.data.available_courier_companies.length > 0) {
+            const couriers = data.data.available_courier_companies;
+            minFreight = Math.min(...couriers.map(c => c.freight_charge));
+            const bestCourier = couriers.find(c => c.freight_charge === minFreight);
+            etd = bestCourier ? bestCourier.etd : '';
+        }
+        res.status(200).json({ success: true, deliveryCharge: minFreight, etd });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

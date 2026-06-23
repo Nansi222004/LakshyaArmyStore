@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, ShoppingCart, Heart, Send, Star, ChevronRight, Home, Truck, Store, RotateCcw, Banknote, ShieldCheck, ArrowRight, ChevronDown, ChevronUp, CheckCircle2, CheckCircle, X, Play } from 'lucide-react';
+import { ArrowLeft, Search, ShoppingCart, Heart, Send, Star, ChevronRight, Home, Truck, Store, RotateCcw, Banknote, ShieldCheck, ArrowRight, ChevronDown, ChevronUp, CheckCircle2, CheckCircle, X, Play, MapPin } from 'lucide-react';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useApp } from '../context/AppContext';
 import { CRAZY_DEALS } from '../data/mockData';
@@ -118,6 +118,46 @@ export default function ProductDetailsPage() {
       videoRef.current.play().catch(e => console.error("Autoplay prevented:", e));
     }
   }, [selectedReviewMedia]);
+
+  const [pincode, setPincode] = useState('');
+  const [deliveryCharge, setDeliveryCharge] = useState(null);
+  const [deliveryEtd, setDeliveryEtd] = useState('');
+  const [isCheckingPincode, setIsCheckingPincode] = useState(false);
+
+  const handleCheckPincode = async () => {
+    if (!pincode || pincode.length !== 6) {
+      alert('Please enter a valid 6-digit pincode');
+      return;
+    }
+    setIsCheckingPincode(true);
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/shiprocket/estimate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          deliveryPincode: pincode, 
+          weight: product?.shippingSpecs?.weight || 0.5, 
+          cod: 0 
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setDeliveryCharge(data.deliveryCharge);
+        setDeliveryEtd(data.etd);
+      } else {
+        alert('Could not fetch delivery details for this pincode');
+        setDeliveryCharge(null);
+        setDeliveryEtd('');
+      }
+    } catch (err) {
+      alert('Error checking serviceability');
+      setDeliveryCharge(null);
+      setDeliveryEtd('');
+    } finally {
+      setIsCheckingPincode(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -503,43 +543,47 @@ export default function ProductDetailsPage() {
       </div>
 
       {/* Delivery Details Section */}
-      <div className="bg-white px-4 py-2">
+      <div className="bg-white px-4 py-2 mt-2 border-t border-slate-100">
         <h3 className="font-bold text-base text-[#02006c] mb-3">Delivery details</h3>
         
-        <div className="flex flex-col -mx-1 rounded-xl overflow-hidden">
-          {/* Home Address */}
-          {user ? (
-            <div className="bg-[#FFE4D6] flex items-center justify-between py-2.5 px-3.5 border-b border-white/60">
-              <div className="flex items-center gap-2 overflow-hidden">
-                <Home className="w-4 h-4 text-[#02006c] flex-shrink-0" />
-                <div className="flex items-center gap-1.5 truncate">
-                  <span className="text-xs font-bold text-slate-800 flex-shrink-0">HOME</span>
-                  <span className="text-xs text-slate-500 truncate">{userLocation || "83 kishan pura mataji mandir, sector n..."}</span>
+        <div className="flex flex-col -mx-1 rounded-xl overflow-hidden mb-2">
+          {/* Pincode Checker */}
+          <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-slate-400" />
+              <input 
+                type="text" 
+                placeholder="Enter Pincode" 
+                className="flex-1 bg-transparent text-sm outline-none text-slate-700"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                maxLength={6}
+              />
+              <button 
+                onClick={handleCheckPincode}
+                disabled={isCheckingPincode || pincode.length !== 6}
+                className="text-[#ee4923] text-sm font-bold disabled:opacity-50"
+              >
+                {isCheckingPincode ? 'Checking...' : 'Check'}
+              </button>
+            </div>
+            
+            {deliveryCharge !== null && (
+              <div className="pt-2 border-t border-slate-100 flex flex-col gap-1">
+                <div className="flex items-center justify-between text-xs text-slate-700">
+                  <span className="flex items-center gap-1"><Truck className="w-3.5 h-3.5"/> Est. Delivery Charge</span>
+                  <span className="font-bold text-slate-900">₹{deliveryCharge}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-slate-700">
+                  <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-emerald-600"/> Est. Delivery Date</span>
+                  <span className="font-bold text-emerald-600">{deliveryEtd || '3-5 Days'}</span>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="bg-[#FFE4D6] flex items-center justify-between py-2.5 px-3.5 border-b border-white/60 cursor-pointer" onClick={() => navigate('/login')}>
-              <div className="flex items-center gap-2 overflow-hidden">
-                <Home className="w-4 h-4 text-slate-400 flex-shrink-0" />
-                <div className="flex items-center gap-1.5 truncate">
-                  <span className="text-xs font-bold text-[#ee4923] flex-shrink-0">LOGIN</span>
-                  <span className="text-xs text-slate-500 truncate">Login to view delivery address</span>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Delivery Date */}
-          <div className="bg-[#FFE4D6] flex items-center gap-2 py-2.5 px-3.5 border-b border-white/60">
-            <Truck className="w-4 h-4 text-[#02006c] flex-shrink-0" />
-            <span className="text-xs font-bold text-slate-800">
-              Delivery by {new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-            </span>
+            )}
           </div>
-
+          
           {/* Seller Details */}
-          <div className="bg-[#FFE4D6] flex items-start gap-2 py-2.5 px-3.5">
+          <div className="bg-[#FFE4D6] flex items-start gap-2 py-2.5 px-3.5 rounded-lg mt-3">
             <Store className="w-4 h-4 text-[#02006c] flex-shrink-0 mt-0.5" />
             <div className="flex flex-col">
               <span className="text-xs text-slate-700 font-medium">Fulfilled by {product.brandName || 'Mynzo Retail'}</span>

@@ -106,28 +106,28 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
 }));
 
 // Routes
-app.use('/admin/auth', require('./Utils/adminAuthRoutes'));
-app.use('/auth', require('./Utils/userAuthRoutes'));
-app.use('/addresses', require('./Utils/addressRoutes'));
-app.use('/cart', require('./Utils/cartRoutes'));
-app.use('/orders', require('./Utils/orderRoutes'));
-app.use('/referral', require('./Utils/referralRoutes'));
-app.use('/games', require('./Utils/gameRoutes'));
-app.use('/reels', require('./Utils/reelRoutes'));
+app.use('/admin/auth', require('./Router/adminAuthRoutes'));
+app.use('/auth', require('./Router/userAuthRoutes'));
+app.use('/addresses', require('./Router/addressRoutes'));
+app.use('/cart', require('./Router/cartRoutes'));
+app.use('/orders', require('./Router/orderRoutes'));
+app.use('/referral', require('./Router/referralRoutes'));
+app.use('/games', require('./Router/gameRoutes'));
+app.use('/reels', require('./Router/reelRoutes'));
 
-app.use('/admin/catalog/chips', require('./Utils/categoryChipRoutes'));
-app.use('/admin/catalog/subchips', require('./Utils/subCategoryChipRoutes'));
-app.use('/admin/catalog/banners', require('./Utils/bannerRoutes'));
-app.use('/admin/catalog/products', require('./Utils/productRoutes'));
-app.use('/admin/settings', require('./Utils/settingsRoutes'));
-app.use('/admin/promotions/coupons', require('./Utils/couponRoutes'));
-app.use('/admin/referrals', require('./Utils/adminReferralRoutes'));
-app.use('/admin/content/legal', require('./Utils/legalRoutes'));
-app.use('/admin/content/qna', require('./Utils/qnaRoutes'));
-app.use('/admin/shiprocket', require('./Utils/shiprocketRoutes'));
-app.use('/api/shiprocket', require('./Utils/shiprocketRoutes'));
-app.use('/api/logistics', require('./Utils/shiprocketRoutes')); // Alias without 'shiprocket' keyword for webhook
-app.use('/admin/notifications', require('./Utils/notificationRoutes'));
+app.use('/admin/catalog/chips', require('./Router/categoryChipRoutes'));
+app.use('/admin/catalog/subchips', require('./Router/subCategoryChipRoutes'));
+app.use('/admin/catalog/banners', require('./Router/bannerRoutes'));
+app.use('/admin/catalog/products', require('./Router/productRoutes'));
+app.use('/admin/settings', require('./Router/settingsRoutes'));
+app.use('/admin/promotions/coupons', require('./Router/couponRoutes'));
+app.use('/admin/referrals', require('./Router/adminReferralRoutes'));
+app.use('/admin/content/legal', require('./Router/legalRoutes'));
+app.use('/admin/content/qna', require('./Router/qnaRoutes'));
+app.use('/admin/shiprocket', require('./Router/shiprocketRoutes'));
+app.use('/api/shiprocket', require('./Router/shiprocketRoutes'));
+app.use('/api/logistics', require('./Router/shiprocketRoutes')); // Alias without 'shiprocket' keyword for webhook
+app.use('/admin/notifications', require('./Router/notificationRoutes'));
 
 // Health check with DB connection check
 app.get('/health', async (req, res) => {

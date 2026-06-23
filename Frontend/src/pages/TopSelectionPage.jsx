@@ -31,12 +31,12 @@ export default function TopSelectionPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col pb-20 animate-fade-in">
-      {/* Simple Header */}
-      <div className="bg-[#FFE4D6] px-4 py-4 flex items-center gap-3 shadow-sm z-10 sticky top-0">
-        <button onClick={() => navigate(-1)} className="p-1.5 -ml-1 hover:bg-orange-200/50 rounded-full transition-colors">
+      {/* Header */}
+      <div className="bg-white px-4 py-4 flex items-center justify-between shadow-sm z-10 sticky top-0">
+        <h1 className="text-[#02006c] text-[17px] font-bold tracking-wide uppercase font-sans">Top Selection</h1>
+        <button onClick={() => navigate(-1)} className="p-1 hover:bg-slate-50 rounded-full transition-colors border border-slate-200">
           <ArrowLeft className="w-5 h-5 text-[#02006c]" />
         </button>
-        <h1 className="text-[#02006c] text-xl font-bold tracking-tight" style={{ fontFamily: "'Times New Roman', Times, serif" }}>Top picks for you</h1>
       </div>
 
       {/* Grid */}
@@ -54,22 +54,30 @@ export default function TopSelectionPage() {
             <div 
               key={product._id || product.id} 
               onClick={() => navigate(`/product/${product._id || product.id}`)}
-              className="bg-white flex flex-col items-center pt-0 px-0 pb-3 cursor-pointer hover:shadow-md transition-all shadow-sm"
+              className="bg-white flex flex-col pt-0 px-0 pb-2 cursor-pointer transition-all border border-[#ee4923] rounded-xl overflow-hidden shadow-sm"
             >
-              <div className="w-full aspect-[4/5] mb-2 relative overflow-hidden">
+              <div className="w-full aspect-square mb-2 relative overflow-hidden bg-slate-50">
                 <OptimizedImage
                   src={getImageUrl((product.images && product.images[0]) ? product.images[0] : '')}
                   alt={product.name}
                   type="product"
-                  className="absolute inset-0"
+                  className="absolute inset-0 object-cover"
                 />
               </div>
-              <h3 className="text-[12px] font-medium text-slate-600 text-center tracking-wide font-sans truncate w-full px-2" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
-                {product.brandName || 'Mynzo Originals'}
-              </h3>
-              <p className="text-[10px] text-emerald-600 mt-1 text-center font-medium tracking-wide font-sans truncate w-full px-2" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
-                {product.name}
-              </p>
+              <div className="px-2.5 pb-1 w-full text-left">
+                <p className="text-[10px] text-slate-400 font-medium truncate mb-0.5">
+                  {product.brandName || 'Mynzo Originals'}
+                </p>
+                <h3 className="text-xs font-bold text-[#02006c] tracking-tight truncate w-full">
+                  {product.name}
+                </h3>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="text-[13px] font-black text-[#ee4923]">₹{product.sellingPrice}</span>
+                  {product.mrp && product.mrp > product.sellingPrice && (
+                    <span className="text-[10px] text-slate-400 font-semibold line-through mt-0.5">₹{product.mrp}</span>
+                  )}
+                </div>
+              </div>
             </div>
           ))
         ) : (

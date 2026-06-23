@@ -12,11 +12,8 @@ export default function TrackOrderPage() {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const token = localStorage.getItem('token');
         const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiBase}/orders/${orderId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${apiBase}/orders/track/${orderId}`);
         const data = await res.json();
         if (res.ok && data.success) {
           setOrder(data.order);

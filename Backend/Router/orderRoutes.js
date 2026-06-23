@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { createOrder, getUserOrders, getAllOrders, updateOrderStatus, getUserOrderById } = require('../Controllers/orderController');
+const { createOrder, getUserOrders, getAllOrders, updateOrderStatus, getUserOrderById, trackOrderById } = require('../Controllers/orderController');
 const { protectUser } = require('../Middlewares/userAuthMiddleware');
 const { protectAdmin } = require('../Middlewares/authMiddleware');
+
+// Public routes
+router.get('/track/:id', trackOrderById);
 
 // User routes
 router.route('/')

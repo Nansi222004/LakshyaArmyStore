@@ -270,6 +270,127 @@ const getCombinedCatalog = async (req, res) => {
   }
 };
 
+const bulkUploadProducts = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
+    const csvData = req.file.buffer.toString('utf-8');
+    const rows = csvData.split('\n').filter(r => r.trim());
+    if (rows.length < 2) {
+      return res.status(400).json({ success: false, message: 'Empty CSV' });
+    }
+
+    const parseRow = (rowStr) => {
+      const result = [];
+      let insideQuote = false;
+      let currentVal = '';
+      for (let i = 0; i < rowStr.length; i++) {
+        const char = rowStr[i];
+        if (char === '"') {
+          insideQuote = !insideQuote;
+        } else if (char === ',' && !insideQuote) {
+          result.push(currentVal.trim());
+          currentVal = '';
+        } else {
+          currentVal += char;
+        }
+      }
+      result.push(currentVal.trim());
+      return result.map(v => v.replace(/^"|"$/g, '').trim());
+    };
+
+    const headers = parseRow(rows[0]);
+    const requiredFields = ['Name', 'Category', 'Selling Price'];
+    const missingHeaders = requiredFields.filter(f => !headers.includes(f));
+    
+    if (missingHeaders.length > 0) {
+      return res.status(400).json({ success: false, message: `Missing columns: ${missingHeaders.join(', ')}` });
+    }
+
+    let successCount = 0;
+    for (let i = 1; i < rows.length; i++) {
+      const rowData = parseRow(rows[i]);
+      if (rowData.length < 2) continue;
+
+      const getValue = (colName) => {
+        const idx = headers.indexOf(colName);
+        return idx !== -1 ? rowData[idx] : undefined;
+      };
+
+      const name = getValue('Name');
+      const category = getValue('Category');
+      const sellingPrice = getValue('Selling Price');
+      if (!name || !category || !sellingPrice) continue;
+
+      const productData = {
+        name,
+        category,
+        subCategory: getValue('Sub Category'),
+        description: getValue('Description'),
+        sellingPrice: Number(sellingPrice),
+        mrp: getValue('MRP') ? Number(getValue('MRP')) : undefined,
+        stock: getValue('Stock') ? Number(getValue('Stock')) : 1,
+        discountLabel: getValue('Discount Label'),
+        sku: getValue('SKU') || `SKU-${Date.now()}-${i}`,
+        highlights: {
+          packOf: getValue('Pack Of'),
+          fabric: getValue('Fabric'),
+          sleeve: getValue('Sleeve'),
+          pattern: getValue('Pattern'),
+          collar: getValue('Collar'),
+          color: getValue('Color')
+        },
+        technicalSpecs: {
+          fit: getValue('Fit'),
+          fabricCare: getValue('Fabric Care'),
+          suitableFor: getValue('Suitable For'),
+          hem: getValue('Hem')
+        },
+        shippingSpecs: {
+          weight: getValue('Weight (kg)'),
+          length: getValue('Length (cm)'),
+          width: getValue('Width (cm)'),
+          height: getValue('Height (cm)')
+        },
+        flags: {
+          topSection: getValue('Top Section') === 'true',
+          crazyDeals: getValue('Crazy Deals') === 'true',
+          flashSale: getValue('Flash Sale') === 'true'
+        },
+        brandName: getValue('Brand Name') || 'Generic',
+        tags: getValue('Tags') ? getValue('Tags').split(',').map(t => t.trim()) : [],
+        manufacturerInfo: getValue('Manufacturer Info'),
+        hsnCode: getValue('HSN Code'),
+        status: 'Approved'
+      };
+
+      const imageURLsStr = getValue('Image URLs');
+      if (imageURLsStr) {
+        productData.images = imageURLsStr.split(',').map(url => url.trim()).filter(Boolean);
+      }
+
+      const newProduct = new Product(productData);
+      try {
+        await newProduct.save();
+        successCount++;
+      } catch(err) {
+        if(err.code === 11000) {
+          productData.sku = `SKU-${Date.now()}-${i}-${Math.random().toString().slice(2, 6)}`;
+          const retryProduct = new Product(productData);
+          await retryProduct.save();
+          successCount++;
+        }
+      }
+    }
+
+    res.status(200).json({ success: true, message: `Successfully uploaded ${successCount} products.` });
+  } catch (error) {
+    console.error('Bulk Upload Error:', error);
+    res.status(500).json({ success: false, message: 'Server error during bulk upload', error: error.message });
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
@@ -278,5 +399,6 @@ module.exports = {
   deleteProduct,
   getTopBuys,
   getTrendingBrands,
-  getCombinedCatalog
+  getCombinedCatalog,
+  bulkUploadProducts
 };

@@ -60,6 +60,14 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  shiprocketResponses: {
+    type: Array,
+    default: []
+  },
+  deliveryCharge: {
+    type: Number,
+    default: 0
+  },
   awbCode: {
     type: String,
     default: null

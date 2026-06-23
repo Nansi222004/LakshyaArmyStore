@@ -1,6 +1,6 @@
 const Notification = require('../Models/Notification');
 const User = require('../Models/User');
-const { sendNotificationToUser } = require('../Utils/firebaseAdmin');
+const { sendNotificationToUser } = require('../Router/firebaseAdmin');
 const mongoose = require('mongoose');
 
 // @desc    Send broadcast notification
