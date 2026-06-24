@@ -4,18 +4,20 @@ const jwt = require('jsonwebtoken');
 // Generate JWT Token
 const generateToken = (id, phone, tokenVersion = 0) => {
   return jwt.sign(
-    { id, phone, tokenVersion },
+    { id, phone, tokenVersion, aud: 'user' },
     process.env.JWT_SECRET,
     { expiresIn: '30d' }
   );
 };
 
-// Helper: Get OTP (staging = static, production = random)
-const getOtp = () => {
-  if (process.env.ENV === 'staging') {
+// Helper: Get OTP (staging/dev can use static for specific test phones)
+const getOtp = (phone) => {
+  const isStaging = process.env.ENV === 'staging' || process.env.ENV === 'development';
+  const testPhones = (process.env.TEST_PHONE_NUMBERS || '').split(',').map(p => p.trim());
+  if (isStaging && (process.env.TEST_PHONE_NUMBERS ? testPhones.includes(phone) : true)) {
     return process.env.STATIC_OTP || '123456';
   }
-  // Production: random 6-digit OTP
+  // Otherwise, random 6-digit OTP
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
@@ -39,7 +41,7 @@ const sendOtp = async (req, res) => {
       user = new User({ phone });
     }
 
-    const otp = getOtp();
+    const otp = getOtp(phone);
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     // Store hash, not raw OTP
@@ -107,23 +109,15 @@ const verifyOtp = async (req, res) => {
       return res.status(404).json({ success: false, message: 'User not found. Please request OTP first.' });
     }
 
-    // Staging: always accept static OTP
-    const staticOtp = process.env.STATIC_OTP || '123456';
-    const isStaging = process.env.ENV === 'staging';
+    // Check OTP validity
+    const crypto = require('crypto');
+    const inputHash = crypto.createHash('sha256').update(otp).digest('hex');
+    if (!user.otp || user.otp !== inputHash) {
+      return res.status(401).json({ success: false, message: 'Invalid OTP' });
+    }
 
-    if (isStaging && otp === staticOtp) {
-      // Staging bypass - accept static OTP
-    } else {
-      // Check OTP validity
-      const crypto = require('crypto');
-      const inputHash = crypto.createHash('sha256').update(otp).digest('hex');
-      if (!user.otp || user.otp !== inputHash) {
-        return res.status(401).json({ success: false, message: 'Invalid OTP' });
-      }
-
-      if (user.otpExpiry && new Date() > user.otpExpiry) {
-        return res.status(401).json({ success: false, message: 'OTP expired. Please request a new one.' });
-      }
+    if (user.otpExpiry && new Date() > user.otpExpiry) {
+      return res.status(401).json({ success: false, message: 'OTP expired. Please request a new one.' });
     }
 
     // Mark verified, clear OTP

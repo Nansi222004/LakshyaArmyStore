@@ -16,7 +16,9 @@ const orderSchema = new mongoose.Schema({
       name: { type: String, required: true },
       price: { type: Number, required: true },
       quantity: { type: Number, required: true },
-      image: { type: String }
+      image: { type: String },
+      variationSku: { type: String, default: null },
+      attributes: { type: Map, of: String, default: {} }
     }
   ],
   total: {
@@ -36,16 +38,19 @@ const orderSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ['Pending', 'Paid', 'Failed', 'Refunded'],
+    enum: ['Pending', 'Paid', 'Failed', 'Refunded', 'Partially Refunded'],
     default: 'Pending'
   },
   paymentId: {
-    type: String,
-    default: ''
+    type: String
+  },
+  coinsRedeemed: {
+    type: Number,
+    default: 0
   },
   status: {
     type: String,
-    enum: ['Pending', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled', 'Return Requested', 'Refunded'],
+    enum: ['Pending', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled', 'Return Requested', 'Refunded', 'Partially Refunded'],
     default: 'Pending'
   },
   couponCode: {
@@ -103,5 +108,13 @@ orderSchema.index({ status: 1, createdAt: -1 });  // Admin status filter
 orderSchema.index({ paymentStatus: 1 });           // Payment reconciliation
 orderSchema.index({ shiprocketOrderId: 1 }, { sparse: true }); // Webhook lookup
 orderSchema.index({ couponCode: 1 }, { sparse: true }); // Coupon usage
+
+orderSchema.index({ paymentId: 1 }, { sparse: true, unique: true });
+
+orderSchema.pre('save', function () {
+  if (this.paymentId === null || this.paymentId === '') {
+    this.paymentId = undefined;
+  }
+});
 
 module.exports = mongoose.model('Order', orderSchema);

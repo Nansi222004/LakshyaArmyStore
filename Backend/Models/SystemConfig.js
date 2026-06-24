@@ -9,6 +9,7 @@ const systemConfigSchema = new mongoose.Schema({
   gstNo: { type: String, default: '07AAAAA0000A1Z5' },
   gstPercentage: { type: Number, default: 18 },
   referralCoinsPerReferral: { type: Number, default: 100 },
+  returnWindowDays: { type: Number, default: 7 },
   referralEnabled: { type: Boolean, default: true }
 }, { timestamps: true });
 

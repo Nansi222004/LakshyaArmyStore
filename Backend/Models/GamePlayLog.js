@@ -29,4 +29,7 @@ const gamePlayLogSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+gamePlayLogSchema.index({ gameId: 1, userId: 1 });
+gamePlayLogSchema.index({ userId: 1, createdAt: -1 });
+
 module.exports = mongoose.model('GamePlayLog', gamePlayLogSchema);

@@ -3,6 +3,8 @@ const Order = require('../Models/Order');
 const Product = require('../Models/Product');
 const CoinTransaction = require('../Models/CoinTransaction');
 const shiprocketService = require('../Router/shiprocketService');
+const User = require('../Models/User');
+const axios = require('axios');
 
 // @desc    Create a return request (User)
 // @route   POST /returns
@@ -30,19 +32,71 @@ exports.createReturnRequest = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Only delivered orders can be returned' });
     }
 
+    // Check return window
+    const SystemConfig = require('../Models/SystemConfig');
+    const config = await SystemConfig.findOne();
+    const returnWindowDays = (config && config.returnWindowDays !== undefined) ? config.returnWindowDays : 7;
+    
+    const deliveryDate = order.updatedAt;
+    const timeDiff = new Date() - new Date(deliveryDate);
+    const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+    if (daysDiff > returnWindowDays) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `The return window of ${returnWindowDays} days has expired for this order.` 
+      });
+    }
+
+    if (order.paymentMethod === 'Online' && order.paymentStatus !== 'Paid') {
+      return res.status(400).json({ success: false, message: 'Cannot request return for unpaid online order' });
+    }
+
     // Check if a return request already exists for this order
     const existingReturn = await ReturnRequest.findOne({ orderId, status: { $nin: ['Rejected'] } });
     if (existingReturn) {
       return res.status(400).json({ success: false, message: 'A return request already exists for this order' });
     }
 
-    // Calculate refund amount from selected items
-    const refundAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    // Validate return items and calculate refund amount securely (H-04 return amount security, M-13 return item validation)
+    let calculatedRefundAmount = 0;
+    const validatedReturnItems = [];
+
+    for (const returnItem of items) {
+      if (!returnItem.productId || !returnItem.quantity || returnItem.quantity <= 0) {
+        return res.status(400).json({ success: false, message: 'Invalid product or quantity in return request' });
+      }
+
+      // Find item in original order
+      const orderItem = order.items.find(item => item.productId.toString() === returnItem.productId.toString());
+      if (!orderItem) {
+        return res.status(400).json({ success: false, message: `Item ${returnItem.productId} is not part of this order` });
+      }
+
+      // Check return quantity against ordered quantity
+      if (returnItem.quantity > orderItem.quantity) {
+        return res.status(400).json({ success: false, message: `Return quantity (${returnItem.quantity}) for "${orderItem.name}" exceeds ordered quantity (${orderItem.quantity})` });
+      }
+
+      // Price is loaded from order, not trust user input
+      calculatedRefundAmount += orderItem.price * returnItem.quantity;
+
+      validatedReturnItems.push({
+        productId: orderItem.productId,
+        name: orderItem.name,
+        price: orderItem.price,
+        quantity: returnItem.quantity,
+        image: orderItem.image
+      });
+    }
+
+    // Cap the refund amount by the total amount paid on the order
+    const refundAmount = Math.min(calculatedRefundAmount, order.total);
 
     const returnRequest = await ReturnRequest.create({
       orderId,
       userId: req.user._id,
-      items,
+      items: validatedReturnItems,
       reason,
       reasonDetails: reasonDetails || '',
       refundAmount,
@@ -258,6 +312,8 @@ exports.getReturnById = async (req, res) => {
 // @route   PUT /returns/admin/:id/status
 // @access  Private (Admin)
 exports.updateReturnStatus = async (req, res) => {
+  let oldStatus = null;
+  let statusLocked = false;
   try {
     const { status, adminNotes, refundAmount } = req.body;
 
@@ -282,7 +338,25 @@ exports.updateReturnStatus = async (req, res) => {
       });
     }
 
-    // Update fields
+    oldStatus = returnRequest.status;
+
+    // Acquire atomic status lock to prevent concurrent double-spend/double-refund
+    const lockedRequest = await ReturnRequest.findOneAndUpdate(
+      { _id: req.params.id, status: oldStatus },
+      { $set: { status: status } },
+      { new: true }
+    );
+
+    if (!lockedRequest) {
+      return res.status(409).json({
+        success: false,
+        message: 'Conflict: This return request was updated by another process. Please refresh and try again.'
+      });
+    }
+
+    statusLocked = true;
+
+    // Update local variables
     returnRequest.status = status;
     if (adminNotes !== undefined) returnRequest.adminNotes = adminNotes;
     if (refundAmount !== undefined) returnRequest.refundAmount = refundAmount;
@@ -392,6 +466,14 @@ exports.updateReturnStatus = async (req, res) => {
     // Handle refund processing
     if (status === 'Refunded') {
       const order = await Order.findById(returnRequest.orderId);
+      
+      if (!order) {
+        return res.status(404).json({ success: false, message: 'Original order not found for return request' });
+      }
+
+      if (order.paymentMethod === 'Online' && order.paymentStatus !== 'Paid') {
+        return res.status(400).json({ success: false, message: 'Cannot process refund for unpaid online order' });
+      }
 
       // 1. Restore stock for returned items
       for (const item of returnRequest.items) {
@@ -402,13 +484,46 @@ exports.updateReturnStatus = async (req, res) => {
         }
       }
 
-      // 2. Credit refund to user's wallet via CoinTransaction
-      await CoinTransaction.create({
-        userId: returnRequest.userId,
-        title: `Refund for Return #${returnRequest._id.toString().substring(returnRequest._id.toString().length - 6).toUpperCase()}`,
-        amount: returnRequest.refundAmount,
-        type: 'earned'
-      });
+      // 2. Process Refund (Razorpay online or Coins wallet fallback)
+      let refundProcessedOnline = false;
+      
+      if (order && order.paymentMethod === 'Online' && order.paymentId) {
+        const rzpKeyId = process.env.RAZORPAY_KEY_ID;
+        const rzpKeySecret = process.env.RAZORPAY_KEY_SECRET;
+
+        if (rzpKeyId && rzpKeySecret) {
+          try {
+            const rzpAuth = Buffer.from(`${rzpKeyId}:${rzpKeySecret}`).toString('base64');
+            await axios.post(`https://api.razorpay.com/v1/payments/${order.paymentId}/refund`, {
+              amount: returnRequest.refundAmount * 100
+            }, {
+              headers: {
+                'Authorization': `Basic ${rzpAuth}`,
+                'Content-Type': 'application/json'
+              }
+            });
+            refundProcessedOnline = true;
+            console.log(`Razorpay refund processed successfully for payment: ${order.paymentId}`);
+          } catch (refundErr) {
+            console.error('Razorpay refund API call failed, falling back to coins store credit:', refundErr.response?.data || refundErr.message);
+          }
+        }
+      }
+
+      if (!refundProcessedOnline) {
+        // Credit refund to user's wallet via CoinTransaction
+        await CoinTransaction.create({
+          userId: returnRequest.userId,
+          title: `Refund for Return #${returnRequest._id.toString().substring(returnRequest._id.toString().length - 6).toUpperCase()}`,
+          amount: returnRequest.refundAmount,
+          type: 'earned'
+        });
+
+        // Update the User document's referralCoins balance
+        await User.findByIdAndUpdate(returnRequest.userId, {
+          $inc: { referralCoins: returnRequest.refundAmount }
+        });
+      }
 
       // 3. Update order
       if (order) {
@@ -419,6 +534,8 @@ exports.updateReturnStatus = async (req, res) => {
         if (returnedQty >= orderQty) {
           order.status = 'Cancelled'; // Full return
           order.paymentStatus = 'Refunded';
+        } else {
+          order.paymentStatus = 'Partially Refunded';
         }
         await order.save();
       }
@@ -428,6 +545,10 @@ exports.updateReturnStatus = async (req, res) => {
 
     res.status(200).json({ success: true, message: `Return status updated to ${status}`, returnRequest });
   } catch (error) {
+    if (statusLocked && oldStatus) {
+      console.log(`⚠️ Rollback: Releasing status lock on return request ${req.params.id}. Reverting status to '${oldStatus}'`);
+      await ReturnRequest.findByIdAndUpdate(req.params.id, { $set: { status: oldStatus } });
+    }
     console.error('Error updating return status:', error);
     res.status(500).json({ success: false, message: error.message });
   }

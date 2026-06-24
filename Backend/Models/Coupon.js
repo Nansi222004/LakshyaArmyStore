@@ -34,9 +34,17 @@ const couponSchema = new mongoose.Schema({
     enum: ['Active', 'Paused', 'Expired'],
     default: 'Active'
   },
+  perUserLimit: {
+    type: Number,
+    default: 1
+  },
   usage: {
     type: Number,
     default: 0
+  },
+  maxDiscount: {
+    type: Number,
+    default: null
   }
 }, { timestamps: true });
 

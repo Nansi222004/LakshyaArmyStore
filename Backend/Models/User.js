@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     default: null,
-    trim: true
+    trim: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address']
   },
   avatar: {
     type: String,
@@ -90,5 +91,10 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   if (!this.password) return false;
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
+// Indexes
+userSchema.index({ email: 1 }, { sparse: true });
+userSchema.index({ referralCode: 1 }, { sparse: true });
+userSchema.index({ referredBy: 1 }, { sparse: true });
 
 module.exports = mongoose.model('User', userSchema);

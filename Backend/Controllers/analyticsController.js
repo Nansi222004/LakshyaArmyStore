@@ -2,6 +2,7 @@ const AnalyticsEvent = require('../Models/AnalyticsEvent');
 const User = require('../Models/User');
 const Order = require('../Models/Order');
 const GamePlayLogModel = require('../Models/GamePlayLog');
+const Game = require('../Models/Game');
 const mongoose = require('mongoose');
 
 // @desc    Record tracking event(s)
@@ -64,18 +65,26 @@ const getOverview = async (req, res) => {
     const totalOrders = await Order.countDocuments();
     
     // 3. Total Revenue (sum of paid orders total)
-    const paidOrders = await Order.find({ paymentStatus: 'Paid' });
-    const totalRevenue = paidOrders.reduce((sum, o) => sum + o.total, 0);
+    const revenueStats = await Order.aggregate([
+      { $match: { paymentStatus: 'Paid' } },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ]);
+    const totalRevenue = revenueStats.length > 0 ? revenueStats[0].total : 0;
 
     // Calculate today's stats
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
-    const paidOrdersToday = await Order.find({
-      paymentStatus: 'Paid',
-      createdAt: { $gte: todayStart }
-    });
-    const revenueToday = paidOrdersToday.reduce((sum, o) => sum + o.total, 0);
+    const revenueTodayStats = await Order.aggregate([
+      {
+        $match: {
+          paymentStatus: 'Paid',
+          createdAt: { $gte: todayStart }
+        }
+      },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ]);
+    const revenueToday = revenueTodayStats.length > 0 ? revenueTodayStats[0].total : 0;
 
     const ordersToday = await Order.countDocuments({
       createdAt: { $gte: todayStart }
@@ -856,12 +865,18 @@ const getGameAnalytics = async (req, res) => {
 const getEarnings = async (req, res) => {
   try {
     // 1. Net Revenue: Sum of total of paid orders
-    const paidOrders = await Order.find({ paymentStatus: 'Paid' });
-    const netRevenue = paidOrders.reduce((sum, o) => sum + o.total, 0);
+    const netRevenueStats = await Order.aggregate([
+      { $match: { paymentStatus: 'Paid' } },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ]);
+    const netRevenue = netRevenueStats.length > 0 ? netRevenueStats[0].total : 0;
 
     // 2. Gross Merchandise Value (GMV): Sum of all orders (excluding Cancelled)
-    const activeOrders = await Order.find({ status: { $ne: 'Cancelled' } });
-    const gmv = activeOrders.reduce((sum, o) => sum + o.total, 0);
+    const gmvStats = await Order.aggregate([
+      { $match: { status: { $ne: 'Cancelled' } } },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ]);
+    const gmv = gmvStats.length > 0 ? gmvStats[0].total : 0;
 
     // 3. Coins Redeemed (spent type transactions)
     const CoinTransaction = require('../Models/CoinTransaction');
@@ -910,22 +925,39 @@ const getEarnings = async (req, res) => {
     }
 
     // 5. Category Revenue Breakdown
-    const Product = require('../Models/Product');
-    const allProducts = await Product.find({}, 'category');
-    const categoryMap = {};
-    allProducts.forEach(p => {
-      categoryMap[p._id.toString()] = p.category || 'others';
-    });
+    const categoryRevenueStats = await Order.aggregate([
+      { $match: { paymentStatus: 'Paid' } },
+      { $unwind: '$items' },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'items.productId',
+          foreignField: '_id',
+          as: 'productInfo'
+        }
+      },
+      { $unwind: { path: '$productInfo', preserveNullAndEmptyArrays: true } },
+      {
+        $group: {
+          _id: { $ifNull: ['$productInfo.category', 'others'] },
+          revenue: {
+            $sum: {
+              $multiply: [
+                { $ifNull: ['$items.price', 0] },
+                { $ifNull: ['$items.quantity', 1] }
+              ]
+            }
+          }
+        }
+      }
+    ]);
 
     const categoryRevenueRaw = {};
     let totalRevenueSum = 0;
-    paidOrders.forEach(order => {
-      order.items.forEach(item => {
-        const cat = categoryMap[item.productId?.toString()] || 'others';
-        const lineTotal = (item.price || 0) * (item.quantity || 1);
-        categoryRevenueRaw[cat] = (categoryRevenueRaw[cat] || 0) + lineTotal;
-        totalRevenueSum += lineTotal;
-      });
+    categoryRevenueStats.forEach(item => {
+      const cat = item._id || 'others';
+      categoryRevenueRaw[cat] = item.revenue;
+      totalRevenueSum += item.revenue;
     });
 
     const categoryRevenue = [];

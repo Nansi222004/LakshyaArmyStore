@@ -61,7 +61,12 @@ app.use(cors({
 }));
 
 // Request payload limits
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ 
+  limit: '10kb',
+  verify: (req, res, buf) => {
+    req.rawBody = buf;
+  }
+}));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Rate Limiters
@@ -111,6 +116,7 @@ app.use('/auth', require('./Router/userAuthRoutes'));
 app.use('/addresses', require('./Router/addressRoutes'));
 app.use('/cart', require('./Router/cartRoutes'));
 app.use('/orders', require('./Router/orderRoutes'));
+app.use('/api/payments', require('./Router/paymentRoutes'));
 app.use('/referral', require('./Router/referralRoutes'));
 app.use('/games', require('./Router/gameRoutes'));
 app.use('/reels', require('./Router/reelRoutes'));

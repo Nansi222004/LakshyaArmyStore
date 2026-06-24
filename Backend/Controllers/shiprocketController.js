@@ -1,6 +1,8 @@
 const shiprocketService = require('../Router/shiprocketService');
 const Order = require('../Models/Order');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
+const { handleOrderCancellationStockAndCoupon, checkAndTriggerReferral } = require('../utils/orderHelper');
 
 exports.checkServiceability = async (req, res) => {
     try {
@@ -303,15 +305,8 @@ exports.cancelShiprocketOrder = async (req, res) => {
             }
         }
 
-        // Restore stock for each item
-        const Product = require('../Models/Product');
-        for (const item of order.items) {
-            if (item.productId) {
-                await Product.findByIdAndUpdate(item.productId, {
-                    $inc: { stock: item.quantity || 1, sales: -(item.quantity || 1) }
-                });
-            }
-        }
+        // Restore stock & coupon usage
+        await handleOrderCancellationStockAndCoupon(order);
 
         // Update order status
         order.status = 'Cancelled';
@@ -366,12 +361,24 @@ exports.syncOrderStatus = async (req, res) => {
                     mappedStatus = 'Out for Delivery';
                 } else if (srStatus === 'DELIVERED') {
                     mappedStatus = 'Delivered';
+                    if (order.paymentMethod === 'COD') {
+                        order.paymentStatus = 'Paid';
+                    }
                 } else if (['CANCELLED', 'RTO INITIATED', 'RTO DELIVERED'].includes(srStatus)) {
                     mappedStatus = 'Cancelled';
                 }
 
+                const wasAlreadyCancelled = order.status === 'Cancelled';
                 order.status = mappedStatus;
                 order.shipmentStatus = currentStatus;
+
+                if (mappedStatus === 'Cancelled' && !wasAlreadyCancelled) {
+                    try {
+                        await handleOrderCancellationStockAndCoupon(order);
+                    } catch (err) {
+                        console.error('Failed to restore stock on Shiprocket sync cancel:', err.message);
+                    }
+                }
 
                 // Rebuild tracking history from Shiprocket activities
                 if (activities.length > 0) {
@@ -391,6 +398,7 @@ exports.syncOrderStatus = async (req, res) => {
 
                 order.shiprocketResponses.push({ type: 'SYNC_STATUS', data: trackingData });
                 await order.save();
+                await checkAndTriggerReferral(order);
             }
         }
 
@@ -404,8 +412,31 @@ exports.syncOrderStatus = async (req, res) => {
 // Phase 4: Webhook
 exports.webhookReceiver = async (req, res) => {
     try {
-        // Shiprocket sends POST request to this endpoint
         const payload = req.body;
+        const signature = req.headers['x-shiprocket-signature'];
+        const webhookSecret = process.env.SHIPROCKET_WEBHOOK_SECRET;
+
+        if (webhookSecret || process.env.ENV === 'production') {
+            if (!signature) {
+                console.error('Shiprocket Webhook signature missing.');
+                return res.status(401).json({ success: false, message: 'Unauthorized: Missing signature' });
+            }
+            if (!webhookSecret) {
+                console.error('SHIPROCKET_WEBHOOK_SECRET is not set in environment.');
+                return res.status(500).json({ success: false, message: 'Server configuration error' });
+            }
+            const expectedSig = crypto
+                .createHmac('sha256', webhookSecret)
+                .update(req.rawBody)
+                .digest('hex');
+
+            if (signature !== expectedSig) {
+                console.error('Shiprocket Webhook signature mismatch.');
+                return res.status(401).json({ success: false, message: 'Unauthorized: Invalid signature' });
+            }
+        }
+
+        // Shiprocket sends POST request to this endpoint
         console.log('Shiprocket Webhook received:', payload);
 
         const orderId = payload.order_id || payload.shiprocket_order_id;
@@ -453,6 +484,9 @@ exports.webhookReceiver = async (req, res) => {
                     order.paymentStatus = 'Paid';
                 }
             } else if (['CANCELLED', 'RTO INITIATED', 'RTO DELIVERED', 'RTO_INITIATED', 'RTO_DELIVERED', 'CANCELED'].includes(srStatus)) {
+                if (order.status !== 'Cancelled') {
+                    await handleOrderCancellationStockAndCoupon(order);
+                }
                 mappedStatus = 'Cancelled';
             } else if (['NEW', 'PICKUP SCHEDULED', 'AWB ASSIGNED', 'PICKUP GENERATED', 'OUT FOR PICKUP', 'PICKED UP', 'READY TO SHIP', 'AWB_ASSIGNED', 'PICKUP_SCHEDULED', 'PICKUP_GENERATED', 'OUT_FOR_PICKUP', 'PICKED_UP', 'READY_TO_SHIP'].includes(srStatus)) {
                 mappedStatus = 'Processing';
@@ -474,25 +508,30 @@ exports.webhookReceiver = async (req, res) => {
             });
 
             await order.save();
+            await checkAndTriggerReferral(order);
             await order.populate('userId');
 
             // Send SMS via SMS India Hub
             if (order.userId && order.userId.phone) {
                 try {
-                    const axios = require('axios');
-                    let phone = order.userId.phone.toString().replace(/\D/g, '');
-                    if (phone.length === 10) phone = '91' + phone;
+                    const smsApiKey = process.env.SMS_API_KEY;
+                    if (!smsApiKey) {
+                        console.warn('⚠️ SMS_API_KEY is not configured in environment. Skipping status update SMS.');
+                    } else {
+                        const axios = require('axios');
+                        let phone = order.userId.phone.toString().replace(/\D/g, '');
+                        if (phone.length === 10) phone = '91' + phone;
 
-                    const msg = `Dear Customer, your Mynzo order tracking update: Status is now ${currentStatus || mappedStatus}.`;
-                    const smsApiKey = process.env.SMS_API_KEY || 'h2wGn6G24kiBVxGl2P3s3w';
-                    const smsSenderId = process.env.SMS_SENDER_ID || 'IIDMTB';
-                    const smsUrl = `https://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=${smsApiKey}&msisdn=${phone}&sid=${smsSenderId}&msg=${encodeURIComponent(msg)}&fl=0&gwid=2`;
+                        const msg = `Dear Customer, your Mynzo order tracking update: Status is now ${currentStatus || mappedStatus}.`;
+                        const smsSenderId = process.env.SMS_SENDER_ID || 'IIDMTB';
+                        const smsUrl = `https://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=${smsApiKey}&msisdn=${phone}&sid=${smsSenderId}&msg=${encodeURIComponent(msg)}&fl=0&gwid=2`;
 
-                    axios.get(smsUrl).then(response => {
-                        console.log('SMS sent for webhook update:', response.data);
-                    }).catch(err => {
-                        console.error('SMS send failed:', err.message);
-                    });
+                        axios.get(smsUrl).then(response => {
+                            console.log('SMS sent for webhook update:', response.data);
+                        }).catch(err => {
+                            console.error('SMS send failed:', err.message);
+                        });
+                    }
                 } catch (smsErr) {
                     console.error('Error preparing SMS:', smsErr.message);
                 }

@@ -5,12 +5,50 @@ const Coupon = require('../Models/Coupon');
 // @access Public (or Admin protected)
 exports.getCoupons = async (req, res) => {
   try {
-    const coupons = await Coupon.find().sort({ createdAt: -1 });
-    res.status(200).json({
-      success: true,
-      count: coupons.length,
-      coupons
-    });
+    // Check if request is authenticated as Admin
+    let isAdmin = false;
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    if (token) {
+      try {
+        const jwt = require('jsonwebtoken');
+        const secret = process.env.JWT_ADMIN_SECRET || (process.env.JWT_SECRET ? process.env.JWT_SECRET + '_admin_secret_fallback' : 'admin_default_super_secret_key_1298471298');
+        const decoded = jwt.verify(token, secret);
+        if (decoded.aud === 'admin') {
+          const Admin = require('../Models/Admin');
+          const admin = await Admin.findById(decoded.id);
+          if (admin && admin.isActive) {
+            isAdmin = true;
+          }
+        }
+      } catch (err) {
+        // Token verification failed or not an admin
+      }
+    }
+
+    if (isAdmin) {
+      // Admin gets full details of all coupons
+      const coupons = await Coupon.find().sort({ createdAt: -1 });
+      return res.status(200).json({
+        success: true,
+        count: coupons.length,
+        coupons
+      });
+    } else {
+      // Users/Public get only active, unexpired coupons with limited fields
+      const coupons = await Coupon.find({
+        status: 'Active',
+        expiry: { $gt: new Date() }
+      }).select('code type value minOrder expiry').sort({ createdAt: -1 });
+
+      return res.status(200).json({
+        success: true,
+        count: coupons.length,
+        coupons
+      });
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -250,6 +288,18 @@ exports.validateCoupon = async (req, res) => {
       });
     }
 
+    // Check per-user usage limits using req.user
+    if (req.user) {
+      const CouponUsage = require('../Models/CouponUsage');
+      const userUsage = await CouponUsage.findOne({ couponId: coupon._id, userId: req.user._id });
+      if (userUsage && userUsage.usageCount >= (coupon.perUserLimit || 1)) {
+        return res.status(400).json({
+          success: false,
+          message: 'You have already used this coupon.'
+        });
+      }
+    }
+
     res.status(200).json({
       success: true,
       message: 'Coupon validated successfully!',
@@ -258,8 +308,7 @@ exports.validateCoupon = async (req, res) => {
         type: coupon.type,
         value: coupon.value,
         minOrder: coupon.minOrder,
-        usageLimit: coupon.usageLimit,
-        usage: coupon.usage
+        maxDiscount: coupon.maxDiscount
       }
     });
 

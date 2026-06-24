@@ -95,6 +95,15 @@ const recordPlay = async (req, res) => {
     const today = getTodayDateString();
     const yesterday = getYesterdayDateString();
 
+    // Check if daily play limit has been reached
+    const existingPlay = await DailyPlayCount.findOne({ userId, gameId: game._id, date: today });
+    if (existingPlay && existingPlay.playCount >= game.dailyPlayLimit) {
+      return res.status(400).json({
+        success: false,
+        message: `You have reached the daily play limit of ${game.dailyPlayLimit} for this game.`
+      });
+    }
+
     // 1. Check/Update daily play count atomically
     let dailyPlay = await DailyPlayCount.findOneAndUpdate(
       { userId, gameId: game._id, date: today },

@@ -27,12 +27,12 @@
   "shortcuts": [
     {
       "name": "Crazy Deals",
-      "url": "/crazy-deals",
+      "url": "/#/crazy-deals",
       "description": "View today's crazy deals"
     },
     {
       "name": "My Cart",
-      "url": "/cart",
+      "url": "/#/cart",
       "description": "View your shopping cart"
     }
   ]

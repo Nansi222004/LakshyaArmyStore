@@ -149,7 +149,21 @@ const parseCityState = (address) => {
     let state = 'State';
     if (address && typeof address === 'string') {
         const cleanAddress = address.replace(/[-\s,]*\d{6}\s*$/, '').trim();
-        const parts = cleanAddress.split(',').map(p => p.trim()).filter(Boolean);
+        // Try splitting by comma first
+        let parts = cleanAddress.split(',').map(p => p.trim()).filter(Boolean);
+        
+        // Fallback to splitting by space if comma splitting yields a single part
+        if (parts.length < 2) {
+            const spaceParts = cleanAddress.split(/\s+/).map(p => p.trim()).filter(Boolean);
+            if (spaceParts.length >= 2) {
+                parts = [
+                    spaceParts.slice(0, spaceParts.length - 2).join(' '),
+                    spaceParts[spaceParts.length - 2],
+                    spaceParts[spaceParts.length - 1]
+                ].filter(Boolean);
+            }
+        }
+        
         if (parts.length >= 2) {
             state = parts[parts.length - 1];
             city = parts[parts.length - 2];
@@ -157,9 +171,34 @@ const parseCityState = (address) => {
             city = parts[0];
         }
     }
+
+    // Map common Indian state abbreviations to full names
+    const stateMap = {
+        'up': 'Uttar Pradesh',
+        'mp': 'Madhya Pradesh',
+        'ap': 'Andhra Pradesh',
+        'hp': 'Himachal Pradesh',
+        'jk': 'Jammu and Kashmir',
+        'dl': 'Delhi',
+        'hr': 'Haryana',
+        'pb': 'Punjab',
+        'rj': 'Rajasthan',
+        'mh': 'Maharashtra',
+        'ka': 'Karnataka',
+        'tn': 'Tamil Nadu',
+        'kl': 'Kerala',
+        'wb': 'West Bengal',
+        'gj': 'Gujarat'
+    };
+
+    const cleanState = state.toLowerCase().replace(/[^a-z\s]/g, '').trim();
+    if (stateMap[cleanState]) {
+        state = stateMap[cleanState];
+    }
+
     return {
-        city: city.substring(0, 30) || 'City',
-        state: state.substring(0, 30) || 'State'
+        city: city.substring(0, 30).trim() || 'City',
+        state: state.substring(0, 30).trim() || 'State'
     };
 };
 

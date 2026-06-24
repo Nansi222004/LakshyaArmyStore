@@ -19,6 +19,15 @@ const cartSchema = new mongoose.Schema({
         required: true,
         default: 1,
         min: 1
+      },
+      variationSku: {
+        type: String,
+        default: null
+      },
+      attributes: {
+        type: Map,
+        of: String,
+        default: {}
       }
     }
   ]

@@ -4,13 +4,37 @@ const path = require('path');
 
 let adminApp;
 try {
-  const serviceAccount = require('../config/firebase-service-account.json');
+  let serviceAccount = null;
 
-  adminApp = initializeApp({
-    credential: cert(serviceAccount)
-  });
+  // 1. Try to load from environment variable first (recommended for staging/production)
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    try {
+      serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      console.log('🔥 Loading Firebase credentials from FIREBASE_SERVICE_ACCOUNT environment variable.');
+    } catch (parseErr) {
+      console.error('❌ Failed to parse FIREBASE_SERVICE_ACCOUNT environment variable:', parseErr.message);
+    }
+  }
 
-  console.log('🔥 Firebase Admin SDK Initialized Successfully');
+  // 2. Fall back to local file only in development/staging if environment variable is not set
+  if (!serviceAccount && process.env.ENV !== 'production') {
+    try {
+      serviceAccount = require('../Config/firebase-service-account.json');
+      console.log('🔥 Loading Firebase credentials from local Config/firebase-service-account.json.');
+    } catch (fileErr) {
+      // Graceful fallback for developers without local JSON configuration
+      console.log('⚠️ Local Config/firebase-service-account.json not found. Proceeding without Firebase Admin capabilities.');
+    }
+  }
+
+  if (serviceAccount) {
+    adminApp = initializeApp({
+      credential: cert(serviceAccount)
+    });
+    console.log('🔥 Firebase Admin SDK Initialized Successfully');
+  } else {
+    console.warn('⚠️ Firebase Admin SDK is inactive: No credentials found (FIREBASE_SERVICE_ACCOUNT or local JSON file).');
+  }
 } catch (error) {
   console.error('❌ Firebase Admin SDK Initialization Failed:', error.message);
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Tag, Banknote, ShieldCheck, X, CheckCircle2, Plus } from 'lucide-react';
+import { ArrowLeft, MapPin, Tag, Banknote, ShieldCheck, X, CheckCircle2, Plus, Coins } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import OptimizedImage from '../components/ui/OptimizedImage';
@@ -38,6 +38,10 @@ export default function ReviewOrderPage() {
   const [promoError, setPromoError] = useState('');
   const [feeInfoModal, setFeeInfoModal] = useState(null);
   
+  // Coins states
+  const [redeemCoins, setRedeemCoins] = useState(false);
+  const [userCoins, setUserCoins] = useState(0);
+  
   // Payment states
   const [paymentMethod, setPaymentMethod] = useState('COD'); // 'COD' | 'ONLINE'
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -73,6 +77,28 @@ export default function ReviewOrderPage() {
   useEffect(() => {
     fetchAddresses();
   }, [user]);
+
+  // Fetch user coins from wallet
+  useEffect(() => {
+    const fetchUserCoins = async () => {
+      if (user && user.id) {
+        try {
+          const token = localStorage.getItem('userToken');
+          if (!token) return;
+          const res = await fetch(`${API_BASE}/auth/wallet`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            setUserCoins(data.coins || 0);
+          }
+        } catch (err) {
+          console.error("Error fetching user coins:", err);
+        }
+      }
+    };
+    fetchUserCoins();
+  }, [user, API_BASE]);
 
   useEffect(() => {
     if (cart && cart.length > 0) {
@@ -279,6 +305,12 @@ export default function ReviewOrderPage() {
           email: user?.email || "customer@example.com",
           contact: user?.phone || ""
         },
+        notes: {
+          userId: user?.id || user?._id || "",
+          addressId: selectedAddress?._id || selectedAddress?.id || "",
+          couponCode: appliedCoupon ? appliedCoupon.code : "",
+          cartSummary: cart.map(item => `${item.id || item.productId}:${item.quantity}`).join(',')
+        },
         theme: {
           color: "#ee4923"
         },
@@ -307,7 +339,9 @@ export default function ReviewOrderPage() {
         name: item.name,
         price: item.price,
         quantity: item.quantity,
-        image: item.image
+        image: item.image,
+        variationSku: item.variationSku || null,
+        attributes: item.attributes || {}
       }));
       
       const res = await fetch(`${API_BASE}/orders`, {
@@ -330,7 +364,8 @@ export default function ReviewOrderPage() {
           paymentId: paymentId,
           couponCode: appliedCoupon ? appliedCoupon.code : undefined,
           deliveryCharge: deliveryCharge,
-          etd: etd
+          etd: etd,
+          redeemCoins: redeemCoins
         })
       });
       
@@ -346,7 +381,9 @@ export default function ReviewOrderPage() {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
-            image: item.image
+            image: item.image,
+            variationSku: item.variationSku || null,
+            attributes: item.attributes || {}
           })),
           total: o.total,
           status: o.status,
@@ -376,7 +413,9 @@ export default function ReviewOrderPage() {
   const platformCommission = 15;
   
   const gstAmount = Math.round(Math.max(0, totalCartPrice - discountAmount) * 0.18);
-  const grandTotal = Math.max(0, totalCartPrice - discountAmount + gstAmount + platformCommission + deliveryCharge);
+  const grandTotalBeforeCoins = Math.max(0, totalCartPrice - discountAmount + gstAmount + platformCommission + deliveryCharge);
+  const coinsRedeemedAmount = redeemCoins ? Math.min(userCoins, grandTotalBeforeCoins) : 0;
+  const grandTotal = Math.max(0, grandTotalBeforeCoins - coinsRedeemedAmount);
   const mockOriginalTotal = totalCartPrice + mockSavings;
 
   const firstItem = cart && cart.length > 0 ? cart[0] : null;
@@ -439,6 +478,15 @@ export default function ReviewOrderPage() {
                   </div>
                   <div className="flex-1 flex flex-col justify-center">
                     <h3 className="text-xs font-bold text-slate-800 leading-snug line-clamp-2">{item.name}</h3>
+                    {item.attributes && Object.keys(item.attributes).length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-1">
+                        {Object.entries(item.attributes).map(([key, val]) => (
+                          <span key={key} className="text-[9px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-black uppercase">
+                            {key}: {val}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     <div className="flex items-center justify-between mt-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-black text-[#02006c]">₹{item.price * item.quantity}</span>
@@ -516,6 +564,42 @@ export default function ReviewOrderPage() {
           </div>
         </div>
 
+        {/* Mynzo Coins Redemption */}
+        {userCoins > 0 && (
+          <div>
+            <div className="flex items-center gap-2 mb-2 px-1 text-[#02006c]">
+              <Coins className="w-4 h-4 text-amber-500 animate-pulse" />
+              <h2 className="text-xs font-black uppercase tracking-wide">Mynzo Coins</h2>
+            </div>
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-slate-800">Redeem Mynzo Coins</span>
+                <span className="text-[10px] text-slate-500 font-medium mt-0.5">
+                  Available Balance: <span className="font-bold text-slate-700">{userCoins} Coins</span> (Worth ₹{userCoins})
+                </span>
+                {redeemCoins && (
+                  <span className="text-[10px] text-emerald-600 font-bold mt-1">
+                    Saving extra ₹{coinsRedeemedAmount} on this order!
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setRedeemCoins(!redeemCoins)}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  redeemCoins ? 'bg-emerald-500' : 'bg-slate-200'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    redeemCoins ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Price Details */}
         <div>
           <div className="flex items-center gap-2 mb-2 px-1 text-[#02006c]">
@@ -535,6 +619,12 @@ export default function ReviewOrderPage() {
               <div className="flex justify-between items-center text-[13px]">
                 <span className="text-slate-600">Coupon Discount ({appliedCoupon.code})</span>
                 <span className="text-emerald-600 font-medium">- ₹{discountAmount}</span>
+              </div>
+            )}
+            {redeemCoins && coinsRedeemedAmount > 0 && (
+              <div className="flex justify-between items-center text-[13px]">
+                <span className="text-slate-600">Coins Redeemed</span>
+                <span className="text-emerald-600 font-medium">- ₹{coinsRedeemedAmount}</span>
               </div>
             )}
             <div className="flex justify-between items-center text-[13px]">

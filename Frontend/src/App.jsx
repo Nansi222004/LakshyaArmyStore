@@ -15,7 +15,6 @@ const LoginPage          = lazy(() => import('./pages/LoginPage'));
 const WishlistPage       = lazy(() => import('./pages/WishlistPage'));
 const OrdersPage         = lazy(() => import('./pages/OrdersPage'));
 const CrazyDealsPage     = lazy(() => import('./pages/CrazyDealsPage'));
-const CheckoutPage       = lazy(() => import('./pages/CheckoutPage'));
 const ReviewOrderPage    = lazy(() => import('./pages/ReviewOrderPage'));
 const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
 const TopSelectionPage   = lazy(() => import('./pages/TopSelectionPage'));
@@ -91,7 +90,7 @@ function AppContent() {
   useEffect(() => {
     // Once splash screen video completes, run hierarchical route matching
     if (!showSplash) {
-      const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/refer', '/saved-addresses', '/wallet', '/checkout'];
+      const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/refer', '/saved-addresses', '/wallet'];
       const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
 
       if (!user && isProtectedRoute) {
@@ -141,7 +140,6 @@ function AppContent() {
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/crazy-deals" element={<CrazyDealsPage />} />
         <Route path="/review-order" element={<ReviewOrderPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/similar-products" element={<SimilarProductsPage />} />
         <Route path="/top-selection" element={<TopSelectionPage />} />

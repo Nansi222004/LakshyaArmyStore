@@ -14,6 +14,12 @@ const protectUser = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Verify audience
+    if (decoded.aud !== 'user') {
+      return res.status(401).json({ success: false, message: 'Not authorized, invalid token audience' });
+    }
+
     req.user = await User.findById(decoded.id).select('-otp -otpExpiry');
     if (!req.user) {
       return res.status(401).json({ success: false, message: 'User not found' });

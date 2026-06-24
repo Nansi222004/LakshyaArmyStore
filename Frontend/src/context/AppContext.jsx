@@ -62,6 +62,33 @@ export const AppProvider = ({ children }) => {
   
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+  const mapCartItems = (items) => {
+    if (!items) return [];
+    return items.map(item => {
+      const p = item.productId;
+      if (!p) return null;
+      const variant = item.variationSku && p.variations ? p.variations.find(v => v.sku === item.variationSku) : null;
+      const itemPrice = variant ? (variant.price || p.sellingPrice) : p.sellingPrice;
+      return {
+        id: p._id || p.id,
+        name: p.name,
+        desc: p.description || '',
+        price: itemPrice,
+        originalPrice: p.mrp || p.sellingPrice,
+        discount: p.discountLabel || (p.mrp ? `-${Math.round((1 - itemPrice / p.mrp) * 100)}%` : '0%'),
+        rating: p.rating || 0,
+        type: (p.category || '').toLowerCase(),
+        image: p.images && p.images[0] ? p.images[0] : '',
+        brandName: p.brandName || 'Mynzo Originals',
+        sales: p.sales || 0,
+        quantity: item.quantity,
+        weight: p.shippingSpecs?.weight || 0.5,
+        variationSku: item.variationSku || null,
+        attributes: item.attributes || {}
+      };
+    }).filter(Boolean);
+  };
+
   const triggerForceLogoutUI = async () => {
     // Clear tokens immediately in background
     localStorage.removeItem('userToken');
@@ -278,25 +305,7 @@ export const AppProvider = ({ children }) => {
         }
         const data = await res.json();
         if (data.success && data.data && data.data.items) {
-          const mapped = data.data.items.map(item => {
-            const p = item.productId;
-            if (!p) return null;
-            return {
-              id: p._id || p.id,
-              name: p.name,
-              desc: p.description || '',
-              price: p.sellingPrice,
-              originalPrice: p.mrp || p.sellingPrice,
-              discount: p.discountLabel || (p.mrp ? `-${Math.round((1 - p.sellingPrice / p.mrp) * 100)}%` : '0%'),
-              rating: p.rating || 0,
-              type: (p.category || '').toLowerCase(),
-              image: p.images && p.images[0] ? p.images[0] : '',
-              brandName: p.brandName || 'Mynzo Originals',
-              sales: p.sales || 0,
-              quantity: item.quantity,
-              weight: p.shippingSpecs?.weight || 0.5
-            };
-          }).filter(Boolean);
+          const mapped = mapCartItems(data.data.items);
           setCart(mapped);
         }
       } catch (err) {
@@ -473,25 +482,7 @@ export const AppProvider = ({ children }) => {
         });
         const data = await res.json();
         if (data.success && data.data && data.data.items) {
-          const mapped = data.data.items.map(item => {
-            const p = item.productId;
-            if (!p) return null;
-            return {
-              id: p._id || p.id,
-              name: p.name,
-              desc: p.description || '',
-              price: p.sellingPrice,
-              originalPrice: p.mrp || p.sellingPrice,
-              discount: p.discountLabel || (p.mrp ? `-${Math.round((1 - p.sellingPrice / p.mrp) * 100)}%` : '0%'),
-              rating: p.rating || 0,
-              type: (p.category || '').toLowerCase(),
-              image: p.images && p.images[0] ? p.images[0] : '',
-              brandName: p.brandName || 'Mynzo Originals',
-              sales: p.sales || 0,
-              quantity: item.quantity,
-              weight: p.shippingSpecs?.weight || 0.5
-            };
-          }).filter(Boolean);
+          const mapped = mapCartItems(data.data.items);
           setCart(mapped);
         }
       } catch (err) {
@@ -523,25 +514,7 @@ export const AppProvider = ({ children }) => {
         });
         const data = await res.json();
         if (data.success && data.data && data.data.items) {
-          const mapped = data.data.items.map(item => {
-            const p = item.productId;
-            if (!p) return null;
-            return {
-              id: p._id || p.id,
-              name: p.name,
-              desc: p.description || '',
-              price: p.sellingPrice,
-              originalPrice: p.mrp || p.sellingPrice,
-              discount: p.discountLabel || (p.mrp ? `-${Math.round((1 - p.sellingPrice / p.mrp) * 100)}%` : '0%'),
-              rating: p.rating || 0,
-              type: (p.category || '').toLowerCase(),
-              image: p.images && p.images[0] ? p.images[0] : '',
-              brandName: p.brandName || 'Mynzo Originals',
-              sales: p.sales || 0,
-              quantity: item.quantity,
-              weight: p.shippingSpecs?.weight || 0.5
-            };
-          }).filter(Boolean);
+          const mapped = mapCartItems(data.data.items);
           setCart(mapped);
         }
       } catch (err) {
@@ -566,25 +539,7 @@ export const AppProvider = ({ children }) => {
         });
         const data = await res.json();
         if (data.success && data.data && data.data.items) {
-          const mapped = data.data.items.map(item => {
-            const p = item.productId;
-            if (!p) return null;
-            return {
-              id: p._id || p.id,
-              name: p.name,
-              desc: p.description || '',
-              price: p.sellingPrice,
-              originalPrice: p.mrp || p.sellingPrice,
-              discount: p.discountLabel || (p.mrp ? `-${Math.round((1 - p.sellingPrice / p.mrp) * 100)}%` : '0%'),
-              rating: p.rating || 0,
-              type: (p.category || '').toLowerCase(),
-              image: p.images && p.images[0] ? p.images[0] : '',
-              brandName: p.brandName || 'Mynzo Originals',
-              sales: p.sales || 0,
-              quantity: item.quantity,
-              weight: p.shippingSpecs?.weight || 0.5
-            };
-          }).filter(Boolean);
+          const mapped = mapCartItems(data.data.items);
           setCart(mapped);
         }
       } catch (err) {

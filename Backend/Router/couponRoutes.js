@@ -17,7 +17,7 @@ router.get('/', getCoupons);
 router.get('/history', protectUser, getUserCouponHistory);
 
 // Validate coupon
-router.post('/validate', validateCoupon);
+router.post('/validate', protectUser, validateCoupon);
 
 // Admin-only endpoints
 router.post('/', protectAdmin, createCoupon);
