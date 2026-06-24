@@ -66,7 +66,8 @@ function AppContent() {
 
   // Only show splash screen when landing on the root path '/'.
   // If the user opens a direct link (e.g. /support), skip it immediately.
-  const isRootPath = window.location.pathname === '/';
+  const isPrivacyOrSupport = /privacy|support/i.test(window.location.hash);
+  const isRootPath = window.location.pathname === '/' && !isPrivacyOrSupport;
   const [showSplash, setShowSplash] = useState(isRootPath);
   const [isFading, setIsFading] = useState(false);
 
