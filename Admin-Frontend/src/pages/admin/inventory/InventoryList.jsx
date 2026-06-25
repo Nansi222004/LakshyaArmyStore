@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../../utils/toast';
 import ConfirmModal from '../../../components/ConfirmModal';
 import OptimizedImage from '../../../components/common/OptimizedImage';
 
@@ -173,7 +173,7 @@ export default function InventoryList() {
     
     const fileExt = file.name.split('.').pop().toLowerCase();
     if (!['csv', 'xlsx', 'xls'].includes(fileExt)) {
-      toast.error('Please upload a valid Excel or CSV file');
+      toast.info('Please upload a valid Excel or CSV file');
       e.target.value = '';
       return;
     }
@@ -186,7 +186,7 @@ export default function InventoryList() {
         // Basic CSV parsing handling quotes
         const rows = text.split('\n').filter(r => r.trim());
         if (rows.length < 2) {
-          toast.error('File is empty or has no product data.');
+          toast.info('File is empty or has no product data.');
           return;
         }
 
@@ -214,7 +214,7 @@ export default function InventoryList() {
         const missingHeaders = requiredFields.filter(f => !headers.includes(f));
         
         if (missingHeaders.length > 0) {
-          toast.error(`Invalid format! Missing mandatory columns: ${missingHeaders.join(', ')}`, { duration: 5000 });
+          toast.info(`Invalid format! Missing mandatory columns: ${missingHeaders.join(', ')}`, { duration: 5000 });
           e.target.value = '';
           return;
         }

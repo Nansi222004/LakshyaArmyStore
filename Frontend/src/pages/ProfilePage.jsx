@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 import avtarImage from '../assets/AvatarProfile-removebg-preview.webp';
 import { 
   ChevronLeft, User, Lock, Settings, Phone, LogOut, Camera, 
@@ -164,7 +164,7 @@ export default function ProfilePage() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('Image size cannot exceed 10MB!');
+        toast.info('Image size cannot exceed 10MB!');
         return;
       }
 

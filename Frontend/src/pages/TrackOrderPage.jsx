@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, CheckCircle2, Package, Truck, Home, MapPin, Loader2, AlertCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 
 export default function TrackOrderPage() {
   const navigate = useNavigate();

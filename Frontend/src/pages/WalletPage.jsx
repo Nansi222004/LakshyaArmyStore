@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Coins, ArrowUpRight, ArrowDownLeft, Gift, Clock, Landmark, Sparkles, RefreshCw } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -67,18 +67,18 @@ export default function WalletPage() {
   const handleRedeem = async (e) => {
     e.preventDefault();
     if (!redeemAmount || isNaN(redeemAmount) || Number(redeemAmount) <= 0) {
-      toast.error('Please enter a valid amount of coins to convert.');
+      toast.info('Please enter a valid amount of coins to convert.');
       return;
     }
 
     const amt = Number(redeemAmount);
     if (amt < config.minimumRedeemCoins) {
-      toast.error(`Minimum conversion requires ${config.minimumRedeemCoins} Coins.`);
+      toast.info(`Minimum conversion requires ${config.minimumRedeemCoins} Coins.`);
       return;
     }
 
     if (amt > coins) {
-      toast.error('You do not have enough coins.');
+      toast.info('You do not have enough coins.');
       return;
     }
 

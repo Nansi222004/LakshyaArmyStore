@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Eye, EyeOff, Lock, Shield, CheckCircle2, Loader2, KeyRound } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -75,17 +75,17 @@ export default function SecurityPage() {
     }
 
     if (!newPassword || !confirmPassword) {
-      toast.error('Please fill in all required fields');
+      toast.info('Please fill in all required fields');
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error('Password must be at least 6 characters');
+      toast.info('Password must be at least 6 characters');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.info('Passwords do not match');
       return;
     }
 

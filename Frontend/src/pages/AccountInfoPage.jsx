@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, User, Mail, Phone, Calendar, Camera } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 import OptimizedImage from '../components/ui/OptimizedImage';
 
 const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth`;
@@ -61,7 +61,7 @@ export default function AccountInfoPage() {
     if (formData.phone) {
       const phoneRegex = /^[0-9]{10}$/;
       if (!phoneRegex.test(formData.phone)) {
-        toast.error('Phone number must be exactly 10 digits!');
+        toast.info('Phone number must be exactly 10 digits!');
         return;
       }
     }
@@ -71,7 +71,7 @@ export default function AccountInfoPage() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (selectedDate >= today) {
-        toast.error('Date of Birth must be a past date!');
+        toast.info('Date of Birth must be a past date!');
         return;
       }
     }
@@ -80,9 +80,6 @@ export default function AccountInfoPage() {
     if (!token) {
       if (setUser) {
         setUser({ ...user, ...formData });
-      }
-      if (!toast.info) {
-        toast.info = (msg, options) => toast(msg, { icon: 'ℹ️', ...options });
       }
       toast.info('Changes saved successfully! (Offline mode)');
       setTimeout(() => navigate(-1), 1200);

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Home, MapPin, MoreHorizontal, Plus, Edit2, Trash2, X, Briefcase, Loader2, AlertCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 
 export default function SavedAddressesPage() {
   const navigate = useNavigate();
@@ -43,16 +43,16 @@ export default function SavedAddressesPage() {
 
   const handleSaveAddress = async () => {
     if (!formData.name.trim() || !formData.phone.trim() || !formData.address.trim() || !formData.pincode.trim()) {
-      toast.error('Name, Phone, Address, and Pincode are required!');
+      toast.info('Name, Phone, Address, and Pincode are required!');
       return;
     }
     if (formData.pincode.trim().length !== 6) {
-      toast.error('Pincode must be exactly 6 digits!');
+      toast.info('Pincode must be exactly 6 digits!');
       return;
     }
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.phone.trim())) {
-      toast.error('Phone number must be exactly 10 digits!');
+      toast.info('Phone number must be exactly 10 digits!');
       return;
     }
 

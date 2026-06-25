@@ -7,7 +7,7 @@ import {
   Truck, ShieldCheck, ToggleLeft, ToggleRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../utils/toast';
 import { useParams, useNavigate } from 'react-router-dom';
 import OptimizedImage from '../../components/common/OptimizedImage';
 
@@ -247,11 +247,11 @@ const AddProduct = () => {
 
   const handleAddAttribute = () => {
     if (!newAttrName.trim()) {
-      toast.error('Attribute name is required!');
+      toast.info('Attribute name is required!');
       return;
     }
     if (attributes.some(attr => attr.name.toLowerCase() === newAttrName.trim().toLowerCase())) {
-      toast.error('Attribute already exists!');
+      toast.info('Attribute already exists!');
       return;
     }
     const parsedValues = newAttrVal
@@ -269,7 +269,7 @@ const AddProduct = () => {
     if (!val.trim()) return;
     const updated = [...attributes];
     if (updated[attrIndex].values.includes(val.trim())) {
-      toast.error('Value already exists!');
+      toast.info('Value already exists!');
       return;
     }
     updated[attrIndex].values.push(val.trim());
@@ -314,7 +314,7 @@ const AddProduct = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('Image size cannot exceed 10MB!');
+        toast.info('Image size cannot exceed 10MB!');
         return;
       }
       const previewUrl = URL.createObjectURL(file);
@@ -331,17 +331,17 @@ const AddProduct = () => {
 
   const handleSave = async () => {
     if (!name || !category || !sellingPrice) {
-      toast.error('Product Name, Category, and Selling Price are required!');
+      toast.info('Product Name, Category, and Selling Price are required!');
       return;
     }
     
     if (mrp && Number(mrp) < Number(sellingPrice)) {
-      toast.error('Actual Price (MRP) cannot be less than Selling Price!');
+      toast.info('Actual Price (MRP) cannot be less than Selling Price!');
       return;
     }
     
     if (!shippingSpecs.weight) {
-      toast.error('Product Weight is mandatory for shipping calculation!');
+      toast.info('Product Weight is mandatory for shipping calculation!');
       return;
     }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Search, SlidersHorizontal, ChevronRight, Star, PenLine, Package, X, Image as ImageIcon, Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 import { BANNERS } from '../data/mockData';
 import OptimizedImage from '../components/ui/OptimizedImage';
 
@@ -71,7 +71,7 @@ export default function OrdersPage() {
       const filesArray = Array.from(e.target.files);
       const invalidFile = filesArray.find(f => f.size > 10 * 1024 * 1024);
       if (invalidFile) {
-        toast.error('Image size cannot exceed 10MB!');
+        toast.info('Image size cannot exceed 10MB!');
         e.target.value = '';
         return;
       }
@@ -83,7 +83,7 @@ export default function OrdersPage() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('Video size cannot exceed 10MB!');
+        toast.info('Video size cannot exceed 10MB!');
         e.target.value = '';
         return;
       }

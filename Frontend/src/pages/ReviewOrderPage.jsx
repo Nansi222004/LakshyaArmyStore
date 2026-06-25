@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Tag, Banknote, ShieldCheck, X, CheckCircle2, Plus, Coins, Landmark } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 import OptimizedImage from '../components/ui/OptimizedImage';
 import analytics from '../utils/analytics';
 
@@ -293,12 +293,12 @@ export default function ReviewOrderPage() {
 
   const handlePlaceOrder = async () => {
     if (cart.length === 0) {
-      toast.error("Your cart is empty");
+      toast.info("Your cart is empty");
       return;
     }
     
     if (!selectedAddress) {
-      toast.error("Please add a delivery address before placing order");
+      toast.info("Please add a delivery address before placing order");
       return;
     }
     

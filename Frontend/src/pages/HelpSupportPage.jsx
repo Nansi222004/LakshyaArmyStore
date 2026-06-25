@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, PhoneCall, Mail, MessageSquare, Clock, ChevronDown, Send, FileText, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 
 export default function HelpSupportPage() {
   const navigate = useNavigate();
@@ -98,11 +98,11 @@ export default function HelpSupportPage() {
     e.preventDefault();
     const token = localStorage.getItem('userToken');
     if (!token) {
-      toast.error('Please login first to submit a ticket.');
+      toast.info('Please login first to submit a ticket.');
       return;
     }
     if (!subject.trim() || !description.trim()) {
-      toast.error('Please fill in all ticket details.');
+      toast.info('Please fill in all ticket details.');
       return;
     }
     setSubmitting(true);

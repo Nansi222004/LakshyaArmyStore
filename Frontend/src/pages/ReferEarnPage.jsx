@@ -5,7 +5,7 @@ import {
   Clock, Loader2, AlertCircle, Coins, ChevronRight
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -88,7 +88,7 @@ export default function ReferEarnPage() {
 
   const handleApplyCode = async () => {
     if (!applyCode.trim()) {
-      toast.error('Enter a referral code');
+      toast.info('Enter a referral code');
       return;
     }
     setApplying(true);

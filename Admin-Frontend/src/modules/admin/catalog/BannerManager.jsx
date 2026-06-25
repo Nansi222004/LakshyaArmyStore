@@ -4,7 +4,7 @@ import {
   CheckCircle2, Image as ImageIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../../utils/toast';
 import ConfirmModal from '../../../components/ConfirmModal';
 import OptimizedImage from '../../../components/common/OptimizedImage';
 
@@ -246,7 +246,7 @@ const BannerManager = () => {
       }
 
       if (!imageUrl) {
-        toast.error('Image is required');
+        toast.info('Image is required');
         return;
       }
 

@@ -3,7 +3,7 @@ import {
   User, Shield, Lock, Save, CheckCircle2, ChevronRight, AlertCircle, Camera, Eye, EyeOff, Coins
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../utils/toast';
 import OptimizedImage from '../../components/common/OptimizedImage';
 
 const Settings = () => {
@@ -100,7 +100,7 @@ const Settings = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('Image size cannot exceed 10MB!');
+        toast.info('Image size cannot exceed 10MB!');
         return;
       }
       setImageFile(file);
@@ -225,7 +225,7 @@ const Settings = () => {
       } else if (activeSection === 'Security') {
         // Save Password Change
         if (newPassword !== confirmPassword) {
-          toast.error('New passwords do not match');
+          toast.info('New passwords do not match');
           return;
         }
 

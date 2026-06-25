@@ -8,7 +8,7 @@ import {
   ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../utils/toast';
 
 const MOCK_USERS = [
   { id: 'USR001', name: 'Rahul Sharma', email: 'rahul@example.com', phone: '+91 98765 43210', joined: '2026-05-01', totalSpent: '₹45,200', orders: 12, status: 'Active' },
@@ -118,13 +118,13 @@ const Users = () => {
 
   const handleSaveCustomer = async () => {
     if (!formData.name || !formData.phone) {
-      toast.error('Name and Phone number are required');
+      toast.info('Name and Phone number are required');
       return;
     }
 
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.phone)) {
-      toast.error('Phone number must be exactly 10 digits');
+      toast.info('Phone number must be exactly 10 digits');
       return;
     }
 

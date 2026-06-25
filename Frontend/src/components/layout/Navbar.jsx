@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Heart, ShoppingCart, MapPin, ChevronDown, Search, Camera, Mic, Scan, X, Crosshair, MoreHorizontal, Home, Plus, Gamepad2 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../../utils/toast';
 import { NOTIFICATIONS } from '../../data/mockData';
 import analytics from '../../utils/analytics';
 
@@ -141,7 +141,7 @@ export default function Navbar() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('Image size cannot exceed 10MB!');
+        toast.info('Image size cannot exceed 10MB!');
         return;
       }
       setSearchQuery("Camera search result");
@@ -434,11 +434,11 @@ export default function Navbar() {
                     <button 
                       onClick={async () => {
                         if (!newAddressForm.name || !newAddressForm.address || !newAddressForm.pincode) {
-                          toast.error("Please fill in all mandatory fields, including the Pin Code.");
+                          toast.info("Please fill in all mandatory fields, including the Pin Code.");
                           return;
                         }
                         if (!user) {
-                          toast.error("Please login to save addresses.");
+                          toast.info("Please login to save addresses.");
                           return;
                         }
                         try {

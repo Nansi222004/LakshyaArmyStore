@@ -5,7 +5,7 @@ import {
   User, ShoppingBag, Calendar, ThumbsUp, Play, Upload, Plus, Eye
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../../utils/toast';
 
 const MOCK_REVIEWS = [];
 
@@ -151,11 +151,11 @@ const ReviewModeration = () => {
   const handleAdminUpload = async (e) => {
     e.preventDefault();
     if (!selectedProductId) {
-      toast.error('Please select a product');
+      toast.info('Please select a product');
       return;
     }
     if (!reelVideoFile) {
-      toast.error('Please upload a video file');
+      toast.info('Please upload a video file');
       return;
     }
 

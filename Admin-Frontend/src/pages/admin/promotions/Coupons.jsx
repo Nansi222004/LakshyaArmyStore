@@ -5,7 +5,7 @@ import {
   ArrowUpRight, Users, DollarSign, RefreshCw, ToggleLeft, ToggleRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../../utils/toast';
 import ConfirmModal from '../../../components/ConfirmModal';
 
 const Coupons = () => {
@@ -65,7 +65,7 @@ const Coupons = () => {
   const handleSaveCoupon = async (e) => {
     e.preventDefault();
     if (!code || !value || !expiry) {
-      toast.error('Please fill in code, value and expiry date');
+      toast.info('Please fill in code, value and expiry date');
       return;
     }
 
@@ -212,9 +212,6 @@ const Coupons = () => {
 
   const handleCopyCode = (couponCode) => {
     navigator.clipboard.writeText(couponCode);
-    if (!toast.info) {
-      toast.info = (msg, options) => toast(msg, { icon: 'ℹ️', ...options });
-    }
     toast.info(`Copied "${couponCode}" to clipboard!`);
   };
 

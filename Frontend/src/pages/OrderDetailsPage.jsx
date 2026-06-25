@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Copy, CheckCircle2, Star, MapPin, Receipt, Download, ChevronDown, PenLine, X, Package, Image as ImageIcon, Video, RotateCcw, AlertCircle, Loader2, Check } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 import OptimizedImage from '../components/ui/OptimizedImage';
 
 export default function OrderDetailsPage() {
@@ -37,7 +37,7 @@ export default function OrderDetailsPage() {
       const filesArray = Array.from(e.target.files);
       const invalidFile = filesArray.find(f => f.size > 10 * 1024 * 1024);
       if (invalidFile) {
-        toast.error('Image size cannot exceed 10MB!');
+        toast.info('Image size cannot exceed 10MB!');
         return;
       }
       const newPhotos = filesArray.map(f => URL.createObjectURL(f));
@@ -49,7 +49,7 @@ export default function OrderDetailsPage() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('Video size cannot exceed 10MB!');
+        toast.info('Video size cannot exceed 10MB!');
         return;
       }
       setReviewVideo(URL.createObjectURL(file));
@@ -107,8 +107,8 @@ export default function OrderDetailsPage() {
   };
 
   const handleSubmitReturn = async () => {
-    if (returnSelectedItems.length === 0) { toast.error('Select at least one item to return'); return; }
-    if (!returnReason) { toast.error('Select a reason for return'); return; }
+    if (returnSelectedItems.length === 0) { toast.info('Select at least one item to return'); return; }
+    if (!returnReason) { toast.info('Select a reason for return'); return; }
 
     const token = localStorage.getItem('userToken');
     if (!token) { toast.error('Please login to continue'); return; }

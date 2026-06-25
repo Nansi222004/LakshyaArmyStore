@@ -4,7 +4,7 @@ import {
   CheckCircle2, Layers, LayoutGrid
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../../utils/toast';
 import ConfirmModal from '../../../components/ConfirmModal';
 import OptimizedImage from '../../../components/common/OptimizedImage';
 
@@ -236,7 +236,7 @@ const SubCategoryChipsManager = () => {
 
   const handleSaveEdit = async () => {
     if (!formData.categoryId || !formData.subCategoryName) {
-      toast.error('Category and Subcategory Name are required!');
+      toast.info('Category and Subcategory Name are required!');
       return;
     }
     const token = localStorage.getItem('adminToken');
@@ -279,7 +279,7 @@ const SubCategoryChipsManager = () => {
 
   const handleAddNew = async () => {
     if (!formData.categoryId || !formData.subCategoryName) {
-      toast.error('Category and Subcategory Name are required!');
+      toast.info('Category and Subcategory Name are required!');
       return;
     }
     const token = localStorage.getItem('adminToken');

@@ -4,7 +4,7 @@ import {
   XCircle, Trash2, Edit2, ShieldAlert
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../../utils/toast';
 import ConfirmModal from '../../../components/ConfirmModal';
 
 const QnAModeration = () => {
@@ -54,7 +54,7 @@ const QnAModeration = () => {
   const handleSaveFaq = async (e) => {
     e.preventDefault();
     if (!question.trim() || !answer.trim()) {
-      toast.error('Please enter both question and answer.');
+      toast.info('Please enter both question and answer.');
       return;
     }
 

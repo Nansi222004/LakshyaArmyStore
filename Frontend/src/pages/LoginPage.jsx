@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { ArrowLeft, Edit2, Loader2 } from 'lucide-react';
-import toast from 'react-hot-toast';
+import toast from '../utils/toast';
 import analytics from '../utils/analytics';
 import dollImage from '../assets/DollMynzo-removebg-preview.webp';
 
@@ -40,7 +40,7 @@ export default function LoginPage() {
     e.preventDefault();
     if (!phoneNumber.trim() || phoneNumber.length < 10) {
       setSignInError('Please enter a valid 10-digit phone number');
-      toast.error('Please enter a valid 10-digit phone number');
+      toast.info('Please enter a valid 10-digit phone number');
       return;
     }
 
@@ -106,7 +106,7 @@ export default function LoginPage() {
 
     if (fullOtp.length < 6) {
       setSignInError('Please enter the complete 6-digit OTP');
-      toast.error('Please enter the complete 6-digit OTP');
+      toast.info('Please enter the complete 6-digit OTP');
       return;
     }
 

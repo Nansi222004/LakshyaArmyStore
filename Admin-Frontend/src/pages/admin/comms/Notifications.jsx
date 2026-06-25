@@ -6,7 +6,7 @@ import {
   AlertCircle, X, Plus, Calendar, Star, Check, Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
+import toast from '../../../utils/toast';
 
 const Notifications = () => {
   const [history, setHistory] = useState([]);
@@ -95,11 +95,11 @@ const Notifications = () => {
 
   const handleSend = async () => {
     if (!formData.title || !formData.body) {
-      toast.error('Please enter title and body for the notification');
+      toast.info('Please enter title and body for the notification');
       return;
     }
     if (formData.target === 'Selected Users' && formData.targetUserIds.length === 0) {
-      toast.error('Please select at least one user');
+      toast.info('Please select at least one user');
       return;
     }
 
