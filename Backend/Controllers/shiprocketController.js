@@ -524,7 +524,15 @@ exports.webhookReceiver = async (req, res) => {
 
                         const msg = `Dear Customer, your Mynzo order tracking update: Status is now ${currentStatus || mappedStatus}.`;
                         const smsSenderId = process.env.SMS_SENDER_ID || 'IIDMTB';
-                        const smsUrl = `https://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=${smsApiKey}&msisdn=${phone}&sid=${smsSenderId}&msg=${encodeURIComponent(msg)}&fl=0&gwid=2`;
+                        let smsUrl = `https://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=${smsApiKey}&msisdn=${phone}&sid=${smsSenderId}&msg=${encodeURIComponent(msg)}&fl=0&gwid=2`;
+                        const smsPeId = process.env.SMS_PE_ID;
+                        if (smsPeId) {
+                            smsUrl += `&EntityId=${smsPeId}`;
+                        }
+                        const smsTrackingTemplateId = process.env.SMS_TRACKING_TEMPLATE_ID;
+                        if (smsTrackingTemplateId) {
+                            smsUrl += `&dlttemplateid=${smsTrackingTemplateId}`;
+                        }
 
                         axios.get(smsUrl).then(response => {
                             console.log('SMS sent for webhook update:', response.data);

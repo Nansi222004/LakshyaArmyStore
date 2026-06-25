@@ -28,9 +28,17 @@ const ensureAdmin = async () => {
   const password = process.env.ADMIN_PASSWORD;
   const env = process.env.ENV || process.env.NODE_ENV || 'development';
 
+  // If there are already any admin users in the database, do not force env variables or auto-creation
+  const count = await Admin.countDocuments();
+  if (count > 0) {
+    console.log(`👤 Admins exist in database: ${count} admin(s) found. Skipping auto-creation.`);
+    return;
+  }
+
   if (env === 'production') {
     if (!email || !password) {
-      throw new Error('CRITICAL SECURITY ERROR: ADMIN_EMAIL and ADMIN_PASSWORD must be explicitly set in environment variables for production.');
+      console.warn('⚠️ WARNING: No admin users found in database, and ADMIN_EMAIL / ADMIN_PASSWORD are not set in environment variables.');
+      return;
     }
     if (password === '123' || password.length < 12) {
       throw new Error('CRITICAL SECURITY ERROR: Admin password is too weak. It must be at least 12 characters and not the default "123".');

@@ -94,7 +94,6 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 // Indexes
 userSchema.index({ email: 1 }, { sparse: true });
-userSchema.index({ referralCode: 1 }, { sparse: true });
 userSchema.index({ referredBy: 1 }, { sparse: true });
 
 module.exports = mongoose.model('User', userSchema);
