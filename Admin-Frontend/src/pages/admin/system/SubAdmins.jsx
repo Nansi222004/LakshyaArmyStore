@@ -28,7 +28,7 @@ const SubAdmins = () => {
         </div>
         <button 
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 transition-all"
+          className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 transition-all"
         >
           <UserPlus size={16} />
           Create Admin
@@ -38,7 +38,7 @@ const SubAdmins = () => {
       {/* Stats row */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
          {[
-           { label: 'Total Admins', value: '08', icon: ShieldCheck, color: 'text-blue-500', bg: 'bg-blue-50' },
+           { label: 'Total Admins', value: '08', icon: ShieldCheck, color: 'text-primary-500', bg: 'bg-primary-50' },
            { label: 'Roles Defined', value: '04', icon: Key, color: 'text-green-500', bg: 'bg-green-50' },
            { label: 'Active Sessions', value: '03', icon: Activity, color: 'text-indigo-500', bg: 'bg-indigo-50' },
            { label: 'Security Alerts', value: '00', icon: Lock, color: 'text-slate-400', bg: 'bg-slate-50' },
@@ -59,7 +59,7 @@ const SubAdmins = () => {
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="p-6 border-b border-slate-50">
            <div className="relative max-w-md group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500" size={18} />
               <input type="text" placeholder="Search by name or email..." className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold outline-none" />
            </div>
         </div>
@@ -90,7 +90,7 @@ const SubAdmins = () => {
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100">
+                    <span className="px-3 py-1 bg-primary-50 text-primary-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-primary-100">
                       {admin.role}
                     </span>
                   </td>
@@ -107,7 +107,7 @@ const SubAdmins = () => {
                   </td>
                   <td className="px-6 py-5 text-right">
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
+                      <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all">
                         <Edit2 size={16} />
                       </button>
                       <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-slate-900 hover:text-white transition-all">
@@ -142,11 +142,11 @@ const SubAdmins = () => {
               <div className="flex-1 space-y-6 overflow-y-auto no-scrollbar pb-10">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Full Name</label>
-                  <input type="text" placeholder="Enter name" className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none" />
+                  <input type="text" placeholder="Enter name" className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Email Address</label>
-                  <input type="email" placeholder="example@cocia.com" className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none" />
+                  <input type="email" placeholder="example@cocia.com" className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Assign Role</label>
@@ -158,12 +158,12 @@ const SubAdmins = () => {
                   </select>
                 </div>
                 
-                <div className="p-6 bg-blue-50 rounded-2xl space-y-4">
-                   <h4 className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Role Permissions</h4>
+                <div className="p-6 bg-primary-50 rounded-2xl space-y-4">
+                   <h4 className="text-[10px] font-black text-primary-600 uppercase tracking-widest">Role Permissions</h4>
                    <div className="space-y-3">
                       {['Catalog Access', 'Order Management', 'Finance & Payouts', 'User Moderation', 'System Settings'].map((perm, i) => (
                         <div key={i} className="flex items-center gap-3">
-                           <div className="w-4 h-4 rounded bg-blue-600 flex items-center justify-center">
+                           <div className="w-4 h-4 rounded bg-primary-600 flex items-center justify-center">
                               <CheckCircle2 size={10} className="text-white" />
                            </div>
                            <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{perm}</span>
@@ -175,7 +175,7 @@ const SubAdmins = () => {
 
               <div className="pt-6 border-t border-slate-50 flex gap-3">
                 <button onClick={() => setIsAdding(false)} className="flex-1 py-4 bg-slate-50 text-slate-400 rounded-xl text-[10px] font-black uppercase tracking-widest">Discard</button>
-                <button className="flex-1 py-4 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all">Create Account</button>
+                <button className="flex-1 py-4 bg-primary-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all">Create Account</button>
               </div>
             </motion.div>
           </div>

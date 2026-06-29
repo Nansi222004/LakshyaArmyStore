@@ -258,7 +258,7 @@ export default function SnakeGame({ onClose, addCoins }) {
             disabled={status === 'IDLE' || status === 'GAME_OVER'}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/50 text-white border border-slate-700/50 active:scale-95 transition-transform disabled:opacity-50"
           >
-            {status === 'PAUSED' ? <Play className="w-5 h-5 text-emerald-400" /> : <Pause className="w-5 h-5 text-orange-400" />}
+            {status === 'PAUSED' ? <Play className="w-5 h-5 text-emerald-400" /> : <Pause className="w-5 h-5 text-primary-400" />}
           </button>
         </div>
       </div>
@@ -273,7 +273,7 @@ export default function SnakeGame({ onClose, addCoins }) {
 
         {/* Game Grid Box */}
         <div 
-          className="w-full aspect-[4/5] rounded-3xl border-2 border-orange-500 relative overflow-hidden shadow-[0_0_25px_rgba(255,110,84,0.15)] bg-[#0A1024]"
+          className="w-full aspect-[4/5] rounded-3xl border-2 border-primary-500 relative overflow-hidden shadow-[0_0_25px_rgba(255,110,84,0.15)] bg-[#0A1024]"
           style={{
             backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)`,
             backgroundSize: `${100 / GRID_W}% ${100 / GRID_H}%`
@@ -283,7 +283,7 @@ export default function SnakeGame({ onClose, addCoins }) {
             <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center z-30 backdrop-blur-sm">
                <div className="text-6xl mb-4 animate-bounce">🐍</div>
                <h2 className="text-white text-xl font-black uppercase tracking-widest mb-6 font-syne">Snake & Chase</h2>
-               <button onClick={startGame} className="bg-orange-500 text-white font-black px-8 py-3 rounded-full shadow-lg shadow-orange-500/50 active:scale-95 transition-transform uppercase tracking-wider">Start Game</button>
+               <button onClick={startGame} className="bg-primary-500 text-white font-black px-8 py-3 rounded-full shadow-lg shadow-primary-500/50 active:scale-95 transition-transform uppercase tracking-wider">Start Game</button>
             </div>
           )}
 
@@ -299,7 +299,7 @@ export default function SnakeGame({ onClose, addCoins }) {
                  </div>
                )}
                {earnedCoins === 0 && <div className="h-4 mb-4"></div>}
-               <button onClick={startGame} className="bg-orange-500 text-white font-black px-8 py-3 rounded-full shadow-lg shadow-orange-500/50 active:scale-95 transition-transform uppercase tracking-wider">Play Again</button>
+               <button onClick={startGame} className="bg-primary-500 text-white font-black px-8 py-3 rounded-full shadow-lg shadow-primary-500/50 active:scale-95 transition-transform uppercase tracking-wider">Play Again</button>
             </div>
           )}
 
@@ -307,7 +307,7 @@ export default function SnakeGame({ onClose, addCoins }) {
             <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center z-30 backdrop-blur-sm">
                <div className="text-5xl mb-4">⏸️</div>
                <h2 className="text-white text-xl font-black uppercase tracking-widest mb-6 font-syne drop-shadow-sm">Paused</h2>
-               <button onClick={togglePause} className="bg-orange-500 text-white font-black px-8 py-3 rounded-full shadow-lg shadow-orange-500/50 active:scale-95 transition-transform uppercase tracking-wider">Resume</button>
+               <button onClick={togglePause} className="bg-primary-500 text-white font-black px-8 py-3 rounded-full shadow-lg shadow-primary-500/50 active:scale-95 transition-transform uppercase tracking-wider">Resume</button>
             </div>
           )}
 
@@ -350,7 +350,7 @@ export default function SnakeGame({ onClose, addCoins }) {
               height: `${100 / GRID_H}%`
             }}
           >
-             <div className="absolute -inset-4 bg-orange-500/20 rounded-full blur-xl"></div>
+             <div className="absolute -inset-4 bg-primary-500/20 rounded-full blur-xl"></div>
              <img src={DollMynzo} alt="Doll" className="w-[170%] h-[170%] object-contain relative z-20 drop-shadow-md" />
           </div>
 
@@ -366,7 +366,7 @@ export default function SnakeGame({ onClose, addCoins }) {
           >
              <div className="w-[120%] h-[120%] rounded-full bg-slate-800 shadow-lg border border-slate-700 flex flex-col items-center justify-start relative">
                <div className="w-[3px] h-[6px] bg-slate-600 -mt-[4px] rounded-t-sm"></div>
-               <div className="w-[4px] h-[4px] rounded-full bg-orange-500 absolute -top-[5px] shadow-[0_0_6px_#f97316]"></div>
+               <div className="w-[4px] h-[4px] rounded-full bg-primary-500 absolute -top-[5px] shadow-[0_0_6px_#f97316]"></div>
              </div>
           </div>
           
@@ -375,15 +375,15 @@ export default function SnakeGame({ onClose, addCoins }) {
         {/* Info Columns */}
         <div className="flex justify-between items-start mt-8 w-full text-center font-serif">
           <div className="flex flex-col items-center flex-1 px-1">
-            <h4 className="text-orange-500 font-bold text-[11px] uppercase tracking-tighter mb-0.5 whitespace-nowrap">Chase</h4>
+            <h4 className="text-primary-500 font-bold text-[11px] uppercase tracking-tighter mb-0.5 whitespace-nowrap">Chase</h4>
             <p className="text-slate-300 text-[9px] leading-tight tracking-tight">Chase the doll and catch it!</p>
           </div>
           <div className="flex flex-col items-center flex-1 px-1 border-x border-slate-700/50">
-            <h4 className="text-orange-500 font-bold text-[11px] uppercase tracking-tighter mb-0.5 whitespace-nowrap">Grow</h4>
+            <h4 className="text-primary-500 font-bold text-[11px] uppercase tracking-tighter mb-0.5 whitespace-nowrap">Grow</h4>
             <p className="text-slate-300 text-[9px] leading-tight tracking-tight">Catch to grow your snake longer!</p>
           </div>
           <div className="flex flex-col items-center flex-1 px-1">
-            <h4 className="text-orange-500 font-bold text-[11px] uppercase tracking-tighter mb-0.5 whitespace-nowrap">Win Rewards</h4>
+            <h4 className="text-primary-500 font-bold text-[11px] uppercase tracking-tighter mb-0.5 whitespace-nowrap">Win Rewards</h4>
             <p className="text-slate-300 text-[9px] leading-tight tracking-tight">Beat your high score & win exciting rewards!</p>
           </div>
         </div>
@@ -401,10 +401,10 @@ export default function SnakeGame({ onClose, addCoins }) {
             <div className="flex-grow flex flex-col items-start">
               <div className="flex items-baseline gap-1 mb-1">
                 <h3 className="text-white font-black text-[10px] tracking-wider uppercase">Catch the doll.</h3>
-                <h3 className="text-orange-500 font-black text-xs tracking-wider uppercase">Grow Longer.</h3>
+                <h3 className="text-primary-500 font-black text-xs tracking-wider uppercase">Grow Longer.</h3>
               </div>
               <h2 className="text-white font-black text-sm tracking-widest uppercase mb-2 flex items-center gap-1">
-                <span className="text-orange-400 text-xs">✨</span> WIN BIG! <span className="text-orange-400 text-xs">✨</span>
+                <span className="text-primary-400 text-xs">✨</span> WIN BIG! <span className="text-primary-400 text-xs">✨</span>
               </h2>
 
               {/* Rewards inner box */}

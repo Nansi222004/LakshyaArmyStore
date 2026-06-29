@@ -56,7 +56,7 @@ const Auth = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
             <img 
-              src="/HopeFinal.webp" 
+              src="/logo_lakshya.webp" 
               alt="Cocia Logo" 
               className="h-12 w-auto object-contain"
               onError={(e) => {
@@ -64,12 +64,12 @@ const Auth = () => {
                 e.target.nextSibling.style.display = 'flex';
               }}
             />
-            <div className="hidden w-12 h-12 bg-blue-600 rounded-xl items-center justify-center shadow-lg shadow-blue-100">
+            <div className="hidden w-12 h-12 bg-primary-600 rounded-xl items-center justify-center shadow-lg shadow-primary-100">
                <ShieldCheck size={24} className="text-white" />
             </div>
           </div>
           <h1 className="text-2xl font-semibold text-slate-900 tracking-tight font-montserrat uppercase">
-            Cocio<span className="text-blue-600">.</span> Admin
+            Cocio<span className="text-primary-600">.</span> Admin
           </h1>
           <p className="text-slate-400 font-bold uppercase tracking-[2px] text-[9px] mt-1">Verified Management Session</p>
         </div>
@@ -86,13 +86,13 @@ const Auth = () => {
             <div className="space-y-1.5">
               <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Admin Email</label>
               <div className="relative group">
-                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-blue-500 transition-colors" size={16} />
+                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary-500 transition-colors" size={16} />
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@gmail.com"
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-14 pr-6 text-slate-900 font-bold placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all text-sm"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-14 pr-6 text-slate-900 font-bold placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-50 focus:border-primary-500 transition-all text-sm"
                 />
               </div>
             </div>
@@ -100,18 +100,18 @@ const Auth = () => {
             <div className="space-y-1.5">
               <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Secure Password</label>
               <div className="relative group">
-                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-blue-500 transition-colors" size={16} />
+                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary-500 transition-colors" size={16} />
                 <input 
                   type={showPassword ? "text" : "password"} 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-14 pr-14 text-slate-900 font-bold placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all text-sm"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-14 pr-14 text-slate-900 font-bold placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-primary-50 focus:border-primary-500 transition-all text-sm"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-blue-500 transition-colors"
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-primary-500 transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -121,7 +121,7 @@ const Auth = () => {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold text-[11px] uppercase tracking-[2px] py-4 rounded-xl shadow-lg shadow-blue-100 active:scale-[0.98] transition-all mt-2 flex items-center justify-center gap-2"
+              className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-semibold text-[11px] uppercase tracking-[2px] py-4 rounded-xl shadow-lg shadow-primary-100 active:scale-[0.98] transition-all mt-2 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -135,13 +135,13 @@ const Auth = () => {
           </form>
 
           <div className="mt-8 pt-6 border-t border-slate-50 flex justify-between items-center text-[9px] font-bold uppercase tracking-widest text-slate-300">
-            <button className="hover:text-blue-500 transition-colors">Recover Access</button>
+            <button className="hover:text-primary-500 transition-colors">Recover Access</button>
             <span>v2.4.0-Stable</span>
           </div>
         </div>
 
         <p className="text-center text-slate-400 text-[10px] font-bold mt-8 uppercase tracking-widest">
-          Not an admin? <button onClick={() => navigate('/')} className="text-blue-600 hover:underline">Back to Storefront</button>
+          Not an admin? <button onClick={() => navigate('/')} className="text-primary-600 hover:underline">Back to Storefront</button>
         </p>
       </div>
     </div>

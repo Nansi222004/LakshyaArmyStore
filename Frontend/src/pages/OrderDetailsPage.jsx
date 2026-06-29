@@ -244,14 +244,14 @@ Thank you for shopping with Mynzo!
       {/* Header */}
       <div className="bg-[#FFE4D6] px-4 py-3 sticky top-0 z-50 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-1 -ml-1 hover:bg-orange-200/50 rounded-full transition-colors cursor-pointer">
-            <ArrowLeft className="w-6 h-6 text-[#02006c]" />
+          <button onClick={() => navigate(-1)} className="p-1 -ml-1 hover:bg-primary-200/50 rounded-full transition-colors cursor-pointer">
+            <ArrowLeft className="w-6 h-6 text-[#2F3E16]" />
           </button>
-          <h1 className="text-[18px] font-semibold tracking-wide text-[#02006c]">Order Details</h1>
+          <h1 className="text-[18px] font-semibold tracking-wide text-[#2F3E16]">Order Details</h1>
         </div>
         <button 
           onClick={() => navigate('/support')}
-          className="border border-[#02006c]/20 bg-white/50 rounded-lg px-4 py-1.5 text-[14px] font-semibold text-[#02006c] hover:bg-white transition-colors cursor-pointer"
+          className="border border-[#2F3E16]/20 bg-white/50 rounded-lg px-4 py-1.5 text-[14px] font-semibold text-[#2F3E16] hover:bg-white transition-colors cursor-pointer"
         >
           Help & Support
         </button>
@@ -280,7 +280,7 @@ Thank you for shopping with Mynzo!
             <div className="flex items-center gap-1.5 text-[11px] text-slate-500 px-1 mt-1 justify-between">
               <div className="flex items-center gap-1">
                 <span>Order ID: #{id}</span>
-                <Copy onClick={handleCopyId} className="w-3.5 h-3.5 text-[#ee4923] cursor-pointer hover:text-[#ff5c3f]" />
+                <Copy onClick={handleCopyId} className="w-3.5 h-3.5 text-[#4B5320] cursor-pointer hover:text-[#ff5c3f]" />
               </div>
               <span className="font-bold text-slate-600">Total Items: {orderItems.reduce((acc, curr) => acc + curr.quantity, 0)}</span>
             </div>
@@ -290,7 +290,7 @@ Thank you for shopping with Mynzo!
           <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden mb-1">
             <div className="p-3 border-b border-slate-100 flex items-center justify-between">
                <div>
-                 <h2 className={`text-[15px] font-bold ${isDelivered ? 'text-green-700' : 'text-[#ee4923]'} mb-1`}>
+                 <h2 className={`text-[15px] font-bold ${isDelivered ? 'text-green-700' : 'text-[#4B5320]'} mb-1`}>
                    {isDelivered ? `Delivered, ${globalOrder?.date || 'Apr 13'}` : (globalOrder?.etd ? `Estimated Delivery: ${globalOrder.etd}` : 'Processing Order')}
                  </h2>
                  {isDelivered ? (
@@ -305,7 +305,7 @@ Thank you for shopping with Mynzo!
                    </div>
                  )}
                </div>
-               <div className={`${isDelivered ? 'bg-green-600' : 'bg-[#ee4923]'} rounded-full w-6 h-6 flex items-center justify-center shadow-sm`}>
+               <div className={`${isDelivered ? 'bg-green-600' : 'bg-[#4B5320]'} rounded-full w-6 h-6 flex items-center justify-center shadow-sm`}>
                  {isDelivered ? (
                    <CheckCircle2 className="w-4 h-4 text-white" />
                  ) : (
@@ -315,7 +315,7 @@ Thank you for shopping with Mynzo!
             </div>
             <button 
               onClick={() => navigate(`/track-order/${id}`)}
-              className="w-full py-2.5 text-[13px] font-semibold text-[#ee4923] hover:bg-[#ee4923]/5 active:bg-[#ee4923]/10 transition-colors border-b border-slate-100"
+              className="w-full py-2.5 text-[13px] font-semibold text-[#4B5320] hover:bg-[#4B5320]/5 active:bg-[#4B5320]/10 transition-colors border-b border-slate-100"
             >
               {isDelivered ? 'See all updates' : 'Track your order'}
             </button>
@@ -376,7 +376,7 @@ Thank you for shopping with Mynzo!
                       value={reviewText}
                       onChange={(e) => setReviewText(e.target.value)}
                       placeholder="What did you like or dislike?"
-                      className="w-full bg-white border border-slate-200 rounded-xl p-3 text-[14px] outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923] transition-all resize-none h-[80px]"
+                      className="w-full bg-white border border-slate-200 rounded-xl p-3 text-[14px] outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320] transition-all resize-none h-[80px]"
                     ></textarea>
                   </div>
 
@@ -400,12 +400,12 @@ Thank you for shopping with Mynzo!
                       </div>
                     )}
                     <div className="flex gap-3">
-                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#ee4923] hover:bg-orange-50 transition-colors">
+                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#4B5320] hover:bg-primary-50 transition-colors">
                         <ImageIcon className="w-5 h-5 text-slate-400 mb-1" />
                         <span className="text-[10px] font-medium text-slate-600">Add Photos</span>
                         <input type="file" accept="image/jpeg, image/png, image/webp" multiple className="hidden" onChange={handlePhotoUpload} />
                       </label>
-                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#ee4923] hover:bg-orange-50 transition-colors">
+                      <label className="flex flex-col items-center justify-center w-20 h-20 border-2 border-dashed border-slate-300 bg-white rounded-xl cursor-pointer hover:border-[#4B5320] hover:bg-primary-50 transition-colors">
                         <Video className="w-5 h-5 text-slate-400 mb-1" />
                         <span className="text-[10px] font-medium text-slate-600">Add Reel</span>
                         <input type="file" accept="video/mp4, video/webm" className="hidden" onChange={handleVideoUpload} />
@@ -444,7 +444,7 @@ Thank you for shopping with Mynzo!
                         
                         alert("Review submitted successfully!");
                       }}
-                      className="flex-1 bg-[#ee4923] hover:bg-[#ff5c3f] text-white font-bold py-3 rounded-xl transition-colors shadow-sm cursor-pointer"
+                      className="flex-1 bg-[#4B5320] hover:bg-[#ff5c3f] text-white font-bold py-3 rounded-xl transition-colors shadow-sm cursor-pointer"
                     >
                       Submit Review
                     </button>
@@ -458,7 +458,7 @@ Thank you for shopping with Mynzo!
                         <Star key={star} className={`w-4 h-4 ${star <= submittedReview.rating ? 'text-green-600 fill-green-600' : 'text-slate-200 fill-slate-200'}`} />
                       ))}
                     </div>
-                    <button onClick={() => setIsEditingReview(true)} className="text-[12px] font-semibold text-[#ee4923] hover:underline flex items-center gap-1">
+                    <button onClick={() => setIsEditingReview(true)} className="text-[12px] font-semibold text-[#4B5320] hover:underline flex items-center gap-1">
                       <PenLine className="w-3 h-3" /> Edit
                     </button>
                   </div>
@@ -498,7 +498,7 @@ Thank you for shopping with Mynzo!
                     </div>
                     <button 
                       onClick={() => setIsEditingReview(true)}
-                      className="border border-[#ee4923] text-[#ee4923] bg-white px-4 py-1.5 rounded-lg text-[14px] font-semibold flex items-center gap-2 hover:bg-[#ee4923]/5 transition-colors"
+                      className="border border-[#4B5320] text-[#4B5320] bg-white px-4 py-1.5 rounded-lg text-[14px] font-semibold flex items-center gap-2 hover:bg-[#4B5320]/5 transition-colors"
                     >
                       <PenLine className="w-4 h-4" />
                       Write review
@@ -614,7 +614,7 @@ Thank you for shopping with Mynzo!
           <h3 className="text-[14px] font-bold text-slate-800">Order ID</h3>
           <div className="flex items-center gap-2 text-[13px] text-slate-500 mt-1">
             <span>{id}</span>
-            <Copy onClick={handleCopyId} className="w-4 h-4 text-[#ee4923] cursor-pointer hover:text-[#ff5c3f]" />
+            <Copy onClick={handleCopyId} className="w-4 h-4 text-[#4B5320] cursor-pointer hover:text-[#ff5c3f]" />
           </div>
         </div>
       </div>
@@ -623,7 +623,7 @@ Thank you for shopping with Mynzo!
       <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-2 bg-white border-t border-slate-200 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-50">
          <button 
            onClick={() => navigate('/')}
-           className="w-full border border-[#ee4923] text-[#ee4923] font-bold text-[13px] py-2.5 rounded-lg hover:bg-[#ee4923]/5 active:bg-[#ee4923]/10 transition-colors"
+           className="w-full border border-[#4B5320] text-[#4B5320] font-bold text-[13px] py-2.5 rounded-lg hover:bg-[#4B5320]/5 active:bg-[#4B5320]/10 transition-colors"
          >
            Shop more from Mynzo
          </button>
@@ -660,11 +660,11 @@ Thank you for shopping with Mynzo!
                         key={idx}
                         onClick={() => handleReturnToggleItem(item)}
                         className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-                          isSelected ? 'border-[#ee4923] bg-orange-50' : 'border-slate-100 bg-slate-50 hover:bg-slate-100'
+                          isSelected ? 'border-[#4B5320] bg-primary-50' : 'border-slate-100 bg-slate-50 hover:bg-slate-100'
                         }`}
                       >
                         <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${
-                          isSelected ? 'border-[#ee4923] bg-[#ee4923]' : 'border-slate-300'
+                          isSelected ? 'border-[#4B5320] bg-[#4B5320]' : 'border-slate-300'
                         }`}>
                           {isSelected && <Check className="w-3 h-3 text-white" />}
                         </div>
@@ -693,7 +693,7 @@ Thank you for shopping with Mynzo!
                       onClick={() => setReturnReason(reason)}
                       className={`px-3 py-2.5 rounded-xl text-[12px] font-semibold text-left transition-all border ${
                         returnReason === reason 
-                          ? 'border-[#ee4923] bg-orange-50 text-[#ee4923]' 
+                          ? 'border-[#4B5320] bg-primary-50 text-[#4B5320]' 
                           : 'border-slate-100 bg-slate-50 text-slate-600 hover:bg-slate-100'
                       }`}
                     >
@@ -710,7 +710,7 @@ Thank you for shopping with Mynzo!
                   value={returnReasonDetails}
                   onChange={(e) => setReturnReasonDetails(e.target.value)}
                   placeholder="Describe the issue in detail..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-[14px] outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923] transition-all resize-none h-[80px]"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-[14px] outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320] transition-all resize-none h-[80px]"
                 />
               </div>
 
@@ -729,7 +729,7 @@ Thank you for shopping with Mynzo!
               <button
                 onClick={handleSubmitReturn}
                 disabled={submittingReturn || returnSelectedItems.length === 0 || !returnReason}
-                className="w-full bg-[#ee4923] text-white font-bold text-[14px] py-3.5 rounded-xl hover:bg-[#ff5c3f] active:bg-[#d43d1a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-[#4B5320] text-white font-bold text-[14px] py-3.5 rounded-xl hover:bg-[#ff5c3f] active:bg-[#d43d1a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {submittingReturn ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Submitting...</>

@@ -371,7 +371,7 @@ const Users = () => {
           </button>
           <button 
             onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-2 px-8 py-3 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-8 py-3 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
           >
             <UserPlus size={16} />
             Add Customer
@@ -382,7 +382,7 @@ const Users = () => {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total Buyers', value: stats.totalUsers > 0 ? stats.totalUsers.toLocaleString() : '00', icon: UsersIcon, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Total Buyers', value: stats.totalUsers > 0 ? stats.totalUsers.toLocaleString() : '00', icon: UsersIcon, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Active Now', value: stats.activeNow > 0 ? stats.activeNow.toLocaleString() : '00', icon: Clock, color: 'text-green-500', bg: 'bg-green-50' },
           { label: 'Avg LTV', value: stats.avgLtv > 0 ? `₹${stats.avgLtv.toLocaleString('en-IN')}` : '00', icon: Star, color: 'text-amber-500', bg: 'bg-amber-50' },
           { label: 'New This Week', value: stats.newUsersThisWeek > 0 ? `+${stats.newUsersThisWeek}` : '00', icon: UserPlus, color: 'text-indigo-500', bg: 'bg-indigo-50' },
@@ -404,11 +404,11 @@ const Users = () => {
         <div className="p-6 border-b border-slate-50">
           <div className="flex gap-4">
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={18} />
               <input 
                 type="text" 
                 placeholder="Search by Name, Email or Phone..."
-                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none text-slate-900"
+                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none text-slate-900"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -440,7 +440,7 @@ const Users = () => {
                               setFilterStatus(status);
                               setIsFilterOpen(false);
                             }}
-                            className={`w-full px-4 py-2.5 text-left text-[10px] font-black uppercase tracking-widest transition-colors flex items-center justify-between ${filterStatus === status ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`}
+                            className={`w-full px-4 py-2.5 text-left text-[10px] font-black uppercase tracking-widest transition-colors flex items-center justify-between ${filterStatus === status ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-50'}`}
                          >
                             {status}
                             {filterStatus === status && <CheckCircle2 size={12} />}
@@ -489,7 +489,7 @@ const Users = () => {
                 <tr 
                   key={user.id} 
                   onClick={() => navigate(`/admin/users/${user.id}`)}
-                  className="group hover:bg-blue-50/30 cursor-pointer transition-all border-l-4 border-transparent hover:border-blue-500 animate-in fade-in slide-in-from-left-2 duration-300"
+                  className="group hover:bg-primary-50/30 cursor-pointer transition-all border-l-4 border-transparent hover:border-primary-500 animate-in fade-in slide-in-from-left-2 duration-300"
                   style={{ animationDelay: `${i * 50}ms` }}
                 >
                   <td className="px-6 py-5">
@@ -522,7 +522,7 @@ const Users = () => {
                        <button 
                          onClick={(e) => handleAction(e, 'view', user)}
                          title="View Profile"
-                         className="p-2 bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white rounded-lg transition-all"
+                         className="p-2 bg-primary-50 text-primary-500 hover:bg-primary-500 hover:text-white rounded-lg transition-all"
                        >
                           <Eye size={14} />
                        </button>
@@ -641,7 +641,7 @@ const Users = () => {
                       onClick={() => setCurrentPage(page)}
                       className={`w-10 h-10 rounded-xl text-xs font-black transition-all flex items-center justify-center ${
                         currentPage === page
-                          ? 'bg-blue-500 text-white shadow-lg shadow-blue-100'
+                          ? 'bg-primary-500 text-white shadow-lg shadow-primary-100'
                           : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-100 hover:text-slate-900 active:scale-95'
                       }`}
                     >
@@ -699,7 +699,7 @@ const Users = () => {
                     onChange={handleInputChange}
                     type="text" 
                     placeholder="e.g. Rahul Sharma" 
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all" 
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all" 
                   />
                 </div>
                 <div className="space-y-2">
@@ -710,7 +710,7 @@ const Users = () => {
                     onChange={handleInputChange}
                     type="email" 
                     placeholder="rahul@example.com" 
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all" 
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all" 
                   />
                 </div>
                 <div className="space-y-2">
@@ -721,7 +721,7 @@ const Users = () => {
                     onChange={handleInputChange}
                     type="tel" 
                     placeholder="+91 00000 00000" 
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all" 
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all" 
                   />
                 </div>
                 <div className="space-y-2">
@@ -730,20 +730,20 @@ const Users = () => {
                     name="status"
                     value={formData.status}
                     onChange={handleInputChange}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all appearance-none"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all appearance-none"
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
                 
-                <div className="bg-blue-50 p-6 rounded-[24px] border border-blue-100 flex gap-4 items-start">
-                   <div className="p-2 bg-white rounded-xl text-blue-500 shadow-sm">
+                <div className="bg-primary-50 p-6 rounded-[24px] border border-primary-100 flex gap-4 items-start">
+                   <div className="p-2 bg-white rounded-xl text-primary-500 shadow-sm">
                       <ShieldCheck size={20} />
                    </div>
                    <div>
-                      <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Platform Sync</p>
-                      <p className="text-[11px] text-blue-400 font-bold mt-1 leading-relaxed uppercase">Adding a customer will automatically trigger a welcome email and sync profile across all storefronts.</p>
+                      <p className="text-[10px] font-black text-primary-600 uppercase tracking-widest">Platform Sync</p>
+                      <p className="text-[11px] text-primary-400 font-bold mt-1 leading-relaxed uppercase">Adding a customer will automatically trigger a welcome email and sync profile across all storefronts.</p>
                    </div>
                 </div>
               </div>
@@ -752,7 +752,7 @@ const Users = () => {
                 <button onClick={handleCloseModal} className="flex-1 py-4 bg-slate-50 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all">Cancel</button>
                 <button 
                   onClick={handleSaveCustomer}
-                  className="flex-1 py-4 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-blue-100 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-4 bg-primary-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-100 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
                 >
                    <CheckCircle2 size={16} />
                    {editingUser ? 'Update Customer' : 'Save Customer'}

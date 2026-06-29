@@ -159,7 +159,7 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex text-blue-900 font-nunito">
+    <div className="min-h-screen bg-[#f8fafc] flex text-primary-900 font-nunito">
       {/* Sidebar */}
       <aside
         className={`${isSidebarOpen ? 'w-72' : 'w-24'} bg-white border-r border-slate-200 transition-all duration-500 ease-in-out flex flex-col fixed inset-y-0 z-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]`}
@@ -168,7 +168,7 @@ const AdminLayout = () => {
           {isSidebarOpen ? (
             <Link to="/admin/dashboard" className="flex items-center gap-3 group">
               <img 
-                src="/HopeFinal.webp" 
+                src="/logo_lakshya.webp" 
                 alt="Logo" 
                 className="h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
               />
@@ -176,7 +176,7 @@ const AdminLayout = () => {
           ) : (
             <div className="w-12 h-12 flex items-center justify-center transition-all">
               <img 
-                src="/HopeFinal.webp" 
+                src="/logo_lakshya.webp" 
                 alt="Logo" 
                 className="h-10 w-10 object-contain" 
               />
@@ -205,12 +205,12 @@ const AdminLayout = () => {
                         <button
                           onClick={() => toggleSubMenu(item.name)}
                           className={`w-full flex items-center justify-between px-4 py-2.5 transition-all outline-none focus:outline-none focus:ring-0 ${isActive
-                              ? 'bg-blue-50 text-blue-500 rounded-md'
-                              : 'text-blue-900/60 hover:bg-blue-50/50 hover:text-blue-500 rounded-xl'
+                              ? 'bg-primary-50 text-primary-500 rounded-md'
+                              : 'text-primary-900/60 hover:bg-primary-50/50 hover:text-primary-500 rounded-xl'
                             }`}
                         >
                           <div className="flex items-center gap-3">
-                            <span className={`flex-shrink-0 ${isActive ? 'text-blue-500' : ''}`}>{item.icon}</span>
+                            <span className={`flex-shrink-0 ${isActive ? 'text-primary-500' : ''}`}>{item.icon}</span>
                             {isSidebarOpen && <span className="font-bold text-[17px] font-raleway whitespace-nowrap">{item.name}</span>}
                           </div>
                           {isSidebarOpen && (
@@ -229,8 +229,8 @@ const AdminLayout = () => {
                                   key={sub.path}
                                   to={sub.path}
                                   className={`block py-2.5 text-[16px] font-bold transition-all outline-none focus:outline-none ${location.pathname === sub.path
-                                      ? 'text-blue-500'
-                                      : 'text-slate-400 hover:text-blue-500'
+                                      ? 'text-primary-500'
+                                      : 'text-slate-400 hover:text-primary-500'
                                     }`}
                                 >
                                   {sub.name}
@@ -248,8 +248,8 @@ const AdminLayout = () => {
                       key={item.path}
                       to={item.path}
                       className={`flex items-center gap-3 px-4 py-2.5 transition-all outline-none focus:outline-none focus:ring-0 ${isActive
-                          ? 'bg-blue-500 text-white shadow-md shadow-blue-100/30 rounded-md'
-                          : 'text-blue-900/60 hover:bg-blue-50/50 hover:text-blue-500 rounded-xl'
+                          ? 'bg-primary-500 text-white shadow-md shadow-primary-100/30 rounded-md'
+                          : 'text-primary-900/60 hover:bg-primary-50/50 hover:text-primary-500 rounded-xl'
                         }`}
                     >
                       <span className="flex-shrink-0">{item.icon}</span>
@@ -266,9 +266,9 @@ const AdminLayout = () => {
         <div className="p-6 border-t border-slate-50 space-y-3">
             <div 
               onClick={() => navigate('/admin/settings')}
-              className={`p-4 bg-blue-50 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-blue-100 transition-all`}
+              className={`p-4 bg-primary-50 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-primary-100 transition-all`}
             >
-              <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-xs text-blue-500 border border-blue-100 overflow-hidden">
+              <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-xs text-primary-500 border border-primary-100 overflow-hidden">
                  {adminInfo.avatar ? (
                     <OptimizedImage src={adminInfo.avatar} alt="Admin" type="default" className="w-full h-full" />
                  ) : (
@@ -277,7 +277,7 @@ const AdminLayout = () => {
               </div>
               {isSidebarOpen && (
                 <div className="flex-1 min-w-0">
-                   <p className="text-[11px] font-bold text-blue-500 uppercase leading-none truncate">{adminInfo.name || 'Super Admin'}</p>
+                   <p className="text-[11px] font-bold text-primary-500 uppercase leading-none truncate">{adminInfo.name || 'Super Admin'}</p>
                    <p className="text-[10px] text-green-500 font-bold mt-1 flex items-center gap-1">
                       <span className="w-1 h-1 bg-green-500 rounded-full animate-pulse" /> Live & Secure
                    </p>
@@ -301,9 +301,9 @@ const AdminLayout = () => {
           <div className="flex items-center gap-8">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="w-10 h-10 border border-blue-50 flex items-center justify-center rounded-xl hover:bg-blue-50 transition-all shadow-sm active:scale-90"
+              className="w-10 h-10 border border-primary-50 flex items-center justify-center rounded-xl hover:bg-primary-50 transition-all shadow-sm active:scale-90"
             >
-              <Menu size={18} className="text-blue-500" />
+              <Menu size={18} className="text-primary-500" />
             </button>
 
             <div className="hidden lg:block">
@@ -316,7 +316,7 @@ const AdminLayout = () => {
 
           <div className="flex items-center gap-6">
             <div className="relative hidden md:block group">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={18} />
               <input
                 type="text"
                 value={searchQuery}
@@ -327,7 +327,7 @@ const AdminLayout = () => {
                 onFocus={() => searchQuery.length > 0 && setShowSearchDropdown(true)}
                 onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
                 placeholder="Search global records..."
-                className="bg-blue-50/50 border-none rounded-[20px] py-3.5 pl-14 pr-8 text-[14px] font-bold focus:ring-4 focus:ring-blue-100 w-96 shadow-inner transition-all text-blue-900"
+                className="bg-primary-50/50 border-none rounded-[20px] py-3.5 pl-14 pr-8 text-[14px] font-bold focus:ring-4 focus:ring-primary-100 w-96 shadow-inner transition-all text-primary-900"
               />
 
               {/* Search Dropdown */}
@@ -346,9 +346,9 @@ const AdminLayout = () => {
                           setSearchQuery('');
                           setShowSearchDropdown(false);
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-blue-50 rounded-xl text-sm font-bold text-slate-700 transition-all text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-primary-50 rounded-xl text-sm font-bold text-slate-700 transition-all text-left"
                       >
-                        <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                        <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center">
                           <Layers size={14} />
                         </div>
                         {link.name}
@@ -365,7 +365,7 @@ const AdminLayout = () => {
                <div className="relative">
                   <button 
                     onClick={() => setShowNotifications(!showNotifications)}
-                    className={`w-12 h-12 border rounded-2xl flex items-center justify-center relative transition-all ${showNotifications ? 'bg-blue-500 text-white border-blue-500 shadow-lg' : 'bg-white border-slate-100 text-slate-400 hover:text-slate-900 shadow-sm'}`}
+                    className={`w-12 h-12 border rounded-2xl flex items-center justify-center relative transition-all ${showNotifications ? 'bg-primary-500 text-white border-primary-500 shadow-lg' : 'bg-white border-slate-100 text-slate-400 hover:text-slate-900 shadow-sm'}`}
                   >
                      <Bell size={20} />
                      {!showNotifications && <div className="absolute top-3.5 right-3.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />}
@@ -380,12 +380,12 @@ const AdminLayout = () => {
                       >
                         <div className="p-5 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                            <h4 className="font-black text-[11px] uppercase tracking-widest text-slate-900">Notifications</h4>
-                           <span className="bg-blue-100 text-blue-600 text-[9px] font-black px-2 py-0.5 rounded-full">3 New</span>
+                           <span className="bg-primary-100 text-primary-600 text-[9px] font-black px-2 py-0.5 rounded-full">3 New</span>
                         </div>
                         <div className="max-h-[400px] overflow-y-auto no-scrollbar">
                            {mockNotifications.map(n => (
                              <button key={n.id} className="w-full p-5 flex gap-4 hover:bg-slate-50 transition-all text-left border-b border-slate-50 last:border-0">
-                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${n.type === 'warning' ? 'bg-amber-100 text-amber-600' : n.type === 'success' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'}`}>
+                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${n.type === 'warning' ? 'bg-amber-100 text-amber-600' : n.type === 'success' ? 'bg-green-100 text-green-600' : 'bg-primary-100 text-primary-600'}`}>
                                    {n.type === 'warning' ? <AlertCircle size={18} /> : n.type === 'success' ? <CheckCircle2 size={18} /> : <Bell size={18} />}
                                 </div>
                                 <div>
@@ -397,7 +397,7 @@ const AdminLayout = () => {
                         </div>
                         <button 
                           onClick={() => { navigate('/admin/comms/notifications'); setShowNotifications(false); }}
-                          className="w-full py-4 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-blue-600 hover:bg-blue-50 transition-all"
+                          className="w-full py-4 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-primary-600 hover:bg-primary-50 transition-all"
                         >
                            View All Notifications
                         </button>
@@ -407,7 +407,7 @@ const AdminLayout = () => {
                </div>
                <div 
                  onClick={() => navigate('/admin/settings')}
-                 className={`w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white font-semibold text-lg shadow-xl cursor-pointer hover:scale-105 active:scale-95 transition-all overflow-hidden`}
+                 className={`w-12 h-12 bg-primary-500 rounded-2xl flex items-center justify-center text-white font-semibold text-lg shadow-xl cursor-pointer hover:scale-105 active:scale-95 transition-all overflow-hidden`}
                >
                  {adminInfo.avatar ? (
                     <OptimizedImage src={adminInfo.avatar} alt="Admin" type="default" className="w-full h-full" />

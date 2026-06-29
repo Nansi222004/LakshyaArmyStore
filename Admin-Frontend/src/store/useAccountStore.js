@@ -25,7 +25,7 @@ const useAccountStore = create((set) => ({
       number: '•••• •••• •••• 4242',
       expiry: '12/28',
       holder: 'Harsh Pandey',
-      color: 'from-blue-600 to-indigo-700'
+      color: 'from-primary-600 to-indigo-700'
     }
   ],
   orders: [

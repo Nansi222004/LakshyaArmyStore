@@ -262,7 +262,7 @@ const Coupons = () => {
           </button>
           <button 
             onClick={() => setIsAdding(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-[#ee4923] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-6 py-3 bg-[#4B5320] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Plus size={16} />
             Create Coupon
@@ -295,7 +295,7 @@ const Coupons = () => {
         <div className="p-6 border-b border-slate-50">
           <div className="flex gap-4">
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#ee4923] transition-colors" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#4B5320] transition-colors" size={18} />
               <input 
                 type="text" 
                 placeholder="Search by coupon code..."
@@ -338,7 +338,7 @@ const Coupons = () => {
                   <tr key={coupon._id} className="group hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
-                         <div className="w-10 h-10 bg-orange-50 text-[#ee4923] rounded-xl flex items-center justify-center font-black shadow-inner">
+                         <div className="w-10 h-10 bg-orange-50 text-[#4B5320] rounded-xl flex items-center justify-center font-black shadow-inner">
                             <Tag size={18} />
                          </div>
                          <div>
@@ -346,7 +346,7 @@ const Coupons = () => {
                                <p className="font-black text-slate-900 font-montserrat leading-tight uppercase tracking-widest">{coupon.code}</p>
                                <button 
                                  onClick={() => handleCopyCode(coupon.code)}
-                                 className="text-slate-400 hover:text-[#ee4923] transition-colors p-1 rounded hover:bg-slate-100/80 active:scale-95 transition-all"
+                                 className="text-slate-400 hover:text-[#4B5320] transition-colors p-1 rounded hover:bg-slate-100/80 active:scale-95 transition-all"
                                  title="Copy Code"
                                >
                                  <Copy size={12} />
@@ -356,7 +356,7 @@ const Coupons = () => {
                          </div>
                       </div>
                     </td>
-                    <td className="px-6 py-5 font-black text-[#ee4923] font-roboto text-base">
+                    <td className="px-6 py-5 font-black text-[#4B5320] font-roboto text-base">
                       {coupon.type === 'Percentage' ? `${coupon.value}%` : `₹${coupon.value}`}
                     </td>
                     <td className="px-6 py-5 font-bold text-slate-700">₹{coupon.minOrder || 0}</td>
@@ -394,7 +394,7 @@ const Coupons = () => {
                             setExpiry(new Date(coupon.expiry).toISOString().split('T')[0]);
                             setIsAdding(true);
                           }}
-                          className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all"
+                          className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all"
                           title="Edit Coupon"
                         >
                           <Edit2 size={16} />
@@ -538,7 +538,7 @@ const Coupons = () => {
                   >
                     Cancel
                   </button>
-                  <button type="submit" className="flex-1 py-4 bg-[#ee4923] text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all">
+                  <button type="submit" className="flex-1 py-4 bg-[#4B5320] text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all">
                     {editingCoupon ? 'Save Changes' : 'Publish Coupon'}
                   </button>
                 </div>

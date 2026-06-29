@@ -14,7 +14,7 @@ import OptimizedImage from '../../../components/common/OptimizedImage';
 const StatusBadge = ({ status }) => {
   const styles = {
     'Pending': 'bg-amber-50 text-amber-600 border-amber-100',
-    'Processing': 'bg-blue-50 text-blue-600 border-blue-100',
+    'Processing': 'bg-primary-50 text-primary-600 border-primary-100',
     'Shipped': 'bg-violet-50 text-violet-600 border-violet-100',
     'Out for Delivery': 'bg-sky-50 text-sky-600 border-sky-100',
     'Delivered': 'bg-green-50 text-green-600 border-green-100',
@@ -334,7 +334,7 @@ const OrderDetail = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
-        <RefreshCw className="animate-spin text-blue-500" size={32} />
+        <RefreshCw className="animate-spin text-primary-500" size={32} />
         <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Loading order details...</p>
       </div>
     );
@@ -401,7 +401,7 @@ const OrderDetail = () => {
            {order.awbCode && (
              <button 
                onClick={handleGenerateLabel}
-               className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 transition-all"
+               className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 transition-all"
              >
                 <Download size={18} />
                 Download Label
@@ -416,7 +416,7 @@ const OrderDetail = () => {
             {/* Items */}
             <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
                <div className="p-6 border-b border-slate-50 flex items-center gap-3">
-                  <Package size={18} className="text-blue-500" />
+                  <Package size={18} className="text-primary-500" />
                   <h3 className="text-sm font-black text-slate-900 font-montserrat uppercase tracking-widest">Order Items ({order.items?.length || 0})</h3>
                </div>
                <div className="divide-y divide-slate-50">
@@ -439,7 +439,7 @@ const OrderDetail = () => {
                              </div>
                              <div className="ml-auto text-right">
                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Total</p>
-                                <p className="text-sm font-black text-blue-600 font-roboto">₹{(item.price * item.quantity).toLocaleString()}</p>
+                                <p className="text-sm font-black text-primary-600 font-roboto">₹{(item.price * item.quantity).toLocaleString()}</p>
                              </div>
                           </div>
                        </div>
@@ -478,7 +478,7 @@ const OrderDetail = () => {
                   )}
                   <div className="pt-4 border-t border-slate-100 flex justify-between items-center">
                      <p className="text-sm font-black text-slate-900 font-montserrat uppercase tracking-widest">Order Total</p>
-                     <p className="text-2xl font-black text-blue-600 font-roboto">₹{order.total.toLocaleString()}</p>
+                     <p className="text-2xl font-black text-primary-600 font-roboto">₹{order.total.toLocaleString()}</p>
                   </div>
                </div>
             </div>
@@ -486,7 +486,7 @@ const OrderDetail = () => {
             {/* Logistics Actions (Shiprocket) */}
             <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
               <div className="flex items-center gap-3">
-                 <Truck size={18} className="text-blue-500" />
+                 <Truck size={18} className="text-primary-500" />
                  <h3 className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Shiprocket Logistics Integration</h3>
               </div>
               
@@ -501,7 +501,7 @@ const OrderDetail = () => {
                 </div>
                 <div>
                   <span className="text-slate-400 uppercase text-[9px]">AWB Code</span> 
-                  <p className="text-blue-600">{order.awbCode || 'Pending'}</p>
+                  <p className="text-primary-600">{order.awbCode || 'Pending'}</p>
                 </div>
                 <div>
                   <span className="text-slate-400 uppercase text-[9px]">Courier</span> 
@@ -538,7 +538,7 @@ const OrderDetail = () => {
                       <button 
                         onClick={handleProcessOrder}
                         disabled={processingOrder}
-                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl text-xs font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-sm disabled:opacity-50"
+                        className="px-4 py-2 bg-gradient-to-r from-primary-500 to-indigo-500 text-white rounded-xl text-xs font-bold hover:from-primary-600 hover:to-indigo-600 transition-all shadow-sm disabled:opacity-50"
                       >
                         {processingOrder ? '⏳ Processing...' : '🚀 Process Order (AWB + Pickup + Label)'}
                       </button>
@@ -547,7 +547,7 @@ const OrderDetail = () => {
                     {!order.awbCode && (
                       <button 
                         onClick={handleAssignAWB}
-                        className="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-xs font-bold hover:bg-blue-100 transition-colors shadow-sm"
+                        className="px-4 py-2 bg-primary-50 text-primary-600 rounded-xl text-xs font-bold hover:bg-primary-100 transition-colors shadow-sm"
                       >
                         Assign AWB
                       </button>
@@ -610,7 +610,7 @@ const OrderDetail = () => {
                     <div className="grid grid-cols-2 gap-3 text-xs">
                       <div>
                         <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Return ID</p>
-                        <p className="font-bold text-blue-600 font-roboto mt-0.5">RET-{returnInfo._id.substring(returnInfo._id.length - 6).toUpperCase()}</p>
+                        <p className="font-bold text-primary-600 font-roboto mt-0.5">RET-{returnInfo._id.substring(returnInfo._id.length - 6).toUpperCase()}</p>
                       </div>
                       <div>
                         <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Status</p>
@@ -618,7 +618,7 @@ const OrderDetail = () => {
                           returnInfo.status === 'Refunded' ? 'bg-green-50 text-green-600 border-green-100' :
                           returnInfo.status === 'Rejected' ? 'bg-red-50 text-red-600 border-red-100' :
                           returnInfo.status === 'Requested' ? 'bg-amber-50 text-amber-600 border-amber-100' :
-                          'bg-blue-50 text-blue-600 border-blue-100'
+                          'bg-primary-50 text-primary-600 border-primary-100'
                         }`}>{returnInfo.status}</span>
                       </div>
                       <div>
@@ -647,11 +647,11 @@ const OrderDetail = () => {
             {/* Customer Info */}
             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
                <div className="flex items-center gap-3">
-                  <User size={18} className="text-blue-500" />
+                  <User size={18} className="text-primary-500" />
                   <h3 className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Customer Profile</h3>
                </div>
                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center text-xl font-black border border-blue-100 shadow-inner uppercase">
+                  <div className="w-14 h-14 bg-primary-50 text-primary-500 rounded-2xl flex items-center justify-center text-xl font-black border border-primary-100 shadow-inner uppercase">
                      {order.userId?.name ? order.userId.name.substring(0, 1) : 'G'}
                   </div>
                   <div>
@@ -682,13 +682,13 @@ const OrderDetail = () => {
             {/* Order Timeline */}
             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
                <div className="flex items-center gap-3">
-                  <Clock size={18} className="text-blue-500" />
+                  <Clock size={18} className="text-primary-500" />
                   <h3 className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Order Timeline</h3>
                </div>
                <div className="space-y-8 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
                   {orderTimeline.map((step, i) => (
                     <div key={i} className="flex gap-6 relative">
-                       <div className={`w-6 h-6 rounded-full flex items-center justify-center z-10 ${step.completed ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-300'}`}>
+                       <div className={`w-6 h-6 rounded-full flex items-center justify-center z-10 ${step.completed ? 'bg-primary-500 text-white' : 'bg-slate-100 text-slate-300'}`}>
                           {step.completed ? <ShieldCheck size={12} /> : <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />}
                        </div>
                        <div>

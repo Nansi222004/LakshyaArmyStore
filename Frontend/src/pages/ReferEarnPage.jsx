@@ -11,7 +11,7 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const STATUS_STYLES = {
   pending:   { label: 'Pending',   bg: 'bg-amber-50',   text: 'text-amber-600',   dot: 'bg-amber-400' },
-  completed: { label: 'Completed', bg: 'bg-blue-50',    text: 'text-blue-600',    dot: 'bg-blue-400' },
+  completed: { label: 'Completed', bg: 'bg-blue-50',    text: 'text-[#D4AF37]',    dot: 'bg-blue-400' },
   rewarded:  { label: 'Rewarded',  bg: 'bg-emerald-50', text: 'text-emerald-600', dot: 'bg-emerald-400' },
 };
 
@@ -126,9 +126,9 @@ export default function ReferEarnPage() {
           onClick={() => navigate(-1)}
           className="p-2 -ml-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
         >
-          <ChevronLeft className="w-5 h-5 text-[#02006c]" />
+          <ChevronLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
-        <h1 className="text-[17px] font-bold text-[#02006c]">Refer &amp; Earn</h1>
+        <h1 className="text-[17px] font-bold text-[#2F3E16]">Refer &amp; Earn</h1>
       </div>
 
       {/* Not logged in */}
@@ -139,23 +139,23 @@ export default function ReferEarnPage() {
           <p className="text-[13px] text-slate-400">Sign in to get your unique referral code and earn coins.</p>
           <button
             onClick={() => navigate('/login')}
-            className="mt-5 bg-[#02006c] text-white font-bold text-[13px] px-6 py-2.5 rounded-lg hover:bg-[#02006c]/90 transition-all shadow-md active:scale-[0.98]"
+            className="mt-5 bg-[#2F3E16] text-white font-bold text-[13px] px-6 py-2.5 rounded-lg hover:bg-[#2F3E16]/90 transition-all shadow-md active:scale-[0.98]"
           >
             Go to Login
           </button>
         </div>
       ) : loading ? (
         <div className="flex flex-col items-center justify-center py-24 gap-3">
-          <Loader2 className="w-8 h-8 text-[#ee4923] animate-spin" />
+          <Loader2 className="w-8 h-8 text-[#4B5320] animate-spin" />
           <p className="text-[13px] text-slate-400 font-medium">Loading your referral info...</p>
         </div>
       ) : (
         <div className="p-4 flex-1 flex flex-col gap-4">
 
           {/* Hero Banner */}
-          <div className="bg-gradient-to-br from-[#02006c] to-indigo-900 rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden mt-2">
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#ee4923]/20 rounded-full blur-2xl" />
-            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#ee4923]/20 rounded-full blur-2xl" />
+          <div className="bg-gradient-to-br from-[#2F3E16] to-indigo-900 rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden mt-2">
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#4B5320]/20 rounded-full blur-2xl" />
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#4B5320]/20 rounded-full blur-2xl" />
             <div className="relative z-10 flex flex-col items-center">
               <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-3 border border-white/30">
                 <Gift className="w-7 h-7 text-amber-300" />
@@ -191,12 +191,12 @@ export default function ReferEarnPage() {
           {/* Share Code Section */}
           <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
             <p className="text-[12px] font-bold text-slate-400 mb-3 text-center uppercase tracking-wider">Your Referral Code</p>
-            <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-lg p-2 pl-4 mb-4">
-              <span className="text-xl font-black text-[#ee4923] tracking-widest">{referralCode}</span>
+            <div className="flex items-center justify-between bg-primary-50 border border-primary-200 rounded-lg p-2 pl-4 mb-4">
+              <span className="text-xl font-black text-[#4B5320] tracking-widest">{referralCode}</span>
               <button
                 onClick={handleCopy}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-md font-bold text-sm transition-all ${
-                  copied ? 'bg-emerald-500 text-white' : 'bg-[#02006c] text-white hover:bg-[#02006c]/90'
+                  copied ? 'bg-emerald-500 text-white' : 'bg-[#2F3E16] text-white hover:bg-[#2F3E16]/90'
                 }`}
               >
                 {copied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -244,12 +244,12 @@ export default function ReferEarnPage() {
                   onChange={e => setApplyCode(e.target.value.toUpperCase())}
                   placeholder="Enter referral code"
                   maxLength={12}
-                  className="flex-1 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] font-bold tracking-widest focus:outline-none focus:border-[#ee4923] transition-all uppercase"
+                  className="flex-1 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] font-bold tracking-widest focus:outline-none focus:border-[#4B5320] transition-all uppercase"
                 />
                 <button
                   onClick={handleApplyCode}
                   disabled={applying}
-                  className="bg-[#02006c] text-white font-bold text-[12px] px-4 py-2.5 rounded-lg hover:bg-[#02006c]/90 transition-all disabled:opacity-60 flex items-center gap-1.5"
+                  className="bg-[#2F3E16] text-white font-bold text-[12px] px-4 py-2.5 rounded-lg hover:bg-[#2F3E16]/90 transition-all disabled:opacity-60 flex items-center gap-1.5"
                 >
                   {applying ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
                   Apply
@@ -315,7 +315,7 @@ export default function ReferEarnPage() {
                 { n: 3, title: 'You both earn!', desc: 'Both get Mynzo Coins after their first order.' },
               ].map((step) => (
                 <div key={step.n} className="flex gap-4 relative z-10">
-                  <div className="w-8 h-8 rounded-full bg-[#ee4923]/10 border border-[#ee4923]/30 flex items-center justify-center flex-shrink-0 text-[#ee4923] font-black text-sm">
+                  <div className="w-8 h-8 rounded-full bg-[#4B5320]/10 border border-[#4B5320]/30 flex items-center justify-center flex-shrink-0 text-[#4B5320] font-black text-sm">
                     {step.n}
                   </div>
                   <div className="pt-1.5">

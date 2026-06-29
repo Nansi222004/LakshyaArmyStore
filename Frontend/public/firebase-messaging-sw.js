@@ -24,7 +24,7 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = payload.data?.title || "Mynzo Notification";
     const notificationOptions = {
       body: payload.data?.body || "",
-      icon: payload.data?.image || "/HopeFinal.webp"
+      icon: payload.data?.image || "/logo_lakshya.webp"
     };
 
     self.registration.showNotification(notificationTitle, notificationOptions);

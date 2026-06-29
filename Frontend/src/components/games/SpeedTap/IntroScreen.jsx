@@ -27,7 +27,7 @@ export default function IntroScreen({ bestScore, onStart, onClose, onViewRewards
     >
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-[#FF5A1F] rounded-full blur-[100px] opacity-20"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-[#D4AF37] rounded-full blur-[100px] opacity-20"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-64 h-64 bg-blue-500 rounded-full blur-[100px] opacity-20"></div>
       </div>
 
@@ -39,7 +39,7 @@ export default function IntroScreen({ bestScore, onStart, onClose, onViewRewards
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div className="bg-[#FF5A1F]/20 border border-[#FF5A1F]/50 px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-md">
+        <div className="bg-[#D4AF37]/20 border border-[#D4AF37]/50 px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-md">
           <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-[10px] font-black text-amber-900">M</div>
           <span className="text-sm font-bold text-white">350</span>
         </div>
@@ -53,7 +53,7 @@ export default function IntroScreen({ bestScore, onStart, onClose, onViewRewards
           <motion.div 
             animate={{ y: [-10, 10, -10], rotate: [-5, 5, -5] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute left-[10%] top-[20%] text-[#FF5A1F]"
+            className="absolute left-[10%] top-[20%] text-[#D4AF37]"
           >
             <Percent className="w-10 h-10 drop-shadow-[0_0_15px_rgba(255,90,31,0.5)]" />
           </motion.div>
@@ -79,13 +79,13 @@ export default function IntroScreen({ bestScore, onStart, onClose, onViewRewards
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="absolute z-10"
           >
-            <Zap className="w-24 h-24 text-[#FF5A1F] drop-shadow-[0_0_30px_rgba(255,90,31,0.8)] fill-[#FF5A1F]" />
+            <Zap className="w-24 h-24 text-[#D4AF37] drop-shadow-[0_0_30px_rgba(255,90,31,0.8)] fill-[#D4AF37]" />
           </motion.div>
         </div>
 
         <motion.div variants={itemVariants} className="space-y-2">
           <h1 className="text-4xl font-black italic uppercase tracking-tighter text-white drop-shadow-md flex flex-col">
-            <span className="text-[#FF5A1F]">Speed Tap</span>
+            <span className="text-[#D4AF37]">Speed Tap</span>
             <span>Challenge</span>
           </h1>
           <p className="text-slate-300 font-medium">Tap as fast as you can in 10 seconds!</p>
@@ -99,16 +99,16 @@ export default function IntroScreen({ bestScore, onStart, onClose, onViewRewards
           >
             <Trophy className="w-6 h-6 text-amber-400 mb-1" />
             <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Best Score</span>
-            <span className="text-2xl font-black text-[#FF5A1F]">{bestScore}</span>
+            <span className="text-2xl font-black text-[#D4AF37]">{bestScore}</span>
           </div>
           
           <div 
             onClick={onViewRewards}
             className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-white/10 transition-colors backdrop-blur-sm"
           >
-            <Percent className="w-6 h-6 text-[#FF5A1F] mb-1" />
+            <Percent className="w-6 h-6 text-[#D4AF37] mb-1" />
             <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Rewards</span>
-            <span className="text-sm font-bold text-white mt-1 underline decoration-[#FF5A1F] decoration-2 underline-offset-4">View All</span>
+            <span className="text-sm font-bold text-white mt-1 underline decoration-[#D4AF37] decoration-2 underline-offset-4">View All</span>
           </div>
         </motion.div>
       </div>
@@ -117,7 +117,7 @@ export default function IntroScreen({ bestScore, onStart, onClose, onViewRewards
       <motion.div variants={itemVariants} className="mt-auto pt-6 z-10 w-full px-4 mb-4">
         <button
           onClick={onStart}
-          className="w-full bg-[#FF5A1F] text-white font-black text-xl py-4 rounded-2xl shadow-[0_0_40px_rgba(255,90,31,0.4)] hover:shadow-[0_0_60px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
+          className="w-full bg-[#D4AF37] text-white font-black text-xl py-4 rounded-2xl shadow-[0_0_40px_rgba(255,90,31,0.4)] hover:shadow-[0_0_60px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
         >
           START GAME
         </button>

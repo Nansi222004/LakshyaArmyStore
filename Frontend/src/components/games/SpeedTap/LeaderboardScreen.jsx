@@ -38,7 +38,7 @@ export default function LeaderboardScreen({ bestScore, onBack }) {
               key={t}
               onClick={() => setTab(t)}
               className={`flex-1 text-[10px] font-bold py-2 rounded-md transition-colors ${
-                tab === t ? 'bg-[#FF5A1F] text-white' : 'text-slate-400'
+                tab === t ? 'bg-[#D4AF37] text-white' : 'text-slate-400'
               }`}
             >
               {t}
@@ -56,7 +56,7 @@ export default function LeaderboardScreen({ bestScore, onBack }) {
              <div className="absolute -bottom-2 bg-slate-500 text-white text-[9px] font-bold px-2 rounded-full border border-slate-700 z-10">2</div>
           </div>
           <span className="text-xs font-bold">{leaderboardData[1].name}</span>
-          <span className="text-[10px] text-[#FF5A1F] font-black">{leaderboardData[1].taps} Taps</span>
+          <span className="text-[10px] text-[#D4AF37] font-black">{leaderboardData[1].taps} Taps</span>
         </div>
         
         {/* Rank 1 */}
@@ -67,7 +67,7 @@ export default function LeaderboardScreen({ bestScore, onBack }) {
              <div className="absolute -bottom-2 bg-amber-500 text-white text-[10px] font-black px-2.5 rounded-full border border-amber-200 z-10">1</div>
           </div>
           <span className="text-sm font-black">{leaderboardData[0].name}</span>
-          <span className="text-[11px] text-[#FF5A1F] font-black">{leaderboardData[0].taps} Taps</span>
+          <span className="text-[11px] text-[#D4AF37] font-black">{leaderboardData[0].taps} Taps</span>
         </div>
 
         {/* Rank 3 */}
@@ -77,7 +77,7 @@ export default function LeaderboardScreen({ bestScore, onBack }) {
              <div className="absolute -bottom-2 bg-amber-700 text-white text-[9px] font-bold px-2 rounded-full border border-slate-700 z-10">3</div>
           </div>
           <span className="text-xs font-bold">{leaderboardData[2].name}</span>
-          <span className="text-[10px] text-[#FF5A1F] font-black">{leaderboardData[2].taps} Taps</span>
+          <span className="text-[10px] text-[#D4AF37] font-black">{leaderboardData[2].taps} Taps</span>
         </div>
       </div>
 
@@ -108,7 +108,7 @@ export default function LeaderboardScreen({ bestScore, onBack }) {
       </div>
 
       <div className="absolute bottom-4 left-4 right-4">
-        <button className="w-full bg-[#FF5A1F] text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,90,31,0.4)] active:scale-95 transition-all">
+        <button className="w-full bg-[#D4AF37] text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,90,31,0.4)] active:scale-95 transition-all">
           <Share2 className="w-5 h-5" />
           CHALLENGE FRIENDS
         </button>

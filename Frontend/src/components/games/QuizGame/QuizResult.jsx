@@ -18,14 +18,14 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
         angle: 60,
         spread: 55,
         origin: { x: 0 },
-        colors: ['#EE4923', '#FBBF24', '#FFFFFF']
+        colors: ['#4B5320', '#FBBF24', '#FFFFFF']
       });
       confetti({
         particleCount: 5,
         angle: 120,
         spread: 55,
         origin: { x: 1 },
-        colors: ['#EE4923', '#FBBF24', '#FFFFFF']
+        colors: ['#4B5320', '#FBBF24', '#FFFFFF']
       });
 
       if (Date.now() < end) {
@@ -84,19 +84,19 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
           <button onClick={onClose} className="p-1 hover:bg-white/10 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6 text-white" />
           </button>
-          <span className="font-bold text-sm tracking-wide">Quiz <span className="text-[#EE4923]">Game</span></span>
+          <span className="font-bold text-sm tracking-wide">Quiz <span className="text-[#4B5320]">Game</span></span>
           <div className="w-8 h-8"></div> {/* spacer */}
         </div>
 
         {/* Decorative Background */}
         <div className="absolute inset-0 overflow-hidden rounded-b-[2rem] pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#EE4923] rounded-full blur-[80px] opacity-20"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#4B5320] rounded-full blur-[80px] opacity-20"></div>
           
           {/* Confetti specs static */}
           {[...Array(8)].map((_, i) => (
              <div 
                key={i} 
-               className="absolute w-2 h-4 bg-[#EE4923] rounded-sm opacity-60 rotate-45"
+               className="absolute w-2 h-4 bg-[#4B5320] rounded-sm opacity-60 rotate-45"
                style={{
                  left: `${Math.random() * 100}%`,
                  top: `${Math.random() * 100}%`,
@@ -138,7 +138,7 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
               transition={{ delay: 0.4 }}
               className="flex-1 bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-100"
             >
-              <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center mb-2">
+              <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center mb-2">
                 <div className="w-6 h-6 rounded-full bg-amber-400 flex items-center justify-center text-[12px] font-black text-amber-900 shadow-inner">M</div>
               </div>
               <span className="text-2xl font-black text-slate-800 leading-none">{coinsEarned}</span>
@@ -151,8 +151,8 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
               transition={{ delay: 0.5 }}
               className="flex-1 bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-100"
             >
-              <div className="w-10 h-10 rounded-full bg-[#EE4923]/10 flex items-center justify-center mb-2">
-                <Percent className="w-5 h-5 text-[#EE4923]" />
+              <div className="w-10 h-10 rounded-full bg-[#4B5320]/10 flex items-center justify-center mb-2">
+                <Percent className="w-5 h-5 text-[#4B5320]" />
               </div>
               <span className="text-xl font-black text-slate-800 leading-none">10%</span>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mt-1 text-center leading-tight">Off Coupon</span>
@@ -179,9 +179,9 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
               <div key={day} className="flex flex-col items-center gap-2">
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] ${
                   day <= 2 
-                    ? 'bg-[#EE4923] text-white shadow-[0_0_10px_rgba(238,73,35,0.5)]' 
+                    ? 'bg-[#4B5320] text-white shadow-[0_0_10px_rgba(238,73,35,0.5)]' 
                     : day === 7 
-                      ? 'bg-[#1a2a47] text-[#EE4923]' 
+                      ? 'bg-[#1a2a47] text-[#4B5320]' 
                       : 'bg-[#1a2a47] text-slate-500'
                 }`}>
                   {day <= 2 ? '✓' : day === 7 ? <Gift className="w-3 h-3" /> : '✓'}
@@ -200,7 +200,7 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-black text-slate-800 text-sm">Recommended for You</h3>
-            <button className="text-[10px] font-bold text-[#EE4923] border border-[#EE4923] px-3 py-1 rounded-full uppercase tracking-wide">
+            <button className="text-[10px] font-bold text-[#4B5320] border border-[#4B5320] px-3 py-1 rounded-full uppercase tracking-wide">
               View All
             </button>
           </div>
@@ -209,7 +209,7 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
             {recommendedProducts.map((prod, idx) => (
               <div key={idx} className="min-w-[140px] snap-start bg-white rounded-2xl p-3 shadow-sm border border-slate-100 flex flex-col">
                 <div className="relative w-full aspect-square bg-slate-50 rounded-xl mb-3 flex items-center justify-center p-2">
-                  <span className="absolute top-2 left-2 bg-[#EE4923] text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm">
+                  <span className="absolute top-2 left-2 bg-[#4B5320] text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm">
                     {prod.discount} OFF
                   </span>
                   <img src={prod.image} alt={prod.name} className="w-full h-full object-cover rounded-lg drop-shadow-sm mix-blend-multiply" />
@@ -232,7 +232,7 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
       <div className="absolute bottom-20 left-0 right-0 p-5 bg-gradient-to-t from-[#FFF6F2] via-[#FFF6F2] to-transparent z-20">
         <button
           onClick={onPlayAgain}
-          className="w-full bg-[#EE4923] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(238,73,35,0.4)] hover:shadow-[0_0_30px_rgba(238,73,35,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2"
+          className="w-full bg-[#4B5320] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(238,73,35,0.4)] hover:shadow-[0_0_30px_rgba(238,73,35,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2"
         >
           Play Another Quiz
           <RotateCcw className="w-4 h-4" />
@@ -249,7 +249,7 @@ export default function QuizResult({ score, total, onPlayAgain, onClose, addCoin
           <ShoppingCart className="w-5 h-5" />
           <span className="text-[8px] font-bold">Cart</span>
         </div>
-        <div className="flex flex-col items-center gap-1 text-[#EE4923]">
+        <div className="flex flex-col items-center gap-1 text-[#4B5320]">
           <Gamepad2 className="w-5 h-5" />
           <span className="text-[8px] font-bold">Games</span>
         </div>

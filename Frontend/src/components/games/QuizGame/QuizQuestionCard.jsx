@@ -51,7 +51,7 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
           <button onClick={onClose} className="p-1 -ml-1 hover:bg-white/10 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6 text-white" />
           </button>
-          <span className="font-bold text-lg tracking-wide">Quiz <span className="text-[#EE4923]">Game</span></span>
+          <span className="font-bold text-lg tracking-wide">Quiz <span className="text-[#4B5320]">Game</span></span>
           <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/10">
             <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-[10px] font-black text-amber-900 shadow-inner">M</div>
             <span className="text-sm font-bold">250</span>
@@ -64,11 +64,11 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
             {[...Array(totalQuestions)].map((_, i) => (
               <React.Fragment key={i}>
                 <div className={`w-3 h-3 rounded-full flex-shrink-0 transition-colors duration-500 ${
-                  i <= currentIndex ? 'bg-[#EE4923] shadow-[0_0_8px_rgba(238,73,35,0.8)]' : 'bg-slate-600'
+                  i <= currentIndex ? 'bg-[#4B5320] shadow-[0_0_8px_rgba(238,73,35,0.8)]' : 'bg-slate-600'
                 }`} />
                 {i < totalQuestions - 1 && (
                   <div className={`flex-1 h-1 transition-colors duration-500 ${
-                    i < currentIndex ? 'bg-[#EE4923]' : 'bg-slate-600'
+                    i < currentIndex ? 'bg-[#4B5320]' : 'bg-slate-600'
                   }`} />
                 )}
               </React.Fragment>
@@ -81,20 +81,20 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
       </div>
 
       {/* Background abstract shapes */}
-      <div className="absolute top-[20%] right-[-10%] w-64 h-64 bg-[#EE4923] rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
+      <div className="absolute top-[20%] right-[-10%] w-64 h-64 bg-[#4B5320] rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto hide-scrollbar px-5 pb-24 pt-6 relative z-10">
         
         {/* Question Area */}
         <div className="text-center mb-8">
-          <div className="w-10 h-10 bg-[#EE4923] rounded-full flex items-center justify-center text-white font-black mx-auto mb-4 shadow-lg shadow-[#EE4923]/30">
+          <div className="w-10 h-10 bg-[#4B5320] rounded-full flex items-center justify-center text-white font-black mx-auto mb-4 shadow-lg shadow-[#4B5320]/30">
             Q.
           </div>
           <h2 className="text-2xl font-black text-slate-800 leading-tight mb-2">
             {parts.length === 3 ? (
               <>
-                {parts[0]}<span className="text-[#EE4923]">{parts[1]}</span>{parts[2]}
+                {parts[0]}<span className="text-[#4B5320]">{parts[1]}</span>{parts[2]}
               </>
             ) : questionText}
           </h2>
@@ -109,7 +109,7 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
           className="relative w-full aspect-square max-w-[280px] mx-auto mb-10"
         >
           {/* Soft back glow */}
-          <div className="absolute inset-4 bg-orange-200 rounded-full blur-3xl opacity-50"></div>
+          <div className="absolute inset-4 bg-primary-200 rounded-full blur-3xl opacity-50"></div>
           
           <div className="relative w-full h-full bg-white rounded-[2rem] shadow-xl p-4 flex flex-col items-center justify-center border border-white">
             <img 
@@ -128,14 +128,14 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
             const isSelected = selectedIdx === idx;
             const isCorrect = idx === questionData.correctIdx;
             
-            let btnClass = "bg-white border-slate-200 text-slate-700 hover:border-[#EE4923]/50";
+            let btnClass = "bg-white border-slate-200 text-slate-700 hover:border-[#4B5320]/50";
             let letterClass = "bg-[#071226] text-white";
             let showCheck = false;
 
             if (isSubmitted) {
               if (isCorrect) {
-                btnClass = "bg-[#EE4923] border-[#EE4923] text-white shadow-[0_0_20px_rgba(238,73,35,0.3)]";
-                letterClass = "bg-white text-[#EE4923]";
+                btnClass = "bg-[#4B5320] border-[#4B5320] text-white shadow-[0_0_20px_rgba(238,73,35,0.3)]";
+                letterClass = "bg-white text-[#4B5320]";
                 showCheck = true;
               } else if (isSelected && !isCorrect) {
                 btnClass = "bg-rose-50 border-rose-200 text-rose-900";
@@ -144,8 +144,8 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
                 btnClass = "bg-white border-slate-100 text-slate-400 opacity-60";
               }
             } else if (isSelected) {
-              btnClass = "bg-[#EE4923] border-[#EE4923] text-white shadow-[0_0_20px_rgba(238,73,35,0.3)]";
-              letterClass = "bg-white text-[#EE4923]";
+              btnClass = "bg-[#4B5320] border-[#4B5320] text-white shadow-[0_0_20px_rgba(238,73,35,0.3)]";
+              letterClass = "bg-white text-[#4B5320]";
             }
 
             return (
@@ -185,7 +185,7 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
             disabled={selectedIdx === null}
             className={`w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-lg ${
               selectedIdx !== null 
-                ? 'bg-[#EE4923] text-white shadow-[#EE4923]/40 active:scale-95' 
+                ? 'bg-[#4B5320] text-white shadow-[#4B5320]/40 active:scale-95' 
                 : 'bg-slate-200 text-slate-400 shadow-none'
             }`}
           >
@@ -194,7 +194,7 @@ export default function QuizQuestionCard({ questionData, currentIndex, totalQues
         ) : (
           <button
             onClick={handleNext}
-            className="w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 bg-[#EE4923] text-white shadow-lg shadow-[#EE4923]/40 active:scale-95 flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-2xl font-black text-lg transition-all duration-300 bg-[#4B5320] text-white shadow-lg shadow-[#4B5320]/40 active:scale-95 flex items-center justify-center gap-2"
           >
             {currentIndex === totalQuestions - 1 ? 'See Results' : 'Next Question'}
             <ArrowLeft className="w-5 h-5 rotate-180" />

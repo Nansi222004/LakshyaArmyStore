@@ -216,7 +216,7 @@ const Notifications = () => {
         </div>
         <button 
           onClick={() => setIsComposeOpen(true)}
-          className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+          className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
         >
           <Plus size={16} />
           Compose Message
@@ -226,7 +226,7 @@ const Notifications = () => {
       {/* Stats row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
          {[
-           { label: 'Total Broadcasts', value: totalSent, icon: Send, color: 'text-blue-500', bg: 'bg-blue-50' },
+           { label: 'Total Broadcasts', value: totalSent, icon: Send, color: 'text-primary-500', bg: 'bg-primary-50' },
            { label: 'Delivered', value: delivered, icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50' },
            { label: 'Total Users', value: allUsers.length, icon: Users, color: 'text-indigo-500', bg: 'bg-indigo-50' },
          ].map((stat, i) => (
@@ -271,7 +271,7 @@ const Notifications = () => {
                     type="checkbox"
                     checked={history.length > 0 && selectedIds.length === history.length}
                     onChange={handleSelectAll}
-                    className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-slate-300 cursor-pointer"
+                    className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 border-slate-300 cursor-pointer"
                   />
                 </th>
                 <th className="px-6 py-4">Notification Details</th>
@@ -289,7 +289,7 @@ const Notifications = () => {
                       type="checkbox"
                       checked={selectedIds.includes(item._id)}
                       onChange={() => handleSelectRow(item._id)}
-                      className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-slate-300 cursor-pointer"
+                      className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 border-slate-300 cursor-pointer"
                     />
                   </td>
                   <td className="px-6 py-5">
@@ -304,7 +304,7 @@ const Notifications = () => {
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100">
+                    <span className="px-3 py-1 bg-primary-50 text-primary-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-primary-100">
                       {item.target}
                     </span>
                     {item.target === 'Selected Users' && (
@@ -365,7 +365,7 @@ const Notifications = () => {
                     onChange={handleInputChange}
                     type="text" 
                     placeholder="e.g. Exclusive Weekend Sale!" 
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                   />
                 </div>
 
@@ -377,7 +377,7 @@ const Notifications = () => {
                     onChange={handleInputChange}
                     rows={4}
                     placeholder="Write your message content here..."
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-medium focus:ring-4 focus:ring-blue-50 transition-all outline-none resize-none"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-medium focus:ring-4 focus:ring-primary-50 transition-all outline-none resize-none"
                   />
                 </div>
 
@@ -391,7 +391,7 @@ const Notifications = () => {
                        <div 
                          key={i} 
                          onClick={() => setFormData({...formData, target: target.label})}
-                         className={`p-4 border rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${formData.target === target.label ? 'bg-blue-600 border-blue-600 text-white shadow-lg' : 'bg-slate-50 border-slate-100 text-slate-400 hover:border-slate-200'}`}
+                         className={`p-4 border rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${formData.target === target.label ? 'bg-primary-600 border-primary-600 text-white shadow-lg' : 'bg-slate-50 border-slate-100 text-slate-400 hover:border-slate-200'}`}
                        >
                           <target.icon size={18} />
                           <span className="text-[10px] font-black uppercase tracking-widest">{target.label}</span>
@@ -406,9 +406,9 @@ const Notifications = () => {
                           {formData.targetUserIds.map(id => {
                             const user = allUsers.find(u => u._id === id);
                             return (
-                              <div key={id} className="flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-100">
+                              <div key={id} className="flex items-center gap-1 bg-primary-50 text-primary-600 px-3 py-1.5 rounded-lg text-xs font-bold border border-primary-100">
                                 <span>{user?.name || user?.phone || 'Unknown User'}</span>
-                                <X size={14} className="cursor-pointer hover:text-blue-800" onClick={() => removeUserSelection(id)} />
+                                <X size={14} className="cursor-pointer hover:text-primary-800" onClick={() => removeUserSelection(id)} />
                               </div>
                             )
                           })}
@@ -422,7 +422,7 @@ const Notifications = () => {
                              value={userSearchQuery}
                              onChange={(e) => setUserSearchQuery(e.target.value)}
                              onFocus={() => setIsDropdownOpen(true)}
-                             className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-sm font-bold focus:ring-2 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all shadow-sm"
+                             className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-sm font-bold focus:ring-2 focus:ring-primary-50 focus:border-primary-500 outline-none transition-all shadow-sm"
                            />
                         </div>
 
@@ -444,7 +444,7 @@ const Notifications = () => {
                                       onClick={() => toggleUserSelection(user._id)}
                                       className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 cursor-pointer transition-colors"
                                     >
-                                      <div className={`w-5 h-5 rounded flex items-center justify-center border transition-all ${isSelected ? 'bg-blue-500 border-blue-500' : 'border-slate-300'}`}>
+                                      <div className={`w-5 h-5 rounded flex items-center justify-center border transition-all ${isSelected ? 'bg-primary-500 border-primary-500' : 'border-slate-300'}`}>
                                         {isSelected && <Check size={12} className="text-white" />}
                                       </div>
                                       <div>
@@ -470,7 +470,7 @@ const Notifications = () => {
                 <button 
                   onClick={handleSend}
                   disabled={isSending}
-                  className="flex-1 py-4 bg-blue-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:bg-blue-600 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-4 bg-primary-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:bg-primary-600 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                 >
                    <Send size={16} />
                    {isSending ? 'Sending...' : 'Send Now (Push Only)'}

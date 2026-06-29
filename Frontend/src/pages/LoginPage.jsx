@@ -4,7 +4,6 @@ import { useApp } from '../context/AppContext';
 import { ArrowLeft, Edit2, Loader2 } from 'lucide-react';
 import toast from '../utils/toast';
 import analytics from '../utils/analytics';
-import dollImage from '../assets/DollMynzo-removebg-preview.webp';
 
 const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth`;
 
@@ -199,53 +198,13 @@ export default function LoginPage() {
     </div>
   );
 
-  // Floating doll component
-  const FloatingDoll = () => (
-    <>
-      <style>{`
-        @keyframes floatDoll {
-          0%   { transform: translateY(0px) scale(1); }
-          50%  { transform: translateY(-12px) scale(1.025); }
-          100% { transform: translateY(0px) scale(1); }
-        }
-        .doll-float {
-          animation: floatDoll 3.2s ease-in-out infinite;
-          will-change: transform;
-        }
-      `}</style>
 
-      <div
-        className="absolute bottom-10 right-2 z-10 pointer-events-none"
-        style={{
-          width: '130px',
-          height: '130px',
-          background: 'radial-gradient(circle, rgba(255,110,84,0.22) 0%, rgba(255,142,77,0.10) 55%, transparent 80%)',
-          filter: 'blur(18px)',
-          borderRadius: '50%',
-          transform: 'translateX(10px) translateY(20px)',
-        }}
-      />
-
-      <img
-        src={dollImage}
-        alt="Mynzo Mascot"
-        className="doll-float absolute bottom-6 right-0 z-10 pointer-events-none select-none"
-        style={{
-          width: '140px',
-          opacity: 0.95,
-          filter: 'drop-shadow(0 10px 22px rgba(0,0,0,0.13)) drop-shadow(0 2px 6px rgba(255,110,84,0.18))',
-          objectFit: 'contain',
-        }}
-        draggable={false}
-      />
-    </>
-  );
 
   return (
-    <div className="h-[100dvh] w-full flex flex-col justify-between overflow-hidden relative bg-[#F8F9FD]">
+    <div className="h-[100dvh] w-full flex flex-col justify-between overflow-hidden relative bg-[#F8F8F5]">
 
       {/* Curved Orange top banner */}
-      <div className="relative h-[28%] bg-gradient-to-br from-orange-300 via-orange-400 to-[#FF8E4D] flex flex-col items-center justify-center pt-4">
+      <div className="relative h-[28%] bg-gradient-to-br from-primary-300 via-primary-400 to-[#C2B280] flex flex-col items-center justify-center pt-4">
         {renderLeafOverlay()}
 
         {/* Back to Home or Back to Phone Input */}
@@ -268,7 +227,7 @@ export default function LoginPage() {
         {/* Logo Container */}
         <div className="relative z-10 h-28 flex items-center justify-center mb-2 animate-fade-in drop-shadow-xl">
           <img
-            src="/HopeFinal.webp"
+            src="/logo_lakshya.webp"
             alt="Mynzo Logo"
             className="h-full w-auto object-contain rounded-3xl"
             onError={(e) => { e.target.style.display = 'none'; }}
@@ -276,13 +235,13 @@ export default function LoginPage() {
         </div>
 
         {/* Curved wave transition */}
-        <svg className="absolute bottom-0 left-0 right-0 w-full h-12 fill-[#F8F9FD] pointer-events-none translate-y-[1px]" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <svg className="absolute bottom-0 left-0 right-0 w-full h-12 fill-[#F8F8F5] pointer-events-none translate-y-[1px]" viewBox="0 0 1440 320" preserveAspectRatio="none">
           <path d="M0,192L80,181.3C160,171,320,149,480,165.3C640,181,800,235,960,240C1120,245,1280,203,1360,181.3L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
         </svg>
       </div>
 
       {/* Main Content Area */}
-      <div className="bg-[#F8F9FD] px-8 pb-16 pt-4 flex-grow flex flex-col justify-start z-10 space-y-6">
+      <div className="bg-[#F8F8F5] px-8 pb-16 pt-4 flex-grow flex flex-col justify-start z-10 space-y-6">
 
         {!otpSent ? (
           /* ================================ */
@@ -291,16 +250,16 @@ export default function LoginPage() {
           <div className="space-y-6 animate-fade-in">
             {/* Form Header */}
             <div className="space-y-1">
-              <h2 className="text-2xl font-extrabold text-[#02006c]">Sign In / Register</h2>
+              <h2 className="text-2xl font-extrabold text-[#2F3E16]">Sign In / Register</h2>
               <p className="text-[10px] text-slate-400 font-bold">Sign in to your Registered Account</p>
-              <div className="w-6 h-0.75 bg-[#ee4923] rounded-full mt-1.5"></div>
+              <div className="w-6 h-0.75 bg-[#4B5320] rounded-full mt-1.5"></div>
             </div>
 
             <form onSubmit={handleSendOtp} className="space-y-4 pt-2">
               <div className="space-y-1 text-left">
                 <label className="text-sm font-syne font-black text-slate-500 uppercase tracking-widest">Phone Number</label>
-                <div className="flex gap-2 border-b-2 border-slate-200 focus-within:border-[#ee4923] transition-colors py-2">
-                  <span className="text-lg text-[#02006c] font-black pr-2 border-r-2 border-slate-100 flex items-center select-none">+91</span>
+                <div className="flex gap-2 border-b-2 border-slate-200 focus-within:border-[#4B5320] transition-colors py-2">
+                  <span className="text-lg text-[#2F3E16] font-black pr-2 border-r-2 border-slate-100 flex items-center select-none">+91</span>
                   <input
                     type="tel"
                     placeholder="Enter 10-digit number"
@@ -309,7 +268,7 @@ export default function LoginPage() {
                       setPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 10));
                       setSignInError('');
                     }}
-                    className="w-full text-lg text-[#02006c] font-bold outline-none placeholder-slate-300 bg-transparent"
+                    className="w-full text-lg text-[#2F3E16] font-bold outline-none placeholder-slate-300 bg-transparent"
                   />
                 </div>
               </div>
@@ -322,7 +281,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-orange-400 to-[#FF8E4D] hover:scale-[1.01] active:scale-95 disabled:opacity-60 text-white text-[10px] font-black py-3.5 rounded-full tracking-wider shadow-md shadow-orange-500/10 transition-all cursor-pointer text-center uppercase flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-primary-400 to-[#C2B280] hover:scale-[1.01] active:scale-95 disabled:opacity-60 text-white text-[10px] font-black py-3.5 rounded-full tracking-wider shadow-md shadow-primary-500/10 transition-all cursor-pointer text-center uppercase flex items-center justify-center gap-2"
                 >
                   {loading ? <><Loader2 size={14} className="animate-spin" /> Sending...</> : 'Send OTP'}
                 </button>
@@ -336,7 +295,7 @@ export default function LoginPage() {
           <div className="space-y-6 animate-fade-in">
             {/* Form Header */}
             <div className="space-y-1">
-              <h2 className="text-2xl font-extrabold text-[#02006c]">Verify OTP</h2>
+              <h2 className="text-2xl font-extrabold text-[#2F3E16]">Verify OTP</h2>
               <div className="flex items-center gap-2">
                 <p className="text-[10px] text-slate-400 font-bold">Code sent to +91 {phoneNumber}</p>
                 <button
@@ -350,7 +309,7 @@ export default function LoginPage() {
                   <Edit2 className="w-3 h-3" />
                 </button>
               </div>
-              <div className="w-6 h-0.75 bg-[#ee4923] rounded-full mt-1.5"></div>
+              <div className="w-6 h-0.75 bg-[#4B5320] rounded-full mt-1.5"></div>
             </div>
 
             <form onSubmit={handleVerifyOtpAndLogin} className="flex flex-col gap-2 pt-4">
@@ -372,7 +331,7 @@ export default function LoginPage() {
                       value={digit}
                       onChange={(e) => handleOtpChange(index, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                      className="w-10 h-13 rounded-xl border-2 border-slate-200 bg-white text-center text-xl font-black text-[#02006c] focus:border-[#ee4923] focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
+                      className="w-10 h-13 rounded-xl border-2 border-slate-200 bg-white text-center text-xl font-black text-[#2F3E16] focus:border-[#4B5320] focus:ring-2 focus:ring-primary-100 outline-none transition-all shadow-sm"
                       style={{ height: '52px' }}
                     />
                   ))}
@@ -391,7 +350,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-orange-400 to-[#FF8E4D] hover:scale-[1.01] active:scale-95 disabled:opacity-60 text-white text-[10px] font-black py-3.5 rounded-full tracking-wider shadow-md shadow-orange-500/10 transition-all cursor-pointer text-center uppercase flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-primary-400 to-[#C2B280] hover:scale-[1.01] active:scale-95 disabled:opacity-60 text-white text-[10px] font-black py-3.5 rounded-full tracking-wider shadow-md shadow-primary-500/10 transition-all cursor-pointer text-center uppercase flex items-center justify-center gap-2"
                 >
                   {loading ? <><Loader2 size={14} className="animate-spin" /> Verifying...</> : 'Verify & Sign In'}
                 </button>
@@ -402,7 +361,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={handleResendOtp}
                   disabled={loading}
-                  className="text-[10px] font-extrabold text-[#FF8E4D] hover:underline cursor-pointer tracking-wide disabled:opacity-50"
+                  className="text-[10px] font-extrabold text-[#C2B280] hover:underline cursor-pointer tracking-wide disabled:opacity-50"
                 >
                   Resend Verification Code?
                 </button>
@@ -412,8 +371,7 @@ export default function LoginPage() {
         )}
       </div>
 
-      {/* Floating Doll Mascot */}
-      <FloatingDoll />
+
     </div>
   );
 }

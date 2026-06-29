@@ -146,9 +146,9 @@ export default function WalletPage() {
             onClick={() => navigate(-1)}
             className="p-2 -ml-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
           >
-            <ChevronLeft className="w-5 h-5 text-[#02006c]" />
+            <ChevronLeft className="w-5 h-5 text-[#2F3E16]" />
           </button>
-          <h1 className="text-[17px] font-bold text-[#02006c]">My Wallet</h1>
+          <h1 className="text-[17px] font-bold text-[#2F3E16]">My Wallet</h1>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -169,16 +169,16 @@ export default function WalletPage() {
       
       {loading ? (
         <div className="flex-grow flex flex-col items-center justify-center py-20 gap-2">
-          <div className="w-8 h-8 border-4 border-[#ee4923] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-[#4B5320] border-t-transparent rounded-full animate-spin"></div>
           <span className="text-xs font-bold text-slate-400">Loading wallet details...</span>
         </div>
       ) : (
         <div className="p-4 space-y-5">
           
           {/* Dual Balance Card */}
-          <div className="bg-gradient-to-br from-[#02006c] to-indigo-900 rounded-[24px] p-5 text-white shadow-lg relative overflow-hidden">
+          <div className="bg-gradient-to-br from-[#2F3E16] to-indigo-900 rounded-[24px] p-5 text-white shadow-lg relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-400/20 rounded-full blur-xl -ml-10 -mb-10"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary-400/20 rounded-full blur-xl -ml-10 -mb-10"></div>
             
             <div className="relative z-10 grid grid-cols-2 divide-x divide-white/20">
               {/* Coins Balance */}
@@ -207,22 +207,22 @@ export default function WalletPage() {
           <div className="grid grid-cols-2 gap-3">
             <button 
               onClick={() => navigate('/games')}
-              className="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all active:scale-95 group"
+              className="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 shadow-sm border border-slate-100 hover:border-primary-200 hover:shadow-md transition-all active:scale-95 group"
             >
-              <div className="w-9 h-9 bg-[#ee4923]/10 rounded-full flex items-center justify-center group-hover:bg-[#ee4923]/20 transition-colors">
-                <Coins className="w-4 h-4 text-[#ee4923]" />
+              <div className="w-9 h-9 bg-[#4B5320]/10 rounded-full flex items-center justify-center group-hover:bg-[#4B5320]/20 transition-colors">
+                <Coins className="w-4 h-4 text-[#4B5320]" />
               </div>
-              <span className="text-xs font-bold text-[#02006c]">Play & Earn</span>
+              <span className="text-xs font-bold text-[#2F3E16]">Play & Earn</span>
             </button>
             
             <button 
               onClick={() => navigate('/coupons')}
-              className="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all active:scale-95 group"
+              className="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 shadow-sm border border-slate-100 hover:border-primary-200 hover:shadow-md transition-all active:scale-95 group"
             >
-              <div className="w-9 h-9 bg-[#ee4923]/10 rounded-full flex items-center justify-center group-hover:bg-[#ee4923]/20 transition-colors">
-                <Gift className="w-4 h-4 text-[#ee4923]" />
+              <div className="w-9 h-9 bg-[#4B5320]/10 rounded-full flex items-center justify-center group-hover:bg-[#4B5320]/20 transition-colors">
+                <Gift className="w-4 h-4 text-[#4B5320]" />
               </div>
-              <span className="text-xs font-bold text-[#02006c]">Promo Coupons</span>
+              <span className="text-xs font-bold text-[#2F3E16]">Promo Coupons</span>
             </button>
           </div>
 
@@ -252,7 +252,7 @@ export default function WalletPage() {
                   value={redeemAmount}
                   onChange={(e) => setRedeemAmount(e.target.value)}
                   placeholder={`e.g. ${config.minimumRedeemCoins}`}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-bold focus:ring-2 focus:ring-[#02006c] focus:bg-white outline-none transition-all"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-bold focus:ring-2 focus:ring-[#2F3E16] focus:bg-white outline-none transition-all"
                   min={config.minimumRedeemCoins}
                   max={coins}
                 />
@@ -265,7 +265,7 @@ export default function WalletPage() {
               <button
                 type="submit"
                 disabled={isSubmitting || coins < config.minimumRedeemCoins || !redeemAmount}
-                className="bg-[#02006c] text-white rounded-xl px-5 text-xs font-bold uppercase tracking-wider hover:bg-opacity-90 active:scale-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:scale-100 transition-all cursor-pointer"
+                className="bg-[#2F3E16] text-white rounded-xl px-5 text-xs font-bold uppercase tracking-wider hover:bg-opacity-90 active:scale-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:scale-100 transition-all cursor-pointer"
               >
                 {isSubmitting ? 'Converting...' : 'Convert'}
               </button>
@@ -277,13 +277,13 @@ export default function WalletPage() {
             <div className="flex border-b border-slate-100">
               <button
                 onClick={() => setHistoryTab('coins')}
-                className={`flex-1 pb-3 text-xs font-black uppercase tracking-wider text-center border-b-2 transition-all ${historyTab === 'coins' ? 'border-[#02006c] text-[#02006c]' : 'border-transparent text-slate-400'}`}
+                className={`flex-1 pb-3 text-xs font-black uppercase tracking-wider text-center border-b-2 transition-all ${historyTab === 'coins' ? 'border-[#2F3E16] text-[#2F3E16]' : 'border-transparent text-slate-400'}`}
               >
                 Coin Transactions
               </button>
               <button
                 onClick={() => setHistoryTab('cash')}
-                className={`flex-1 pb-3 text-xs font-black uppercase tracking-wider text-center border-b-2 transition-all ${historyTab === 'cash' ? 'border-[#02006c] text-[#02006c]' : 'border-transparent text-slate-400'}`}
+                className={`flex-1 pb-3 text-xs font-black uppercase tracking-wider text-center border-b-2 transition-all ${historyTab === 'cash' ? 'border-[#2F3E16] text-[#2F3E16]' : 'border-transparent text-slate-400'}`}
               >
                 Cash Transactions
               </button>

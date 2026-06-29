@@ -35,7 +35,7 @@ function PasswordInput({ label, value, onChange, placeholder, id }) {
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#ee4923] focus:ring-2 focus:ring-[#ee4923]/10 transition-all pr-10"
+          className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#4B5320] focus:ring-2 focus:ring-[#4B5320]/10 transition-all pr-10"
         />
         <button
           type="button"
@@ -134,9 +134,9 @@ export default function SecurityPage() {
           onClick={() => navigate(-1)}
           className="p-2 -ml-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
         >
-          <ChevronLeft className="w-5 h-5 text-[#02006c]" />
+          <ChevronLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
-        <h1 className="text-[17px] font-bold text-[#02006c]">Security &amp; Password</h1>
+        <h1 className="text-[17px] font-bold text-[#2F3E16]">Security &amp; Password</h1>
       </div>
 
       <div className="p-4 space-y-6">
@@ -144,7 +144,7 @@ export default function SecurityPage() {
         {/* Change Password Section */}
         <div>
           <h2 className="text-[15px] font-bold text-slate-800 mb-3 px-1 flex items-center gap-2">
-            <Lock className="w-4 h-4 text-[#ee4923]" />
+            <Lock className="w-4 h-4 text-[#4B5320]" />
             Change Password
           </h2>
 
@@ -229,7 +229,7 @@ export default function SecurityPage() {
                 'Include numbers and symbols for strength',
               ].map(tip => (
                 <p key={tip} className="text-[11px] text-slate-400 flex items-start gap-1.5">
-                  <span className="mt-0.5 text-[#ee4923]">•</span> {tip}
+                  <span className="mt-0.5 text-[#4B5320]">•</span> {tip}
                 </p>
               ))}
             </div>
@@ -238,7 +238,7 @@ export default function SecurityPage() {
             <button
               type="submit"
               disabled={loading || !newPassword || !confirmPassword || passwordsMismatch}
-              className="w-full bg-[#02006c] text-white font-bold text-[14px] py-3 rounded-lg mt-2 hover:bg-[#02006c]/90 active:scale-[0.98] transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full bg-[#2F3E16] text-white font-bold text-[14px] py-3 rounded-lg mt-2 hover:bg-[#2F3E16]/90 active:scale-[0.98] transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
@@ -258,7 +258,7 @@ export default function SecurityPage() {
         {/* Two-Factor Authentication Section */}
         <div>
           <h2 className="text-[15px] font-bold text-slate-800 mb-3 px-1 flex items-center gap-2">
-            <Shield className="w-4 h-4 text-[#ee4923]" />
+            <Shield className="w-4 h-4 text-[#4B5320]" />
             Two-Factor Authentication
           </h2>
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
@@ -269,7 +269,7 @@ export default function SecurityPage() {
             {/* Custom Toggle Switch */}
             <button
               onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
-              className={`relative w-11 h-6 rounded-full transition-colors duration-300 flex-shrink-0 ${twoFactorEnabled ? 'bg-[#ee4923]' : 'bg-slate-200'}`}
+              className={`relative w-11 h-6 rounded-full transition-colors duration-300 flex-shrink-0 ${twoFactorEnabled ? 'bg-[#4B5320]' : 'bg-slate-200'}`}
             >
               <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full shadow-sm transition-transform duration-300 ${twoFactorEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
             </button>

@@ -13,7 +13,7 @@ import OptimizedImage from '../../components/common/OptimizedImage';
 const StatusBadge = ({ status }) => {
   const styles = {
     'Pending': 'bg-amber-50 text-amber-600 border-amber-100',
-    'Processing': 'bg-blue-50 text-blue-600 border-blue-100',
+    'Processing': 'bg-primary-50 text-primary-600 border-primary-100',
     'Shipped': 'bg-violet-50 text-violet-600 border-violet-100',
     'Out for Delivery': 'bg-sky-50 text-sky-600 border-sky-100',
     'Delivered': 'bg-green-50 text-green-600 border-green-100',
@@ -402,7 +402,7 @@ const Orders = () => {
       {/* Stats Quick View */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total Sales', value: `₹${totalSales.toLocaleString()}`, icon: DollarSign, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Total Sales', value: `₹${totalSales.toLocaleString()}`, icon: DollarSign, color: 'text-primary-600', bg: 'bg-primary-50' },
           { label: 'Pending Orders', value: pendingCount.toString(), icon: ShoppingBag, color: 'text-amber-600', bg: 'bg-amber-50' },
           { label: 'In Transit', value: transitCount.toString(), icon: Truck, color: 'text-indigo-600', bg: 'bg-indigo-50' },
           { label: 'Cancelled', value: cancelledCount.toString(), icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50' },
@@ -429,7 +429,7 @@ const Orders = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                   activeTab === tab 
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-100' 
+                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-100' 
                   : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                 }`}
               >
@@ -440,11 +440,11 @@ const Orders = () => {
 
           <div className="flex gap-4">
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={18} />
               <input 
                 type="text" 
                 placeholder="Search by Order ID or Customer Name / Email..."
-                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none text-slate-900 placeholder:text-slate-300"
+                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none text-slate-900 placeholder:text-slate-300"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -501,7 +501,7 @@ const Orders = () => {
                         className="group hover:bg-slate-50/50 transition-colors"
                       >
                         <td className="px-6 py-5 cursor-pointer" onClick={() => navigate(`/admin/orders/${order._id}`)}>
-                          <span className="text-xs font-black text-blue-600 font-roboto hover:underline">#{order._id.substring(order._id.length - 8).toUpperCase()}</span>
+                          <span className="text-xs font-black text-primary-600 font-roboto hover:underline">#{order._id.substring(order._id.length - 8).toUpperCase()}</span>
                         </td>
                         <td className="px-6 py-5">
                           <div>
@@ -531,7 +531,7 @@ const Orders = () => {
                           <div className="flex justify-end gap-2">
                             <button 
                               onClick={() => navigate(`/admin/orders/${order._id}`)}
-                              className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all"
+                              className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all"
                               title="View Details"
                             >
                               <Eye size={16} />
@@ -567,7 +567,7 @@ const Orders = () => {
                                           key={statusOpt}
                                           onClick={() => handleUpdateStatus(order._id, statusOpt)}
                                           className={`w-full px-4 py-2 text-left text-xs font-bold transition-colors ${
-                                            order.status === statusOpt ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-50'
+                                            order.status === statusOpt ? 'bg-primary-50 text-primary-600' : 'text-slate-700 hover:bg-slate-50'
                                           }`}
                                         >
                                           {statusOpt}
@@ -609,7 +609,7 @@ const Orders = () => {
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <h2 className="text-xl font-black text-slate-900 font-montserrat uppercase tracking-tight">Order Details</h2>
-                  <p className="text-xs font-black text-blue-600 mt-1 font-roboto uppercase">ID: #{selectedOrder._id}</p>
+                  <p className="text-xs font-black text-primary-600 mt-1 font-roboto uppercase">ID: #{selectedOrder._id}</p>
                 </div>
                 <button 
                   onClick={() => setSelectedOrder(null)} 
@@ -674,7 +674,7 @@ const Orders = () => {
                     </div>
                     <div>
                       <span className="text-slate-400 uppercase text-[10px]">AWB Code:</span> 
-                      <p className={selectedOrder.awbCode ? 'text-blue-600' : ''}>{selectedOrder.awbCode || 'Pending'}</p>
+                      <p className={selectedOrder.awbCode ? 'text-primary-600' : ''}>{selectedOrder.awbCode || 'Pending'}</p>
                     </div>
                     <div>
                       <span className="text-slate-400 uppercase text-[10px]">Courier:</span> 
@@ -711,7 +711,7 @@ const Orders = () => {
                         <button 
                           onClick={() => handleProcessOrder(selectedOrder._id)}
                           disabled={processingOrder === selectedOrder._id}
-                          className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg text-xs font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-sm disabled:opacity-50"
+                          className="px-4 py-2 bg-gradient-to-r from-primary-500 to-indigo-500 text-white rounded-lg text-xs font-bold hover:from-primary-600 hover:to-indigo-600 transition-all shadow-sm disabled:opacity-50"
                         >
                           {processingOrder === selectedOrder._id ? '⏳ Processing...' : '🚀 Process Order (AWB + Pickup + Label)'}
                         </button>
@@ -721,7 +721,7 @@ const Orders = () => {
                       {!selectedOrder.awbCode && (
                         <button 
                           onClick={() => handleAssignAWB(selectedOrder._id)}
-                          className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors shadow-sm"
+                          className="px-4 py-2 bg-primary-50 text-primary-600 rounded-lg text-xs font-bold hover:bg-primary-100 transition-colors shadow-sm"
                         >
                           Assign AWB
                         </button>
@@ -776,7 +776,7 @@ const Orders = () => {
                       <div className="space-y-2 max-h-40 overflow-y-auto">
                         {selectedOrder.trackingHistory.slice().reverse().map((entry, idx) => (
                           <div key={idx} className="flex items-start gap-2 text-[11px]">
-                            <div className="w-2 h-2 rounded-full bg-blue-400 mt-1 flex-shrink-0"></div>
+                            <div className="w-2 h-2 rounded-full bg-primary-400 mt-1 flex-shrink-0"></div>
                             <div className="flex-1">
                               <p className="font-bold text-slate-700">{entry.activity || entry.status}</p>
                               <p className="text-slate-400 text-[10px]">

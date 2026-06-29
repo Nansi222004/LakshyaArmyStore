@@ -232,7 +232,7 @@ const ReviewModeration = () => {
         {reviewType === 'reels' && (
           <button 
             onClick={() => setIsUploadOpen(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-100"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary-100"
           >
             <Plus size={16} />
             Add Admin Reel
@@ -252,7 +252,7 @@ const ReviewModeration = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                   activeTab === tab 
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+                  ? 'bg-primary-600 text-white shadow-lg shadow-primary-100' 
                   : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                 }`}
               >
@@ -468,7 +468,7 @@ const ReviewModeration = () => {
                   {/* Dropdown Toggle Button */}
                   <div 
                     onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all flex justify-between items-center cursor-pointer select-none"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all flex justify-between items-center cursor-pointer select-none"
                   >
                     <span className={selectedProductId ? "text-slate-900" : "text-slate-400"}>
                       {products.find(p => p._id === selectedProductId)?.name || "-- Select Product --"}
@@ -487,7 +487,7 @@ const ReviewModeration = () => {
                           value={productSearchQuery}
                           onChange={(e) => setProductSearchQuery(e.target.value)}
                           onClick={(e) => e.stopPropagation()} // Prevent closing dropdown on input click
-                          className="w-full bg-white border border-slate-200 rounded-xl py-2 px-4 text-xs font-bold outline-none focus:border-blue-500 transition-colors"
+                          className="w-full bg-white border border-slate-200 rounded-xl py-2 px-4 text-xs font-bold outline-none focus:border-primary-500 transition-colors"
                         />
                       </div>
                       {/* Scrollable list */}
@@ -501,7 +501,7 @@ const ReviewModeration = () => {
                                 setIsProductDropdownOpen(false);
                                 setProductSearchQuery('');
                               }}
-                              className={`py-3 px-6 text-xs font-black cursor-pointer transition-colors text-left hover:bg-slate-50 ${selectedProductId === p._id ? 'bg-blue-50 text-blue-600' : 'text-slate-700'}`}
+                              className={`py-3 px-6 text-xs font-black cursor-pointer transition-colors text-left hover:bg-slate-50 ${selectedProductId === p._id ? 'bg-primary-50 text-primary-600' : 'text-slate-700'}`}
                             >
                               {p.name}
                             </div>
@@ -522,7 +522,7 @@ const ReviewModeration = () => {
                     value={reelCaption}
                     onChange={(e) => setReelCaption(e.target.value)}
                     placeholder="E.g. The little details that make every outfit... ✨" 
-                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all" 
+                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all" 
                     rows={3}
                   />
                 </div>
@@ -533,7 +533,7 @@ const ReviewModeration = () => {
                     <select
                       value={reelRating}
                       onChange={(e) => setReelRating(Number(e.target.value))}
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all appearance-none"
+                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all appearance-none"
                     >
                       {[5, 4, 3, 2, 1].map(num => (
                         <option key={num} value={num}>{num} Star</option>
@@ -570,7 +570,7 @@ const ReviewModeration = () => {
                   <button 
                     type="submit"
                     disabled={isUploading}
-                    className="flex-1 py-4 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-blue-100 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:bg-slate-300"
+                    className="flex-1 py-4 bg-primary-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-100 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:bg-slate-300"
                   >
                     {isUploading ? 'Uploading...' : 'Publish Reel'}
                   </button>

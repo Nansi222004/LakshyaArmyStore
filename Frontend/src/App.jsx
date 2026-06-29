@@ -35,7 +35,7 @@ const OrderDetailsPage   = lazy(() => import('./pages/OrderDetailsPage'));
 const PageSkeleton = () => (
   <div className="flex-grow flex items-center justify-center min-h-[60vh]">
     <div className="flex flex-col items-center gap-3">
-      <div className="w-10 h-10 rounded-full border-4 border-orange-100 border-t-[#ee4923] animate-spin" />
+      <div className="w-10 h-10 rounded-full border-4 border-primary-100 border-t-[#4B5320] animate-spin" />
       <p className="text-[11px] text-slate-400 font-medium">Loading…</p>
     </div>
   </div>
@@ -63,69 +63,20 @@ function AppContent() {
     });
   }, [location.pathname, location.search]);
 
-  // Only show splash screen when landing on the root path '/'.
-  // If the user opens a direct link (e.g. /support), skip it immediately.
-  const isPrivacyOrSupport = /privacy|support/i.test(window.location.hash);
-  const isRootPath = window.location.pathname === '/' && !isPrivacyOrSupport;
-  const [showSplash, setShowSplash] = useState(isRootPath);
-  const [isFading, setIsFading] = useState(false);
-
-  const handleSplashEnd = () => {
-    setIsFading(true);
-    setTimeout(() => {
-      setShowSplash(false);
-    }, 500); // 500ms fade out transition
-  };
-
   useEffect(() => {
-    if (showSplash && !isFading) {
-      // 12s safety timer to proceed even if video playback issues occur
-      const timer = setTimeout(() => {
-        handleSplashEnd();
-      }, 12000);
-      return () => clearTimeout(timer);
-    }
-  }, [showSplash, isFading]);
+    const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/refer', '/saved-addresses', '/wallet'];
+    const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
 
-  useEffect(() => {
-    // Once splash screen video completes, run hierarchical route matching
-    if (!showSplash) {
-      const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/refer', '/saved-addresses', '/wallet'];
-      const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
-
-      if (!user && isProtectedRoute) {
-        navigate('/login');
-      } else if (user && location.pathname === '/login') {
-        navigate('/');
-      }
+    if (!user && isProtectedRoute) {
+      navigate('/login');
+    } else if (user && location.pathname === '/login') {
+      navigate('/');
     }
-  }, [showSplash, user, location.pathname, navigate]);
+  }, [user, location.pathname, navigate]);
 
   return (
     <>
-      {showSplash && (
-        <div 
-          className={`fixed inset-0 z-[9999] h-[100dvh] bg-slate-100 flex justify-center items-start text-slate-800 antialiased font-sans select-none pointer-events-none overflow-hidden transition-opacity duration-500 ease-in-out ${isFading ? 'opacity-0' : 'opacity-100'}`}
-        >
-          {/* Centered Mobile Phone Frame */}
-          <div className="w-full max-w-md h-full bg-white relative flex items-center justify-center overflow-hidden shadow-2xl border-x border-slate-100">
-            <video
-              src="/FinalSpalshScreen.mp4"
-              autoPlay
-              muted
-              playsInline
-              webkit-playsinline="true"
-              preload="auto"
-              disablePictureInPicture
-              controlsList="nodownload nofullscreen noremoteplayback"
-              onEnded={handleSplashEnd}
-              onContextMenu={(e) => e.preventDefault()}
-              style={{ objectFit: 'cover', objectPosition: '40% center' }}
-              className="absolute inset-0 w-full h-full origin-center pointer-events-none select-none"
-            />
-          </div>
-        </div>
-      )}
+
       
       <Toaster position="bottom-center" toastOptions={{ duration: 3000 }} />
       <Layout>

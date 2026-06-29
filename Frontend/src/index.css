@@ -1,14 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-orange-50: #fff5f2;
-  --color-orange-100: #ffe5de;
-  --color-orange-200: #ffcabd;
-  --color-orange-300: #ffa592;
-  --color-orange-400: #ff876f;
-  --color-orange-500: #ee4923;
-  --color-orange-600: #e64c33;
-  --color-orange-700: #b83420;
+  --color-slate-50: #F8F8F5;
+  --color-primary-50: #f4f5f1;
+  --color-primary-100: #e3e6dc;
+  --color-primary-200: #c8cebc;
+  --color-primary-300: #a3ae8e;
+  --color-primary-400: #7d8b63;
+  --color-primary-500: #4B5320;
+  --color-primary-600: #3b421a;
+  --color-primary-700: #2d3314;
+  --color-primary-800: #21260e;
+  --color-primary-900: #191c0b;
+
+  --color-secondary-50: #faf9f6;
+  --color-secondary-100: #f2efe7;
+  --color-secondary-200: #e1d9c3;
+  --color-secondary-300: #cfbf97;
+  --color-secondary-400: #C2B280;
+  --color-secondary-500: #a59364;
+
+  --color-accent-500: #D4AF37;
 }
 
 /* Force Nunito across all visual components, buttons, fields, and text elements */
@@ -23,6 +35,7 @@ body {
   /* Disable text selection */
   -webkit-user-select: none;
   user-select: none;
+  background-color: #F8F8F5 !important;
   
   /* Disable callout menus on iOS */
   -webkit-touch-callout: none;
@@ -38,7 +51,7 @@ input, textarea, select {
 }
 
 .nunito-heading {
-  font-family: "Nunito", sans-serif !important;
+  font-family: "Montserrat", sans-serif !important;
   font-optical-sizing: auto;
   font-style: normal;
 }

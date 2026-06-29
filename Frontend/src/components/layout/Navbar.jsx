@@ -212,18 +212,18 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#EE4923] shadow-sm transition-all duration-300 pb-2">
+      <header className="sticky top-0 z-50 bg-[#4B5320] shadow-sm transition-all duration-300 pb-2">
         {/* Compact Main top header */}
         <div className={`overflow-hidden transition-all duration-300 ease-in-out ${shouldHideTopSections ? 'max-h-0 opacity-0' : 'max-h-[100px] opacity-100'}`}>
           <div className="flex items-center justify-between px-2.5 py-1 bg-transparent">
             <div className="flex items-center gap-2 cursor-pointer animate-fade-in" onClick={() => navigate('/')}>
             {/* Logo image */}
             <img
-              src="/HopeFinal.webp"
-              alt="Mynzo Logo"
-              className="h-12 bg-white p-1 rounded-lg shadow-sm object-contain hover:scale-105 transition-transform duration-300"
+              src="/logo_lakshya.webp"
+              alt="Lakshya Logo"
+              className="h-14 object-contain hover:scale-105 transition-transform duration-300 drop-shadow-md"
               onError={(e) => {
-                e.target.alt = "Mynzo World";
+                e.target.alt = "Lakshya Army Store";
               }}
             />
           </div>
@@ -242,7 +242,7 @@ export default function Navbar() {
             >
               <Bell className="w-5.5 h-5.5 stroke-[1.8]" />
               {notifications.some(n => !n.read) && (
-                <span className="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-white border-2 border-[#EE4923] rounded-full"></span>
+                <span className="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-white border-2 border-[#4B5320] rounded-full"></span>
               )}
             </button>
             <button 
@@ -251,7 +251,7 @@ export default function Navbar() {
             >
               <Heart className="w-5.5 h-5.5 stroke-[1.8]" />
               {user && wishlist && wishlist.length > 0 && (
-                <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-white border border-[#EE4923] rounded-full"></span>
+                <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-white border border-[#4B5320] rounded-full"></span>
               )}
             </button>
             <button
@@ -260,7 +260,7 @@ export default function Navbar() {
             >
               <ShoppingCart className="w-5.5 h-5.5 stroke-[1.8]" />
               {totalCartItems > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-white text-[8.5px] font-black text-[#EE4923] ring-1.5 ring-[#EE4923] animate-pulse">
+                <span className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-white text-[8.5px] font-black text-[#4B5320] ring-1.5 ring-[#4B5320] animate-pulse">
                   {totalCartItems}
                 </span>
               )}
@@ -279,7 +279,7 @@ export default function Navbar() {
             <div className="flex items-center gap-1.5 truncate">
               <MapPin className="w-4 h-4 text-white flex-shrink-0" />
               <span className="truncate tracking-wide">
-                HOME &nbsp;<span className="font-normal text-orange-50/90">| &nbsp;{location}</span>
+                HOME &nbsp;<span className="font-normal text-primary-50/90">| &nbsp;{location}</span>
               </span>
             </div>
             <ChevronDown className="w-4 h-4 text-white flex-shrink-0" />
@@ -296,7 +296,7 @@ export default function Navbar() {
               <input
                 type="text"
                 placeholder="Search products..."
-                className="w-full bg-transparent text-sm text-[#02006c] outline-none placeholder-slate-400 font-semibold"
+                className="w-full bg-transparent text-sm text-[#2F3E16] outline-none placeholder-slate-400 font-semibold"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -314,7 +314,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2 ml-2.5">
                 <Mic 
                   onClick={handleVoiceSearch}
-                  className="w-4.5 h-4.5 text-slate-400 cursor-pointer hover:text-[#EE4923] transition-colors" 
+                  className="w-4.5 h-4.5 text-slate-400 cursor-pointer hover:text-[#4B5320] transition-colors" 
                 />
               </div>
             </div>
@@ -343,7 +343,7 @@ export default function Navbar() {
             <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4" />
             
             <div className="flex items-center justify-between mb-4 flex-shrink-0">
-              <h3 className="text-[17px] font-bold text-[#02006c] nunito-heading">Select delivery address</h3>
+              <h3 className="text-[17px] font-bold text-[#2F3E16] nunito-heading">Select delivery address</h3>
               <button
                 onClick={() => setIsLocationModalOpen(false)}
                 className="p-1 rounded-full hover:bg-slate-100 transition-colors"
@@ -354,7 +354,7 @@ export default function Navbar() {
 
             <div className="overflow-y-auto scrollbar-none pb-24 flex-grow space-y-5">
               {/* Search Bar */}
-              <div className="relative flex items-center bg-white rounded-xl border border-slate-200 px-3 py-2.5 shadow-3xs focus-within:border-[#ee4923] focus-within:ring-2 focus-within:ring-orange-100 transition-all">
+              <div className="relative flex items-center bg-white rounded-xl border border-slate-200 px-3 py-2.5 shadow-3xs focus-within:border-[#4B5320] focus-within:ring-2 focus-within:ring-primary-100 transition-all">
                 <Search className="w-4 h-4 text-slate-400 mr-2.5" />
                 <input
                   type="text"
@@ -368,7 +368,7 @@ export default function Navbar() {
               {/* Use Current Location */}
               <button 
                 onClick={() => handleSaveLocation("Current Location")}
-                className="flex items-center gap-3 w-full py-1 text-[#ee4923] hover:opacity-80 transition-opacity"
+                className="flex items-center gap-3 w-full py-1 text-[#4B5320] hover:opacity-80 transition-opacity"
               >
                 <Crosshair className="w-5 h-5" />
                 <span className="text-sm font-bold">Use my current location</span>
@@ -391,7 +391,7 @@ export default function Navbar() {
                       setNewAddressForm({ name: '', address: '', pincode: '' });
                     }
                   }}
-                  className="text-[#ee4923] text-xs font-bold flex items-center gap-1 hover:underline"
+                  className="text-[#4B5320] text-xs font-bold flex items-center gap-1 hover:underline"
                 >
                   {isAddingNewAddress ? "Cancel" : <><Plus className="w-3.5 h-3.5" /> Add New</>}
                 </button>
@@ -400,14 +400,14 @@ export default function Navbar() {
               {/* Address List */}
               <div className="space-y-5">
                 {isAddingNewAddress ? (
-                  <div className="bg-orange-50/50 p-4 rounded-xl border border-orange-100 space-y-3 animate-fade-in">
+                  <div className="bg-primary-50/50 p-4 rounded-xl border border-primary-100 space-y-3 animate-fade-in">
                     <div>
                       <label className="block text-xs font-bold text-slate-600 mb-1">Name</label>
                       <input 
                         type="text" 
                         value={newAddressForm.name}
                         onChange={(e) => setNewAddressForm({...newAddressForm, name: e.target.value})}
-                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#ee4923] focus:outline-none bg-white" 
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#4B5320] focus:outline-none bg-white" 
                         placeholder="e.g. John Doe"
                       />
                     </div>
@@ -417,7 +417,7 @@ export default function Navbar() {
                         type="text" 
                         value={newAddressForm.pincode}
                         onChange={(e) => setNewAddressForm({...newAddressForm, pincode: e.target.value.replace(/[^0-9]/g, '')})}
-                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#ee4923] focus:outline-none bg-white" 
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#4B5320] focus:outline-none bg-white" 
                         placeholder="e.g. 452010"
                         maxLength={6}
                       />
@@ -427,7 +427,7 @@ export default function Navbar() {
                       <textarea 
                         value={newAddressForm.address}
                         onChange={(e) => setNewAddressForm({...newAddressForm, address: e.target.value})}
-                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#ee4923] focus:outline-none bg-white min-h-[80px]" 
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-[#4B5320] focus:outline-none bg-white min-h-[80px]" 
                         placeholder="e.g. 123 Main St, Apartment 4B..."
                       />
                     </div>
@@ -489,7 +489,7 @@ export default function Navbar() {
                           toast.error("Failed to save address.");
                         }
                       }}
-                      className="w-full bg-[#ee4923] text-white text-sm font-bold py-2.5 rounded-lg hover:bg-orange-600 transition-colors"
+                      className="w-full bg-[#4B5320] text-white text-sm font-bold py-2.5 rounded-lg hover:bg-primary-600 transition-colors"
                     >
                       {editingAddressId ? "Update Address" : "Save Address"}
                     </button>
@@ -533,7 +533,7 @@ export default function Navbar() {
                     const isSelected = location === addr.address || (location === "Delhi, India" && addr.id === 1);
                     return (
                       <div key={addr.id} className="flex items-start gap-3 w-full group animate-fade-in">
-                        <Home className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isSelected ? 'text-[#ee4923]' : 'text-slate-500'}`} />
+                        <Home className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isSelected ? 'text-[#4B5320]' : 'text-slate-500'}`} />
                         <div 
                           className="flex-1 cursor-pointer"
                           onClick={() => handleSaveLocation(addr.address)}
@@ -541,7 +541,7 @@ export default function Navbar() {
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-[13px] font-bold text-[#0F172A]">{addr.name}</span>
                             {isSelected && (
-                              <span className="bg-orange-100 text-[#ee4923] text-[9px] font-bold px-1.5 py-0.5 rounded">
+                              <span className="bg-primary-100 text-[#4B5320] text-[9px] font-bold px-1.5 py-0.5 rounded">
                                 Selected
                               </span>
                             )}
@@ -582,7 +582,7 @@ export default function Navbar() {
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-xs transition-opacity duration-300">
           <div className="w-full max-w-md bg-white rounded-t-3xl p-6 shadow-2xl animate-slide-up max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3 flex-shrink-0">
-              <h3 className="text-base font-bold text-[#02006c] nunito-heading">Notifications</h3>
+              <h3 className="text-base font-bold text-[#2F3E16] nunito-heading">Notifications</h3>
               <button
                 onClick={() => setIsNotificationModalOpen(false)}
                 className="p-1 rounded-full hover:bg-slate-100 transition-colors"
@@ -598,10 +598,10 @@ export default function Navbar() {
                 </div>
               ) : notifications.length > 0 ? (
                 notifications.map((notif) => (
-                  <div key={notif._id} className={`p-3 rounded-xl border ${notif.read ? 'bg-white border-slate-100' : 'bg-orange-50/50 border-orange-200'}`}>
+                  <div key={notif._id} className={`p-3 rounded-xl border ${notif.read ? 'bg-white border-slate-100' : 'bg-primary-50/50 border-primary-200'}`}>
                     <div className="flex items-start justify-between">
-                      <h4 className={`text-sm font-bold nunito-heading ${notif.read ? 'text-slate-700' : 'text-[#02006c]'}`}>{notif.title}</h4>
-                      {!notif.read && <span className="w-2 h-2 rounded-full bg-[#ee4923] flex-shrink-0 mt-1.5"></span>}
+                      <h4 className={`text-sm font-bold nunito-heading ${notif.read ? 'text-slate-700' : 'text-[#2F3E16]'}`}>{notif.title}</h4>
+                      {!notif.read && <span className="w-2 h-2 rounded-full bg-[#4B5320] flex-shrink-0 mt-1.5"></span>}
                     </div>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">{notif.body}</p>
                     <span className="text-[10px] text-slate-400 mt-2 block font-medium">

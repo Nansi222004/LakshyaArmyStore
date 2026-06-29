@@ -32,9 +32,9 @@ const CategoryForm = ({ onSave, onCancel, label, formData, setFormData, imagePre
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -10 }}
-    className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 space-y-3"
+    className="bg-primary-50/60 border border-primary-100 rounded-xl p-4 space-y-3"
   >
-    <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{label}</p>
+    <p className="text-[10px] font-black text-primary-500 uppercase tracking-widest">{label}</p>
     <div className="grid grid-cols-3 gap-3">
       <div className="col-span-2">
         <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Category Name *</label>
@@ -42,7 +42,7 @@ const CategoryForm = ({ onSave, onCancel, label, formData, setFormData, imagePre
           value={formData.categoryName}
           onChange={e => setFormData(p => ({ ...p, categoryName: e.target.value }))}
           placeholder="e.g. Home Decor"
-          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-primary-200 bg-white"
         />
       </div>
       <div>
@@ -76,12 +76,12 @@ const CategoryForm = ({ onSave, onCancel, label, formData, setFormData, imagePre
         type="checkbox"
         checked={formData.active}
         onChange={e => setFormData(p => ({ ...p, active: e.target.checked }))}
-        className="accent-blue-500 w-4 h-4"
+        className="accent-primary-500 w-4 h-4"
       />
       <span className="text-[11px] font-bold text-slate-600">Visible in app</span>
     </label>
     <div className="flex gap-2">
-      <button onClick={onSave} className="px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+      <button onClick={onSave} className="px-4 py-2 bg-primary-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
         <Save size={12} /> Save
       </button>
       <button onClick={onCancel} className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-1.5">
@@ -313,7 +313,7 @@ const CategoryChipsManager = () => {
         <div className="flex gap-2">
           <button
             onClick={() => { setIsAdding(true); setEditingId(null); setFormData(EMPTY_CAT); }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 bg-primary-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Plus size={13} /> Add Category
           </button>
@@ -330,7 +330,7 @@ const CategoryChipsManager = () => {
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-4 max-w-xl">
         {[
-          { label: 'Total', value: categories.length, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Total', value: categories.length, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Visible', value: activeCount, color: 'text-green-500', bg: 'bg-green-50' },
           { label: 'Hidden', value: categories.length - activeCount, color: 'text-slate-400', bg: 'bg-slate-50' },
         ].map((stat, i) => (
@@ -359,7 +359,7 @@ const CategoryChipsManager = () => {
           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Live Preview</p>
           <div className="flex gap-2.5 flex-nowrap">
             {categories.filter(c => c.active).map((cat) => (
-              <div key={cat.id} className="flex flex-col items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/30 border border-slate-100 flex-shrink-0 transition-all cursor-pointer hover:scale-[1.03]">
+              <div key={cat.id} className="flex flex-col items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-primary-50/30 border border-slate-100 flex-shrink-0 transition-all cursor-pointer hover:scale-[1.03]">
                 <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200/50 shadow-inner">
                   <OptimizedImage src={cat.image} className="w-full h-full" alt="" type="category" />
                 </div>
@@ -409,7 +409,7 @@ const CategoryChipsManager = () => {
                     setImagePreview={setImagePreview}
                   />
                 ) : (
-                  <div className={`bg-white border rounded-xl p-3.5 flex items-center gap-4 shadow-sm hover:shadow-md hover:border-blue-100 transition-all group ${!cat.active ? 'opacity-60 border-slate-100' : 'border-slate-100'}`}>
+                  <div className={`bg-white border rounded-xl p-3.5 flex items-center gap-4 shadow-sm hover:shadow-md hover:border-primary-100 transition-all group ${!cat.active ? 'opacity-60 border-slate-100' : 'border-slate-100'}`}>
                     <div className="text-slate-300 hover:text-slate-500 cursor-grab active:cursor-grabbing p-1 transition-colors">
                       <GripVertical size={15} />
                     </div>
@@ -442,7 +442,7 @@ const CategoryChipsManager = () => {
                           transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                         />
                       </button>
-                      <button onClick={() => handleEdit(cat)} className="p-1.5 bg-slate-50 text-slate-600 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
+                      <button onClick={() => handleEdit(cat)} className="p-1.5 bg-slate-50 text-slate-600 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all">
                         <Edit2 size={13} />
                       </button>
                       <button onClick={() => handleDelete(cat.id)} className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">
@@ -458,11 +458,11 @@ const CategoryChipsManager = () => {
       </div>
 
       {/* Info */}
-      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
-        <Layers size={18} className="text-blue-400 mt-0.5 flex-shrink-0" />
+      <div className="bg-primary-50 border border-primary-100 rounded-xl p-4 flex items-start gap-3">
+        <Layers size={18} className="text-primary-400 mt-0.5 flex-shrink-0" />
         <div>
-          <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">How it works</p>
-          <p className="text-[11px] text-blue-400 font-medium mt-1 leading-relaxed">
+          <p className="text-[11px] font-black text-primary-600 uppercase tracking-widest">How it works</p>
+          <p className="text-[11px] text-primary-400 font-medium mt-1 leading-relaxed">
             <strong>Category Chips</strong> appear in the scrollable navigation bar at the top of the user home page.
           </p>
         </div>

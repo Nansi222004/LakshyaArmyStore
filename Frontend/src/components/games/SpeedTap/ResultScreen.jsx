@@ -17,14 +17,14 @@ export default function ResultScreen({ score, bestScore, onPlayAgain, onClose, c
         angle: 60,
         spread: 55,
         origin: { x: 0 },
-        colors: ['#FF5A1F', '#FBBF24', '#FFFFFF']
+        colors: ['#D4AF37', '#FBBF24', '#FFFFFF']
       });
       confetti({
         particleCount: 5,
         angle: 120,
         spread: 55,
         origin: { x: 1 },
-        colors: ['#FF5A1F', '#FBBF24', '#FFFFFF']
+        colors: ['#D4AF37', '#FBBF24', '#FFFFFF']
       });
 
       if (Date.now() < end) {
@@ -42,7 +42,7 @@ export default function ResultScreen({ score, bestScore, onPlayAgain, onClose, c
   if (score >= 100) {
     rewardText = "Premium Coupon Unlocked!";
     rewardAmount = 100;
-    rewardIcon = <Zap className="w-8 h-8 text-[#FF5A1F]" />;
+    rewardIcon = <Zap className="w-8 h-8 text-[#D4AF37]" />;
   } else if (score >= 80) {
     rewardText = "Mystery Box Unlocked!";
     rewardAmount = 80;
@@ -50,7 +50,7 @@ export default function ResultScreen({ score, bestScore, onPlayAgain, onClose, c
   } else if (score >= 40) {
     rewardText = "10% OFF Coupon Unlocked!";
     rewardAmount = 40;
-    rewardIcon = <Percent className="w-8 h-8 text-[#FF5A1F]" />;
+    rewardIcon = <Percent className="w-8 h-8 text-[#D4AF37]" />;
   }
 
   const handleClaim = () => {
@@ -73,7 +73,7 @@ export default function ResultScreen({ score, bestScore, onPlayAgain, onClose, c
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", bounce: 0.5, duration: 0.8 }}
-          className="text-8xl font-black text-[#FF5A1F] drop-shadow-[0_0_20px_rgba(255,90,31,0.5)] leading-none mt-2"
+          className="text-8xl font-black text-[#D4AF37] drop-shadow-[0_0_20px_rgba(255,90,31,0.5)] leading-none mt-2"
         >
           {score}
         </motion.div>
@@ -103,7 +103,7 @@ export default function ResultScreen({ score, bestScore, onPlayAgain, onClose, c
             {rewardIcon}
           </div>
           <div className="text-left flex-1">
-            <h3 className="text-2xl font-black text-[#FF5A1F] leading-none mb-1">{rewardText.split(' ')[0]} {rewardText.split(' ')[1]}</h3>
+            <h3 className="text-2xl font-black text-[#D4AF37] leading-none mb-1">{rewardText.split(' ')[0]} {rewardText.split(' ')[1]}</h3>
             <p className="text-sm font-bold text-slate-600 leading-none">{rewardText.split(' ').slice(2).join(' ')}</p>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function ResultScreen({ score, bestScore, onPlayAgain, onClose, c
       >
         <button
           onClick={handleClaim}
-          className="w-full bg-[#FF5A1F] text-white font-black text-lg py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.4)] hover:shadow-[0_0_30px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
+          className="w-full bg-[#D4AF37] text-white font-black text-lg py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.4)] hover:shadow-[0_0_30px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
         >
           CLAIM REWARD
         </button>

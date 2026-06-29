@@ -226,11 +226,11 @@ export default function CartPage() {
   return (
     <div className="flex-grow flex flex-col bg-slate-100 pb-40 relative font-sans">
       {/* Header - Kept identical to original Mynzo theme per request */}
-      <header className="sticky top-0 bg-orange-100 border-b border-orange-200/50 px-4 py-3 flex items-center justify-between z-40 shadow-sm">
+      <header className="sticky top-0 bg-primary-100 border-b border-primary-200/50 px-4 py-3 flex items-center justify-between z-40 shadow-sm">
         <div className="flex items-center gap-3">
           <button 
             onClick={() => navigate(-1)}
-            className="p-1.5 bg-white hover:bg-orange-50 border border-slate-200 rounded-full shadow-sm transition-colors active:scale-95 cursor-pointer text-[#02006c]"
+            className="p-1.5 bg-white hover:bg-primary-50 border border-slate-200 rounded-full shadow-sm transition-colors active:scale-95 cursor-pointer text-[#2F3E16]"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -238,9 +238,9 @@ export default function CartPage() {
           <div className="flex items-center gap-1.5 -ml-1">
             <Lottie animationData={addToCartAnimation} loop={true} className="w-10 h-10" />
             <div className="flex flex-col justify-center">
-              <h1 className="text-sm font-black text-[#02006c] tracking-wide uppercase font-sans flex items-center gap-1.5 leading-tight">
+              <h1 className="text-sm font-black text-[#2F3E16] tracking-wide uppercase font-sans flex items-center gap-1.5 leading-tight">
                 Your Basket
-                <ShoppingBag className="w-3.5 h-3.5 text-[#ee4923]" />
+                <ShoppingBag className="w-3.5 h-3.5 text-[#4B5320]" />
               </h1>
               <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest font-sans leading-tight">
                 Secure Checkout
@@ -248,7 +248,7 @@ export default function CartPage() {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1 bg-[#ee4923]/10 text-[#ee4923] px-2.5 py-0.5 rounded-full border border-[#ee4923]/15">
+        <div className="flex items-center gap-1 bg-[#4B5320]/10 text-[#4B5320] px-2.5 py-0.5 rounded-full border border-[#4B5320]/15">
           <span className="text-[8.5px] font-bold uppercase tracking-wider">{totalCartItems} Items</span>
         </div>
       </header>
@@ -336,7 +336,7 @@ export default function CartPage() {
                     </button>
                     <button 
                       onClick={handleCheckout} 
-                      className="flex-1 flex items-center justify-center gap-1.5 text-[#ee4923] hover:bg-orange-50 text-xs font-bold transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 text-[#4B5320] hover:bg-primary-50 text-xs font-bold transition-colors"
                     >
                       <Zap className="w-3.5 h-3.5" /> Buy this now
                     </button>
@@ -361,7 +361,7 @@ export default function CartPage() {
               </div>
               <button 
                 onClick={handleCheckout} 
-                className="w-1/2 bg-[#ee4923] active:bg-[#d8401e] text-white py-3.5 rounded-lg font-black text-[15px] shadow-sm transition-all"
+                className="w-1/2 bg-[#4B5320] active:bg-[#d8401e] text-white py-3.5 rounded-lg font-black text-[15px] shadow-sm transition-all"
               >
                 Checkout
               </button>
@@ -370,7 +370,7 @@ export default function CartPage() {
         ) : (
           /* Empty State */
           <div className="bg-white border-t border-slate-100 p-10 text-center flex flex-col items-center justify-center flex-grow">
-            <div className="w-20 h-20 bg-orange-50 text-[#ee4923] rounded-full flex items-center justify-center mx-auto shadow-sm mb-4">
+            <div className="w-20 h-20 bg-primary-50 text-[#4B5320] rounded-full flex items-center justify-center mx-auto shadow-sm mb-4">
               <ShoppingBag className="w-10 h-10" />
             </div>
             <h4 className="text-base font-black text-[#0F172A] mb-2">Your Bag is Empty</h4>
@@ -379,7 +379,7 @@ export default function CartPage() {
             </p>
             <button
               onClick={() => { navigate('/'); setActiveTab('home'); }}
-              className="bg-[#ee4923] active:scale-95 text-white text-xs font-black px-8 py-3.5 rounded shadow-sm transition-all"
+              className="bg-[#4B5320] active:scale-95 text-white text-xs font-black px-8 py-3.5 rounded shadow-sm transition-all"
             >
               CONTINUE SHOPPING
             </button>
@@ -391,11 +391,11 @@ export default function CartPage() {
       {isQtyModalOpen && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm animate-fade-in px-4">
           <div className="bg-white rounded-2xl w-full max-w-[320px] p-5 shadow-2xl animate-scale-in">
-            <h2 className="text-lg font-black text-[#02006c] mb-4 text-center">Enter Quantity</h2>
+            <h2 className="text-lg font-black text-[#2F3E16] mb-4 text-center">Enter Quantity</h2>
             
             <input 
               type="number" 
-              className="w-full border border-slate-300 rounded-lg px-4 py-3 text-center text-lg font-bold text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-2 focus:ring-orange-100 mb-6"
+              className="w-full border border-slate-300 rounded-lg px-4 py-3 text-center text-lg font-bold text-slate-800 focus:outline-none focus:border-[#4B5320] focus:ring-2 focus:ring-primary-100 mb-6"
               value={customQtyInput}
               onChange={(e) => setCustomQtyInput(e.target.value)}
               placeholder="e.g. 4"
@@ -412,7 +412,7 @@ export default function CartPage() {
               </button>
               <button 
                 onClick={handleApplyCustomQty}
-                className="flex-1 bg-[#ee4923] text-white font-bold py-3 rounded-xl hover:bg-orange-600 transition-colors shadow-sm shadow-orange-200"
+                className="flex-1 bg-[#4B5320] text-white font-bold py-3 rounded-xl hover:bg-primary-600 transition-colors shadow-sm shadow-primary-200"
               >
                 Apply
               </button>
@@ -428,7 +428,7 @@ export default function CartPage() {
           <div className="bg-white rounded-t-2xl max-h-[85vh] flex flex-col overflow-hidden animate-slide-up">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
-              <h2 className="text-base font-black text-[#02006c]">Select Delivery Address</h2>
+              <h2 className="text-base font-black text-[#2F3E16]">Select Delivery Address</h2>
               <button 
                 onClick={() => {
                   setIsAddressModalOpen(false);
@@ -456,16 +456,16 @@ export default function CartPage() {
                         }}
                         className={`border rounded-xl p-4 cursor-pointer transition-all ${
                           isSelected 
-                            ? 'border-[#ee4923] bg-orange-50/30' 
+                            ? 'border-[#4B5320] bg-primary-50/30' 
                             : 'border-slate-200 hover:border-slate-300 bg-white'
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           <div className="pt-0.5">
                             <div className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center ${
-                              isSelected ? 'border-[#ee4923]' : 'border-slate-300'
+                              isSelected ? 'border-[#4B5320]' : 'border-slate-300'
                             }`}>
-                              {isSelected && <div className="w-2 h-2 rounded-full bg-[#ee4923]" />}
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-[#4B5320]" />}
                             </div>
                           </div>
                           <div className="flex-1 flex flex-col">
@@ -484,7 +484,7 @@ export default function CartPage() {
                   {user && (
                     <button 
                       onClick={() => setIsAddingAddress(true)}
-                      className="mt-2 w-full border border-dashed border-[#02006c] hover:bg-slate-50 text-[#02006c] py-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-colors"
+                      className="mt-2 w-full border border-dashed border-[#2F3E16] hover:bg-slate-50 text-[#2F3E16] py-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <Plus className="w-4 h-4" /> Add New Address
                     </button>
@@ -499,7 +499,7 @@ export default function CartPage() {
                       placeholder="e.g. Vini Sharma" 
                       value={newAddrName} 
                       onChange={(e) => setNewAddrName(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320]"
                       required 
                     />
                   </div>
@@ -510,7 +510,7 @@ export default function CartPage() {
                       placeholder="e.g. 9876543210" 
                       value={newAddrPhone} 
                       onChange={(e) => setNewAddrPhone(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320]"
                       required 
                       maxLength={10}
                     />
@@ -525,7 +525,7 @@ export default function CartPage() {
                           onClick={() => setNewAddrType(t)}
                           className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-all ${
                             newAddrType === t 
-                              ? 'border-[#ee4923] bg-orange-50/30 text-[#ee4923]' 
+                              ? 'border-[#4B5320] bg-primary-50/30 text-[#4B5320]' 
                               : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                           }`}
                         >
@@ -540,7 +540,7 @@ export default function CartPage() {
                       placeholder="e.g. Flat/House No, Building, Street, Area" 
                       value={newAddrText} 
                       onChange={(e) => setNewAddrText(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923] min-h-[70px]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320] min-h-[70px]"
                       required 
                     />
                   </div>
@@ -551,7 +551,7 @@ export default function CartPage() {
                       placeholder="e.g. 452001" 
                       value={newAddrPincode} 
                       onChange={(e) => setNewAddrPincode(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320]"
                       required 
                     />
                   </div>
@@ -565,7 +565,7 @@ export default function CartPage() {
                     </button>
                     <button 
                       type="submit"
-                      className="flex-1 py-3 bg-[#ee4923] text-white text-xs font-black rounded-xl hover:bg-orange-600 transition-colors shadow-sm"
+                      className="flex-1 py-3 bg-[#4B5320] text-white text-xs font-black rounded-xl hover:bg-primary-600 transition-colors shadow-sm"
                     >
                       Save Address
                     </button>

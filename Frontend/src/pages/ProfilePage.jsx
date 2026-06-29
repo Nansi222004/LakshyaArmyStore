@@ -118,9 +118,9 @@ function DynamicAvatar({ config, size = "w-20 h-20" }) {
       )}
       {accessory === 'headphones' && (
         <g>
-          <path d="M 24 45 A 28 28 0 0 1 76 45" stroke="#02006c" strokeWidth="4.5" fill="none" />
-          <rect x="16" y="38" width="8" height="18" rx="4" fill="#02006c" />
-          <rect x="76" y="38" width="8" height="18" rx="4" fill="#02006c" />
+          <path d="M 24 45 A 28 28 0 0 1 76 45" stroke="#2F3E16" strokeWidth="4.5" fill="none" />
+          <rect x="16" y="38" width="8" height="18" rx="4" fill="#2F3E16" />
+          <rect x="76" y="38" width="8" height="18" rx="4" fill="#2F3E16" />
         </g>
       )}
       {accessory === 'crown' && (
@@ -233,20 +233,20 @@ export default function ProfilePage() {
         <div className="bg-[#FFE4D6] px-4 py-4 shadow-sm z-10 sticky top-0 flex items-center gap-3">
           <button 
             onClick={() => navigate(-1)}
-            className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center text-[#02006c] hover:bg-white active:scale-95 transition-all cursor-pointer shadow-sm flex-shrink-0"
+            className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center text-[#2F3E16] hover:bg-white active:scale-95 transition-all cursor-pointer shadow-sm flex-shrink-0"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-[#02006c] text-[20px] font-black tracking-tight">Profile</h1>
+          <h1 className="text-[#2F3E16] text-[20px] font-black tracking-tight">Profile</h1>
         </div>
 
         {/* Login Section Card */}
         <div className="bg-white px-4 py-4 mb-2 shadow-sm mt-2">
           <div className="flex items-center justify-between">
-            <span className="text-[14px] text-[#02006c] font-medium">Log in to get exclusive offers</span>
+            <span className="text-[14px] text-[#2F3E16] font-medium">Log in to get exclusive offers</span>
             <button 
               onClick={() => navigate('/login')}
-              className="bg-[#02006c] hover:bg-blue-900 active:scale-95 text-white text-[13px] font-bold py-2 px-6 rounded transition-all shadow-sm"
+              className="bg-[#2F3E16] hover:bg-blue-900 active:scale-95 text-white text-[13px] font-bold py-2 px-6 rounded transition-all shadow-sm"
             >
               Log In
             </button>
@@ -278,9 +278,9 @@ export default function ProfilePage() {
                 }}
                 className="flex items-center gap-4 p-4 border-b border-slate-50 last:border-0 cursor-pointer hover:bg-slate-50 group transition-colors"
               >
-                <item.icon className="w-5 h-5 text-[#02006c] group-hover:scale-110 transition-transform" />
-                <span className="text-[13px] font-medium text-slate-700 flex-1 group-hover:text-[#02006c] transition-colors">{item.label}</span>
-                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#ee4923] group-hover:translate-x-1 transition-all" />
+                <item.icon className="w-5 h-5 text-[#2F3E16] group-hover:scale-110 transition-transform" />
+                <span className="text-[13px] font-medium text-slate-700 flex-1 group-hover:text-[#2F3E16] transition-colors">{item.label}</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#4B5320] group-hover:translate-x-1 transition-all" />
               </div>
             ))}
           </div>
@@ -306,7 +306,7 @@ export default function ProfilePage() {
                   <div className="w-12 h-1.5 bg-slate-200 rounded-full"></div>
                 </div>
                 <div className="px-6 pb-4 pt-1 flex items-center justify-between border-b border-slate-100">
-                  <h3 className="text-lg font-black text-[#02006c]">Terms & Policies</h3>
+                  <h3 className="text-lg font-black text-[#2F3E16]">Terms & Policies</h3>
                   <button onClick={() => setInfoModalType(null)} className="p-2 bg-slate-50 rounded-full hover:bg-slate-100 transition-colors"><X className="w-4.5 h-4.5 text-slate-500" /></button>
                 </div>
                 <div className="p-6 overflow-y-auto space-y-4 text-sm text-slate-600">
@@ -343,7 +343,7 @@ export default function ProfilePage() {
                   <div className="w-12 h-1.5 bg-slate-200 rounded-full"></div>
                 </div>
                 <div className="px-6 pb-4 pt-1 flex items-center justify-between border-b border-slate-100">
-                  <h3 className="text-lg font-black text-[#02006c]">Frequently Asked Questions</h3>
+                  <h3 className="text-lg font-black text-[#2F3E16]">Frequently Asked Questions</h3>
                   <button onClick={() => setInfoModalType(null)} className="p-2 bg-slate-50 rounded-full hover:bg-slate-100 transition-colors"><X className="w-4.5 h-4.5 text-slate-500" /></button>
                 </div>
                 <div className="p-6 overflow-y-auto space-y-6">
@@ -376,8 +376,8 @@ export default function ProfilePage() {
   const mockUser = user;
 
   const menuOptions = [
-    { id: 'wallet', label: "My Wallet", desc: "View your current Mynzo coin balance", icon: Coins, color: "bg-indigo-100/60 text-[#02006c]", path: "/wallet" },
-    { label: "Account Information", desc: "Manage your email, phone, and profile settings", icon: User, color: "bg-orange-100/60 text-[#ee4923]", path: "/account" },
+    { id: 'wallet', label: "My Wallet", desc: "View your current Mynzo coin balance", icon: Coins, color: "bg-indigo-100/60 text-[#2F3E16]", path: "/wallet" },
+    { label: "Account Information", desc: "Manage your email, phone, and profile settings", icon: User, color: "bg-primary-100/60 text-[#4B5320]", path: "/account" },
     { label: "Saved Addresses", desc: "Manage your delivery addresses", icon: MapPin, color: "bg-rose-100/60 text-rose-500", path: "/saved-addresses" },
     { label: "Security & Password", desc: "Change password and secure credentials", icon: Lock, color: "bg-amber-100/60 text-amber-600", path: "/security" },
     { label: "Refer & Earn", desc: "Invite friends and earn Mynzo Coins", icon: Gift, color: "bg-emerald-100/60 text-emerald-600", path: "/refer" }
@@ -400,12 +400,12 @@ export default function ProfilePage() {
     hairColors: [
       { name: "Dark", value: "#3E2723" },
       { name: "Blonde", value: "#E6C15C" },
-      { name: "Coral", value: "#ee4923" },
+      { name: "Coral", value: "#4B5320" },
       { name: "Teal", value: "#2DD4BF" }
     ],
     outfitColors: [
-      { name: "Coral", value: "#ee4923" },
-      { name: "Navy", value: "#02006c" },
+      { name: "Coral", value: "#4B5320" },
+      { name: "Navy", value: "#2F3E16" },
       { name: "Emerald", value: "#10B981" },
       { name: "Amber", value: "#F59E0B" }
     ],
@@ -440,10 +440,10 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="bg-white relative pb-24 w-full min-h-full font-sans overflow-x-hidden selection:bg-orange-100 animate-fade-in">
+    <div className="bg-white relative pb-24 w-full min-h-full font-sans overflow-x-hidden selection:bg-primary-100 animate-fade-in">
       
       {/* 1. Dark Orange Background */}
-      <div className="absolute top-0 left-0 right-0 h-[240px] z-0 pointer-events-none overflow-hidden rounded-b-2xl bg-[#ee4923]">
+      <div className="absolute top-0 left-0 right-0 h-[240px] z-0 pointer-events-none overflow-hidden rounded-b-2xl bg-[#4B5320]">
         {/* Cute soft blobs */}
         <div className="absolute -top-10 -left-10 w-48 h-48 bg-white/20 rounded-full mix-blend-overlay filter blur-3xl opacity-60"></div>
         <div className="absolute top-10 -right-10 w-48 h-48 bg-yellow-400/20 rounded-full mix-blend-overlay filter blur-3xl opacity-60"></div>
@@ -456,14 +456,14 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between">
           <button 
             onClick={() => navigate('/')}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-[#02006c] hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-[#2F3E16] hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           
           <button 
             onClick={() => navigate('/account')}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-[#02006c] hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
+            className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-slate-100 text-[#2F3E16] hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-sm"
           >
              <Edit2 className="w-5 h-5" />
           </button>
@@ -477,10 +477,10 @@ export default function ProfilePage() {
             className="relative group cursor-pointer"
           >
             {/* Soft Pulse Ring */}
-            <div className="absolute -inset-1.5 rounded-full bg-orange-200/40 animate-ping opacity-50 blur-sm"></div>
+            <div className="absolute -inset-1.5 rounded-full bg-primary-200/40 animate-ping opacity-50 blur-sm"></div>
             
-            <div className="relative p-1.5 bg-white rounded-full shadow-md border border-orange-100 transition-transform duration-300 group-hover:scale-105">
-              <div className="w-20 h-20 rounded-full border-2 border-orange-50 overflow-hidden bg-slate-50 flex items-center justify-center relative">
+            <div className="relative p-1.5 bg-white rounded-full shadow-md border border-primary-100 transition-transform duration-300 group-hover:scale-105">
+              <div className="w-20 h-20 rounded-full border-2 border-primary-50 overflow-hidden bg-slate-50 flex items-center justify-center relative">
                 {uploadedImage ? (
                   <OptimizedImage src={uploadedImage} alt="Uploaded Profile" type="default" className="w-full h-full" />
                 ) : avatarConfig ? (
@@ -496,7 +496,7 @@ export default function ProfilePage() {
                   e.stopPropagation();
                   fileInputRef.current.click();
                 }}
-                className="absolute -bottom-1 -right-1 p-2 bg-white border border-slate-100 rounded-full shadow-sm text-orange-400 group-hover:text-orange-500 transition-colors"
+                className="absolute -bottom-1 -right-1 p-2 bg-white border border-slate-100 rounded-full shadow-sm text-primary-400 group-hover:text-primary-500 transition-colors"
               >
                 <Camera className="w-3.5 h-3.5 fill-current" />
               </div>
@@ -515,9 +515,9 @@ export default function ProfilePage() {
           <h3 className="text-xl font-black text-white mt-3 font-syne tracking-wide drop-shadow-md">
             {mockUser.name}
           </h3>
-          <div className="flex items-center gap-1 mt-1.5 bg-orange-50 border border-orange-100 px-3 py-1 rounded-full shadow-sm">
-            <Sparkles className="w-3 h-3 text-orange-400 fill-orange-400" />
-            <span className="text-[9px] text-orange-600 font-extrabold tracking-widest uppercase">
+          <div className="flex items-center gap-1 mt-1.5 bg-primary-50 border border-primary-100 px-3 py-1 rounded-full shadow-sm">
+            <Sparkles className="w-3 h-3 text-primary-400 fill-primary-400" />
+            <span className="text-[9px] text-primary-600 font-extrabold tracking-widest uppercase">
               {mockUser.tier || 'Gold Tier Gifter'}
             </span>
           </div>
@@ -529,33 +529,33 @@ export default function ProfilePage() {
         <div className="grid grid-cols-2 gap-3 px-1 pt-4">
           <div 
             onClick={() => navigate('/orders')}
-            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
+            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-primary-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Package className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
+            <Package className="w-5 h-5 text-[#4B5320] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">Orders</span>
           </div>
 
           <div 
             onClick={() => navigate('/wishlist')}
-            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
+            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-primary-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Heart className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
+            <Heart className="w-5 h-5 text-[#4B5320] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">My Picks</span>
           </div>
 
           <div 
             onClick={() => navigate('/coupons')}
-            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
+            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-primary-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Gift className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
+            <Gift className="w-5 h-5 text-[#4B5320] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">Coupons</span>
           </div>
 
           <div 
             onClick={() => navigate('/support')}
-            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all cursor-pointer group"
+            className="bg-white rounded h-[52px] px-3.5 flex items-center gap-3 shadow-sm border border-slate-100 hover:border-primary-200 hover:shadow-md transition-all cursor-pointer group"
           >
-            <Headphones className="w-5 h-5 text-[#ee4923] group-hover:scale-110 transition-transform" />
+            <Headphones className="w-5 h-5 text-[#4B5320] group-hover:scale-110 transition-transform" />
             <span className="text-[13px] font-bold text-slate-800 whitespace-nowrap">Help Center</span>
           </div>
         </div>
@@ -566,16 +566,16 @@ export default function ProfilePage() {
             {VALUE_PROPS.map((prop) => (
               <div 
                 key={prop.id} 
-                className="flex flex-col items-center justify-center rounded-lg bg-white border border-orange-200 p-1.5 py-2 shadow-3xs hover:border-[#ee4923] hover:scale-[1.01] active:scale-95 transition-all duration-300 cursor-pointer"
+                className="flex flex-col items-center justify-center rounded-lg bg-white border border-primary-200 p-1.5 py-2 shadow-3xs hover:border-[#4B5320] hover:scale-[1.01] active:scale-95 transition-all duration-300 cursor-pointer"
               >
                 {/* Colored Stamp Icon box with soft blue and blue icon */}
-                <div className="w-7 h-7 bg-blue-50 text-[#02006c] rounded-md flex items-center justify-center mb-1 shadow-3xs">
+                <div className="w-7 h-7 bg-blue-50 text-[#2F3E16] rounded-md flex items-center justify-center mb-1 shadow-3xs">
                   {prop.id === 1 && <Truck className="w-4 h-4 stroke-[2.2]" />}
                   {prop.id === 2 && <RotateCcw className="w-4 h-4 stroke-[2.2]" />}
                   {prop.id === 3 && <ShieldCheck className="w-4 h-4 stroke-[2.2]" />}
                   {prop.id === 4 && <Tag className="w-4 h-4 stroke-[2.2]" />}
                 </div>
-                <h5 className="text-[8px] font-bold text-[#02006c] leading-tight text-center">{prop.title}</h5>
+                <h5 className="text-[8px] font-bold text-[#2F3E16] leading-tight text-center">{prop.title}</h5>
                 <p className="text-[7px] text-slate-400 font-medium leading-none mt-0.5 text-center">{prop.desc}</p>
               </div>
             ))}
@@ -585,22 +585,22 @@ export default function ProfilePage() {
         {/* Soft Pastel Avatar Creator Prompt Banner */}
         <div 
           onClick={handleOpenCreator}
-          className="relative overflow-hidden rounded p-4 bg-orange-50 border border-orange-100 cursor-pointer group hover:bg-orange-100/50 transition-colors duration-300 shadow-sm"
+          className="relative overflow-hidden rounded p-4 bg-primary-50 border border-primary-100 cursor-pointer group hover:bg-primary-100/50 transition-colors duration-300 shadow-sm"
         >
           {/* Subtle Decorative blobs */}
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-orange-200/30 rounded-full blur-xl"></div>
+          <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary-200/30 rounded-full blur-xl"></div>
           
           <div className="relative z-10 flex items-center justify-between">
             <div className="space-y-1">
-              <h4 className="text-sm font-black uppercase tracking-wider font-syne text-orange-500 flex items-center gap-1.5">
+              <h4 className="text-sm font-black uppercase tracking-wider font-syne text-primary-500 flex items-center gap-1.5">
                 Create My Avatar
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
               </h4>
-              <p className="text-[9px] font-extrabold text-orange-400/80 uppercase tracking-widest leading-none">
+              <p className="text-[9px] font-extrabold text-primary-400/80 uppercase tracking-widest leading-none">
                 Design & dress your character
               </p>
             </div>
-            <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-orange-400 border border-orange-100 shadow-sm group-hover:bg-orange-50 transition-colors">
+            <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-primary-400 border border-primary-100 shadow-sm group-hover:bg-primary-50 transition-colors">
               <ChevronRight className="w-4 h-4 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
             </div>
           </div>
@@ -627,11 +627,11 @@ export default function ProfilePage() {
                       <Icon className="w-5 h-5" />
                     </div>
                     <div className="min-w-0">
-                      <span className="text-sm font-bold text-[#02006c] font-sans tracking-wide block leading-tight">{opt.label}</span>
+                      <span className="text-sm font-bold text-[#2F3E16] font-sans tracking-wide block leading-tight">{opt.label}</span>
                       <span className="text-[9px] text-slate-400 font-bold block truncate mt-1 leading-none tracking-wide">{opt.desc}</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[#ee4923] group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[#4B5320] group-hover:translate-x-1 transition-all" />
                 </button>
               );
             })}
@@ -707,7 +707,7 @@ export default function ProfilePage() {
                   </div>
 
                   {/* Text */}
-                  <h3 className="text-[18px] font-black text-[#02006c] text-center mb-1">Delete Account?</h3>
+                  <h3 className="text-[18px] font-black text-[#2F3E16] text-center mb-1">Delete Account?</h3>
                   <p className="text-[12px] text-slate-500 font-medium text-center leading-relaxed mb-6">
                     Are you sure you want to permanently delete your account? This action <span className="text-red-500 font-bold">cannot be undone</span> and all your data will be lost.
                   </p>
@@ -748,7 +748,7 @@ export default function ProfilePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-[17px] font-black text-[#02006c] text-center mb-1">Account Deleted</h3>
+                  <h3 className="text-[17px] font-black text-[#2F3E16] text-center mb-1">Account Deleted</h3>
                   <p className="text-[12px] text-slate-500 font-medium text-center leading-relaxed">
                     Your account has been successfully deleted. Redirecting you now…
                   </p>
@@ -791,8 +791,8 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-2 px-2">
-                <h3 className="text-xl font-black text-[#02006c] font-syne leading-tight uppercase tracking-wider">
-                  Create your<br/><span className="text-[#ee4923]">Perfect style</span>
+                <h3 className="text-xl font-black text-[#2F3E16] font-syne leading-tight uppercase tracking-wider">
+                  Create your<br/><span className="text-[#4B5320]">Perfect style</span>
                 </h3>
                 <p className="text-[10px] text-slate-500 font-bold leading-relaxed max-w-[260px] mx-auto uppercase tracking-widest">
                   Every person has a unique style. We can help create your perfect 3D character.
@@ -801,14 +801,14 @@ export default function ProfilePage() {
 
               <div className="flex justify-center items-center gap-1.5 py-1">
                 <span className="w-6 h-1.5 bg-slate-200 rounded-full"></span>
-                <span className="w-6 h-1.5 bg-[#ee4923] rounded-full"></span>
+                <span className="w-6 h-1.5 bg-[#4B5320] rounded-full"></span>
                 <span className="w-6 h-1.5 bg-slate-200 rounded-full"></span>
               </div>
 
               <div className="space-y-3 pt-2">
                 <button
                   onClick={() => setModalStep(1)}
-                  className="w-full py-4 bg-[#ee4923] hover:bg-orange-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer uppercase tracking-widest shadow-lg shadow-[#ee4923]/30"
+                  className="w-full py-4 bg-[#4B5320] hover:bg-primary-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer uppercase tracking-widest shadow-lg shadow-[#4B5320]/30"
                 >
                   Get Started
                 </button>
@@ -831,10 +831,10 @@ export default function ProfilePage() {
               {/* Modal Header */}
               <div className="px-6 pb-4 pt-1 flex items-center justify-between bg-white z-20">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center border border-orange-100/50">
-                    <Sparkles className="w-4 h-4 text-[#ee4923]" />
+                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center border border-primary-100/50">
+                    <Sparkles className="w-4 h-4 text-[#4B5320]" />
                   </div>
-                  <h3 className="text-sm font-black text-[#02006c] uppercase tracking-wider font-syne">
+                  <h3 className="text-sm font-black text-[#2F3E16] uppercase tracking-wider font-syne">
                     Avatar Editor
                   </h3>
                 </div>
@@ -848,8 +848,8 @@ export default function ProfilePage() {
 
               {/* Live Character Preview Window (Sticky) */}
               <div className="flex justify-center items-center py-6 bg-slate-50/80 border-b border-slate-100 sticky top-0 z-10 backdrop-blur-xl">
-                <div className="p-2.5 border border-slate-200/80 rounded-full bg-white shadow-xl shadow-[#ee4923]/5 relative group">
-                  <div className="absolute inset-0 rounded-full bg-[#ee4923]/10 blur-xl group-hover:bg-[#ee4923]/20 transition-colors"></div>
+                <div className="p-2.5 border border-slate-200/80 rounded-full bg-white shadow-xl shadow-[#4B5320]/5 relative group">
+                  <div className="absolute inset-0 rounded-full bg-[#4B5320]/10 blur-xl group-hover:bg-[#4B5320]/20 transition-colors"></div>
                   <DynamicAvatar config={tempConfig} size="w-32 h-32 relative z-10" />
                 </div>
               </div>
@@ -860,7 +860,7 @@ export default function ProfilePage() {
                 {/* Category: Skin Tone */}
                 <div className="space-y-3.5">
                   <label className="text-[10px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#ee4923]"></span> Skin Tone
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#4B5320]"></span> Skin Tone
                   </label>
                   <div className="flex flex-wrap items-center gap-4">
                     {optionsPool.skinTones.map((skin) => (
@@ -868,7 +868,7 @@ export default function ProfilePage() {
                         key={skin.value}
                         onClick={() => setTempConfig(prev => ({ ...prev, skinTone: skin.value }))}
                         className={`w-11 h-11 rounded-full transition-all active:scale-90 cursor-pointer relative ${
-                          tempConfig.skinTone === skin.value ? 'scale-110 shadow-md ring-2 ring-offset-2 ring-[#ee4923]' : 'ring-1 ring-slate-200 hover:scale-105'
+                          tempConfig.skinTone === skin.value ? 'scale-110 shadow-md ring-2 ring-offset-2 ring-[#4B5320]' : 'ring-1 ring-slate-200 hover:scale-105'
                         }`}
                         style={{ backgroundColor: skin.value }}
                       >
@@ -885,7 +885,7 @@ export default function ProfilePage() {
                 {/* Category: Hairstyle */}
                 <div className="space-y-3.5">
                   <label className="text-[10px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#02006c]"></span> Hairstyle
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2F3E16]"></span> Hairstyle
                   </label>
                   <div className="grid grid-cols-3 gap-3">
                     {optionsPool.hairStyles.map((hair) => (
@@ -894,7 +894,7 @@ export default function ProfilePage() {
                         onClick={() => setTempConfig(prev => ({ ...prev, hairStyle: hair.id }))}
                         className={`py-3 text-[10px] font-bold uppercase tracking-widest rounded-[16px] transition-all active:scale-95 cursor-pointer text-center ${
                           tempConfig.hairStyle === hair.id 
-                            ? 'bg-[#02006c] text-white shadow-lg shadow-[#02006c]/20 border-none' 
+                            ? 'bg-[#2F3E16] text-white shadow-lg shadow-[#2F3E16]/20 border-none' 
                             : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                         }`}
                       >
@@ -966,7 +966,7 @@ export default function ProfilePage() {
                         onClick={() => setTempConfig(prev => ({ ...prev, accessory: acc.id }))}
                         className={`py-3 text-[10px] font-bold uppercase tracking-widest rounded-[16px] transition-all active:scale-95 cursor-pointer text-center ${
                           tempConfig.accessory === acc.id 
-                            ? 'bg-[#ee4923] text-white shadow-lg shadow-[#ee4923]/20 border-none' 
+                            ? 'bg-[#4B5320] text-white shadow-lg shadow-[#4B5320]/20 border-none' 
                             : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                         }`}
                       >
@@ -987,7 +987,7 @@ export default function ProfilePage() {
                 </button>
                 <button
                   onClick={handleSaveAvatar}
-                  className="flex-grow py-4 bg-gradient-to-r from-[#ee4923] to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer text-center uppercase tracking-wider shadow-xl shadow-[#ee4923]/25 flex justify-center items-center gap-2"
+                  className="flex-grow py-4 bg-gradient-to-r from-[#4B5320] to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white text-[11px] font-black rounded-[20px] active:scale-[0.98] transition-all cursor-pointer text-center uppercase tracking-wider shadow-xl shadow-[#4B5320]/25 flex justify-center items-center gap-2"
                 >
                   Save & Equip <Sparkles className="w-4 h-4 fill-white" />
                 </button>

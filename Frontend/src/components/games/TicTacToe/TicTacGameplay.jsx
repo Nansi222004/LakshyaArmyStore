@@ -112,14 +112,14 @@ export default function TicTacGameplay({ mode, onGameEnd, onBack }) {
             VS
           </div>
           
-          <div className={`flex-1 flex items-center justify-end gap-3 p-3 rounded-xl transition-colors ${!isXNext ? 'bg-[#FF5A1F]' : ''}`}>
+          <div className={`flex-1 flex items-center justify-end gap-3 p-3 rounded-xl transition-colors ${!isXNext ? 'bg-[#D4AF37]' : ''}`}>
             <div className="text-right">
               <span className="block text-[10px] font-black text-white uppercase tracking-widest leading-none mb-1">
                 {mode === 'computer' ? 'COMPUTER' : 'FRIEND'}
               </span>
               <Circle className="w-4 h-4 text-white ml-auto" strokeWidth={4} />
             </div>
-            <div className="w-10 h-10 bg-slate-100 rounded-full border-2 border-[#071226] flex items-center justify-center text-orange-500">
+            <div className="w-10 h-10 bg-slate-100 rounded-full border-2 border-[#071226] flex items-center justify-center text-primary-500">
               {mode === 'computer' ? <Bot className="w-5 h-5" /> : <User className="w-5 h-5" />}
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function TicTacGameplay({ mode, onGameEnd, onBack }) {
                 className={`rounded-2xl flex items-center justify-center transition-colors ${
                   !cell && !winningCombo ? 'hover:bg-slate-50 cursor-pointer active:scale-95' : ''
                 } ${
-                  winningCombo?.includes(idx) ? 'bg-orange-50' : ''
+                  winningCombo?.includes(idx) ? 'bg-primary-50' : ''
                 }`}
               >
                 <AnimatePresence>
@@ -156,7 +156,7 @@ export default function TicTacGameplay({ mode, onGameEnd, onBack }) {
                       initial={{ scale: 0.2, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ type: "spring", stiffness: 200, damping: 12 }}
-                      className="text-[#FF5A1F]"
+                      className="text-[#D4AF37]"
                     >
                       <Circle className="w-14 h-14 drop-shadow-sm" strokeWidth={4} />
                     </motion.div>
@@ -182,7 +182,7 @@ export default function TicTacGameplay({ mode, onGameEnd, onBack }) {
                 y1={`${Math.floor(winningCombo[0] / 3) * 33.33 + 16.66}%`}
                 x2={`${(winningCombo[2] % 3) * 33.33 + 16.66}%`}
                 y2={`${Math.floor(winningCombo[2] / 3) * 33.33 + 16.66}%`}
-                stroke="#FF5A1F"
+                stroke="#D4AF37"
                 strokeWidth="6"
                 strokeLinecap="round"
                 initial={{ pathLength: 0 }}
@@ -213,7 +213,7 @@ export default function TicTacGameplay({ mode, onGameEnd, onBack }) {
           </button>
           <button 
             onClick={resetGame}
-            className="flex-1 bg-[#FF5A1F] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.4)] hover:shadow-[0_0_30px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
+            className="flex-1 bg-[#D4AF37] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.4)] hover:shadow-[0_0_30px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
           >
             NEW GAME
           </button>

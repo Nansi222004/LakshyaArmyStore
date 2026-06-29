@@ -26,7 +26,7 @@ const DeliveryPartners = () => {
           <h1 className="text-4xl font-semibold text-slate-900 tracking-tight font-montserrat uppercase">Logistics Partners</h1>
           <p className="text-slate-500 font-medium mt-1 font-raleway">Manage platform delivery fleet, active zones, and agent performance.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl text-[11px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all">
+        <button className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl text-[11px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all">
           <Plus size={16} />
           Onboard Agent
         </button>
@@ -35,7 +35,7 @@ const DeliveryPartners = () => {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { label: 'Total Fleet', value: '145', icon: Truck, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Total Fleet', value: '145', icon: Truck, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Active Now', value: '82', icon: Activity, color: 'text-green-500', bg: 'bg-green-50' },
           { label: 'Avg Delivery', value: '32 Min', icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50' },
           { label: 'Zones Covered', value: '12', icon: MapPin, color: 'text-indigo-500', bg: 'bg-indigo-50' },
@@ -57,11 +57,11 @@ const DeliveryPartners = () => {
         <div className="p-6 border-b border-slate-50">
           <div className="flex gap-4">
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={18} />
               <input 
                 type="text" 
                 placeholder="Search by Agent Name, Phone or Zone..."
-                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none text-slate-900"
+                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none text-slate-900"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -104,7 +104,7 @@ const DeliveryPartners = () => {
                   </td>
                   <td className="px-6 py-5">
                      <div className="flex items-center gap-1.5 text-[11px] font-black text-slate-500 uppercase tracking-tighter bg-slate-50 px-2 py-1 rounded-lg w-fit border border-slate-100">
-                        <MapPin size={10} className="text-blue-500" />
+                        <MapPin size={10} className="text-primary-500" />
                         {partner.zone}
                      </div>
                   </td>
@@ -118,7 +118,7 @@ const DeliveryPartners = () => {
                   <td className="px-6 py-5">
                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
                        partner.status === 'Active' ? 'bg-green-50 text-green-600' : 
-                       partner.status === 'Busy' ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-400'
+                       partner.status === 'Busy' ? 'bg-primary-50 text-primary-600' : 'bg-slate-100 text-slate-400'
                      }`}>
                         {partner.status}
                      </span>

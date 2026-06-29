@@ -333,7 +333,7 @@ export default function ReviewOrderPage() {
           cartSummary: cart.map(item => `${item.id || item.productId}:${item.quantity}`).join(',')
         },
         theme: {
-          color: "#ee4923"
+          color: "#4B5320"
         },
         modal: {
           ondismiss: function() {
@@ -448,12 +448,12 @@ export default function ReviewOrderPage() {
   return (
     <div className="min-h-screen bg-slate-100 font-sans pb-32 animate-fade-in">
       {/* Header */}
-      <header className="bg-[#fff4f2] px-4 py-3 flex items-center gap-3 sticky top-0 z-50 shadow-sm border-b border-orange-100">
+      <header className="bg-[#fff4f2] px-4 py-3 flex items-center gap-3 sticky top-0 z-50 shadow-sm border-b border-primary-100">
         <button onClick={() => navigate(-1)} className="p-1 hover:bg-white/50 rounded-full transition-colors">
-          <ArrowLeft className="w-5 h-5 text-[#02006c]" />
+          <ArrowLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
         <div className="flex flex-col leading-tight">
-          <h1 className="text-base font-black text-[#02006c] tracking-tight">Review Order</h1>
+          <h1 className="text-base font-black text-[#2F3E16] tracking-tight">Review Order</h1>
           <span className="text-[11px] font-bold text-emerald-600">You're saving ₹{mockSavings + discountAmount}</span>
         </div>
       </header>
@@ -462,7 +462,7 @@ export default function ReviewOrderPage() {
         
         {/* Delivery Details Section */}
         <div>
-          <div className="flex items-center gap-2 mb-2 px-1 text-[#02006c]">
+          <div className="flex items-center gap-2 mb-2 px-1 text-[#2F3E16]">
             <MapPin className="w-4 h-4" />
             <h2 className="text-xs font-black uppercase tracking-wide">Delivery Details</h2>
           </div>
@@ -474,20 +474,20 @@ export default function ReviewOrderPage() {
                 </p>
                 <button 
                   onClick={() => setIsAddressModalOpen(true)}
-                  className="text-[#ee4923] text-xs font-bold mb-4"
+                  className="text-[#4B5320] text-xs font-bold mb-4"
                 >
                   Change Address <span className="ml-1">›</span>
                 </button>
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center py-4 bg-orange-50/50 rounded-lg border border-orange-100 mb-4">
+              <div className="flex flex-col items-center justify-center py-4 bg-primary-50/50 rounded-lg border border-primary-100 mb-4">
                 <p className="text-sm font-bold text-slate-700 mb-2">Please add shipping info</p>
                 <button 
                   onClick={() => {
                     setIsAddingAddress(true);
                     setIsAddressModalOpen(true);
                   }}
-                  className="px-4 py-2 bg-[#ee4923] text-white text-xs font-bold rounded-lg shadow-sm hover:scale-105 transition-transform"
+                  className="px-4 py-2 bg-[#4B5320] text-white text-xs font-bold rounded-lg shadow-sm hover:scale-105 transition-transform"
                 >
                   Add New Address
                 </button>
@@ -513,7 +513,7 @@ export default function ReviewOrderPage() {
                     )}
                     <div className="flex items-center justify-between mt-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-black text-[#02006c]">₹{item.price * item.quantity}</span>
+                        <span className="text-sm font-black text-[#2F3E16]">₹{item.price * item.quantity}</span>
                       </div>
                       <span className="text-[10px] font-bold text-slate-500">Qty: {item.quantity}</span>
                     </div>
@@ -531,7 +531,7 @@ export default function ReviewOrderPage() {
 
         {/* Promo Code Input Block */}
         <div>
-          <div className="flex items-center gap-2 mb-2 px-1 text-[#02006c]">
+          <div className="flex items-center gap-2 mb-2 px-1 text-[#2F3E16]">
             <Tag className="w-4 h-4" />
             <h2 className="text-xs font-black uppercase tracking-wide">Promo Code / Coupons</h2>
           </div>
@@ -551,7 +551,7 @@ export default function ReviewOrderPage() {
                   placeholder="Enter Coupon (e.g. FLAT50)" 
                   value={promoInput}
                   onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
-                  className="w-full border border-slate-200 rounded-lg pl-3 pr-8 py-2 text-xs font-bold focus:outline-none focus:border-[#ee4923] uppercase"
+                  className="w-full border border-slate-200 rounded-lg pl-3 pr-8 py-2 text-xs font-bold focus:outline-none focus:border-[#4B5320] uppercase"
                   disabled={!!appliedCoupon}
                 />
                 {appliedCoupon && (
@@ -566,7 +566,7 @@ export default function ReviewOrderPage() {
               {!appliedCoupon ? (
                 <button 
                   onClick={handleApplyPromo}
-                  className="bg-[#ee4923] hover:bg-[#d8401e] text-white px-4 py-2 rounded-lg text-xs font-black transition-all active:scale-95 shadow-sm"
+                  className="bg-[#4B5320] hover:bg-[#d8401e] text-white px-4 py-2 rounded-lg text-xs font-black transition-all active:scale-95 shadow-sm"
                 >
                   Apply
                 </button>
@@ -591,7 +591,7 @@ export default function ReviewOrderPage() {
         {/* Mynzo Wallet Cash Redemption */}
         {walletBalance > 0 && (
           <div>
-            <div className="flex items-center gap-2 mb-2 px-1 text-[#02006c]">
+            <div className="flex items-center gap-2 mb-2 px-1 text-[#2F3E16]">
               <Landmark className="w-4 h-4 text-emerald-500" />
               <h2 className="text-xs font-black uppercase tracking-wide">Mynzo Wallet Cash</h2>
             </div>
@@ -626,7 +626,7 @@ export default function ReviewOrderPage() {
 
         {/* Price Details */}
         <div>
-          <div className="flex items-center gap-2 mb-2 px-1 text-[#02006c]">
+          <div className="flex items-center gap-2 mb-2 px-1 text-[#2F3E16]">
             <Banknote className="w-4 h-4" />
             <h2 className="text-xs font-black uppercase tracking-wide">Price Details</h2>
           </div>
@@ -675,15 +675,15 @@ export default function ReviewOrderPage() {
             </div>
             
             <div className="border-t border-slate-200 pt-3 mt-1 flex justify-between items-center">
-              <span className="font-bold text-[#02006c] text-sm">Total Amount</span>
-              <span className="font-black text-[#02006c] text-base tracking-tight">₹{grandTotal}</span>
+              <span className="font-bold text-[#2F3E16] text-sm">Total Amount</span>
+              <span className="font-black text-[#2F3E16] text-base tracking-tight">₹{grandTotal}</span>
             </div>
           </div>
         </div>
         
         {/* Payment Method Selected Tabs */}
         <div className="mt-4 bg-white rounded-xl shadow-sm border border-slate-100 p-4">
-          <div className="flex items-center gap-2 mb-3 text-[#02006c]">
+          <div className="flex items-center gap-2 mb-3 text-[#2F3E16]">
             <Banknote className="w-4 h-4" />
             <h2 className="text-xs font-black uppercase tracking-wide">Select Payment Method</h2>
           </div>
@@ -693,7 +693,7 @@ export default function ReviewOrderPage() {
               onClick={() => setPaymentMethod('COD')}
               className={`flex-1 py-3 px-2 rounded-xl border transition-all text-center flex flex-col items-center justify-center ${
                 paymentMethod === 'COD' 
-                  ? 'border-[#ee4923] bg-orange-50/20 text-[#ee4923] shadow-xs' 
+                  ? 'border-[#4B5320] bg-primary-50/20 text-[#4B5320] shadow-xs' 
                   : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
               }`}
             >
@@ -704,7 +704,7 @@ export default function ReviewOrderPage() {
               onClick={() => setPaymentMethod('ONLINE')}
               className={`flex-1 py-3 px-2 rounded-xl border transition-all text-center flex flex-col items-center justify-center ${
                 paymentMethod === 'ONLINE' 
-                  ? 'border-[#ee4923] bg-orange-50/20 text-[#ee4923] shadow-xs' 
+                  ? 'border-[#4B5320] bg-primary-50/20 text-[#4B5320] shadow-xs' 
                   : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
               }`}
             >
@@ -723,8 +723,8 @@ export default function ReviewOrderPage() {
       {/* Full-screen Loading Overlay for Order Placement */}
       {isPlacingOrder && (
         <div className="fixed inset-0 bg-white/90 backdrop-blur-sm z-[200] flex flex-col items-center justify-center">
-          <div className="w-16 h-16 border-4 border-t-[#ee4923] border-slate-200 rounded-full animate-spin mb-4"></div>
-          <h3 className="text-lg font-bold text-[#02006c] animate-pulse">Processing your order securely...</h3>
+          <div className="w-16 h-16 border-4 border-t-[#4B5320] border-slate-200 rounded-full animate-spin mb-4"></div>
+          <h3 className="text-lg font-bold text-[#2F3E16] animate-pulse">Processing your order securely...</h3>
         </div>
       )}
 
@@ -734,7 +734,7 @@ export default function ReviewOrderPage() {
           {/* Place Order Button */}
           <button 
             onClick={handlePlaceOrder}
-            className="w-full bg-[#ee4923] active:bg-[#e05b43] text-white py-3.5 rounded-lg font-bold text-sm shadow-md transition-all active:scale-95"
+            className="w-full bg-[#4B5320] active:bg-[#e05b43] text-white py-3.5 rounded-lg font-bold text-sm shadow-md transition-all active:scale-95"
           >
             Confirm & Place order ₹{grandTotal}
           </button>
@@ -749,7 +749,7 @@ export default function ReviewOrderPage() {
           <div className="bg-white rounded-t-2xl max-h-[85vh] flex flex-col overflow-hidden animate-slide-up">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
-              <h2 className="text-base font-black text-[#02006c]">Select Delivery Address</h2>
+              <h2 className="text-base font-black text-[#2F3E16]">Select Delivery Address</h2>
               <button 
                 onClick={() => {
                   setIsAddressModalOpen(false);
@@ -777,16 +777,16 @@ export default function ReviewOrderPage() {
                         }}
                         className={`border rounded-xl p-4 cursor-pointer transition-all ${
                           isSelected 
-                            ? 'border-[#ee4923] bg-orange-50/30' 
+                            ? 'border-[#4B5320] bg-primary-50/30' 
                             : 'border-slate-200 hover:border-slate-300 bg-white'
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           <div className="pt-0.5">
                             <div className={`w-4 h-4 rounded-full border-[1.5px] flex items-center justify-center ${
-                              isSelected ? 'border-[#ee4923]' : 'border-slate-300'
+                              isSelected ? 'border-[#4B5320]' : 'border-slate-300'
                             }`}>
-                              {isSelected && <div className="w-2 h-2 rounded-full bg-[#ee4923]" />}
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-[#4B5320]" />}
                             </div>
                           </div>
                           <div className="flex-1 flex flex-col">
@@ -805,7 +805,7 @@ export default function ReviewOrderPage() {
                   {user && (
                     <button 
                       onClick={() => setIsAddingAddress(true)}
-                      className="mt-2 w-full border border-dashed border-[#02006c] hover:bg-slate-50 text-[#02006c] py-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-colors"
+                      className="mt-2 w-full border border-dashed border-[#2F3E16] hover:bg-slate-50 text-[#2F3E16] py-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-colors"
                     >
                       <Plus className="w-4 h-4" /> Add New Address
                     </button>
@@ -820,7 +820,7 @@ export default function ReviewOrderPage() {
                       placeholder="e.g. Vini Sharma" 
                       value={newAddrName} 
                       onChange={(e) => setNewAddrName(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320]"
                       required 
                     />
                   </div>
@@ -831,7 +831,7 @@ export default function ReviewOrderPage() {
                       placeholder="e.g. 9876543210" 
                       value={newAddrPhone} 
                       onChange={(e) => setNewAddrPhone(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320]"
                       required 
                       maxLength={10}
                     />
@@ -846,7 +846,7 @@ export default function ReviewOrderPage() {
                           onClick={() => setNewAddrType(t)}
                           className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-all ${
                             newAddrType === t 
-                              ? 'border-[#ee4923] bg-orange-50/30 text-[#ee4923]' 
+                              ? 'border-[#4B5320] bg-primary-50/30 text-[#4B5320]' 
                               : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                           }`}
                         >
@@ -861,7 +861,7 @@ export default function ReviewOrderPage() {
                       placeholder="e.g. Flat/House No, Building, Street, Area" 
                       value={newAddrText} 
                       onChange={(e) => setNewAddrText(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923] min-h-[70px]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320] min-h-[70px]"
                       required 
                     />
                   </div>
@@ -872,7 +872,7 @@ export default function ReviewOrderPage() {
                       placeholder="e.g. 452001" 
                       value={newAddrPincode} 
                       onChange={(e) => setNewAddrPincode(e.target.value)}
-                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ee4923]"
+                      className="mt-1 w-full border border-slate-200 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#4B5320]"
                       required 
                     />
                   </div>
@@ -886,7 +886,7 @@ export default function ReviewOrderPage() {
                     </button>
                     <button 
                       type="submit"
-                      className="flex-1 py-3 bg-[#ee4923] text-white text-xs font-black rounded-xl hover:bg-orange-600 transition-colors shadow-sm"
+                      className="flex-1 py-3 bg-[#4B5320] text-white text-xs font-black rounded-xl hover:bg-primary-600 transition-colors shadow-sm"
                     >
                       Save Address
                     </button>
@@ -903,7 +903,7 @@ export default function ReviewOrderPage() {
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm animate-fade-in px-4">
           <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl animate-scale-up">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-[#02006c] text-lg">
+              <h3 className="font-bold text-[#2F3E16] text-lg">
                 {feeInfoModal === 'platform' ? 'Platform Fee' : 'Cash on Delivery Fee'}
               </h3>
               <button onClick={() => setFeeInfoModal(null)} className="p-1 rounded-full bg-slate-100 hover:bg-slate-200">
@@ -916,7 +916,7 @@ export default function ReviewOrderPage() {
                 : 'A small fee charged by our delivery partners for handling cash. Pay online to avoid this fee!'
               }
             </p>
-            <button onClick={() => setFeeInfoModal(null)} className="w-full bg-[#EE4923] text-white py-3 rounded-xl font-bold active:scale-95 transition-transform">
+            <button onClick={() => setFeeInfoModal(null)} className="w-full bg-[#4B5320] text-white py-3 rounded-xl font-bold active:scale-95 transition-transform">
               Understood
             </button>
           </div>

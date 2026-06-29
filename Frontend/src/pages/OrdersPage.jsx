@@ -143,10 +143,10 @@ export default function OrdersPage() {
     <div className="bg-white min-h-full font-sans pb-20">
       {/* Header */}
       <div className="px-4 py-3 flex items-center gap-3 sticky top-0 bg-[#FFE4D6] z-50 shadow-sm">
-        <button onClick={() => navigate(-1)} className="p-1 -ml-1 hover:bg-orange-200/50 rounded-full transition-colors cursor-pointer">
-          <ArrowLeft className="w-6 h-6 text-[#02006c]" />
+        <button onClick={() => navigate(-1)} className="p-1 -ml-1 hover:bg-primary-200/50 rounded-full transition-colors cursor-pointer">
+          <ArrowLeft className="w-6 h-6 text-[#2F3E16]" />
         </button>
-        <h1 className="text-[#02006c] text-[18px] font-semibold tracking-wide">My Orders</h1>
+        <h1 className="text-[#2F3E16] text-[18px] font-semibold tracking-wide">My Orders</h1>
       </div>
 
 
@@ -177,7 +177,7 @@ export default function OrdersPage() {
                 <div 
                   key={status}
                   onClick={() => { setFilterStatus(status); setShowFilters(false); }}
-                  className={`px-3 py-2 text-[14px] rounded-lg cursor-pointer transition-colors ${filterStatus === status ? 'bg-[#ee4923]/10 text-[#ee4923] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
+                  className={`px-3 py-2 text-[14px] rounded-lg cursor-pointer transition-colors ${filterStatus === status ? 'bg-[#4B5320]/10 text-[#4B5320] font-bold' : 'text-slate-700 hover:bg-slate-50'}`}
                 >
                   {status}
                 </div>
@@ -220,7 +220,7 @@ export default function OrdersPage() {
                     className="flex items-center gap-1.5 min-w-0 cursor-pointer"
                     onClick={() => handleOpenReview(order)}
                   >
-                    <span className="text-[11px] font-bold text-slate-700 truncate hover:text-blue-600 transition-colors">{order.ratingText}</span>
+                    <span className="text-[11px] font-bold text-slate-700 truncate hover:text-[#D4AF37] transition-colors">{order.ratingText}</span>
                     <div className="flex items-center gap-0.5 flex-shrink-0">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star 
@@ -237,7 +237,7 @@ export default function OrdersPage() {
                   {order.rating > 0 ? (
                     <button 
                       onClick={() => handleOpenReview(order)}
-                      className="flex items-center gap-1 border border-blue-600 bg-white text-blue-600 rounded-md px-2 py-1 hover:bg-blue-50 transition-colors flex-shrink-0 ml-auto"
+                      className="flex items-center gap-1 border border-blue-600 bg-white text-[#D4AF37] rounded-md px-2 py-1 hover:bg-blue-50 transition-colors flex-shrink-0 ml-auto"
                     >
                       <PenLine className="w-3 h-3" />
                       <span className="text-[11px] font-bold tracking-tight whitespace-nowrap">Write review</span>

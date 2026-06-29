@@ -30,16 +30,16 @@ const SubCategoryForm = ({ onSave, onCancel, label, formData, setFormData, image
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -10 }}
-    className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 space-y-3"
+    className="bg-primary-50/60 border border-primary-100 rounded-xl p-4 space-y-3"
   >
-    <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{label}</p>
+    <p className="text-[10px] font-black text-primary-500 uppercase tracking-widest">{label}</p>
     <div className="grid grid-cols-3 gap-3">
       <div>
         <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Parent Category *</label>
         <select
           value={formData.categoryId}
           onChange={e => setFormData(p => ({ ...p, categoryId: e.target.value }))}
-          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-primary-200 bg-white"
         >
           <option value="">Select Category</option>
           {categories.map(cat => (
@@ -55,7 +55,7 @@ const SubCategoryForm = ({ onSave, onCancel, label, formData, setFormData, image
           value={formData.subCategoryName}
           onChange={e => setFormData(p => ({ ...p, subCategoryName: e.target.value }))}
           placeholder="e.g. Lipsticks"
-          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-primary-200 bg-white"
         />
       </div>
       <div>
@@ -89,12 +89,12 @@ const SubCategoryForm = ({ onSave, onCancel, label, formData, setFormData, image
         type="checkbox"
         checked={formData.active}
         onChange={e => setFormData(p => ({ ...p, active: e.target.checked }))}
-        className="accent-blue-500 w-4 h-4"
+        className="accent-primary-500 w-4 h-4"
       />
       <span className="text-[11px] font-bold text-slate-600">Visible in app</span>
     </label>
     <div className="flex gap-2">
-      <button onClick={onSave} className="px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+      <button onClick={onSave} className="px-4 py-2 bg-primary-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
         <Save size={12} /> Save
       </button>
       <button onClick={onCancel} className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-1.5">
@@ -343,7 +343,7 @@ const SubCategoryChipsManager = () => {
         <div className="flex gap-2">
           <button
             onClick={() => { setIsAdding(true); setEditingId(null); setFormData(EMPTY_SUB); }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 bg-primary-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Plus size={13} /> Add Subcategory
           </button>
@@ -360,7 +360,7 @@ const SubCategoryChipsManager = () => {
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-4 max-w-xl">
         {[
-          { label: 'Total Subcategories', value: filteredSubCategories.length, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Total Subcategories', value: filteredSubCategories.length, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Visible', value: activeCount, color: 'text-green-500', bg: 'bg-green-50' },
           { label: 'Hidden', value: filteredSubCategories.length - activeCount, color: 'text-slate-400', bg: 'bg-slate-50' },
         ].map((stat, i) => (
@@ -459,7 +459,7 @@ const SubCategoryChipsManager = () => {
                       <div className="flex-1">
                         <p className="text-[13px] font-bold text-slate-900 font-montserrat leading-tight">{sub.subCategoryName}</p>
                         <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter font-roboto">
-                          Parent: <span className="text-blue-500">{parentName}</span>
+                          Parent: <span className="text-primary-500">{parentName}</span>
                         </p>
                       </div>
                       {/* Status */}
@@ -480,7 +480,7 @@ const SubCategoryChipsManager = () => {
                             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                           />
                         </button>
-                        <button onClick={() => handleEdit(sub)} className="p-1.5 bg-slate-50 text-slate-600 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
+                        <button onClick={() => handleEdit(sub)} className="p-1.5 bg-slate-50 text-slate-600 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all">
                           <Edit2 size={13} />
                         </button>
                         <button onClick={() => handleDelete(sub.id)} className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">

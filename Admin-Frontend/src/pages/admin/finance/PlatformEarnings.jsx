@@ -73,7 +73,7 @@ const PlatformEarnings = () => {
   ];
 
   const categoryRevenue = data?.categoryRevenue || [
-    { name: 'Fashion Sales', value: '₹0', percent: 0, color: 'bg-blue-500' },
+    { name: 'Fashion Sales', value: '₹0', percent: 0, color: 'bg-primary-500' },
     { name: 'Electronics Sales', value: '₹0', percent: 0, color: 'bg-green-500' }
   ];
 
@@ -145,7 +145,7 @@ const PlatformEarnings = () => {
           </button>
           <button 
             onClick={handleDownloadSalesReport}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Download size={16} />
             Download Sales Report
@@ -166,8 +166,8 @@ const PlatformEarnings = () => {
               value={`₹${(data?.netRevenue || 0).toLocaleString()}`} 
               sub="Total store earnings (Paid Orders)" 
               icon={Landmark} 
-              color="text-blue-600" 
-              bg="bg-blue-50" 
+              color="text-primary-600" 
+              bg="bg-primary-50" 
             />
             <EarningStat 
               title="Gross Merchandise Value" 
@@ -194,7 +194,7 @@ const PlatformEarnings = () => {
                 <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight font-montserrat">Sales Trend</h3>
                 <div className="flex gap-4">
                    <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                      <div className="w-2 h-2 rounded-full bg-blue-500" />
+                      <div className="w-2 h-2 rounded-full bg-primary-500" />
                       Store Revenue (Daily)
                    </div>
                 </div>
@@ -241,7 +241,7 @@ const PlatformEarnings = () => {
                     </div>
                   ))}
                </div>
-               <div className="mt-10 p-5 bg-blue-500 rounded-3xl text-white relative overflow-hidden shadow-xl shadow-blue-100">
+               <div className="mt-10 p-5 bg-primary-500 rounded-3xl text-white relative overflow-hidden shadow-xl shadow-primary-100">
                   <div className="absolute top-0 right-0 p-4 opacity-10">
                      <Landmark size={80} />
                   </div>
@@ -263,7 +263,7 @@ const PlatformEarnings = () => {
                 <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight font-montserrat">Recent Transactions</h3>
                 <button 
                   onClick={() => fetchEarningsData()}
-                  className="text-[10px] font-black text-blue-500 uppercase tracking-widest hover:underline"
+                  className="text-[10px] font-black text-primary-500 uppercase tracking-widest hover:underline"
                 >
                   Refresh Logs
                 </button>
@@ -283,7 +283,7 @@ const PlatformEarnings = () => {
                    <tbody className="divide-y divide-slate-50 text-[11px] font-bold text-slate-600">
                       {transactions.map((txn, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                           <td className="px-8 py-5 font-black text-blue-600 font-roboto">{txn.id}</td>
+                           <td className="px-8 py-5 font-black text-primary-600 font-roboto">{txn.id}</td>
                            <td className="px-8 py-5 text-slate-900">{txn.source}</td>
                            <td className="px-8 py-5 uppercase tracking-tighter text-slate-400">{txn.type}</td>
                            <td className="px-8 py-5 font-black text-slate-900 font-roboto">{txn.gross}</td>

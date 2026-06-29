@@ -134,7 +134,7 @@ export default function GamesPage() {
       
       <div className="flex-grow overflow-y-auto pb-24 bg-[#FFF6F2]">
         {/* Playground Header */}
-        <div className="flex items-center justify-between px-5 py-2.5 sticky top-0 bg-orange-100 border-b-2 border-[#EE4923]/20 backdrop-blur-md z-20 shadow-sm">
+        <div className="flex items-center justify-between px-5 py-2.5 sticky top-0 bg-primary-100 border-b-2 border-[#4B5320]/20 backdrop-blur-md z-20 shadow-sm">
           <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors">
             <ChevronLeft className="w-6 h-6 text-[#071226]" />
           </button>
@@ -149,7 +149,7 @@ export default function GamesPage() {
 
           {/* Wallet Card */}
           <div className="relative w-full h-44 rounded-2xl p-5 text-white overflow-hidden shadow-lg"
-               style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #EE4923 100%)' }}>
+               style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #4B5320 100%)' }}>
             <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-white/20 rounded-full blur-3xl"></div>
             
             <div className="relative z-10 flex flex-col h-full justify-between w-1/2">
@@ -163,7 +163,7 @@ export default function GamesPage() {
                   <span className="text-3xl font-black">{coins}</span>
                 </div>
               </div>
-              <button onClick={() => navigate('/wallet')} className="bg-white text-[#EE4923] text-[10px] font-black px-4 py-1.5 rounded-full w-max shadow-md flex items-center gap-1 active:scale-95 transition-transform">
+              <button onClick={() => navigate('/wallet')} className="bg-white text-[#4B5320] text-[10px] font-black px-4 py-1.5 rounded-full w-max shadow-md flex items-center gap-1 active:scale-95 transition-transform">
                 My Wallet <ChevronLeft className="w-3 h-3 rotate-180" />
               </button>
             </div>
@@ -194,12 +194,12 @@ export default function GamesPage() {
                     className="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform font-bold"
                   >
                     <div className={`w-16 h-16 rounded-2xl bg-white shadow-sm p-1 overflow-hidden flex items-center justify-center border-2 transition-all ${
-                      isSelected ? 'border-[#EE4923] ring-4 ring-orange-100 scale-105' : 'border-slate-100 hover:border-slate-300'
+                      isSelected ? 'border-[#4B5320] ring-4 ring-primary-100 scale-105' : 'border-slate-100 hover:border-slate-300'
                     }`}>
                       <img src={details.icon} alt={details.title} className="w-full h-full object-cover rounded-xl" />
                     </div>
                     <span className={`text-[9px] text-center leading-tight transition-colors ${
-                      isSelected ? 'text-[#EE4923] font-black' : 'text-slate-600'
+                      isSelected ? 'text-[#4B5320] font-black' : 'text-slate-600'
                     }`}>{details.title}</span>
                   </div>
                 );
@@ -220,17 +220,17 @@ export default function GamesPage() {
                   </p>
                 )}
               </div>
-              <span className="text-[#EE4923] font-black text-xs bg-orange-50 px-3 py-1 rounded-full">{totalStreakDays} Days</span>
+              <span className="text-[#4B5320] font-black text-xs bg-primary-50 px-3 py-1 rounded-full">{totalStreakDays} Days</span>
             </div>
             
             <p className="text-[10px] text-slate-500 font-medium">
-              Play {selectedGameData?.requiredPlaysPerDay} games daily for {maxConfiguredDays} days to win <span className="font-bold text-[#EE4923]">{selectedGameData?.rewardPoints} Coins</span>!
+              Play {selectedGameData?.requiredPlaysPerDay} games daily for {maxConfiguredDays} days to win <span className="font-bold text-[#4B5320]">{selectedGameData?.rewardPoints} Coins</span>!
             </p>
             
             <div className="flex justify-between relative py-2">
               <div className="absolute top-5 left-0 w-full h-[2px] bg-slate-100 z-0"></div>
               <div 
-                className="absolute top-5 left-0 h-[2px] bg-[#EE4923] z-0 transition-all duration-500" 
+                className="absolute top-5 left-0 h-[2px] bg-[#4B5320] z-0 transition-all duration-500" 
                 style={{ width: `${Math.min((totalStreakDays / maxConfiguredDays) * 100, 100)}%` }}
               ></div>
               
@@ -241,7 +241,7 @@ export default function GamesPage() {
                   <div key={day} className="flex flex-col items-center gap-1.5 relative z-10 bg-white px-0.5">
                     <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] ${
                       isPast 
-                        ? 'bg-[#EE4923] text-white font-bold' 
+                        ? 'bg-[#4B5320] text-white font-bold' 
                         : isGift 
                           ? 'bg-amber-100 text-amber-500' 
                           : 'bg-slate-100 text-transparent'
@@ -263,17 +263,17 @@ export default function GamesPage() {
           </div>
 
           {/* Invite Banner */}
-          <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl py-6 px-4 flex items-center justify-between border border-orange-200 shadow-sm mb-6 relative overflow-hidden">
+          <div className="bg-gradient-to-r from-primary-50 to-amber-50 rounded-xl py-6 px-4 flex items-center justify-between border border-primary-200 shadow-sm mb-6 relative overflow-hidden">
             <div className="absolute left-[-10px] top-[-10px] w-28 h-28 opacity-30 pointer-events-none">
                <img src={categoryForUImg} alt="Gift" className="w-full h-full object-cover" />
             </div>
             <div className="flex items-center gap-3 relative z-10 ml-6">
               <div>
                 <h4 className="font-black text-[#071226] text-[15px]">Invite Friends</h4>
-                <p className="text-xs text-[#EE4923] font-bold mt-0.5">&amp; Earn 100 Coins</p>
+                <p className="text-xs text-[#4B5320] font-bold mt-0.5">&amp; Earn 100 Coins</p>
               </div>
             </div>
-            <button onClick={handleInvite} className="bg-[#EE4923] text-white text-xs font-black px-5 py-2.5 rounded-full shadow-md active:scale-95 transition-transform z-10 relative">
+            <button onClick={handleInvite} className="bg-[#4B5320] text-white text-xs font-black px-5 py-2.5 rounded-full shadow-md active:scale-95 transition-transform z-10 relative">
               Invite Now
             </button>
           </div>

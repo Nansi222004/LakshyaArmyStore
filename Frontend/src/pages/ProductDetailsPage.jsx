@@ -421,7 +421,7 @@ export default function ProductDetailsPage() {
         <button onClick={() => navigate('/cart')} className="p-2 relative text-slate-700">
           <ShoppingCart className="w-6 h-6" />
           {totalCartItems > 0 && (
-            <span className="absolute top-0 right-0 bg-[#ee4923] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
+            <span className="absolute top-0 right-0 bg-[#4B5320] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
               {totalCartItems}
             </span>
           )}
@@ -460,7 +460,7 @@ export default function ProductDetailsPage() {
               {product.images.map((_, idx) => (
                 <div 
                   key={idx}
-                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeImageIndex === idx ? 'bg-[#ee4923] w-3.5' : 'bg-white/60'}`}
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeImageIndex === idx ? 'bg-[#4B5320] w-3.5' : 'bg-white/60'}`}
                 />
               ))}
             </div>
@@ -490,8 +490,8 @@ export default function ProductDetailsPage() {
 
           {/* Left Rating Badge Overlay */}
           <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md shadow-md flex items-center gap-1">
-            <span className="text-[11px] font-bold text-[#02006c]">4.5</span>
-            <Star className="w-2.5 h-2.5 fill-[#ee4923] text-[#ee4923]" />
+            <span className="text-[11px] font-bold text-[#2F3E16]">4.5</span>
+            <Star className="w-2.5 h-2.5 fill-[#4B5320] text-[#4B5320]" />
             <span className="text-slate-300 text-[10px] mx-0.5">|</span>
             <span className="text-[10px] text-slate-500 font-medium">1.2k</span>
           </div>
@@ -545,7 +545,7 @@ export default function ProductDetailsPage() {
                   }
                 }}
                 className={`w-12 h-16 rounded-md overflow-hidden border-2 transition-all flex-shrink-0 relative ${
-                  activeImageIndex === idx ? 'border-[#ee4923] scale-105 shadow-sm' : 'border-slate-200 opacity-60'
+                  activeImageIndex === idx ? 'border-[#4B5320] scale-105 shadow-sm' : 'border-slate-200 opacity-60'
                 }`}
               >
                 <OptimizedImage src={img} alt="" type="product" className="absolute inset-0" />
@@ -557,10 +557,10 @@ export default function ProductDetailsPage() {
 
       {/* Product Info Section */}
       <div className="bg-white p-3 pb-1">
-        <h1 className="text-sm font-bold text-[#02006c] mb-1.5 leading-tight">{product.desc}</h1>
+        <h1 className="text-sm font-bold text-[#2F3E16] mb-1.5 leading-tight">{product.desc}</h1>
         <div className="flex items-end gap-1.5 mb-1">
-          <span className="text-[#ee4923] font-bold text-lg">↓ {product.discount}</span>
-          <span className="text-2xl font-black text-[#02006c] tracking-tight">₹{product.price}</span>
+          <span className="text-[#4B5320] font-bold text-lg">↓ {product.discount}</span>
+          <span className="text-2xl font-black text-[#2F3E16] tracking-tight">₹{product.price}</span>
         </div>
         <p className="text-[10px] text-slate-400 mb-2 line-through">MRP ₹{product.originalPrice}</p>
       </div>
@@ -569,10 +569,10 @@ export default function ProductDetailsPage() {
       {['tee', 'pants', 'blouse', 'outfit'].includes(product.type) && (
         <div className="bg-white p-3 pt-2">
         <div className="flex items-center justify-between mb-3">
-          <span className="font-bold text-sm text-[#02006c]">Select Size</span>
+          <span className="font-bold text-sm text-[#2F3E16]">Select Size</span>
           <button 
             onClick={() => setIsSizeChartOpen(true)}
-            className="text-[#ee4923] font-bold text-[11px]"
+            className="text-[#4B5320] font-bold text-[11px]"
           >
             Size Chart
           </button>
@@ -589,7 +589,7 @@ export default function ProductDetailsPage() {
                 disabled={isOutOfStock}
                 onClick={() => setSelectedSize(size)}
                 className={`w-12 h-12 rounded-xl border flex items-center justify-center text-sm font-bold transition-all relative overflow-hidden
-                  ${isSelected ? 'border-[#ee4923] text-[#ee4923] bg-[#ee4923]/5' : 
+                  ${isSelected ? 'border-[#4B5320] text-[#4B5320] bg-[#4B5320]/5' : 
                     isOutOfStock ? 'border-dashed border-slate-300 text-slate-300 bg-slate-50 cursor-not-allowed' : 
                     'border-slate-300 text-slate-700 hover:border-slate-400'
                   }
@@ -606,7 +606,7 @@ export default function ProductDetailsPage() {
 
       {/* Product Details Description */}
       <div className="bg-white px-4 pt-4 pb-1">
-        <h3 className="font-bold text-base text-[#02006c] mb-1">Product Details</h3>
+        <h3 className="font-bold text-base text-[#2F3E16] mb-1">Product Details</h3>
         <p className="text-xs text-slate-600 leading-relaxed">
           {product.desc || 'No description available.'}
         </p>
@@ -614,7 +614,7 @@ export default function ProductDetailsPage() {
 
       {/* Delivery Details Section */}
       <div className="bg-white px-4 py-2 mt-2 border-t border-slate-100">
-        <h3 className="font-bold text-base text-[#02006c] mb-3">Delivery details</h3>
+        <h3 className="font-bold text-base text-[#2F3E16] mb-3">Delivery details</h3>
         
         <div className="flex flex-col -mx-1 rounded-xl overflow-hidden mb-2">
           {/* Pincode Checker */}
@@ -632,7 +632,7 @@ export default function ProductDetailsPage() {
               <button 
                 onClick={handleCheckPincode}
                 disabled={isCheckingPincode || pincode.length !== 6}
-                className="text-[#ee4923] text-sm font-bold disabled:opacity-50"
+                className="text-[#4B5320] text-sm font-bold disabled:opacity-50"
               >
                 {isCheckingPincode ? 'Checking...' : 'Check'}
               </button>
@@ -666,10 +666,10 @@ export default function ProductDetailsPage() {
       {/* Similar Products */}
       <div className="bg-white py-4 mt-2">
         <div className="flex items-center justify-between px-4 mb-3">
-          <h3 className="font-semibold text-lg tracking-tight text-[#02006c]">Similar Products</h3>
+          <h3 className="font-semibold text-lg tracking-tight text-[#2F3E16]">Similar Products</h3>
           <div 
             onClick={() => navigate('/similar-products')}
-            className="w-7 h-7 bg-slate-800 hover:bg-[#ee4923] transition-colors rounded-full flex items-center justify-center cursor-pointer shadow-sm"
+            className="w-7 h-7 bg-slate-800 hover:bg-[#4B5320] transition-colors rounded-full flex items-center justify-center cursor-pointer shadow-sm"
           >
             <ArrowRight className="w-4 h-4 text-white" />
           </div>
@@ -686,10 +686,10 @@ export default function ProductDetailsPage() {
                   <Star className="w-2 h-2 fill-emerald-600 text-emerald-600" />
                 </div>
               </div>
-              <h4 className="text-[10px] font-bold text-[#02006c] truncate">{deal.name}</h4>
+              <h4 className="text-[10px] font-bold text-[#2F3E16] truncate">{deal.name}</h4>
               <p className="text-[9px] text-slate-400 truncate mb-1">{deal.description || 'Premium Product'}</p>
               <div className="flex items-center gap-1">
-                <span className="text-xs font-bold text-[#ee4923]">₹{deal.sellingPrice}</span>
+                <span className="text-xs font-bold text-[#4B5320]">₹{deal.sellingPrice}</span>
                 <span className="text-[9px] text-slate-400 line-through">₹{deal.mrp || deal.sellingPrice + 500}</span>
               </div>
               <span className="text-[8px] text-emerald-600 font-bold mt-0.5">{deal.discountLabel || 'Hot Deal'}</span>
@@ -704,10 +704,10 @@ export default function ProductDetailsPage() {
                   <Star className="w-2 h-2 fill-emerald-600 text-emerald-600" />
                 </div>
               </div>
-              <h4 className="text-[10px] font-bold text-[#02006c] truncate">{deal.name}</h4>
+              <h4 className="text-[10px] font-bold text-[#2F3E16] truncate">{deal.name}</h4>
               <p className="text-[9px] text-slate-400 truncate mb-1">{deal.desc}</p>
               <div className="flex items-center gap-1">
-                <span className="text-xs font-bold text-[#ee4923]">₹{deal.price}</span>
+                <span className="text-xs font-bold text-[#4B5320]">₹{deal.price}</span>
                 <span className="text-[9px] text-slate-400 line-through">₹{deal.originalPrice}</span>
               </div>
               <span className="text-[8px] text-emerald-600 font-bold mt-0.5">60% OFF</span>
@@ -886,7 +886,7 @@ export default function ProductDetailsPage() {
                 }}
                 className="w-full py-3 bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs rounded-xl hover:bg-indigo-100 transition-colors flex items-center justify-center gap-2"
               >
-                <Play className="w-4 h-4 text-indigo-600 fill-indigo-600" />
+                <Play className="w-4 h-4 text-[#D4AF37] fill-indigo-600" />
                 Submit Video Review (Reel)
               </button>
             </div>
@@ -907,7 +907,7 @@ export default function ProductDetailsPage() {
             )}
             
             {productReels.length > 0 && (
-              <button className="w-full mt-4 py-2 text-[11px] font-bold text-[#02006c] border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+              <button className="w-full mt-4 py-2 text-[11px] font-bold text-[#2F3E16] border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
                 View All Reviews
               </button>
             )}
@@ -920,13 +920,13 @@ export default function ProductDetailsPage() {
         <div className="flex gap-2 h-12">
           <button 
             onClick={handleAddToCart}
-            className="flex-1 bg-white border border-[#02006c] rounded text-[#02006c] font-bold text-[13px] flex items-center justify-center active:bg-slate-50 transition-colors"
+            className="flex-1 bg-white border border-[#2F3E16] rounded text-[#2F3E16] font-bold text-[13px] flex items-center justify-center active:bg-slate-50 transition-colors"
           >
             Add to cart
           </button>
           <button 
             onClick={handleBuyNow}
-            className="flex-1 bg-[#ee4923] rounded text-white font-bold text-[13px] flex items-center justify-center active:bg-orange-600 shadow-sm transition-colors"
+            className="flex-1 bg-[#4B5320] rounded text-white font-bold text-[13px] flex items-center justify-center active:bg-primary-600 shadow-sm transition-colors"
           >
             Buy at ₹{product.price}
           </button>
@@ -1012,10 +1012,10 @@ export default function ProductDetailsPage() {
               <div className="mt-6 flex justify-center bg-white rounded-lg p-3 max-w-[280px] mx-auto border border-slate-300">
                 <svg viewBox="0 0 200 150" className="w-full h-auto text-slate-800" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M60,40 Q100,20 140,40 L180,90 L160,110 L140,90 L140,150 L60,150 L60,90 L40,110 L20,90 Z" />
-                  <path strokeDasharray="4 4" d="M100,30 L100,150" stroke="#ee4923" />
-                  <path strokeDasharray="4 4" d="M60,90 L140,90" stroke="#ee4923" />
-                  <path strokeDasharray="4 4" d="M60,40 L140,40" stroke="#ee4923" />
-                  <path strokeDasharray="4 4" d="M40,65 L80,65" stroke="#ee4923" />
+                  <path strokeDasharray="4 4" d="M100,30 L100,150" stroke="#4B5320" />
+                  <path strokeDasharray="4 4" d="M60,90 L140,90" stroke="#4B5320" />
+                  <path strokeDasharray="4 4" d="M60,40 L140,40" stroke="#4B5320" />
+                  <path strokeDasharray="4 4" d="M40,65 L80,65" stroke="#4B5320" />
                   <text x="90" y="20" fontSize="8" fill="currentColor" stroke="none">NECK</text>
                   <text x="130" y="35" fontSize="8" fill="currentColor" stroke="none">SHOULDER</text>
                   <text x="95" y="100" fontSize="8" fill="currentColor" stroke="none">CHEST</text>
@@ -1137,7 +1137,7 @@ export default function ProductDetailsPage() {
                 <button
                   type="submit"
                   disabled={isUploadingReel}
-                  className="w-full py-3 bg-[#ee4923] text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-100 flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:shadow-none"
+                  className="w-full py-3 bg-[#4B5320] text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-primary-600 transition-colors shadow-lg shadow-primary-100 flex items-center justify-center gap-2 disabled:bg-slate-300 disabled:shadow-none"
                 >
                   {isUploadingReel ? 'Uploading Video...' : 'Submit Reel Review'}
                 </button>

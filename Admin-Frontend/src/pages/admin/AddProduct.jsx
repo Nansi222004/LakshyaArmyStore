@@ -435,7 +435,7 @@ const AddProduct = () => {
           </button>
           <button
             onClick={handleSave}
-            className={`flex items-center gap-2 px-7 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-[#ee4923] text-white hover:scale-105'}`}
+            className={`flex items-center gap-2 px-7 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-[#4B5320] text-white hover:scale-105'}`}
           >
             {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
             {saved ? (isEditMode ? 'Product Updated!' : 'Product Published!') : (isEditMode ? 'Save Changes' : 'Publish to Catalog')}
@@ -449,7 +449,7 @@ const AddProduct = () => {
 
           {/* 1. Product Specification */}
           <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7 space-y-5">
-            <SectionTitle icon={FileText} color="bg-orange-50 text-[#ee4923]">Product Specification</SectionTitle>
+            <SectionTitle icon={FileText} color="bg-orange-50 text-[#4B5320]">Product Specification</SectionTitle>
 
             <div>
               <Label required>Product Name</Label>
@@ -628,7 +628,7 @@ const AddProduct = () => {
               {!isAddingAttr && (
                 <button 
                   onClick={() => setIsAddingAttr(true)}
-                  className="text-sm font-semibold text-blue-500 hover:underline flex items-center gap-1"
+                  className="text-sm font-semibold text-primary-500 hover:underline flex items-center gap-1"
                 >
                   <Plus size={16} /> Add Attribute
                 </button>
@@ -674,7 +674,7 @@ const AddProduct = () => {
                   </button>
                   <button 
                     onClick={handleAddAttribute}
-                    className="px-4 py-2 bg-[#ee4923] text-white rounded-lg text-xs font-semibold hover:bg-orange-600"
+                    className="px-4 py-2 bg-[#4B5320] text-white rounded-lg text-xs font-semibold hover:bg-orange-600"
                   >
                     Add Attribute
                   </button>
@@ -706,7 +706,7 @@ const AddProduct = () => {
                           <input 
                             type="text"
                             placeholder="+ Add value"
-                            className="bg-transparent border-b border-dashed border-slate-300 focus:border-blue-500 outline-none text-xs px-1 py-0.5 w-20"
+                            className="bg-transparent border-b border-dashed border-slate-300 focus:border-primary-500 outline-none text-xs px-1 py-0.5 w-20"
                             onKeyDown={e => {
                               if (e.key === 'Enter') {
                                 e.preventDefault();
@@ -758,7 +758,7 @@ const AddProduct = () => {
                               type="text" 
                               value={v.sku} 
                               onChange={e => handleVariationChange(i, 'sku', e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-blue-100 outline-none"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-primary-100 outline-none"
                             />
                           </td>
                           <td className="p-3">
@@ -766,7 +766,7 @@ const AddProduct = () => {
                               type="number" 
                               value={v.price} 
                               onChange={e => handleVariationChange(i, 'price', e.target.value)}
-                              className="w-24 bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-blue-100 outline-none"
+                              className="w-24 bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-primary-100 outline-none"
                             />
                           </td>
                           <td className="p-3">
@@ -774,7 +774,7 @@ const AddProduct = () => {
                               type="number" 
                               value={v.stock} 
                               onChange={e => handleVariationChange(i, 'stock', e.target.value)}
-                              className="w-20 bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-blue-100 outline-none"
+                              className="w-20 bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs font-medium focus:ring-2 focus:ring-primary-100 outline-none"
                             />
                           </td>
                         </tr>
@@ -795,7 +795,7 @@ const AddProduct = () => {
 
           {/* 5. Shipping & Logistics */}
           <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7 space-y-5">
-            <SectionTitle icon={Truck} color="bg-blue-50 text-blue-500">Shipping & Logistics</SectionTitle>
+            <SectionTitle icon={Truck} color="bg-primary-50 text-primary-500">Shipping & Logistics</SectionTitle>
 
             <div className="grid grid-cols-4 gap-4">
               {[
@@ -838,7 +838,7 @@ const AddProduct = () => {
                 </div>
                 <button onClick={() => toggleFlag(flag.key)}>
                   {flags[flag.key]
-                    ? <ToggleRight size={28} className="text-blue-500" />
+                    ? <ToggleRight size={28} className="text-primary-500" />
                     : <ToggleLeft size={28} className="text-slate-300" />
                   }
                 </button>
@@ -869,7 +869,7 @@ const AddProduct = () => {
                 <div className="p-2 bg-indigo-50 text-indigo-500 rounded-xl"><ImageIcon size={17} /></div>
                 <h3 className="text-base font-semibold text-slate-700">Visuals</h3>
               </div>
-              <span className="text-sm font-semibold text-blue-500">{images.length}/5</span>
+              <span className="text-sm font-semibold text-primary-500">{images.length}/5</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -887,7 +887,7 @@ const AddProduct = () => {
               {images.length < 5 && (
                 <div className="flex gap-2 col-span-2">
                   <label
-                    className="flex-1 aspect-square border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-blue-400 hover:bg-blue-50/20 transition-all text-slate-400 cursor-pointer"
+                    className="flex-1 aspect-square border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-primary-400 hover:bg-primary-50/20 transition-all text-slate-400 cursor-pointer"
                   >
                     <Upload size={22} />
                     <span className="text-xs font-semibold">Upload File</span>
@@ -900,7 +900,7 @@ const AddProduct = () => {
                   </label>
                   <button
                     onClick={handleAddImageUrl}
-                    className="flex-1 aspect-square border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-blue-400 hover:bg-blue-50/20 transition-all text-slate-400"
+                    className="flex-1 aspect-square border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-primary-400 hover:bg-primary-50/20 transition-all text-slate-400"
                   >
                     <Plus size={22} />
                     <span className="text-xs font-semibold">Add URL</span>

@@ -164,9 +164,9 @@ export default function AccountInfoPage() {
           onClick={() => navigate(-1)}
           className="p-2 -ml-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95 cursor-pointer"
         >
-          <ChevronLeft className="w-5 h-5 text-[#02006c]" />
+          <ChevronLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
-        <h1 className="text-[17px] font-bold text-[#02006c]">Account Information</h1>
+        <h1 className="text-[17px] font-bold text-[#2F3E16]">Account Information</h1>
       </div>
       
       <div className="p-4 space-y-6">
@@ -174,16 +174,16 @@ export default function AccountInfoPage() {
         {/* Profile Picture Upload */}
         <div className="flex flex-col items-center pt-2">
           <div className="relative">
-            <div className="w-24 h-24 rounded-full border-4 border-white shadow-md bg-orange-50 overflow-hidden flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full border-4 border-white shadow-md bg-primary-50 overflow-hidden flex items-center justify-center">
               {uploadedImage ? (
                 <OptimizedImage src={uploadedImage} alt="Profile" type="default" className="w-full h-full" />
               ) : (
-                <User className="w-10 h-10 text-orange-200" />
+                <User className="w-10 h-10 text-primary-200" />
               )}
             </div>
             <button 
               onClick={() => fileInputRef.current.click()}
-              className="absolute bottom-0 right-0 p-2 bg-[#ee4923] text-white rounded-full shadow-md hover:scale-105 transition-transform cursor-pointer"
+              className="absolute bottom-0 right-0 p-2 bg-[#4B5320] text-white rounded-full shadow-md hover:scale-105 transition-transform cursor-pointer"
             >
               <Camera className="w-4 h-4" />
             </button>
@@ -213,7 +213,7 @@ export default function AccountInfoPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all"
               />
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function AccountInfoPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all"
               />
             </div>
           </div>
@@ -247,7 +247,7 @@ export default function AccountInfoPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all"
               />
             </div>
           </div>
@@ -265,7 +265,7 @@ export default function AccountInfoPage() {
                 value={formData.dob}
                 onChange={handleChange}
                 max={todayStr}
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] text-slate-800 focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all"
               />
             </div>
           </div>
@@ -281,7 +281,7 @@ export default function AccountInfoPage() {
                   value="male" 
                   checked={formData.gender?.toLowerCase() === 'male'} 
                   onChange={handleChange}
-                  className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
+                  className="w-4 h-4 text-[#4B5320] border-slate-300 focus:ring-[#4B5320]"
                 />
                 <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Male</span>
               </label>
@@ -292,7 +292,7 @@ export default function AccountInfoPage() {
                   value="female" 
                   checked={formData.gender?.toLowerCase() === 'female'} 
                   onChange={handleChange}
-                  className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
+                  className="w-4 h-4 text-[#4B5320] border-slate-300 focus:ring-[#4B5320]"
                 />
                 <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Female</span>
               </label>
@@ -303,7 +303,7 @@ export default function AccountInfoPage() {
                   value="other" 
                   checked={formData.gender?.toLowerCase() === 'other'} 
                   onChange={handleChange}
-                  className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
+                  className="w-4 h-4 text-[#4B5320] border-slate-300 focus:ring-[#4B5320]"
                 />
                 <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">Other</span>
               </label>
@@ -311,7 +311,7 @@ export default function AccountInfoPage() {
           </div>
 
           {/* Save Button */}
-          <button onClick={handleSave} className="w-full bg-[#02006c] text-white font-bold text-[14px] py-3.5 rounded-lg mt-4 hover:bg-[#02006c]/90 active:scale-[0.98] transition-all shadow-sm cursor-pointer">
+          <button onClick={handleSave} className="w-full bg-[#2F3E16] text-white font-bold text-[14px] py-3.5 rounded-lg mt-4 hover:bg-[#2F3E16]/90 active:scale-[0.98] transition-all shadow-sm cursor-pointer">
             Save Changes
           </button>
         </div>

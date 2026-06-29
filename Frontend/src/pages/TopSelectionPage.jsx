@@ -33,9 +33,9 @@ export default function TopSelectionPage() {
     <div className="min-h-screen bg-white flex flex-col pb-20 animate-fade-in">
       {/* Header */}
       <div className="bg-white px-4 py-4 flex items-center justify-between shadow-sm z-10 sticky top-0">
-        <h1 className="text-[#02006c] text-[17px] font-bold tracking-wide uppercase font-sans">Top Selection</h1>
+        <h1 className="text-[#2F3E16] text-[17px] font-bold tracking-wide uppercase font-sans">Top Selection</h1>
         <button onClick={() => navigate(-1)} className="p-1 hover:bg-slate-50 rounded-full transition-colors border border-slate-200">
-          <ArrowLeft className="w-5 h-5 text-[#02006c]" />
+          <ArrowLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
       </div>
 
@@ -54,7 +54,7 @@ export default function TopSelectionPage() {
             <div 
               key={product._id || product.id} 
               onClick={() => navigate(`/product/${product._id || product.id}`)}
-              className="bg-white flex flex-col pt-0 px-0 pb-2 cursor-pointer transition-all border border-[#ee4923] rounded-xl overflow-hidden shadow-sm"
+              className="bg-white flex flex-col pt-0 px-0 pb-2 cursor-pointer transition-all border border-[#4B5320] rounded-xl overflow-hidden shadow-sm"
             >
               <div className="w-full aspect-square mb-2 relative overflow-hidden bg-slate-50">
                 <OptimizedImage
@@ -68,11 +68,11 @@ export default function TopSelectionPage() {
                 <p className="text-[10px] text-slate-400 font-medium truncate mb-0.5">
                   {product.brandName || 'Mynzo Originals'}
                 </p>
-                <h3 className="text-xs font-bold text-[#02006c] tracking-tight truncate w-full">
+                <h3 className="text-xs font-bold text-[#2F3E16] tracking-tight truncate w-full">
                   {product.name}
                 </h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-[13px] font-black text-[#ee4923]">₹{product.sellingPrice}</span>
+                  <span className="text-[13px] font-black text-[#4B5320]">₹{product.sellingPrice}</span>
                   {product.mrp && product.mrp > product.sellingPrice && (
                     <span className="text-[10px] text-slate-400 font-semibold line-through mt-0.5">₹{product.mrp}</span>
                   )}

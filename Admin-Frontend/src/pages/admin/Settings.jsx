@@ -269,7 +269,7 @@ const Settings = () => {
         </div>
         <button 
           onClick={handleSave}
-          className={`flex items-center gap-2 px-8 py-3 rounded-xl text-xs font-semibold uppercase tracking-widest transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-blue-600 text-white shadow-blue-100 hover:scale-105'}`}
+          className={`flex items-center gap-2 px-8 py-3 rounded-xl text-xs font-semibold uppercase tracking-widest transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-primary-600 text-white shadow-primary-100 hover:scale-105'}`}
         >
           {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
           {saved ? 'Updated!' : 'Save Changes'}
@@ -285,7 +285,7 @@ const Settings = () => {
               onClick={() => setActiveSection(section.id)}
               className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-[11px] font-semibold uppercase tracking-widest transition-all ${
                 activeSection === section.id 
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+                ? 'bg-primary-600 text-white shadow-lg shadow-primary-100' 
                 : 'bg-white text-slate-400 hover:bg-slate-50 border border-transparent hover:border-slate-100'
               }`}
             >
@@ -308,7 +308,7 @@ const Settings = () => {
               className="bg-white rounded-3xl border border-slate-100 shadow-sm p-10 space-y-8"
             >
               <div className="flex items-center gap-3 border-b border-slate-50 pb-6">
-                <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shadow-inner">
+                <div className="w-12 h-12 bg-primary-50 text-primary-600 rounded-2xl flex items-center justify-center shadow-inner">
                   {React.createElement(sections.find(s => s.id === activeSection).icon, { size: 24 })}
                 </div>
                 <div>
@@ -322,7 +322,7 @@ const Settings = () => {
                   <div className="space-y-10">
                     <div className="flex items-center gap-8">
                       <div className="relative group cursor-pointer" onClick={() => fileInputRef.current.click()}>
-                        <div className="w-24 h-24 bg-blue-600 rounded-3xl flex items-center justify-center text-white text-3xl font-black font-montserrat shadow-xl shadow-blue-100 overflow-hidden relative">
+                        <div className="w-24 h-24 bg-primary-600 rounded-3xl flex items-center justify-center text-white text-3xl font-black font-montserrat shadow-xl shadow-primary-100 overflow-hidden relative">
                           {avatar ? (
                             <OptimizedImage src={avatar} alt="Avatar" type="default" className="w-full h-full" />
                           ) : (
@@ -345,7 +345,7 @@ const Settings = () => {
                         <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Super Admin • Full Access</p>
                         <div className="flex gap-2 mt-4">
                           <span className="px-3 py-1 bg-green-50 text-green-600 text-[9px] font-semibold uppercase tracking-widest rounded-lg border border-green-100">Verified</span>
-                          <span className="px-3 py-1 bg-blue-50 text-blue-600 text-[9px] font-semibold uppercase tracking-widest rounded-lg border border-blue-100">Primary Account</span>
+                          <span className="px-3 py-1 bg-primary-50 text-primary-600 text-[9px] font-semibold uppercase tracking-widest rounded-lg border border-primary-100">Primary Account</span>
                         </div>
                       </div>
                     </div>
@@ -357,7 +357,7 @@ const Settings = () => {
                           type="text" 
                           value={adminName} 
                           onChange={e => setAdminName(e.target.value)} 
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                           required 
                         />
                       </div>
@@ -367,7 +367,7 @@ const Settings = () => {
                           type="email" 
                           value={adminEmail} 
                           onChange={e => setAdminEmail(e.target.value)} 
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                           required 
                         />
                       </div>
@@ -377,7 +377,7 @@ const Settings = () => {
                           type="text" 
                           value={adminPhone} 
                           onChange={e => setAdminPhone(e.target.value)} 
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                         />
                       </div>
                       <div className="space-y-2">
@@ -386,7 +386,7 @@ const Settings = () => {
                           type="text" 
                           value={helpline} 
                           onChange={e => setHelpline(e.target.value)} 
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                         />
                       </div>
                       <div className="space-y-2 md:col-span-2">
@@ -395,7 +395,7 @@ const Settings = () => {
                           type="text" 
                           value={gstNo} 
                           onChange={e => setGstNo(e.target.value)} 
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                         />
                       </div>
                     </div>
@@ -411,7 +411,7 @@ const Settings = () => {
                           type="number" 
                           value={commission}
                           onChange={e => setCommission(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-semibold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-semibold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                           required 
                         />
                       </div>
@@ -421,13 +421,13 @@ const Settings = () => {
                           type="number" 
                           value={gstPercentage}
                           onChange={e => setGstPercentage(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                           required 
                         />
                       </div>
                     </div>
                     <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4">
-                      <AlertCircle size={20} className="text-blue-500 mt-1" />
+                      <AlertCircle size={20} className="text-primary-500 mt-1" />
                       <div>
                         <p className="text-[10px] font-semibold text-slate-900 uppercase tracking-widest">Global Logic Policy</p>
                         <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
@@ -450,7 +450,7 @@ const Settings = () => {
                             placeholder="••••••••" 
                             value={currentPassword}
                             onChange={e => setCurrentPassword(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 pl-6 pr-12 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                            className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 pl-6 pr-12 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                             required 
                           />
                           <button 
@@ -472,7 +472,7 @@ const Settings = () => {
                             placeholder="••••••••" 
                             value={newPassword}
                             onChange={e => setNewPassword(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 pl-6 pr-12 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                            className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 pl-6 pr-12 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                             required 
                           />
                           <button 
@@ -494,7 +494,7 @@ const Settings = () => {
                             placeholder="••••••••" 
                             value={confirmPassword}
                             onChange={e => setConfirmPassword(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 pl-6 pr-12 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                            className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 pl-6 pr-12 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                             required 
                           />
                           <button 
@@ -519,7 +519,7 @@ const Settings = () => {
                           type="number" 
                           value={coinsPerRupee}
                           onChange={e => setCoinsPerRupee(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-semibold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-semibold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                           required 
                         />
                       </div>
@@ -529,7 +529,7 @@ const Settings = () => {
                           type="number" 
                           value={minimumRedeemCoins}
                           onChange={e => setMinimumRedeemCoins(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+                          className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
                           required 
                         />
                       </div>

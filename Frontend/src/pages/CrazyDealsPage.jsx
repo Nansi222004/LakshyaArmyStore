@@ -47,16 +47,16 @@ export default function CrazyDealsPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col pb-20 animate-fade-in">
 
       {/* Hero Banner Area */}
-      <div className="bg-gradient-to-r from-orange-100 to-rose-100 py-3 px-4 flex items-center justify-center text-center relative">
+      <div className="bg-gradient-to-r from-primary-100 to-rose-100 py-3 px-4 flex items-center justify-center text-center relative">
         <button 
           onClick={() => navigate(-1)}
           className="absolute left-4 p-1.5 bg-white/40 hover:bg-white/70 rounded-full transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-orange-900" />
+          <ArrowLeft className="w-5 h-5 text-primary-900" />
         </button>
         <div className="flex flex-col">
-          <h2 className="text-xl font-black text-[#ee4923] tracking-tight leading-none mb-1">CRAZY DEALS</h2>
-          <p className="text-[10px] text-orange-800 font-medium leading-none">Up to 50% Off! Don't miss out.</p>
+          <h2 className="text-xl font-black text-[#4B5320] tracking-tight leading-none mb-1">CRAZY DEALS</h2>
+          <p className="text-[10px] text-primary-800 font-medium leading-none">Up to 50% Off! Don't miss out.</p>
         </div>
       </div>
 
@@ -83,7 +83,7 @@ export default function CrazyDealsPage() {
                 onClick={() => navigate(`/product/${deal.id}`)} 
               >  
                 {/* Discount Badge */}
-                <span className="absolute top-2 left-2 bg-[#ee4923] text-white text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm z-10">
+                <span className="absolute top-2 left-2 bg-[#4B5320] text-white text-[9px] font-black px-1.5 py-0.5 rounded-lg shadow-sm z-10">
                   {deal.discount}
                 </span>
 
@@ -106,17 +106,17 @@ export default function CrazyDealsPage() {
                 </button>
                 
                 {/* Image */}
-                <div className="aspect-square w-full bg-[#F8F9FD] relative overflow-hidden">
+                <div className="aspect-square w-full bg-[#F8F8F5] relative overflow-hidden">
                   <OptimizedImage src={getImageUrl(deal.image)} alt={deal.name} type="product" className="absolute inset-0 group-hover:scale-105 transition-transform duration-500" />
                 </div>
 
                 {/* Product Details */}
                 <div className="p-2 space-y-1">
-                  <h4 className="text-xs font-bold text-[#02006c] truncate">{deal.name}</h4>
+                  <h4 className="text-xs font-bold text-[#2F3E16] truncate">{deal.name}</h4>
                   <p className="text-[9px] text-slate-500 truncate">{deal.desc}</p>
                   
                   <div className="flex items-center gap-1.5 pt-1">
-                    <span className="text-sm font-extrabold text-[#ee4923]">₹{deal.price}</span>
+                    <span className="text-sm font-extrabold text-[#4B5320]">₹{deal.price}</span>
                     <span className="text-[10px] text-slate-400 font-medium line-through">₹{deal.originalPrice}</span>
                   </div>
                 </div>

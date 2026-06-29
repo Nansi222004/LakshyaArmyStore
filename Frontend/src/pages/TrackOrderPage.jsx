@@ -54,14 +54,14 @@ export default function TrackOrderPage() {
   }, [orderId]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-[#02006c]" size={32} /></div>;
+    return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-[#2F3E16]" size={32} /></div>;
   }
 
   if (!order) {
     return <div className="min-h-screen flex flex-col gap-2 items-center justify-center font-bold text-slate-500">
       <AlertCircle size={40} className="text-slate-300" />
       <p>Order not found</p>
-      <button onClick={() => navigate(-1)} className="text-[#02006c] underline mt-2 text-sm">Go Back</button>
+      <button onClick={() => navigate(-1)} className="text-[#2F3E16] underline mt-2 text-sm">Go Back</button>
     </div>;
   }
 
@@ -127,10 +127,10 @@ export default function TrackOrderPage() {
           onClick={() => navigate(-1)}
           className="p-2 -ml-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
         >
-          <ChevronLeft className="w-5 h-5 text-[#02006c]" />
+          <ChevronLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
         <div className="flex flex-col">
-          <h1 className="text-[17px] font-bold text-[#02006c] leading-tight">Track Order</h1>
+          <h1 className="text-[17px] font-bold text-[#2F3E16] leading-tight">Track Order</h1>
           <span className="text-[11px] font-bold text-slate-500 tracking-wider">#{orderId || '123456789'}</span>
         </div>
       </div>
@@ -142,10 +142,10 @@ export default function TrackOrderPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Estimated Delivery</p>
-              <p className="text-lg font-black text-[#02006c]">{estDeliveryDate.toDateString()}</p>
+              <p className="text-lg font-black text-[#2F3E16]">{estDeliveryDate.toDateString()}</p>
             </div>
-            <div className="w-10 h-10 bg-[#ee4923]/10 rounded-full flex items-center justify-center">
-              <Truck className="w-5 h-5 text-[#ee4923]" />
+            <div className="w-10 h-10 bg-[#4B5320]/10 rounded-full flex items-center justify-center">
+              <Truck className="w-5 h-5 text-[#4B5320]" />
             </div>
           </div>
           
@@ -157,7 +157,7 @@ export default function TrackOrderPage() {
               </div>
               <div className="text-right">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tracking Number</p>
-                <p className="text-sm font-black text-blue-600">{order.awbCode}</p>
+                <p className="text-sm font-black text-[#D4AF37]">{order.awbCode}</p>
               </div>
             </div>
           )}
@@ -183,11 +183,11 @@ export default function TrackOrderPage() {
                     {/* Status Icon */}
                     <div className="relative">
                       {isActive && (
-                        <div className="absolute -inset-1 rounded-full bg-[#ee4923]/20 animate-ping"></div>
+                        <div className="absolute -inset-1 rounded-full bg-[#4B5320]/20 animate-ping"></div>
                       )}
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center border-[3px] border-white relative z-10 shadow-sm ${
-                        isCompleted ? 'bg-[#02006c] text-white' : 
-                        isActive ? 'bg-[#ee4923] text-white shadow-md shadow-[#ee4923]/30' : 
+                        isCompleted ? 'bg-[#2F3E16] text-white' : 
+                        isActive ? 'bg-[#4B5320] text-white shadow-md shadow-[#4B5320]/30' : 
                         'bg-slate-100 text-slate-400'
                       }`}>
                         <Icon className="w-4 h-4" />
@@ -198,7 +198,7 @@ export default function TrackOrderPage() {
                     <div className="pt-1 flex-1">
                       <div className="flex justify-between items-start">
                         <p className={`text-[13px] font-bold leading-tight ${
-                          isActive ? 'text-[#ee4923]' : (isCompleted ? 'text-slate-800' : 'text-slate-400')
+                          isActive ? 'text-[#4B5320]' : (isCompleted ? 'text-slate-800' : 'text-slate-400')
                         }`}>
                           {step.title}
                         </p>

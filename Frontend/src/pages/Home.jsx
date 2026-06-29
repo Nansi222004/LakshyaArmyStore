@@ -97,7 +97,7 @@ export default function Home() {
             id: idx + 1,
             brand: b.brand,
             discount: "Trending Choice",
-            badgeColor: "text-indigo-600",
+            badgeColor: "text-[#D4AF37]",
             image: getImageUrl(b.image) || "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200"
           })));
         }
@@ -214,7 +214,7 @@ export default function Home() {
 
   // Custom Category Inline SVG Renderer to match reference drawings
   const renderCategoryIcon = (id, isActive) => {
-    const strokeColor = isActive ? "#FFFFFF" : "#02006c";
+    const strokeColor = isActive ? "#FFFFFF" : "#2F3E16";
 
     switch (id) {
       case 'for-you':
@@ -341,7 +341,7 @@ export default function Home() {
         id: idx + 1,
         brand: b.brand,
         discount: "Trending Choice",
-        badgeColor: "text-indigo-600",
+        badgeColor: "text-[#D4AF37]",
         image: getImageUrl(b.image) || "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200"
       }));
   };
@@ -430,7 +430,7 @@ export default function Home() {
             <circle cx="72" cy="74" r="12" fill="#1E293B" />
             <circle cx="72" cy="74" r="6" fill="#F97316" />
             {/* Car body */}
-            <rect x="22" y="52" width="56" height="18" rx="6" fill="#ee4923" />
+            <rect x="22" y="52" width="56" height="18" rx="6" fill="#4B5320" />
             <path d="M32 52L40 38H60L68 52H32Z" fill="#0F172A" />
             {/* Windshield highlights */}
             <polygon points="42 40, 58 40, 62 50, 38 50" fill="#38BDF8" opacity="0.5" />
@@ -511,9 +511,9 @@ export default function Home() {
   ];
 
   const TRENDING_BRANDS = [
-    { id: 1, brand: "sotrue", discount: "Up to 35% Off", badgeColor: "text-blue-600", image: beauty1 },
+    { id: 1, brand: "sotrue", discount: "Up to 35% Off", badgeColor: "text-[#D4AF37]", image: beauty1 },
     { id: 2, brand: "derma co", discount: "Up to 50% Off", badgeColor: "text-slate-800", image: beauty2 },
-    { id: 3, brand: "medicube", discount: "Up to 60% Off", badgeColor: "text-blue-800", image: beauty3 },
+    { id: 3, brand: "medicube", discount: "Up to 60% Off", badgeColor: "text-[#D4AF37]", image: beauty3 },
     { id: 4, brand: "SWISS BEAUTY", discount: "Up to 50% Off", badgeColor: "text-slate-800", image: beauty4 },
     { id: 5, brand: "PERSONAL TOUCH", discount: "Up to 70% Off", badgeColor: "text-slate-800", image: beauty5 }
   ];
@@ -600,8 +600,8 @@ export default function Home() {
               {/* Image Box */}
               <div className={`w-14 h-14 flex items-center justify-center rounded-2xl border transition-all duration-300 overflow-hidden ${
                 isActive
-                  ? 'bg-[#ee4923] border-[#ee4923] text-white shadow-sm'
-                  : 'bg-[#FFF0ED] border-[#FFF0ED] text-[#02006c] hover:border-[#ee4923]/40'
+                  ? 'bg-[#4B5320] border-[#4B5320] text-white shadow-sm'
+                  : 'bg-[#F8F8F5] border-[#F8F8F5] text-[#2F3E16] hover:border-[#4B5320]/40'
               }`}>
                 {cat.image ? (
                   <OptimizedImage src={getImageUrl(cat.image)} alt={labelText} type="category" objectFit="contain" className="w-full h-full p-1" />
@@ -614,8 +614,8 @@ export default function Home() {
               <div className="w-full text-center px-1">
                 <span className={`text-[10px] block truncate rounded-full transition-colors py-0.5 ${
                   isActive 
-                    ? 'font-bold text-[#ee4923] border border-[#ee4923] px-1' 
-                    : 'font-semibold text-[#02006c] border border-transparent'
+                    ? 'font-bold text-[#4B5320] border border-[#4B5320] px-1' 
+                    : 'font-semibold text-[#2F3E16] border border-transparent'
                 }`} title={labelText}>
                   {labelText}
                 </span>
@@ -638,7 +638,13 @@ export default function Home() {
                 className="w-full h-full flex-shrink-0 cursor-pointer"
                 onClick={() => navigate(banner.link || '/categories')}
               >
-                <OptimizedImage src={getImageUrl(banner.image)} alt="Banner" type="banner" className="w-full h-full" />
+                {banner.isMockGradient ? (
+                  <div className="w-full h-full bg-gradient-to-br from-[#4B5320] to-[#2F3E16] flex items-center justify-center p-6 text-center text-white shadow-inner">
+                    <h2 className="text-xl md:text-3xl font-black tracking-widest whitespace-pre-line drop-shadow-md uppercase font-sans">{banner.text}</h2>
+                  </div>
+                ) : (
+                  <OptimizedImage src={getImageUrl(banner.image)} alt="Banner" type="banner" className="w-full h-full" />
+                )}
               </div>
             ))}
           </div>
@@ -655,7 +661,7 @@ export default function Home() {
                   setActiveBanner(idx);
                 }}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === (activeBanner % activeBannersList.length) ? 'w-4 bg-[#ee4923]' : 'w-1.5 bg-slate-200'
+                  idx === (activeBanner % activeBannersList.length) ? 'w-4 bg-[#4B5320]' : 'w-1.5 bg-slate-200'
                 }`}
               ></button>
             ))}
@@ -675,7 +681,7 @@ export default function Home() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <span 
-              className="text-[22px] font-extrabold text-[#02006c] flex items-center gap-1.5 font-sans"
+              className="text-[22px] font-extrabold text-[#2F3E16] flex items-center gap-1.5 font-sans"
             >
               Crazy Deals
             </span>
@@ -685,14 +691,14 @@ export default function Home() {
           </div>
           <button 
             onClick={() => navigate('/crazy-deals')}
-            className="text-xs font-black text-[#ee4923] hover:underline"
+            className="text-xs font-black text-[#4B5320] hover:underline"
           >
             See All
           </button>
         </div>
 
         {/* Ticking Countdown Timer */}
-        <div className="flex items-center gap-1 text-[13px] font-black text-[#ee4923] tracking-wide -mt-1.5 font-sans">
+        <div className="flex items-center gap-1 text-[13px] font-black text-[#4B5320] tracking-wide -mt-1.5 font-sans">
           <span>{hrs}</span>
           <span className="animate-pulse">:</span>
           <span>{mins}</span>
@@ -711,9 +717,9 @@ export default function Home() {
               >
                 <div>
                   {/* Compact Light Orange image display box */}
-                  <div className="w-24 h-24 bg-orange-50/80 border border-orange-100/50 rounded-2xl flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-all duration-300 animate-fade-in">
+                  <div className="w-24 h-24 bg-primary-50/80 border border-primary-100/50 rounded-2xl flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-all duration-300 animate-fade-in">
                     {/* Discount Pill */}
-                    <span className="absolute top-0 left-0 bg-[#ee4923] text-white text-[9px] font-black px-2.5 py-1 rounded-br-lg shadow-3xs z-10">
+                    <span className="absolute top-0 left-0 bg-[#4B5320] text-white text-[9px] font-black px-2.5 py-1 rounded-br-lg shadow-3xs z-10">
                       {deal.discount}
                     </span>
 
@@ -727,14 +733,14 @@ export default function Home() {
                   </div>
 
                   {/* Title */}
-                  <h4 className="text-[10.5px] font-bold text-[#02006c] truncate mt-1.5 px-0.5 tracking-tight">
+                  <h4 className="text-[10.5px] font-bold text-[#2F3E16] truncate mt-1.5 px-0.5 tracking-tight">
                     {deal.name}
                   </h4>
                 </div>
 
                 {/* Pricing row (No cart button, no description) */}
                 <div className="flex items-center gap-1.5 mt-0.5 px-0.5 leading-none">
-                  <span className="text-[10.5px] font-extrabold text-[#ee4923]">₹{deal.price}</span>
+                  <span className="text-[10.5px] font-extrabold text-[#4B5320]">₹{deal.price}</span>
                   <span className="text-[8.5px] text-slate-400 font-bold line-through">₹{deal.originalPrice}</span>
                 </div>
               </div>
@@ -743,7 +749,7 @@ export default function Home() {
         ) : (
           /* Fallback empty state */
           <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-6 text-center space-y-2">
-            <ShieldAlert className="w-8 h-8 text-[#ee4923] mx-auto opacity-75" />
+            <ShieldAlert className="w-8 h-8 text-[#4B5320] mx-auto opacity-75" />
             <h4 className="text-xs font-bold text-[#0F172A]">No Matching Deals</h4>
             <p className="text-[10px] text-slate-400 leading-tight">
               Try searching for something else like "teddy" or "car"
@@ -760,12 +766,12 @@ export default function Home() {
           
           {/* Header Row */}
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-[19px] font-bold tracking-wide text-[#02006c] font-sans">
+            <h3 className="text-[19px] font-bold tracking-wide text-[#2F3E16] font-sans">
               TOP SELECTION
             </h3>
             <button 
               onClick={() => navigate('/top-selection')}
-              className="bg-slate-50 border border-slate-200 text-[#02006c] w-7 h-7 rounded-xl flex items-center justify-center shadow-2xs cursor-pointer hover:bg-slate-100 hover:scale-105 active:scale-95 transition-all"
+              className="bg-slate-50 border border-slate-200 text-[#2F3E16] w-7 h-7 rounded-xl flex items-center justify-center shadow-2xs cursor-pointer hover:bg-slate-100 hover:scale-105 active:scale-95 transition-all"
             >
               <ChevronRight className="w-4 h-4 stroke-[3]" />
             </button>
@@ -778,10 +784,10 @@ export default function Home() {
                 <div 
                   key={deal.id}
                   onClick={() => navigate(`/product/${deal.id}`)}
-                  className="bg-white border border-[#ee4923] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300 group"
+                  className="bg-white border border-[#4B5320] rounded-lg p-2.5 pb-3.5 flex flex-col justify-between shadow-2xs cursor-pointer hover:scale-[1.01] active:scale-95 transition-all duration-300 group"
                 >
                   <div>
-                    <div className="bg-[#F8F9FD] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden">
+                    <div className="bg-[#F8F8F5] rounded-md w-full aspect-square flex items-center justify-center mb-2 relative overflow-hidden">
                       <OptimizedImage
                         src={getImageUrl(deal.image)}
                         alt={deal.name}
@@ -797,7 +803,7 @@ export default function Home() {
                     {deal.name}
                   </h4>
                   <div className="flex items-center gap-1.5 mt-0.5 px-1">
-                    <span className="text-[13px] font-black text-[#ee4923]">₹{deal.price}</span>
+                    <span className="text-[13px] font-black text-[#4B5320]">₹{deal.price}</span>
                     {deal.originalPrice && deal.originalPrice > deal.price && (
                       <span className="text-[10px] text-slate-400 font-semibold line-through mt-0.5">₹{deal.originalPrice}</span>
                     )}
@@ -818,15 +824,15 @@ export default function Home() {
       <div className="px-4 py-2 space-y-3">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-[19px] font-bold text-[#02006c] font-sans">Flash Sale</h3>
+          <h3 className="text-[19px] font-bold text-[#2F3E16] font-sans">Flash Sale</h3>
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-slate-400 font-medium mr-1">Closing in :</span>
-            <div className="flex items-center gap-0.5 text-[11px] font-bold text-[#ee4923] font-sans">
-              <span className="bg-orange-50 px-1 py-0.5 rounded-sm">{hrs}</span>
+            <div className="flex items-center gap-0.5 text-[11px] font-bold text-[#4B5320] font-sans">
+              <span className="bg-primary-50 px-1 py-0.5 rounded-sm">{hrs}</span>
               <span className="text-slate-300 px-0.5">:</span>
-              <span className="bg-orange-50 px-1 py-0.5 rounded-sm">{mins}</span>
+              <span className="bg-primary-50 px-1 py-0.5 rounded-sm">{mins}</span>
               <span className="text-slate-300 px-0.5">:</span>
-              <span className="bg-orange-50 px-1 py-0.5 rounded-sm">{secs}</span>
+              <span className="bg-primary-50 px-1 py-0.5 rounded-sm">{secs}</span>
             </div>
           </div>
         </div>
@@ -839,7 +845,7 @@ export default function Home() {
               onClick={() => setActiveFlashTab(tab)}
               className={`px-3.5 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                 activeFlashTab === tab 
-                  ? 'bg-[#ee4923] text-white shadow-sm' 
+                  ? 'bg-[#4B5320] text-white shadow-sm' 
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
               }`}
             >
@@ -852,7 +858,7 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-3">
           {flashDeals.length > 0 ? (
             flashDeals.slice(0, 4).map((deal) => (
-              <div key={deal.id} onClick={() => navigate(`/product/${deal.id}`)} className="bg-[#F8F9FD] rounded-xl p-2 relative cursor-pointer hover:bg-slate-100 transition-colors group">
+              <div key={deal.id} onClick={() => navigate(`/product/${deal.id}`)} className="bg-[#F8F8F5] rounded-xl p-2 relative cursor-pointer hover:bg-slate-100 transition-colors group">
                 {/* Heart Icon */}
                 <button 
                   onClick={(e) => {
@@ -865,7 +871,7 @@ export default function Home() {
                     toggleWishlist(deal);
                   }}
                   className={`absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm z-10 transition-colors ${
-                    isInWishlist(deal.id) ? 'text-[#ee4923]' : 'text-slate-300 hover:text-[#ee4923]'
+                    isInWishlist(deal.id) ? 'text-[#4B5320]' : 'text-slate-300 hover:text-[#4B5320]'
                   }`}
                 >
                   <Heart className={`w-3.5 h-3.5 ${isInWishlist(deal.id) ? 'fill-current' : ''}`} />
@@ -875,9 +881,9 @@ export default function Home() {
                   <OptimizedImage src={getImageUrl(deal.image)} alt={deal.name} type="product" className="absolute inset-0 group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="px-1">
-                  <h4 className="text-[11px] font-bold text-[#02006c] truncate">{deal.name}</h4>
+                  <h4 className="text-[11px] font-bold text-[#2F3E16] truncate">{deal.name}</h4>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <span className="text-[12px] font-extrabold text-[#ee4923]">₹{deal.price}</span>
+                    <span className="text-[12px] font-extrabold text-[#4B5320]">₹{deal.price}</span>
                     <span className="text-[9px] text-slate-400 line-through">₹{deal.originalPrice}</span>
                   </div>
                 </div>
@@ -894,10 +900,10 @@ export default function Home() {
       {/* 6.5 Top 10 Buys Section (Sorted by Sales) */}
       <div className="px-4 py-2 space-y-3">
         <div className="flex items-center justify-between px-1">
-          <h3 className="text-[19px] font-bold text-[#02006c] font-sans">
+          <h3 className="text-[19px] font-bold text-[#2F3E16] font-sans">
             TOP 10 BUYS
           </h3>
-          <span className="text-[10px] bg-orange-50 text-[#ee4923] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+          <span className="text-[10px] bg-primary-50 text-[#4B5320] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
             Most Popular
           </span>
         </div>
@@ -910,16 +916,16 @@ export default function Home() {
             .slice(0, 10))
             .map((buy, idx) => {
               const gradients = [
-                'bg-gradient-to-b from-[#FFA781] to-[#F3557A]',
-                'bg-gradient-to-b from-[#81F5FF] to-[#0A5FA6]',
-                'bg-gradient-to-b from-[#E2F5FF] to-[#3B82F6]',
-                'bg-gradient-to-b from-[#FFF5C6] to-[#D97706]',
-                'bg-gradient-to-b from-[#D1FAE5] to-[#059669]',
-                'bg-gradient-to-b from-[#F3E8FF] to-[#7C3AED]',
-                'bg-gradient-to-b from-[#FFF1F2] to-[#E11D48]',
-                'bg-gradient-to-b from-[#F0FDF4] to-[#16A34A]',
-                'bg-gradient-to-b from-[#ECFDF5] to-[#047857]',
-                'bg-gradient-to-b from-[#FFFBEB] to-[#D97706]'
+                'bg-gradient-to-br from-[#4B5320] to-[#2F3E16]',
+                'bg-gradient-to-br from-[#6B7280] to-[#374151]',
+                'bg-gradient-to-br from-[#C2B280] to-[#8c7e53]',
+                'bg-gradient-to-br from-[#4B5320] to-[#1c210c]',
+                'bg-gradient-to-br from-[#808000] to-[#556B2F]',
+                'bg-gradient-to-br from-[#2F3E16] to-[#1a230c]',
+                'bg-gradient-to-br from-[#3E4E30] to-[#1e2a14]',
+                'bg-gradient-to-br from-[#D4AF37] to-[#A67C00]',
+                'bg-gradient-to-br from-[#4A4E4D] to-[#212322]',
+                'bg-gradient-to-br from-[#5D6B57] to-[#3B4636]'
               ];
               const bgGradient = gradients[idx % gradients.length];
               return (
@@ -955,10 +961,10 @@ export default function Home() {
       {/* 6.7 Trending Brands Section */}
       <div className="px-4 py-2 space-y-3">
         <div className="flex items-center justify-between px-1">
-          <h3 className="text-[19px] font-bold text-[#02006c] font-sans">
+          <h3 className="text-[19px] font-bold text-[#2F3E16] font-sans">
             TRENDING BRANDS
           </h3>
-          <span className="text-[10px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+          <span className="text-[10px] bg-blue-50 text-[#D4AF37] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
             Featured
           </span>
         </div>
@@ -999,10 +1005,10 @@ export default function Home() {
                   className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer"
                   onClick={() => setSelectedSubCategory('all')}
                 >
-                  <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all flex items-center justify-center bg-slate-50 ${selectedSubCategory === 'all' ? 'border-[#ee4923] ring-2 ring-orange-100 scale-105' : 'border-slate-100'}`}>
+                  <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all flex items-center justify-center bg-slate-50 ${selectedSubCategory === 'all' ? 'border-[#4B5320] ring-2 ring-primary-100 scale-105' : 'border-slate-100'}`}>
                     <LayoutGrid className="w-6 h-6 text-slate-400" />
                   </div>
-                  <span className={`text-[10px] font-bold ${selectedSubCategory === 'all' ? 'text-[#ee4923]' : 'text-slate-700'}`}>All</span>
+                  <span className={`text-[10px] font-bold ${selectedSubCategory === 'all' ? 'text-[#4B5320]' : 'text-slate-700'}`}>All</span>
                 </div>
 
                 {subs.map(sub => {
@@ -1014,10 +1020,10 @@ export default function Home() {
                       className="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer w-16 text-center"
                       onClick={() => setSelectedSubCategory(subKey)}
                     >
-                      <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all relative ${isSubActive ? 'border-[#ee4923] ring-2 ring-orange-100 scale-105' : 'border-orange-100 shadow-sm'}`}>
+                      <div className={`w-14 h-14 rounded-xl overflow-hidden border transition-all relative ${isSubActive ? 'border-[#4B5320] ring-2 ring-primary-100 scale-105' : 'border-primary-100 shadow-sm'}`}>
                         <OptimizedImage src={getImageUrl(sub.image)} alt={sub.subCategoryName} type="subcategory" className="absolute inset-0" />
                       </div>
-                      <span className={`text-[10px] font-bold block truncate w-full ${isSubActive ? 'text-[#ee4923]' : 'text-slate-700'}`} title={sub.subCategoryName}>
+                      <span className={`text-[10px] font-bold block truncate w-full ${isSubActive ? 'text-[#4B5320]' : 'text-slate-700'}`} title={sub.subCategoryName}>
                         {sub.subCategoryName}
                       </span>
                     </div>
@@ -1036,12 +1042,12 @@ export default function Home() {
                 const selectedSubObj = subCategoryChips.find(sc => sc.id === selectedSubCategory);
                 const displaySubName = selectedSubObj ? selectedSubObj.subCategoryName : selectedSubCategory;
                 return (
-                  <h3 className="text-[17px] font-bold text-[#02006c] capitalize">
+                  <h3 className="text-[17px] font-bold text-[#2F3E16] capitalize">
                     {displayCatName.replace('-', ' ')} {selectedSubCategory !== 'all' ? `> ${displaySubName}` : ''}
                   </h3>
                 );
               })()}
-              <span className="text-[10px] text-[#ee4923] font-bold bg-orange-50 border border-orange-100 px-2.5 py-1 rounded-lg">
+              <span className="text-[10px] text-[#4B5320] font-bold bg-primary-50 border border-primary-100 px-2.5 py-1 rounded-lg">
                 {getFilteredCategoryProducts().length} Items
               </span>
             </div>
@@ -1068,10 +1074,10 @@ export default function Home() {
           {/* Top 10 Buys Section */}
           <div className="space-y-3 pt-4 border-t border-slate-100">
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-[17px] font-bold text-[#02006c] font-sans">
+              <h3 className="text-[17px] font-bold text-[#2F3E16] font-sans">
                 TOP 10 BUYS
               </h3>
-              <span className="text-[9px] bg-orange-50 text-[#ee4923] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="text-[9px] bg-primary-50 text-[#4B5320] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                 Popular
               </span>
             </div>
@@ -1115,10 +1121,10 @@ export default function Home() {
           {/* Trending Brands Section */}
           <div className="space-y-3 pt-4 border-t border-slate-100">
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-[17px] font-bold text-[#02006c] font-sans">
+              <h3 className="text-[17px] font-bold text-[#2F3E16] font-sans">
                 TRENDING BRANDS
               </h3>
-              <span className="text-[9px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="text-[9px] bg-blue-50 text-[#D4AF37] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                 Featured
               </span>
             </div>

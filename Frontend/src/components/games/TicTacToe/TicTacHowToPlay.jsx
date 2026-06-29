@@ -26,10 +26,10 @@ export default function TicTacHowToPlay({ onBack }) {
         <div className="flex justify-center mb-10 mt-4 relative">
           <div className="absolute inset-0 flex items-center justify-center opacity-10">
             <XIcon className="w-24 h-24 text-slate-800 absolute -left-4 -top-4" />
-            <Circle className="w-20 h-20 text-[#FF5A1F] absolute -right-4 top-4" />
+            <Circle className="w-20 h-20 text-[#D4AF37] absolute -right-4 top-4" />
           </div>
           <ShoppingBag className="w-24 h-24 text-[#071226] relative z-10" />
-          <Gift className="w-16 h-16 text-[#FF5A1F] absolute -right-4 bottom-0 z-20" />
+          <Gift className="w-16 h-16 text-[#D4AF37] absolute -right-4 bottom-0 z-20" />
         </div>
 
         <div className="space-y-4">
@@ -44,8 +44,8 @@ export default function TicTacHowToPlay({ onBack }) {
           </div>
 
           <div className="bg-white rounded-3xl p-5 flex items-center gap-4 shadow-sm border border-slate-100">
-            <div className="w-12 h-12 bg-orange-50 border border-orange-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Circle className="w-6 h-6 text-[#FF5A1F]" strokeWidth={4} />
+            <div className="w-12 h-12 bg-primary-50 border border-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <Circle className="w-6 h-6 text-[#D4AF37]" strokeWidth={4} />
             </div>
             <div>
               <h4 className="font-bold text-slate-800 text-sm mb-0.5">Opponent is O (Orange)</h4>
@@ -78,7 +78,7 @@ export default function TicTacHowToPlay({ onBack }) {
       <div className="p-5 bg-white border-t border-slate-100">
         <button
           onClick={onBack}
-          className="w-full bg-[#FF5A1F] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.3)] active:scale-95 transition-all"
+          className="w-full bg-[#D4AF37] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.3)] active:scale-95 transition-all"
         >
           GOT IT!
         </button>

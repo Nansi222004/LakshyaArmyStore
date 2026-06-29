@@ -138,7 +138,7 @@ const StockAlerts = () => {
         </div>
         <button 
           onClick={fetchProducts}
-          className="flex items-center gap-2 px-6 py-3 bg-[#ee4923] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all"
+          className="flex items-center gap-2 px-6 py-3 bg-[#4B5320] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all"
         >
           <RefreshCcw size={16} />
           Refresh
@@ -148,7 +148,7 @@ const StockAlerts = () => {
       {/* Stats row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
          {[
-           { label: 'Out of Stock', value: String(outOfStockCount).padStart(2, '0'), icon: AlertCircle, color: 'text-[#ee4923]', bg: 'bg-red-50' },
+           { label: 'Out of Stock', value: String(outOfStockCount).padStart(2, '0'), icon: AlertCircle, color: 'text-[#4B5320]', bg: 'bg-red-50' },
            { label: 'Critical Level', value: String(criticalCount).padStart(2, '0'), icon: AlertTriangle, color: 'text-rose-500', bg: 'bg-rose-50' },
            { label: 'Low Stock Items', value: String(lowStockCount).padStart(2, '0'), icon: TrendingDown, color: 'text-amber-500', bg: 'bg-amber-50' },
          ].map((stat, i) => (
@@ -168,7 +168,7 @@ const StockAlerts = () => {
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="p-6 border-b border-slate-50 flex justify-between items-center">
            <div className="relative w-full max-w-md group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#ee4923]" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#4B5320]" size={18} />
               <input 
                 type="text" 
                 placeholder="Search by product or brand..." 
@@ -209,7 +209,7 @@ const StockAlerts = () => {
                   <tr key={item.id} className="group hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
-                         <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-[#ee4923] border border-orange-100 overflow-hidden shrink-0">
+                         <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-[#4B5320] border border-orange-100 overflow-hidden shrink-0">
                             <OptimizedImage src={item.image} alt={item.name} type="product" className="w-full h-full" />
                           </div>
                          <div>
@@ -270,7 +270,7 @@ const StockAlerts = () => {
                             setEditingStock(item.id);
                             setStockValue(Number(item.stock) + 10);
                           }}
-                          className="px-4 py-2 bg-[#ee4923] text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-md shadow-orange-100"
+                          className="px-4 py-2 bg-[#4B5320] text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-md shadow-orange-100"
                          >
                             Restock (+10)
                          </button>

@@ -25,7 +25,7 @@ export default function CountdownScreen({ onComplete }) {
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1.5 h-1.5 bg-[#FF5A1F] rounded-full"
+            className="absolute w-1.5 h-1.5 bg-[#D4AF37] rounded-full"
             initial={{ 
               x: Math.random() * window.innerWidth, 
               y: Math.random() * window.innerHeight,
@@ -61,7 +61,7 @@ export default function CountdownScreen({ onComplete }) {
           <motion.circle 
             cx="50" cy="50" r="45" 
             fill="none" 
-            stroke="#FF5A1F" 
+            stroke="#D4AF37" 
             strokeWidth="6"
             strokeLinecap="round"
             initial={{ pathLength: 0 }}

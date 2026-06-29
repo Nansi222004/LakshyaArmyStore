@@ -98,7 +98,7 @@ export default function GameplayScreen({ onGameEnd }) {
             <h2 className="text-4xl font-black text-white tracking-tighter mb-6 drop-shadow-lg">PAUSED</h2>
             <button 
               onClick={() => setIsPaused(false)}
-              className="bg-[#FF5A1F] text-white font-black px-10 py-4 rounded-full text-lg shadow-[0_5px_20px_rgba(255,90,31,0.5)] active:scale-95 transition-transform"
+              className="bg-[#D4AF37] text-white font-black px-10 py-4 rounded-full text-lg shadow-[0_5px_20px_rgba(255,90,31,0.5)] active:scale-95 transition-transform"
             >
               RESUME
             </button>
@@ -109,7 +109,7 @@ export default function GameplayScreen({ onGameEnd }) {
       {/* Top HUD */}
       <div className="pt-12 px-6 flex flex-col items-center z-10">
         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Time Left</span>
-        <div className="text-4xl font-black text-[#FF5A1F] font-mono tracking-tighter">
+        <div className="text-4xl font-black text-[#D4AF37] font-mono tracking-tighter">
           {formattedTime}
         </div>
         
@@ -124,7 +124,7 @@ export default function GameplayScreen({ onGameEnd }) {
                 initial={{ scale: 0.5, opacity: 0, y: 10 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.5, opacity: 0 }}
-                className="mt-2 bg-[#FF5A1F] text-white text-xs font-black px-3 py-1 rounded-full shadow-[0_0_15px_rgba(255,90,31,0.6)]"
+                className="mt-2 bg-[#D4AF37] text-white text-xs font-black px-3 py-1 rounded-full shadow-[0_0_15px_rgba(255,90,31,0.6)]"
               >
                 COMBO x{combo}
               </motion.div>
@@ -140,7 +140,7 @@ export default function GameplayScreen({ onGameEnd }) {
           whileTap={{ scale: 0.92 }}
           className="w-72 h-72 rounded-full relative flex items-center justify-center outline-none overflow-hidden"
           style={{
-            background: 'radial-gradient(circle, #FF5A1F 0%, #D93800 100%)',
+            background: 'radial-gradient(circle, #D4AF37 0%, #D93800 100%)',
             boxShadow: `0 0 ${40 + (combo * 10)}px rgba(255, 90, 31, ${0.4 + (combo * 0.1)})`
           }}
         >
@@ -178,7 +178,7 @@ export default function GameplayScreen({ onGameEnd }) {
         </span>
         <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-amber-400 to-[#FF5A1F] rounded-full transition-all duration-75 ease-linear"
+            className="h-full bg-gradient-to-r from-amber-400 to-[#D4AF37] rounded-full transition-all duration-75 ease-linear"
             style={{ width: `${progressPercent}%` }}
           ></div>
         </div>

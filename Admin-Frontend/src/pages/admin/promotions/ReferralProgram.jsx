@@ -11,7 +11,7 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const STATUS_CONFIG = {
   pending:   { label: 'Pending',   bg: 'bg-amber-50',   text: 'text-amber-700',   border: 'border-amber-200',   dot: 'bg-amber-400' },
-  completed: { label: 'Completed', bg: 'bg-blue-50',    text: 'text-blue-700',    border: 'border-blue-200',    dot: 'bg-blue-500' },
+  completed: { label: 'Completed', bg: 'bg-primary-50',    text: 'text-primary-700',    border: 'border-primary-200',    dot: 'bg-primary-500' },
   rewarded:  { label: 'Rewarded',  bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', dot: 'bg-emerald-500' },
 };
 
@@ -112,7 +112,7 @@ const ReferralProgram = () => {
   });
 
   const statCards = [
-    { label: 'Total Referrals', value: stats.total ?? 0,     icon: Users,      color: 'text-blue-600',    bg: 'bg-blue-50' },
+    { label: 'Total Referrals', value: stats.total ?? 0,     icon: Users,      color: 'text-primary-600',    bg: 'bg-primary-50' },
     { label: 'Pending',         value: stats.pending ?? 0,   icon: Clock,      color: 'text-amber-600',   bg: 'bg-amber-50' },
     { label: 'Rewarded',        value: stats.rewarded ?? 0,  icon: Gift,       color: 'text-emerald-600', bg: 'bg-emerald-50' },
     { label: 'Coins Awarded',   value: stats.totalCoins ?? 0, icon: TrendingUp, color: 'text-indigo-600',  bg: 'bg-indigo-50' },
@@ -140,7 +140,7 @@ const ReferralProgram = () => {
           </button>
           <button
             onClick={() => setShowConfig(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Settings2 size={14} />
             Configure
@@ -168,11 +168,11 @@ const ReferralProgram = () => {
         {/* Table Header */}
         <div className="p-6 border-b border-slate-50 flex gap-4">
           <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={18} />
             <input
               type="text"
               placeholder="Search by name, phone or code..."
-              className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none text-slate-900"
+              className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none text-slate-900"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
@@ -210,7 +210,7 @@ const ReferralProgram = () => {
                         key={s}
                         onClick={() => { setStatusFilter(s); setFilterOpen(false); }}
                         className={`w-full px-4 py-2.5 text-left text-[10px] font-black uppercase tracking-widest transition-colors flex items-center justify-between ${
-                          statusFilter === s ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'
+                          statusFilter === s ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-50'
                         }`}
                       >
                         {s}
@@ -242,7 +242,7 @@ const ReferralProgram = () => {
                 <tr>
                   <td colSpan={6} className="py-20 text-center">
                     <div className="flex flex-col items-center gap-3 text-slate-300">
-                      <Loader2 size={36} className="animate-spin text-blue-400" />
+                      <Loader2 size={36} className="animate-spin text-primary-400" />
                       <p className="text-xs font-bold uppercase tracking-widest">Loading referrals...</p>
                     </div>
                   </td>
@@ -264,7 +264,7 @@ const ReferralProgram = () => {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className="hover:bg-blue-50/20 transition-colors border-l-4 border-transparent hover:border-blue-400"
+                    className="hover:bg-primary-50/20 transition-colors border-l-4 border-transparent hover:border-primary-400"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -289,7 +289,7 @@ const ReferralProgram = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="font-mono text-[12px] font-black text-[#ee4923] bg-orange-50 px-2 py-1 rounded-lg border border-orange-100">
+                      <span className="font-mono text-[12px] font-black text-[#4B5320] bg-orange-50 px-2 py-1 rounded-lg border border-orange-100">
                         {ref.referralCode}
                       </span>
                     </td>
@@ -343,7 +343,7 @@ const ReferralProgram = () => {
 
               {configLoading ? (
                 <div className="flex-1 flex items-center justify-center">
-                  <Loader2 size={32} className="animate-spin text-blue-400" />
+                  <Loader2 size={32} className="animate-spin text-primary-400" />
                 </div>
               ) : (
                 <div className="flex-1 space-y-8">
@@ -375,7 +375,7 @@ const ReferralProgram = () => {
                         type="text"
                         value={referralCoinsReferrer}
                         onChange={e => setReferralCoinsReferrer(Number(e.target.value.replace(/\D/g, '')) || 0)}
-                        className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all"
                       />
                       <span className="absolute right-5 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Coins</span>
                     </div>
@@ -391,16 +391,16 @@ const ReferralProgram = () => {
                         type="text"
                         value={referralCoinsReferee}
                         onChange={e => setReferralCoinsReferee(Number(e.target.value.replace(/\D/g, '')) || 0)}
-                        className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none transition-all"
+                        className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none transition-all"
                       />
                       <span className="absolute right-5 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Coins</span>
                     </div>
                   </div>
 
                   {/* Info box */}
-                  <div className="bg-blue-50 p-5 rounded-2xl border border-blue-100 flex gap-3 items-start">
-                    <AlertCircle size={18} className="text-blue-500 mt-0.5 flex-shrink-0" />
-                    <p className="text-[11px] text-blue-500 font-bold leading-relaxed uppercase tracking-wide">
+                  <div className="bg-primary-50 p-5 rounded-2xl border border-primary-100 flex gap-3 items-start">
+                    <AlertCircle size={18} className="text-primary-500 mt-0.5 flex-shrink-0" />
+                    <p className="text-[11px] text-primary-500 font-bold leading-relaxed uppercase tracking-wide">
                       Coins are credited to both parties automatically when the referred user completes their first order.
                     </p>
                   </div>
@@ -412,7 +412,7 @@ const ReferralProgram = () => {
                 <button
                   onClick={handleSaveConfig}
                   disabled={savingConfig}
-                  className="w-full py-4 bg-blue-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-xl shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                  className="w-full py-4 bg-primary-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-xl shadow-primary-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60"
                 >
                   {savingConfig ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                   Save Configuration

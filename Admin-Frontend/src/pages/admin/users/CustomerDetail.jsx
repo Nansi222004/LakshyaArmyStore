@@ -92,7 +92,7 @@ const CustomerDetail = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh] text-slate-400">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -101,7 +101,7 @@ const CustomerDetail = () => {
     return (
       <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm text-center py-20 space-y-4">
         <h2 className="text-xl font-bold text-slate-900 font-montserrat uppercase tracking-tight">Customer not found</h2>
-        <button onClick={() => navigate(-1)} className="px-6 py-2.5 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-wider">Go Back</button>
+        <button onClick={() => navigate(-1)} className="px-6 py-2.5 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-wider">Go Back</button>
       </div>
     );
   }
@@ -111,7 +111,7 @@ const CustomerDetail = () => {
     : 'UU';
 
   const stats = [
-    { label: 'Total Orders', value: statsData.totalOrders.toString(), icon: ShoppingBag, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { label: 'Total Orders', value: statsData.totalOrders.toString(), icon: ShoppingBag, color: 'text-primary-500', bg: 'bg-primary-50' },
     { label: 'LTV (Revenue)', value: `₹${(statsData.ltv || 0).toLocaleString('en-IN')}`, icon: Wallet, color: 'text-green-500', bg: 'bg-green-50' },
     { label: 'Avg Rating', value: statsData.avgRating ? statsData.avgRating.toString() : '0', icon: Star, color: 'text-amber-500', bg: 'bg-amber-50' },
     { label: 'Returns', value: statsData.returnsCount.toString().padStart(2, '0'), icon: Clock, color: 'text-red-500', bg: 'bg-red-50' },
@@ -131,7 +131,7 @@ const CustomerDetail = () => {
               <ArrowLeft size={20} />
            </button>
            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black shadow-xl shadow-blue-100 uppercase overflow-hidden border border-slate-100 bg-slate-100">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black shadow-xl shadow-primary-100 uppercase overflow-hidden border border-slate-100 bg-slate-100">
                  {customer.avatar ? (
                     <img 
                       src={customer.avatar.startsWith('http') ? customer.avatar : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${customer.avatar}`} 
@@ -140,12 +140,12 @@ const CustomerDetail = () => {
                       onError={(e) => {
                         e.target.onerror = null;
                         // Replace container innerHTML with the initials fallback on image loading error
-                        e.target.parentNode.className = "w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black shadow-xl shadow-blue-100 uppercase";
+                        e.target.parentNode.className = "w-16 h-16 bg-primary-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black shadow-xl shadow-primary-100 uppercase";
                         e.target.parentNode.innerHTML = initials;
                       }}
                     />
                  ) : (
-                    <div className="w-full h-full bg-blue-600 text-white flex items-center justify-center">
+                    <div className="w-full h-full bg-primary-600 text-white flex items-center justify-center">
                        {initials}
                     </div>
                  )}
@@ -247,7 +247,7 @@ const CustomerDetail = () => {
                       onClick={() => setActiveTab(tab)}
                       className={`px-8 py-5 text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-2 ${
                         activeTab === tab 
-                        ? 'text-blue-600 border-blue-600 bg-blue-50/20' 
+                        ? 'text-primary-600 border-primary-600 bg-primary-50/20' 
                         : 'text-slate-400 border-transparent hover:text-slate-600'
                       }`}
                     >
@@ -262,7 +262,7 @@ const CustomerDetail = () => {
                          ordersList.map((order) => (
                            <div key={order.id} onClick={() => navigate(`/admin/orders/${order.id}`)} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between hover:bg-white hover:shadow-lg hover:shadow-slate-100 transition-all group cursor-pointer">
                               <div className="flex items-center gap-4">
-                                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-500 shadow-sm">
+                                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary-500 shadow-sm">
                                     <ShoppingBag size={18} />
                                  </div>
                                  <div>
@@ -275,7 +275,7 @@ const CustomerDetail = () => {
                                     <p className="text-sm font-black text-slate-900 font-roboto">₹{(order.total || 0).toLocaleString('en-IN')}</p>
                                     <p className={`text-[9px] font-black uppercase tracking-widest mt-1 ${order.status === 'Cancelled' ? 'text-red-500' : 'text-green-500'}`}>{order.status}</p>
                                  </div>
-                                 <button className="p-2 bg-white text-slate-300 rounded-lg group-hover:text-blue-500 transition-all">
+                                 <button className="p-2 bg-white text-slate-300 rounded-lg group-hover:text-primary-500 transition-all">
                                     <ExternalLink size={16} />
                                  </button>
                               </div>
@@ -312,7 +312,7 @@ const CustomerDetail = () => {
                                  <div className="text-right">
                                     <p className="text-sm font-black text-slate-900 font-roboto">₹{(item.price || 0).toLocaleString('en-IN')}</p>
                                  </div>
-                                 <button className="p-2 bg-white text-slate-300 rounded-lg group-hover:text-blue-500 transition-all">
+                                 <button className="p-2 bg-white text-slate-300 rounded-lg group-hover:text-primary-500 transition-all">
                                     <ExternalLink size={16} />
                                  </button>
                               </div>
@@ -391,12 +391,12 @@ const CustomerDetail = () => {
                        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 space-y-4">
                           <p className="text-[10px] font-black text-[#02006c] uppercase tracking-widest">Contact Customer Directly</p>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                             <a href={`tel:${customer.phone}`} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-100 hover:border-blue-500 hover:text-blue-500 hover:shadow-md transition-all font-black text-[10px] text-slate-700 uppercase tracking-wider">
-                                <Smartphone size={16} className="text-blue-500" />
+                             <a href={`tel:${customer.phone}`} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-100 hover:border-primary-500 hover:text-primary-500 hover:shadow-md transition-all font-black text-[10px] text-slate-700 uppercase tracking-wider">
+                                <Smartphone size={16} className="text-primary-500" />
                                 CALL CLIENT ({customer.phone || 'N/A'})
                              </a>
-                             <a href={`mailto:${customer.email}`} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-100 hover:border-blue-500 hover:text-blue-500 hover:shadow-md transition-all font-black text-[10px] text-slate-700 uppercase tracking-wider">
-                                <Mail size={16} className="text-blue-500" />
+                             <a href={`mailto:${customer.email}`} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-100 hover:border-primary-500 hover:text-primary-500 hover:shadow-md transition-all font-black text-[10px] text-slate-700 uppercase tracking-wider">
+                                <Mail size={16} className="text-primary-500" />
                                 EMAIL CLIENT ({customer.email || 'N/A'})
                              </a>
                           </div>
@@ -411,7 +411,7 @@ const CustomerDetail = () => {
                                 <div key={ticket.id} className="p-5 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white hover:shadow-lg hover:shadow-slate-100 transition-all">
                                    <div className="space-y-1">
                                       <div className="flex items-center gap-3">
-                                         <span className="text-[10px] font-black text-blue-600 font-roboto">{ticket.ticketId || ticket.id}</span>
+                                         <span className="text-[10px] font-black text-primary-600 font-roboto">{ticket.ticketId || ticket.id}</span>
                                          <span className="text-[8px] text-slate-400 font-bold uppercase">{ticket.date}</span>
                                          <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider ${
                                             ticket.priority === 'High' ? 'bg-red-55 text-red-655 border border-red-100' :
@@ -426,13 +426,13 @@ const CustomerDetail = () => {
                                    <div className="flex items-center gap-4">
                                       <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
                                          ticket.status === 'Open' ? 'bg-red-50 text-red-600 border-red-100' :
-                                         ticket.status === 'In-Progress' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-green-50 text-green-600 border-green-100'
+                                         ticket.status === 'In-Progress' ? 'bg-primary-50 text-primary-600 border-primary-100' : 'bg-green-50 text-green-600 border-green-100'
                                       }`}>
                                          {ticket.status}
                                       </span>
                                       <button 
                                          onClick={() => navigate('/admin/support/tickets')} 
-                                         className="p-2 bg-white text-slate-350 rounded-lg hover:text-blue-500 hover:border-blue-500 transition-all border border-slate-100"
+                                         className="p-2 bg-white text-slate-350 rounded-lg hover:text-primary-500 hover:border-primary-500 transition-all border border-slate-100"
                                          title="Open Support Helpdesk"
                                       >
                                          <ExternalLink size={14} />

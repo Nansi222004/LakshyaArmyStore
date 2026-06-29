@@ -132,9 +132,9 @@ export default function SavedAddressesPage() {
       <div className="bg-[#fff4f2] px-4 py-3 sticky top-0 z-50 shadow-sm flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-white/50 rounded-full transition-colors cursor-pointer">
-            <ArrowLeft className="w-5 h-5 text-[#02006c]" />
+            <ArrowLeft className="w-5 h-5 text-[#2F3E16]" />
           </button>
-          <h1 className="text-[17px] font-bold text-[#02006c]">Saved Addresses</h1>
+          <h1 className="text-[17px] font-bold text-[#2F3E16]">Saved Addresses</h1>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export default function SavedAddressesPage() {
         <div className="px-4 py-3 flex justify-end">
           <button
             onClick={openAddModal}
-            className="flex items-center gap-1 text-[14px] font-bold text-[#ee4923] hover:text-orange-600 cursor-pointer transition-colors"
+            className="flex items-center gap-1 text-[14px] font-bold text-[#4B5320] hover:text-primary-600 cursor-pointer transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add New
@@ -159,7 +159,7 @@ export default function SavedAddressesPage() {
           <p className="text-[13px] text-slate-400">Sign in to view and manage your saved addresses.</p>
           <button
             onClick={() => navigate('/login')}
-            className="mt-5 bg-[#02006c] text-white font-bold text-[13px] px-6 py-2.5 rounded-lg hover:bg-[#02006c]/90 transition-all shadow-md active:scale-[0.98]"
+            className="mt-5 bg-[#2F3E16] text-white font-bold text-[13px] px-6 py-2.5 rounded-lg hover:bg-[#2F3E16]/90 transition-all shadow-md active:scale-[0.98]"
           >
             Go to Login
           </button>
@@ -167,7 +167,7 @@ export default function SavedAddressesPage() {
       ) : addressesLoading ? (
         /* Loading state */
         <div className="flex flex-col items-center justify-center py-24 gap-3">
-          <Loader2 className="w-8 h-8 text-[#ee4923] animate-spin" />
+          <Loader2 className="w-8 h-8 text-[#4B5320] animate-spin" />
           <p className="text-[13px] text-slate-400 font-medium">Loading addresses...</p>
         </div>
       ) : addresses.length === 0 ? (
@@ -180,7 +180,7 @@ export default function SavedAddressesPage() {
           <p className="text-[13px] text-slate-400 mb-5">Add your delivery addresses for faster checkout.</p>
           <button
             onClick={openAddModal}
-            className="flex items-center gap-2 bg-[#ee4923] text-white font-bold text-[13px] px-6 py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-md active:scale-[0.98]"
+            className="flex items-center gap-2 bg-[#4B5320] text-white font-bold text-[13px] px-6 py-2.5 rounded-lg hover:bg-primary-600 transition-all shadow-md active:scale-[0.98]"
           >
             <Plus className="w-4 h-4" />
             Add Address
@@ -249,7 +249,7 @@ export default function SavedAddressesPage() {
                   )}
                   <button
                     onClick={() => openEditModal(addr)}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-[13px] font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#02006c] transition-colors cursor-pointer"
+                    className="w-full flex items-center gap-2 px-4 py-2 text-[13px] font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#2F3E16] transition-colors cursor-pointer"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                     Edit
@@ -282,7 +282,7 @@ export default function SavedAddressesPage() {
           <div className="bg-white rounded-t-[32px] sm:rounded-[24px] w-full max-w-md shadow-2xl animate-slide-up sm:animate-fade-in overflow-hidden">
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h3 className="text-lg font-black text-[#02006c]">
+              <h3 className="text-lg font-black text-[#2F3E16]">
                 {editingAddress ? 'Edit Address' : 'Add New Address'}
               </h3>
               <button
@@ -302,7 +302,7 @@ export default function SavedAddressesPage() {
                   type="text"
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all"
                   placeholder="Enter full name"
                 />
               </div>
@@ -314,7 +314,7 @@ export default function SavedAddressesPage() {
                   type="tel"
                   value={formData.phone}
                   onChange={e => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all"
                   placeholder="10-digit mobile number"
                   maxLength={10}
                 />
@@ -327,7 +327,7 @@ export default function SavedAddressesPage() {
                   value={formData.address}
                   onChange={e => setFormData({ ...formData, address: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all resize-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all resize-none"
                   placeholder="House No, Building, Street, City"
                 />
               </div>
@@ -339,7 +339,7 @@ export default function SavedAddressesPage() {
                   type="text"
                   value={formData.pincode}
                   onChange={e => setFormData({ ...formData, pincode: e.target.value.replace(/\D/g, '').slice(0, 6) })}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#ee4923] focus:ring-1 focus:ring-[#ee4923]/20 transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[13px] focus:outline-none focus:border-[#4B5320] focus:ring-1 focus:ring-[#4B5320]/20 transition-all"
                   placeholder="6-digit pincode"
                   maxLength={6}
                 />
@@ -357,7 +357,7 @@ export default function SavedAddressesPage() {
                         value={type}
                         checked={formData.type === type}
                         onChange={e => setFormData({ ...formData, type: e.target.value })}
-                        className="w-4 h-4 text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
+                        className="w-4 h-4 text-[#4B5320] border-slate-300 focus:ring-[#4B5320]"
                       />
                       <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-medium">
                         {type === 'Location' ? 'Other' : type}
@@ -371,7 +371,7 @@ export default function SavedAddressesPage() {
                     type="checkbox"
                     checked={formData.isDefault}
                     onChange={e => setFormData({ ...formData, isDefault: e.target.checked })}
-                    className="w-4 h-4 rounded text-[#ee4923] border-slate-300 focus:ring-[#ee4923]"
+                    className="w-4 h-4 rounded text-[#4B5320] border-slate-300 focus:ring-[#4B5320]"
                   />
                   <span className="text-[13px] text-slate-700 group-hover:text-slate-900 font-bold">
                     Set as default address
@@ -385,7 +385,7 @@ export default function SavedAddressesPage() {
               <button
                 onClick={handleSaveAddress}
                 disabled={saving}
-                className="w-full bg-[#02006c] hover:bg-[#02006c]/90 text-white font-bold py-3.5 rounded-lg active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full bg-[#2F3E16] hover:bg-[#2F3E16]/90 text-white font-bold py-3.5 rounded-lg active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {saving ? (
                   <>

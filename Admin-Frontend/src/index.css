@@ -1,23 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold: #e2a750;
-  --color-gold-hover: #c99344;
+  --color-primary-50: #f4f5f1;
+  --color-primary-100: #e3e6dc;
+  --color-primary-200: #c8cebc;
+  --color-primary-300: #a3ae8e;
+  --color-primary-400: #7d8b63;
+  --color-primary-500: #4B5320;
+  --color-primary-600: #3b421a;
+  --color-primary-700: #2d3314;
+  --color-primary-800: #21260e;
+  --color-primary-900: #191c0b;
+
+  --color-secondary-50: #faf9f6;
+  --color-secondary-100: #f2efe7;
+  --color-secondary-200: #e1d9c3;
+  --color-secondary-300: #cfbf97;
+  --color-secondary-400: #C2B280;
+  --color-secondary-500: #a59364;
+
+  --color-accent-500: #D4AF37;
+  
+  --color-gold: #D4AF37;
+  --color-gold-hover: #b8962c;
   --color-black: #000000;
   --color-black-soft: #121212;
-  --color-bg-luxury: #F4F4F4;
-
-  --color-blue-50: #fff5f2;
-  --color-blue-100: #ffe5de;
-  --color-blue-200: #ffcabd;
-  --color-blue-300: #ffa592;
-  --color-blue-400: #ff876f;
-  --color-blue-500: #ee4923;
-  --color-blue-600: #e64c33;
-  --color-blue-700: #b83420;
-  --color-blue-800: #932918;
-  --color-blue-900: #6f1f12;
-  --color-blue-950: #4a140b;
+  --color-bg-luxury: #F8F8F5;
 }
 
 /* ── Global heading style ── */
@@ -64,7 +72,8 @@
   }
 
   body {
-    @apply bg-gray-50 text-blue-950 transition-colors duration-300;
+    @apply bg-gray-50 text-primary-950 transition-colors duration-300;
+    background-color: #F8F8F5 !important;
     font-family: 'Nunito', Arial, sans-serif;
     font-weight: 400;
     -webkit-overflow-scrolling: touch;

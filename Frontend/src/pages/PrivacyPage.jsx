@@ -37,8 +37,8 @@ const sections = [
   },
   {
     icon: ShieldCheck,
-    iconBg: 'bg-orange-50',
-    iconColor: 'text-[#ee4923]',
+    iconBg: 'bg-primary-50',
+    iconColor: 'text-[#4B5320]',
     title: 'Cookies & Tracking',
     content:
       'We use cookies and similar technologies to remember your preferences, keep you logged in, and analyse how our platform is used. You can control cookies through your browser settings, though disabling them may affect some features of the app.',
@@ -68,11 +68,11 @@ export default function PrivacyPage() {
       <div className="bg-white px-4 py-4 shadow-sm z-10 sticky top-0 flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
-          className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[#02006c] hover:bg-slate-100 active:scale-95 transition-all cursor-pointer shadow-sm flex-shrink-0"
+          className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[#2F3E16] hover:bg-slate-100 active:scale-95 transition-all cursor-pointer shadow-sm flex-shrink-0"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-[#02006c] text-[20px] font-black tracking-tight">Privacy Policy</h1>
+        <h1 className="text-[#2F3E16] text-[20px] font-black tracking-tight">Privacy Policy</h1>
       </div>
 
       <div className="p-5 flex-grow space-y-6">
@@ -80,7 +80,7 @@ export default function PrivacyPage() {
         {/* Intro Banner */}
         <div className="bg-gradient-to-br from-indigo-50 to-[#e8e8ff] rounded-2xl p-5 border border-indigo-100 shadow-sm relative overflow-hidden">
           <div className="relative z-10">
-            <h2 className="text-[#02006c] font-black text-lg mb-1">Your Privacy Matters</h2>
+            <h2 className="text-[#2F3E16] font-black text-lg mb-1">Your Privacy Matters</h2>
             <p className="text-slate-600 text-xs font-medium max-w-[80%]">
               We are committed to protecting your personal data and being transparent about how we use it.
             </p>
@@ -120,13 +120,13 @@ export default function PrivacyPage() {
                     </div>
 
                     {/* Title */}
-                    <span className={`flex-1 text-[13px] font-bold ${isOpen ? 'text-[#ee4923]' : 'text-[#02006c]'}`}>
+                    <span className={`flex-1 text-[13px] font-bold ${isOpen ? 'text-[#4B5320]' : 'text-[#2F3E16]'}`}>
                       {section.title}
                     </span>
 
                     <ChevronDown
                       className={`w-4 h-4 text-slate-400 flex-shrink-0 transition-transform duration-300 ${
-                        isOpen ? 'rotate-180 text-[#ee4923]' : ''
+                        isOpen ? 'rotate-180 text-[#4B5320]' : ''
                       }`}
                     />
                   </button>
@@ -149,14 +149,14 @@ export default function PrivacyPage() {
 
         {/* Contact Note */}
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex items-start gap-3">
-          <div className="w-9 h-9 bg-indigo-50 text-[#02006c] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+          <div className="w-9 h-9 bg-indigo-50 text-[#2F3E16] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
             <ShieldCheck className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-[13px] font-bold text-[#02006c] mb-0.5">Questions about privacy?</h4>
+            <h4 className="text-[13px] font-bold text-[#2F3E16] mb-0.5">Questions about privacy?</h4>
             <p className="text-[12px] text-slate-500 font-medium leading-snug">
               Reach out to us at{' '}
-              <a href="mailto:privacy@mynzo.com" className="text-[#ee4923] font-bold hover:underline">
+              <a href="mailto:privacy@mynzo.com" className="text-[#4B5320] font-bold hover:underline">
                 privacy@mynzo.com
               </a>{' '}
               and our team will get back to you within 30 days.

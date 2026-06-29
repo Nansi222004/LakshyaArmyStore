@@ -19,7 +19,7 @@ const DELIVERY_SERVICES = [
     bg: 'bg-orange-50',
     border: 'border-orange-100',
     badge: 'Most Popular',
-    badgeColor: 'bg-blue-500',
+    badgeColor: 'bg-primary-500',
     avgDelivery: '2-5 days',
     connected: true,
     apiKey: 'sr_live_••••••••••••3f8a',
@@ -51,9 +51,9 @@ const DELIVERY_SERVICES = [
     features: ['Air express', 'Doorstep delivery', 'Time-definite', 'Heavy shipments', 'Premium service'],
     pricing: 'Starting ₹45/500g',
     website: 'https://bluedart.com',
-    color: 'from-blue-600 to-indigo-600',
-    bg: 'bg-blue-50',
-    border: 'border-blue-100',
+    color: 'from-primary-600 to-indigo-600',
+    bg: 'bg-primary-50',
+    border: 'border-primary-100',
     badge: 'Premium',
     badgeColor: 'bg-indigo-500',
     avgDelivery: '1-2 days',
@@ -189,7 +189,7 @@ export default function ThirdPartyDelivery() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center"><Truck size={20} /></div>
+          <div className="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center"><Truck size={20} /></div>
           <div>
             <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Available</p>
             <h3 className="text-2xl font-black text-slate-900">{services.length}</h3>
@@ -205,7 +205,7 @@ export default function ThirdPartyDelivery() {
           </div>
         </div>
         <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center"><Globe size={20} /></div>
+          <div className="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center"><Globe size={20} /></div>
           <div>
             <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Coverage</p>
             <h3 className="text-2xl font-black text-slate-900">24K+</h3>
@@ -248,7 +248,7 @@ export default function ThirdPartyDelivery() {
               layout
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`bg-white rounded-2xl border ${service.connected ? 'border-blue-100 shadow-md shadow-blue-50' : 'border-slate-100 shadow-sm'} overflow-hidden flex flex-col`}
+              className={`bg-white rounded-2xl border ${service.connected ? 'border-primary-100 shadow-md shadow-primary-50' : 'border-slate-100 shadow-sm'} overflow-hidden flex flex-col`}
             >
               {/* Card Header */}
               <div className={`p-5 ${service.bg} border-b ${service.border} flex items-center justify-between`}>
@@ -265,7 +265,7 @@ export default function ThirdPartyDelivery() {
                 {service.connected && (
                   <button onClick={() => toggleService(service.id)}>
                     {service.status === 'Active'
-                      ? <ToggleRight size={28} className="text-blue-500" />
+                      ? <ToggleRight size={28} className="text-primary-500" />
                       : <ToggleLeft size={28} className="text-slate-300" />
                     }
                   </button>
@@ -290,7 +290,7 @@ export default function ThirdPartyDelivery() {
                     href={service.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-[10px] font-black text-blue-500 hover:underline"
+                    className="flex items-center gap-1 text-[10px] font-black text-primary-500 hover:underline"
                   >
                     Website <ExternalLink size={10} />
                   </a>
@@ -326,7 +326,7 @@ export default function ThirdPartyDelivery() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setSelectedService(service)}
-                      className="flex-1 py-2.5 bg-blue-50 text-blue-600 rounded-xl text-xs font-black border border-blue-100 hover:bg-blue-100 transition-all flex items-center justify-center gap-1"
+                      className="flex-1 py-2.5 bg-primary-50 text-primary-600 rounded-xl text-xs font-black border border-primary-100 hover:bg-primary-100 transition-all flex items-center justify-center gap-1"
                     >
                       <Settings size={13} /> Configure
                     </button>
@@ -340,7 +340,7 @@ export default function ThirdPartyDelivery() {
                 ) : (
                   <button
                     onClick={() => handleConnect(service)}
-                    className="w-full py-3 bg-blue-500 text-white rounded-xl text-xs font-black shadow-lg shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-primary-500 text-white rounded-xl text-xs font-black shadow-lg shadow-primary-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
                   >
                     <Plus size={14} />
                     Connect {service.name}
@@ -364,7 +364,7 @@ export default function ThirdPartyDelivery() {
                 <select
                   value={config.defaultProvider}
                   onChange={e => setConfig(p => ({ ...p, defaultProvider: e.target.value }))}
-                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-blue-50 transition-all"
+                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-primary-50 transition-all"
                 >
                   {services.filter(s => s.connected).map(s => (
                     <option key={s.id} value={s.id}>{s.name}</option>
@@ -378,7 +378,7 @@ export default function ThirdPartyDelivery() {
                   type="number"
                   value={config.freeShippingAbove}
                   onChange={e => setConfig(p => ({ ...p, freeShippingAbove: Number(e.target.value) }))}
-                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-blue-50 transition-all"
+                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-primary-50 transition-all"
                 />
               </div>
 
@@ -388,7 +388,7 @@ export default function ThirdPartyDelivery() {
                   type="number"
                   value={config.defaultWeight}
                   onChange={e => setConfig(p => ({ ...p, defaultWeight: Number(e.target.value) }))}
-                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-blue-50 transition-all"
+                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-primary-50 transition-all"
                 />
               </div>
 
@@ -398,7 +398,7 @@ export default function ThirdPartyDelivery() {
                   type="number"
                   value={config.packagingCharge}
                   onChange={e => setConfig(p => ({ ...p, packagingCharge: Number(e.target.value) }))}
-                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-blue-50 transition-all"
+                  className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-primary-50 transition-all"
                 />
               </div>
 
@@ -410,7 +410,7 @@ export default function ThirdPartyDelivery() {
                 </div>
                 <button onClick={() => setConfig(p => ({ ...p, cod: !p.cod }))}>
                   {config.cod
-                    ? <ToggleRight size={30} className="text-blue-500" />
+                    ? <ToggleRight size={30} className="text-primary-500" />
                     : <ToggleLeft size={30} className="text-slate-300" />
                   }
                 </button>
@@ -423,7 +423,7 @@ export default function ThirdPartyDelivery() {
                     type="number"
                     value={config.codCharge}
                     onChange={e => setConfig(p => ({ ...p, codCharge: Number(e.target.value) }))}
-                    className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-blue-50 transition-all"
+                    className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 px-4 text-sm font-bold outline-none focus:ring-4 focus:ring-primary-50 transition-all"
                   />
                 </div>
               )}
@@ -436,14 +436,14 @@ export default function ThirdPartyDelivery() {
                 </div>
                 <button onClick={() => setConfig(p => ({ ...p, autoSelectCheapest: !p.autoSelectCheapest }))}>
                   {config.autoSelectCheapest
-                    ? <ToggleRight size={30} className="text-blue-500" />
+                    ? <ToggleRight size={30} className="text-primary-500" />
                     : <ToggleLeft size={30} className="text-slate-300" />
                   }
                 </button>
               </div>
             </div>
 
-            <button className="w-full py-4 bg-blue-500 text-white rounded-xl text-sm font-black shadow-lg shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all">
+            <button className="w-full py-4 bg-primary-500 text-white rounded-xl text-sm font-black shadow-lg shadow-primary-100 hover:scale-[1.02] active:scale-95 transition-all">
               Save Shipping Settings
             </button>
           </div>
@@ -466,9 +466,9 @@ export default function ThirdPartyDelivery() {
               ))}
             </div>
 
-            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100 flex gap-3">
-              <AlertCircle size={18} className="text-blue-500 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-blue-700 font-medium leading-relaxed">
+            <div className="bg-primary-50 rounded-xl p-4 border border-primary-100 flex gap-3">
+              <AlertCircle size={18} className="text-primary-500 shrink-0 mt-0.5" />
+              <p className="text-[11px] text-primary-700 font-medium leading-relaxed">
                 When multiple carriers are connected, the system will automatically compare rates and pick the best carrier for each order based on pincode, weight, and delivery speed.
               </p>
             </div>
@@ -502,7 +502,7 @@ export default function ThirdPartyDelivery() {
                 </div>
                 <div className="text-right">
                   <p className="font-black text-slate-900 text-sm">{service.pricing}</p>
-                  {i === 0 && <span className="text-[9px] font-black text-blue-500 mt-0.5 block">Cheapest</span>}
+                  {i === 0 && <span className="text-[9px] font-black text-primary-500 mt-0.5 block">Cheapest</span>}
                 </div>
                 <ChevronRight size={16} className="text-slate-300" />
               </div>
@@ -542,7 +542,7 @@ export default function ThirdPartyDelivery() {
                     value={apiInput}
                     onChange={e => setApiInput(e.target.value)}
                     placeholder={`Enter your ${selectedService?.name} API key`}
-                    className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-5 text-sm font-bold outline-none focus:ring-4 focus:ring-blue-50 transition-all"
+                    className="mt-2 w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-5 text-sm font-bold outline-none focus:ring-4 focus:ring-primary-50 transition-all"
                   />
                 </div>
 
@@ -564,7 +564,7 @@ export default function ThirdPartyDelivery() {
                 <button
                   onClick={handleSaveConnection}
                   disabled={!apiInput.trim()}
-                  className="flex-[2] py-3.5 bg-blue-500 text-white rounded-xl text-sm font-black shadow-lg shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                  className="flex-[2] py-3.5 bg-primary-500 text-white rounded-xl text-sm font-black shadow-lg shadow-primary-100 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
                 >
                   Save & Connect
                 </button>
@@ -574,7 +574,7 @@ export default function ThirdPartyDelivery() {
                 href={selectedService?.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 text-xs font-black text-blue-500 hover:underline"
+                className="flex items-center justify-center gap-1.5 text-xs font-black text-primary-500 hover:underline"
               >
                 Get API Key from {selectedService?.name} <ExternalLink size={11} />
               </a>

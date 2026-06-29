@@ -23,13 +23,13 @@ export default function TicTacHome({ onStart, onClose, onViewTutorial }) {
       exit="exit"
     >
       {/* Background Decor */}
-      <div className="absolute top-[-20%] left-[-20%] w-96 h-96 bg-[#FF5A1F] rounded-full blur-[120px] opacity-10 pointer-events-none"></div>
+      <div className="absolute top-[-20%] left-[-20%] w-96 h-96 bg-[#D4AF37] rounded-full blur-[120px] opacity-10 pointer-events-none"></div>
       
       {/* Header */}
       <div className="flex items-center justify-between p-5 relative z-10">
         <button 
           onClick={onClose}
-          className="flex items-center gap-2 text-slate-800 hover:text-orange-500 transition-colors"
+          className="flex items-center gap-2 text-slate-800 hover:text-primary-500 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="font-bold text-sm tracking-wide">Game Zone</span>
@@ -40,7 +40,7 @@ export default function TicTacHome({ onStart, onClose, onViewTutorial }) {
       <div className="flex-1 flex flex-col items-center pt-8 px-6 pb-8 relative z-10 overflow-y-auto w-full no-scrollbar">
         <motion.div variants={itemVariants} className="text-center space-y-1 mb-8">
           <h1 className="text-4xl font-black text-slate-800 tracking-tighter uppercase">
-            TIC <span className="text-[#FF5A1F]">TAC</span> TOE
+            TIC <span className="text-[#D4AF37]">TAC</span> TOE
           </h1>
           <p className="text-slate-500 font-medium text-sm">Play. Win. Shop More!</p>
         </motion.div>
@@ -57,11 +57,11 @@ export default function TicTacHome({ onStart, onClose, onViewTutorial }) {
               <rect x="20" y="30" width="40" height="50" rx="4" fill="#071226" />
               <path d="M30 30 V20 C30 10, 50 10, 50 20 V30" fill="none" stroke="#071226" strokeWidth="4" />
               
-              <rect x="45" y="45" width="35" height="35" rx="4" fill="#FF5A1F" />
-              <path d="M55 45 V35 C55 25, 70 25, 70 35 V45" fill="none" stroke="#FF5A1F" strokeWidth="3" />
+              <rect x="45" y="45" width="35" height="35" rx="4" fill="#D4AF37" />
+              <path d="M55 45 V35 C55 25, 70 25, 70 35 V45" fill="none" stroke="#D4AF37" strokeWidth="3" />
               
               <circle cx="62" cy="62" r="8" fill="#FFF" />
-              <path d="M59 62 L65 62 M62 59 L62 65" stroke="#FF5A1F" strokeWidth="2" />
+              <path d="M59 62 L65 62 M62 59 L62 65" stroke="#D4AF37" strokeWidth="2" />
             </svg>
           </motion.div>
 
@@ -76,7 +76,7 @@ export default function TicTacHome({ onStart, onClose, onViewTutorial }) {
           <motion.div 
             animate={{ scale: [1, 1.2, 1], y: [10, -10, 10] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute right-[15%] top-[20%] text-[#FF5A1F]"
+            className="absolute right-[15%] top-[20%] text-[#D4AF37]"
           >
             <XIcon className="w-6 h-6" strokeWidth={4} />
           </motion.div>
@@ -100,7 +100,7 @@ export default function TicTacHome({ onStart, onClose, onViewTutorial }) {
             </div>
             <h3 className="font-black text-slate-800 text-sm mb-1 uppercase tracking-wide">VS Computer</h3>
             <p className="text-[10px] text-slate-500 font-medium mb-4">Play against AI</p>
-            <button className="w-full bg-[#FF5A1F] text-white font-black text-xs py-2.5 rounded-full shadow-[0_0_15px_rgba(255,90,31,0.3)] group-hover:scale-105 transition-transform">
+            <button className="w-full bg-[#D4AF37] text-white font-black text-xs py-2.5 rounded-full shadow-[0_0_15px_rgba(255,90,31,0.3)] group-hover:scale-105 transition-transform">
               PLAY
             </button>
           </div>
@@ -109,12 +109,12 @@ export default function TicTacHome({ onStart, onClose, onViewTutorial }) {
             onClick={() => onStart('friend')}
             className="flex-1 bg-white border border-slate-100 rounded-3xl p-5 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
           >
-            <div className="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-3 text-[#FF5A1F] group-hover:bg-[#FF5A1F] group-hover:text-white transition-colors">
+            <div className="w-14 h-14 bg-primary-50 rounded-full flex items-center justify-center mb-3 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-white transition-colors">
               <Users className="w-6 h-6" />
             </div>
             <h3 className="font-black text-slate-800 text-sm mb-1 uppercase tracking-wide">VS Friend</h3>
             <p className="text-[10px] text-slate-500 font-medium mb-4">Challenge a friend</p>
-            <button className="w-full bg-[#FF5A1F] text-white font-black text-xs py-2.5 rounded-full shadow-[0_0_15px_rgba(255,90,31,0.3)] group-hover:scale-105 transition-transform">
+            <button className="w-full bg-[#D4AF37] text-white font-black text-xs py-2.5 rounded-full shadow-[0_0_15px_rgba(255,90,31,0.3)] group-hover:scale-105 transition-transform">
               PLAY
             </button>
           </div>
@@ -127,7 +127,7 @@ export default function TicTacHome({ onStart, onClose, onViewTutorial }) {
             className="w-full bg-[#071226] text-white rounded-2xl p-4 flex items-center justify-between shadow-lg cursor-pointer hover:bg-slate-800 transition-colors"
           >
             <div className="flex items-center gap-3">
-              <Gift className="w-8 h-8 text-[#FF5A1F]" />
+              <Gift className="w-8 h-8 text-[#D4AF37]" />
               <div className="text-left">
                 <h4 className="font-black text-sm uppercase tracking-wider">How To Play</h4>
                 <p className="text-[10px] text-slate-400 font-medium">Win games to earn rewards!</p>

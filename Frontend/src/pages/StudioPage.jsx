@@ -432,7 +432,7 @@ export default function StudioPage() {
           <ArrowLeft className="w-6 h-6 text-white" />
         </button>
         
-        <div className="bg-[#ee4923] text-white px-2 py-1 rounded text-[10px] font-black tracking-wider shadow-lg flex items-center gap-1">
+        <div className="bg-[#4B5320] text-white px-2 py-1 rounded text-[10px] font-black tracking-wider shadow-lg flex items-center gap-1">
           <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
           LIVE
         </div>
@@ -536,11 +536,11 @@ export default function StudioPage() {
                         <span className="text-[11px] font-bold truncate text-white drop-shadow-md">{post.product.name}</span>
                         <div className="flex items-center gap-1.5 mt-0.5">
                           <span className="text-xs font-black text-white drop-shadow-md">₹{post.product.price}</span>
-                          <span className="text-[9px] text-[#ee4923] font-black bg-white/95 px-1 rounded shrink-0">{post.product.discount}</span>
+                          <span className="text-[9px] text-[#4B5320] font-black bg-white/95 px-1 rounded shrink-0">{post.product.discount}</span>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-[#ee4923] text-white text-[9px] font-black px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 ml-1.5 hover:bg-orange-600 transition-colors">
+                    <div className="bg-[#4B5320] text-white text-[9px] font-black px-2.5 py-1.5 rounded-lg whitespace-nowrap shrink-0 ml-1.5 hover:bg-primary-600 transition-colors">
                       Shop Now
                     </div>
                   </div>
@@ -620,7 +620,7 @@ export default function StudioPage() {
                       <div className="flex gap-2 flex-shrink-0">
                         <button 
                           onClick={() => handleEditComment(comment)}
-                          className="p-1.5 hover:bg-slate-50 text-slate-400 hover:text-indigo-600 rounded transition-colors"
+                          className="p-1.5 hover:bg-slate-50 text-slate-400 hover:text-[#D4AF37] rounded transition-colors"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
@@ -653,12 +653,12 @@ export default function StudioPage() {
                 onChange={(e) => setNewComment(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && submitComment()}
                 placeholder="Add comment..." 
-                className="flex-1 bg-white text-slate-800 text-[13px] font-bold rounded-xl px-4 py-2.5 border border-slate-200 outline-none focus:ring-2 focus:ring-[#ee4923]/30"
+                className="flex-1 bg-white text-slate-800 text-[13px] font-bold rounded-xl px-4 py-2.5 border border-slate-200 outline-none focus:ring-2 focus:ring-[#4B5320]/30"
               />
               <button 
                 onClick={submitComment}
                 disabled={!newComment.trim()}
-                className="bg-[#ee4923] text-white px-4 py-2.5 rounded-xl disabled:opacity-50 text-xs font-bold uppercase tracking-wider"
+                className="bg-[#4B5320] text-white px-4 py-2.5 rounded-xl disabled:opacity-50 text-xs font-bold uppercase tracking-wider"
               >
                 Send
               </button>

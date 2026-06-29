@@ -12,7 +12,7 @@ import OptimizedImage from '../../../components/common/OptimizedImage';
 
 const SectionHeader = ({ title, icon: Icon, count }) => (
   <div className="flex items-center gap-3 mb-4">
-    <div className="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center shadow-inner">
+    <div className="w-10 h-10 bg-primary-50 text-primary-500 rounded-xl flex items-center justify-center shadow-inner">
       <Icon size={20} />
     </div>
     <div>
@@ -103,7 +103,7 @@ const HomeSectionsManager = () => {
             {getTitle()}
           </h1>
           <p className="text-slate-500 font-medium mt-1 font-raleway">
-            Manage items for the <span className="font-bold text-blue-500">{getTitle()}</span> section on the home page.
+            Manage items for the <span className="font-bold text-primary-500">{getTitle()}</span> section on the home page.
           </p>
         </div>
         <div className="flex gap-3">
@@ -116,7 +116,7 @@ const HomeSectionsManager = () => {
           </button>
           <button 
             onClick={handleSaveAll}
-            className={`flex items-center gap-2 px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-blue-600 text-white shadow-blue-100 hover:scale-105'}`}
+            className={`flex items-center gap-2 px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg ${saved ? 'bg-green-500 text-white' : 'bg-primary-600 text-white shadow-primary-100 hover:scale-105'}`}
           >
             {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
             {saved ? 'Changes Published!' : 'Save & Publish'}
@@ -158,7 +158,7 @@ const HomeSectionsManager = () => {
                       </p>
                     </div>
                     <div className="flex gap-2">
-                       <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
+                       <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all">
                           <Edit2 size={14} />
                        </button>
                        <button onClick={() => removeItem(index)} className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">
@@ -172,28 +172,28 @@ const HomeSectionsManager = () => {
               {!isAdding ? (
                 <button 
                   onClick={() => setIsAdding(true)}
-                  className="w-full py-4 border-2 border-dashed border-slate-100 rounded-2xl flex items-center justify-center gap-2 text-[10px] font-black text-slate-300 uppercase tracking-widest hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50/20 transition-all"
+                  className="w-full py-4 border-2 border-dashed border-slate-100 rounded-2xl flex items-center justify-center gap-2 text-[10px] font-black text-slate-300 uppercase tracking-widest hover:border-primary-500 hover:text-primary-500 hover:bg-primary-50/20 transition-all"
                 >
                    <Plus size={16} /> Add New {section?.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} Item
                 </button>
               ) : (
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 space-y-4">
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-primary-50/50 border border-primary-100 rounded-2xl p-6 space-y-4">
                    <div className="grid grid-cols-2 gap-4">
                       {(activeView === 'stillLooking' || activeView === 'keepShopping') && (
                         <div className="col-span-2">
                            <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Card Label</label>
-                           <input value={formData.label} onChange={e => setFormData({...formData, label: e.target.value})} type="text" placeholder="e.g. Co-ords" className="w-full bg-white border border-blue-100 rounded-xl py-3 px-4 text-xs font-bold outline-none focus:ring-2 focus:ring-blue-200" />
+                           <input value={formData.label} onChange={e => setFormData({...formData, label: e.target.value})} type="text" placeholder="e.g. Co-ords" className="w-full bg-white border border-primary-100 rounded-xl py-3 px-4 text-xs font-bold outline-none focus:ring-2 focus:ring-primary-200" />
                         </div>
                       )}
                       {(activeView === 'topSelection' || activeView === 'bestQuality') && (
                         <>
                           <div>
                              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Product Name</label>
-                             <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" placeholder="e.g. Face Wash" className="w-full bg-white border border-blue-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
+                             <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" placeholder="e.g. Face Wash" className="w-full bg-white border border-primary-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
                           </div>
                           <div>
                              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Tag</label>
-                             <input value={formData.tag} onChange={e => setFormData({...formData, tag: e.target.value})} type="text" placeholder="e.g. Best Picks" className="w-full bg-white border border-blue-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
+                             <input value={formData.tag} onChange={e => setFormData({...formData, tag: e.target.value})} type="text" placeholder="e.g. Best Picks" className="w-full bg-white border border-primary-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
                           </div>
                         </>
                       )}
@@ -201,25 +201,25 @@ const HomeSectionsManager = () => {
                         <>
                           <div>
                              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Main Title</label>
-                             <input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} type="text" placeholder="e.g. 50% Off" className="w-full bg-white border border-blue-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
+                             <input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} type="text" placeholder="e.g. 50% Off" className="w-full bg-white border border-primary-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
                           </div>
                           <div>
                              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Subtitle</label>
-                             <input value={formData.sub} onChange={e => setFormData({...formData, sub: e.target.value})} type="text" placeholder="e.g. Limited Deal" className="w-full bg-white border border-blue-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
+                             <input value={formData.sub} onChange={e => setFormData({...formData, sub: e.target.value})} type="text" placeholder="e.g. Limited Deal" className="w-full bg-white border border-primary-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
                           </div>
                         </>
                       )}
                       <div className="col-span-2">
                          <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Image URL</label>
-                         <input value={formData.img} onChange={e => setFormData({...formData, img: e.target.value})} type="text" placeholder="https://..." className="w-full bg-white border border-blue-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
+                         <input value={formData.img} onChange={e => setFormData({...formData, img: e.target.value})} type="text" placeholder="https://..." className="w-full bg-white border border-primary-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
                       </div>
                       <div className="col-span-2">
                          <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Link Destination</label>
-                         <input value={formData.link} onChange={e => setFormData({...formData, link: e.target.value})} type="text" placeholder="/vendor/product-detail" className="w-full bg-white border border-blue-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
+                         <input value={formData.link} onChange={e => setFormData({...formData, link: e.target.value})} type="text" placeholder="/vendor/product-detail" className="w-full bg-white border border-primary-100 rounded-xl py-3 px-4 text-xs font-bold outline-none" />
                       </div>
                    </div>
                    <div className="flex gap-2">
-                      <button onClick={addItem} className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100">Add Item</button>
+                      <button onClick={addItem} className="px-6 py-2.5 bg-primary-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100">Add Item</button>
                       <button onClick={() => setIsAdding(false)} className="px-6 py-2.5 bg-white text-slate-400 rounded-xl text-[10px] font-black uppercase tracking-widest border border-slate-100">Cancel</button>
                    </div>
                 </motion.div>
@@ -236,7 +236,7 @@ const HomeSectionsManager = () => {
                  <div className="flex justify-between items-center px-1">
                     <h4 className="text-lg font-black font-montserrat uppercase tracking-tight">App Preview</h4>
                     <div className="flex gap-1.5">
-                       <Smartphone size={14} className="text-blue-400" />
+                       <Smartphone size={14} className="text-primary-400" />
                        <Monitor size={14} className="opacity-20" />
                     </div>
                  </div>
@@ -301,12 +301,12 @@ const HomeSectionsManager = () => {
               </div>
            </div>
 
-           <div className="bg-blue-50 border border-blue-100 rounded-[32px] p-8 space-y-4">
+           <div className="bg-primary-50 border border-primary-100 rounded-[32px] p-8 space-y-4">
               <div className="flex items-center gap-3">
-                 <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                 <div className="p-2 bg-primary-100 text-primary-600 rounded-lg">
                     <Info size={18} />
                  </div>
-                 <h4 className="text-xs font-black text-blue-900 uppercase tracking-widest">Management Guide</h4>
+                 <h4 className="text-xs font-black text-primary-900 uppercase tracking-widest">Management Guide</h4>
               </div>
               <ul className="space-y-3">
                  {[
@@ -315,9 +315,9 @@ const HomeSectionsManager = () => {
                    'Keep labels short (1-2 words) for best mobile rendering.',
                    'Links should point to internal routes like **/vendor/products**.'
                  ].map((text, i) => (
-                    <li key={i} className="flex gap-3 text-[11px] text-blue-600/70 font-medium leading-relaxed">
-                       <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
-                       <span dangerouslySetInnerHTML={{ __html: text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-900">$1</strong>') }} />
+                    <li key={i} className="flex gap-3 text-[11px] text-primary-600/70 font-medium leading-relaxed">
+                       <div className="w-1.5 h-1.5 rounded-full bg-primary-400 mt-1.5 flex-shrink-0" />
+                       <span dangerouslySetInnerHTML={{ __html: text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-primary-900">$1</strong>') }} />
                     </li>
                  ))}
               </ul>

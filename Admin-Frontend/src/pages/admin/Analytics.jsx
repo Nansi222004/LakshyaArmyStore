@@ -215,11 +215,11 @@ const Analytics = () => {
   // Helper to color code retention cell percentages
   const getCohortColor = (pct) => {
     if (pct === 0) return 'bg-slate-50 text-slate-300';
-    if (pct >= 80) return 'bg-blue-600 text-white';
-    if (pct >= 60) return 'bg-blue-500 text-white';
-    if (pct >= 40) return 'bg-blue-400 text-white';
-    if (pct >= 20) return 'bg-blue-200 text-blue-900';
-    return 'bg-blue-100 text-blue-900';
+    if (pct >= 80) return 'bg-primary-600 text-white';
+    if (pct >= 60) return 'bg-primary-500 text-white';
+    if (pct >= 40) return 'bg-primary-400 text-white';
+    if (pct >= 20) return 'bg-primary-200 text-primary-900';
+    return 'bg-primary-100 text-primary-900';
   };
 
   return (
@@ -241,7 +241,7 @@ const Analytics = () => {
           </button>
           <button 
             onClick={handleExport}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Download size={14} />
             Export CSV
@@ -272,7 +272,7 @@ const Analytics = () => {
                  <select 
                    value={dauRange}
                    onChange={(e) => setDauRange(e.target.value)}
-                   className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs font-black uppercase tracking-widest outline-none text-slate-600 focus:ring-2 focus:ring-blue-500/20"
+                   className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs font-black uppercase tracking-widest outline-none text-slate-600 focus:ring-2 focus:ring-primary-500/20"
                  >
                    <option value="today">Today (Hourly)</option>
                    <option value="week">This Week (7 Days)</option>
@@ -334,7 +334,7 @@ const Analytics = () => {
                      <Tooltip 
                         contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 5px 10px rgba(0,0,0,0.05)', fontWeight: 'bold'}}
                      />
-                     <Bar dataKey="count" fill="#ee4923" radius={[0, 6, 6, 0]} barSize={22}>
+                     <Bar dataKey="count" fill="#4B5320" radius={[0, 6, 6, 0]} barSize={22}>
                         {renderFunnelData.map((entry, index) => (
                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
@@ -443,8 +443,8 @@ const Analytics = () => {
                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block leading-none">Total Plays</span>
                     <span className="text-lg font-black text-slate-800 font-roboto mt-1 block leading-none">{games?.totalPlays || 0}</span>
                  </div>
-                 <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-100/50 text-center">
-                    <Users className="w-6 h-6 text-blue-500 mx-auto mb-2" />
+                 <div className="p-4 bg-primary-50/50 rounded-2xl border border-primary-100/50 text-center">
+                    <Users className="w-6 h-6 text-primary-500 mx-auto mb-2" />
                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block leading-none">Unique Players</span>
                     <span className="text-lg font-black text-slate-800 font-roboto mt-1 block leading-none">{games?.uniqueUsers || 0}</span>
                  </div>
@@ -516,7 +516,7 @@ const Analytics = () => {
                         </div>
                      </div>
                      <div className="text-right">
-                        <div className="flex items-center gap-1 text-blue-500 justify-end">
+                        <div className="flex items-center gap-1 text-primary-500 justify-end">
                            <Eye size={12} />
                            <span className="text-xs font-black font-roboto leading-none">{prod.views}</span>
                         </div>

@@ -25,10 +25,10 @@ const BannerForm = ({
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -10 }}
-    className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 space-y-3 mb-4"
+    className="bg-primary-50/60 border border-primary-100 rounded-xl p-4 space-y-3 mb-4"
   >
-    <div className="flex justify-between items-center border-b border-blue-100 pb-2">
-      <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{label}</p>
+    <div className="flex justify-between items-center border-b border-primary-100 pb-2">
+      <p className="text-[10px] font-black text-primary-500 uppercase tracking-widest">{label}</p>
     </div>
     <div className="grid grid-cols-2 gap-3">
       <div>
@@ -37,7 +37,7 @@ const BannerForm = ({
           value={formData.title}
           onChange={e => setFormData(p => ({ ...p, title: e.target.value }))}
           placeholder="e.g. Summer Sale"
-          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-primary-200 bg-white"
         />
       </div>
       <div>
@@ -46,7 +46,7 @@ const BannerForm = ({
           value={formData.subtitle}
           onChange={e => setFormData(p => ({ ...p, subtitle: e.target.value }))}
           placeholder="e.g. Up to 70% Off"
-          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-blue-200 bg-white"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-[12px] font-bold outline-none focus:ring-2 focus:ring-primary-200 bg-white"
         />
       </div>
       <div className="col-span-2">
@@ -91,14 +91,14 @@ const BannerForm = ({
             type="checkbox"
             checked={formData.active}
             onChange={e => setFormData(p => ({ ...p, active: e.target.checked }))}
-            className="accent-blue-500 w-4 h-4"
+            className="accent-primary-500 w-4 h-4"
           />
           <span className="text-[11px] font-bold text-slate-600">Active on publish</span>
         </label>
       </div>
     </div>
     <div className="flex gap-2">
-      <button onClick={onSave} className="px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+      <button onClick={onSave} className="px-4 py-2 bg-primary-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
         <Save size={12} /> Save Banner
       </button>
       <button onClick={onCancel} className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-1.5">
@@ -315,7 +315,7 @@ const BannerManager = () => {
         <div className="flex gap-2">
           <button
             onClick={() => { setIsAdding(true); setEditingId(null); setFormData(EMPTY_BANNER); setImagePreview(''); setImageFile(null); }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 bg-primary-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Plus size={13} /> Add Banner
           </button>
@@ -402,7 +402,7 @@ const BannerManager = () => {
                         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                       />
                     </button>
-                    <button onClick={() => handleEdit(banner)} className="p-2 bg-slate-50 text-slate-600 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
+                    <button onClick={() => handleEdit(banner)} className="p-2 bg-slate-50 text-slate-600 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all">
                       <Edit2 size={15} />
                     </button>
                     <button onClick={() => handleDelete(banner.id)} className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">
@@ -419,7 +419,7 @@ const BannerManager = () => {
           <div className="bg-white border-2 border-dashed border-slate-100 rounded-xl py-16 flex flex-col items-center gap-3 text-slate-300">
             <ImageIcon size={36} />
             <p className="text-[11px] font-black uppercase tracking-widest">No banners created yet</p>
-            <button onClick={() => { setIsAdding(true); setFormData(EMPTY_BANNER); setImagePreview(''); setImageFile(null); }} className="px-4 py-2 bg-blue-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all flex items-center gap-1.5">
+            <button onClick={() => { setIsAdding(true); setFormData(EMPTY_BANNER); setImagePreview(''); setImageFile(null); }} className="px-4 py-2 bg-primary-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all flex items-center gap-1.5">
               <Plus size={12} /> Add First Banner
             </button>
           </div>
@@ -427,11 +427,11 @@ const BannerManager = () => {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
-        <ImageIcon size={18} className="text-blue-400 mt-0.5 flex-shrink-0" />
+      <div className="bg-primary-50 border border-primary-100 rounded-xl p-4 flex items-start gap-3">
+        <ImageIcon size={18} className="text-primary-400 mt-0.5 flex-shrink-0" />
         <div>
-          <p className="text-[11px] font-black text-blue-600 uppercase tracking-widest">How it works</p>
-          <p className="text-[11px] text-blue-400 font-medium mt-1 leading-relaxed">
+          <p className="text-[11px] font-black text-primary-600 uppercase tracking-widest">How it works</p>
+          <p className="text-[11px] text-primary-400 font-medium mt-1 leading-relaxed">
             Banners are shown in the carousel on the <strong>user home page</strong>. Make changes in draft and click <strong>Publish</strong> to save changes live to the database.
           </p>
         </div>

@@ -127,7 +127,7 @@ const Tickets = () => {
   const StatusBadge = ({ status }) => {
     const styles = {
       'Open': 'bg-red-50 text-red-600 border-red-100',
-      'In-Progress': 'bg-blue-50 text-blue-600 border-blue-100',
+      'In-Progress': 'bg-primary-50 text-primary-600 border-primary-100',
       'Closed': 'bg-green-50 text-green-600 border-green-100',
     };
     return (
@@ -151,7 +151,7 @@ const Tickets = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
           { label: 'Unassigned/Open', value: openCount.toString().padStart(2, '0'), icon: Inbox, color: 'text-red-500', bg: 'bg-red-50' },
-          { label: 'In Progress', value: progressCount.toString().padStart(2, '0'), icon: Clock, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'In Progress', value: progressCount.toString().padStart(2, '0'), icon: Clock, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Resolved Tickets', value: closedCount.toString().padStart(2, '0'), icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50' },
           { label: 'Total Tickets', value: tickets.length.toString().padStart(2, '0'), icon: MessageSquare, color: 'text-indigo-500', bg: 'bg-indigo-50' },
         ].map((stat, i) => (
@@ -203,7 +203,7 @@ const Tickets = () => {
           <div className="flex-1 overflow-y-auto no-scrollbar divide-y divide-slate-50">
             {loading ? (
               <div className="flex flex-col items-center justify-center h-full text-slate-350 space-y-2">
-                <Clock className="w-8 h-8 animate-spin text-blue-500" />
+                <Clock className="w-8 h-8 animate-spin text-primary-500" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Loading tickets...</span>
               </div>
             ) : filteredTickets.length > 0 ? (
@@ -213,12 +213,12 @@ const Tickets = () => {
                   onClick={() => setSelectedTicket(ticket)}
                   className={`p-5 cursor-pointer transition-all border-l-4 ${
                     selectedTicket && selectedTicket._id === ticket._id 
-                      ? 'bg-blue-50/40 border-blue-600' 
+                      ? 'bg-primary-50/40 border-primary-600' 
                       : 'border-transparent hover:bg-slate-50/50'
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-[9px] font-black text-blue-600 font-roboto">{ticket.ticketId}</span>
+                    <span className="text-[9px] font-black text-primary-600 font-roboto">{ticket.ticketId}</span>
                     <span className="text-[8px] text-slate-400 font-bold uppercase">{ticket.date}</span>
                   </div>
                   <h4 className="text-xs font-black text-slate-900 font-montserrat truncate uppercase tracking-tight">{ticket.subject}</h4>
@@ -249,7 +249,7 @@ const Tickets = () => {
               {/* Header Info */}
               <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-white z-10 shadow-sm">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-lg shadow-md shadow-blue-100">
+                  <div className="w-12 h-12 bg-primary-600 text-white rounded-2xl flex items-center justify-center font-black text-lg shadow-md shadow-primary-100">
                     {selectedTicket.userName.charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -266,7 +266,7 @@ const Tickets = () => {
                     <select
                       value={selectedTicket.priority}
                       onChange={(e) => handlePriorityChange(selectedTicket._id, e.target.value)}
-                      className="bg-slate-50 border border-slate-100 rounded-xl py-2 px-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
+                      className="bg-slate-50 border border-slate-100 rounded-xl py-2 px-3 text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-primary-100 transition-all cursor-pointer"
                     >
                       <option value="Low">Low Priority</option>
                       <option value="Medium">Medium Priority</option>

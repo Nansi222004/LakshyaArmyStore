@@ -17,7 +17,7 @@ const MOCK_PAYOUTS = [
 const StatusBadge = ({ status }) => {
   const styles = {
     'Pending': 'bg-amber-50 text-amber-600 border-amber-100',
-    'Processing': 'bg-blue-50 text-blue-600 border-blue-100',
+    'Processing': 'bg-primary-50 text-primary-600 border-primary-100',
     'Settled': 'bg-green-50 text-green-600 border-green-100',
     'Rejected': 'bg-red-50 text-red-600 border-red-100',
   };
@@ -45,7 +45,7 @@ const Payouts = () => {
             <Download size={16} />
             Payout History
           </button>
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all">
+          <button className="flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all">
             <ShieldCheck size={16} />
             Bulk Settle
           </button>
@@ -57,7 +57,7 @@ const Payouts = () => {
         {[
           { label: 'Total Settled', value: '₹12.5L', sub: 'Last 30 days', icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50' },
           { label: 'Pending Requests', value: '₹2.4L', sub: '12 vendors waiting', icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50' },
-          { label: 'Avg Payout Time', value: '1.2 Days', sub: 'Faster than avg', icon: Banknote, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Avg Payout Time', value: '1.2 Days', sub: 'Faster than avg', icon: Banknote, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Failed Settlements', value: '₹15K', sub: 'Requires review', icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-50' },
         ].map((stat, i) => (
           <div key={i} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
@@ -83,7 +83,7 @@ const Payouts = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                   activeTab === tab 
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-100' 
+                  ? 'bg-primary-500 text-white shadow-lg shadow-primary-100' 
                   : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                 }`}
               >
@@ -94,11 +94,11 @@ const Payouts = () => {
 
           <div className="flex gap-4">
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={18} />
               <input 
                 type="text" 
                 placeholder="Search by Vendor or Payout ID..."
-                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 transition-all outline-none text-slate-900 placeholder:text-slate-300"
+                className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3.5 pl-12 pr-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 transition-all outline-none text-slate-900 placeholder:text-slate-300"
               />
             </div>
           </div>
@@ -127,7 +127,7 @@ const Payouts = () => {
                     transition={{ delay: i * 0.05 }}
                     className="group hover:bg-slate-50/50 transition-colors"
                   >
-                    <td className="px-6 py-5 font-black text-blue-600 text-xs font-roboto">{payout.id}</td>
+                    <td className="px-6 py-5 font-black text-primary-600 text-xs font-roboto">{payout.id}</td>
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
                          <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100 uppercase tracking-tighter">
@@ -152,7 +152,7 @@ const Payouts = () => {
                     <td className="px-6 py-5 text-[11px] font-bold text-slate-500 uppercase tracking-tighter">{payout.date}</td>
                     <td className="px-6 py-5 text-right">
                        <div className="flex justify-end gap-2">
-                          <button className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all">Settle</button>
+                          <button className="px-3 py-1.5 bg-primary-500 text-white rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-primary-600 transition-all">Settle</button>
                           <button className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-slate-100 transition-all">
                              <MoreVertical size={14} />
                           </button>

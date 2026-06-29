@@ -27,7 +27,7 @@ const Products = () => {
           <h1 className="text-2xl font-bold text-slate-800">Products Management</h1>
           <p className="text-slate-500 text-sm mt-1">Manage your inventory, pricing, and stock levels.</p>
         </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+        <button className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
           <Plus size={18} /> Add New Product
         </button>
       </div>
@@ -39,7 +39,7 @@ const Products = () => {
           <input 
             type="text" 
             placeholder="Search products by name, SKU..."
-            className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
           />
         </div>
         <div className="flex gap-2">
@@ -99,7 +99,7 @@ const Products = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Edit">
+                      <button className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all" title="Edit">
                         <Edit size={18} />
                       </button>
                       <button className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete">
@@ -121,7 +121,7 @@ const Products = () => {
           <p className="text-sm text-slate-500">Showing 1 to 5 of 100 entries</p>
           <div className="flex gap-2">
             <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-500 hover:bg-white disabled:opacity-50" disabled>Previous</button>
-            <button className="px-3 py-1 border border-blue-600 bg-blue-600 text-white rounded text-sm">1</button>
+            <button className="px-3 py-1 border border-primary-600 bg-primary-600 text-white rounded text-sm">1</button>
             <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-500 hover:bg-white">2</button>
             <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-500 hover:bg-white">Next</button>
           </div>

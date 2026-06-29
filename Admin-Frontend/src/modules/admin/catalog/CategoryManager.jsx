@@ -40,7 +40,7 @@ const CategoryManager = () => {
         </div>
         <button 
           onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-blue-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+          className="flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
         >
           <Plus size={14} />
           New Category
@@ -50,7 +50,7 @@ const CategoryManager = () => {
       {/* Stats Quick View - More Compact Width */}
       <div className="grid grid-cols-3 gap-4 max-w-3xl">
         {[
-          { label: 'Total', value: categories.length, icon: Grid, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Total', value: categories.length, icon: Grid, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Active', value: categories.filter(c => c.status === 'Active').length, icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50' },
           { label: 'Drafts', value: categories.filter(c => c.status !== 'Active').length, icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-50' },
         ].map((stat, i) => (
@@ -69,11 +69,11 @@ const CategoryManager = () => {
       {/* Search & Filters - Compact Width */}
       <div className="flex gap-3 items-center max-w-xl">
         <div className="relative flex-1 group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={14} />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={14} />
           <input 
             type="text" 
             placeholder="Search catalog..."
-            className="w-full bg-white border border-slate-200 rounded-xl py-2 pl-10 pr-5 text-[12px] font-bold focus:ring-2 focus:ring-blue-50 transition-all outline-none text-slate-900"
+            className="w-full bg-white border border-slate-200 rounded-xl py-2 pl-10 pr-5 text-[12px] font-bold focus:ring-2 focus:ring-primary-50 transition-all outline-none text-slate-900"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -138,12 +138,12 @@ const CategoryManager = () => {
                   </div>
 
                   <div className="flex items-center gap-1.5">
-                    <Package size={10} className="text-blue-500" />
+                    <Package size={10} className="text-primary-500" />
                     <span className="text-[9px] font-bold text-slate-500 font-raleway leading-none">{category.count} Products</span>
                   </div>
 
                   <div className="pt-2 border-t border-slate-50 flex gap-1.5">
-                    <button className="flex-1 py-1.5 bg-slate-50 text-slate-700 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all flex items-center justify-center gap-1">
+                    <button className="flex-1 py-1.5 bg-slate-50 text-slate-700 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-white transition-all flex items-center justify-center gap-1">
                       <Edit2 size={10} />
                       Manage
                     </button>
@@ -160,13 +160,13 @@ const CategoryManager = () => {
         {!loading && (
           <button 
             onClick={() => setIsAddModalOpen(true)}
-            className="group border-2 border-dashed border-slate-100 rounded-xl flex flex-col items-center justify-center p-4 gap-2 hover:border-blue-500 hover:bg-blue-50/20 transition-all min-h-[160px]"
+            className="group border-2 border-dashed border-slate-100 rounded-xl flex flex-col items-center justify-center p-4 gap-2 hover:border-primary-500 hover:bg-primary-50/20 transition-all min-h-[160px]"
           >
-            <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-sm">
+            <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300 group-hover:bg-primary-500 group-hover:text-white transition-all shadow-sm">
               <Plus size={20} />
             </div>
             <div className="text-center">
-              <p className="text-[9px] font-black text-slate-400 group-hover:text-blue-600 uppercase tracking-widest font-montserrat">New Category</p>
+              <p className="text-[9px] font-black text-slate-400 group-hover:text-primary-600 uppercase tracking-widest font-montserrat">New Category</p>
             </div>
           </button>
         )}

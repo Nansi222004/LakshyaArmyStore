@@ -127,10 +127,10 @@ const Dashboard = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-5 rounded-2xl border border-blue-50 shadow-sm hover:shadow-md transition-all group"
+      className="bg-white p-5 rounded-2xl border border-primary-50 shadow-sm hover:shadow-md transition-all group"
     >
       <div className="flex justify-between items-start mb-4">
-        <div className="p-3 bg-blue-50 rounded-2xl group-hover:bg-blue-600 group-hover:text-white transition-colors text-blue-600">
+        <div className="p-3 bg-primary-50 rounded-2xl group-hover:bg-primary-600 group-hover:text-white transition-colors text-primary-600">
           <Icon size={24} />
         </div>
         <div className={`flex items-center gap-1 text-sm font-bold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
@@ -146,7 +146,7 @@ const Dashboard = () => {
   );
 
   const StatCardSkeleton = () => (
-    <div className="bg-white p-5 rounded-2xl border border-blue-50 shadow-sm animate-pulse">
+    <div className="bg-white p-5 rounded-2xl border border-primary-50 shadow-sm animate-pulse">
       <div className="flex justify-between items-start mb-4">
         <div className="w-12 h-12 bg-slate-200 rounded-2xl"></div>
         <div className="w-12 h-4 bg-slate-200 rounded"></div>
@@ -168,13 +168,13 @@ const Dashboard = () => {
         <div className="flex gap-3">
           <button 
             onClick={handleDownloadReport}
-            className="px-5 py-2.5 bg-white border border-blue-100 rounded-xl text-sm font-bold text-blue-600 hover:bg-blue-50 transition-all"
+            className="px-5 py-2.5 bg-white border border-primary-100 rounded-xl text-sm font-bold text-primary-600 hover:bg-primary-50 transition-all"
           >
             Download Report
           </button>
           <button 
             onClick={fetchDashboardData}
-            className="px-5 py-2.5 bg-blue-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-200 hover:scale-105 active:scale-95 transition-all"
+            className="px-5 py-2.5 bg-primary-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-primary-200 hover:scale-105 active:scale-95 transition-all"
           >
             Refresh Data
           </button>
@@ -276,9 +276,9 @@ const Dashboard = () => {
                   <div key={i} className="flex justify-between items-center p-3 bg-slate-50 rounded-2xl">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full" style={{backgroundColor: COLORS[i]}} />
-                      <span className="text-sm font-bold text-blue-700 font-raleway">{item.name}</span>
+                      <span className="text-sm font-bold text-primary-700 font-raleway">{item.name}</span>
                     </div>
-                    <span className="text-sm font-black text-blue-900 font-roboto">{item.value}%</span>
+                    <span className="text-sm font-black text-primary-900 font-roboto">{item.value}%</span>
                   </div>
                 ))}
               </div>
@@ -292,7 +292,7 @@ const Dashboard = () => {
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight font-montserrat">Recent Customers</h3>
-            <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+            <span className="px-3 py-1 bg-primary-50 text-primary-600 rounded-full text-[10px] font-black uppercase tracking-widest">
               {loading ? '-' : (stats?.recentCustomers || []).length} Joined
             </span>
           </div>
@@ -312,7 +312,7 @@ const Dashboard = () => {
               ))
             ) : (
               (stats?.recentCustomers || []).map((customer) => (
-                <div key={customer._id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-100 transition-colors">
+                <div key={customer._id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-primary-100 transition-colors">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-black text-slate-900 shadow-sm border border-slate-100">
                       {customer.name ? customer.name.charAt(0).toUpperCase() : 'C'}
@@ -331,7 +331,7 @@ const Dashboard = () => {
           </div>
           <button 
             onClick={() => navigate('/admin/users')}
-            className="w-full mt-6 py-4 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-lg shadow-blue-100"
+            className="w-full mt-6 py-4 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-primary-600 transition-all shadow-lg shadow-primary-100"
           >
             View All Customers
           </button>
@@ -354,7 +354,7 @@ const Dashboard = () => {
               ))
             ) : (
               (stats?.recentActivities || [
-                { title: 'New Order Placed', desc: 'Order of ₹1,499 placed by Rohan Sharma', time: '5 mins ago', icon: 'ShoppingBag', color: 'text-blue-500', bg: 'bg-blue-50' },
+                { title: 'New Order Placed', desc: 'Order of ₹1,499 placed by Rohan Sharma', time: '5 mins ago', icon: 'ShoppingBag', color: 'text-primary-500', bg: 'bg-primary-50' },
                 { title: 'New Customer Signup', desc: 'Sneha Patel registered on the platform', time: '15 mins ago', icon: 'Users', color: 'text-green-500', bg: 'bg-green-50' },
                 { title: 'Game Played', desc: 'Amit Kumar won 150 coins in Spin the Wheel', time: '1 hour ago', icon: 'TrendingUp', color: 'text-amber-500', bg: 'bg-amber-50' },
                 { title: 'Order Delivered', desc: 'Order #ORD10243 successfully delivered', time: '2 hours ago', icon: 'CheckCircle2', color: 'text-emerald-500', bg: 'bg-emerald-50' },

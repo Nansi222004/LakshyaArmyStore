@@ -155,7 +155,7 @@ export default function GameManager() {
       {/* Global Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-3xl border border-slate-100 p-6 flex items-center gap-5 shadow-sm">
-          <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0 shadow-inner">
+          <div className="w-14 h-14 rounded-2xl bg-primary-50 text-primary-500 flex items-center justify-center shrink-0 shadow-inner">
             <Gamepad2 size={24} />
           </div>
           <div>
@@ -202,7 +202,7 @@ export default function GameManager() {
           </div>
         ) : games.map(game => {
           const GameIcon = ICON_MAP[game.key] || Gamepad2;
-          const styles = COLOR_MAP[game.key] || { text: 'text-blue-500', bg: 'bg-blue-50', border: 'border-blue-200' };
+          const styles = COLOR_MAP[game.key] || { text: 'text-primary-500', bg: 'bg-primary-50', border: 'border-primary-200' };
           return (
             <div key={game.id} className={`bg-white rounded-3xl border ${game.status ? 'border-slate-200 shadow-md' : 'border-slate-100 opacity-75'} overflow-hidden flex flex-col transition-all duration-300`}>
               
@@ -225,7 +225,7 @@ export default function GameManager() {
                     className="outline-none focus:outline-none"
                   >
                     {game.status
-                      ? <ToggleRight size={36} className="text-blue-500" />
+                      ? <ToggleRight size={36} className="text-primary-500" />
                       : <ToggleLeft size={36} className="text-slate-300" />
                     }
                   </button>
@@ -449,7 +449,7 @@ export default function GameManager() {
               </button>
               <button
                 onClick={handleSaveConfig}
-                className="flex-1 py-3.5 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                className="flex-1 py-3.5 bg-primary-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5"
               >
                 <Save size={14} />
                 Save Changes

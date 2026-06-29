@@ -5,7 +5,7 @@ import { ArrowLeft, CheckCircle2, Lock, Coins, Percent, Truck, Gift, Zap } from 
 export default function RewardsScreen({ bestScore, onBack }) {
   const milestones = [
     { target: 20, reward: "5 Coins", icon: <Coins className="w-5 h-5 text-amber-500" />, unlocked: bestScore >= 20 },
-    { target: 40, reward: "10% OFF", icon: <Percent className="w-5 h-5 text-[#FF5A1F]" />, unlocked: bestScore >= 40 },
+    { target: 40, reward: "10% OFF", icon: <Percent className="w-5 h-5 text-[#D4AF37]" />, unlocked: bestScore >= 40 },
     { target: 60, reward: "Free Shipping", icon: <Truck className="w-5 h-5 text-blue-500" />, unlocked: bestScore >= 60 },
     { target: 80, reward: "Mystery Box", icon: <Gift className="w-5 h-5 text-rose-500" />, unlocked: bestScore >= 80 },
     { target: 100, reward: "Premium Coupon", icon: <Zap className="w-5 h-5 text-purple-500" />, unlocked: bestScore >= 100 },
@@ -38,14 +38,14 @@ export default function RewardsScreen({ bestScore, onBack }) {
               }`}
             >
               <div className="w-12 text-center">
-                <span className={`text-lg font-black ${m.unlocked ? 'text-[#FF5A1F]' : 'text-slate-400'}`}>
+                <span className={`text-lg font-black ${m.unlocked ? 'text-[#D4AF37]' : 'text-slate-400'}`}>
                   {m.target}+
                 </span>
                 <span className="block text-[9px] font-bold text-slate-400 uppercase">Taps</span>
               </div>
               
               <div className="flex-1 flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${m.unlocked ? 'bg-orange-50' : 'bg-slate-200'}`}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${m.unlocked ? 'bg-primary-50' : 'bg-slate-200'}`}>
                   {m.icon}
                 </div>
                 <span className={`font-bold ${m.unlocked ? 'text-slate-800' : 'text-slate-500'}`}>
@@ -64,8 +64,8 @@ export default function RewardsScreen({ bestScore, onBack }) {
           ))}
         </div>
 
-        <div className="mt-6 bg-orange-50 border border-orange-100 rounded-2xl p-4 flex items-center gap-4">
-          <Gift className="w-8 h-8 text-[#FF5A1F]" />
+        <div className="mt-6 bg-primary-50 border border-primary-100 rounded-2xl p-4 flex items-center gap-4">
+          <Gift className="w-8 h-8 text-[#D4AF37]" />
           <div>
             <h4 className="font-bold text-slate-800">Tap more, win more!</h4>
             <p className="text-xs font-medium text-slate-500">Better score = Better rewards</p>

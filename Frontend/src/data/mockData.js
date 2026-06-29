@@ -76,9 +76,9 @@ import banner2 from '../assets/Banner/finalBanner2.webp';
 import banner3 from '../assets/Banner/finalBanner3.webp';
 
 export const BANNERS = [
-  { id: 1, image: banner1 },
-  { id: 2, image: banner2 },
-  { id: 3, image: banner3 }
+  { id: 1, isMockGradient: true, text: "LAKSHYA EXCLUSIVE\nPremium Gear" },
+  { id: 2, isMockGradient: true, text: "NEW ARRIVALS\nTactical Equipment" },
+  { id: 3, isMockGradient: true, text: "DISCOUNT ZONE\nUp to 50% Off" }
 ];
 
 export const VALUE_PROPS = [
@@ -578,8 +578,8 @@ export const PLAY_AND_WIN = [
     name: 'Daily Quiz',
     desc: 'Test Your Brain',
     icon: 'HelpCircle',
-    color: 'bg-orange-50 text-orange-500 border-orange-100',
-    hoverColor: 'hover:bg-orange-100 hover:border-orange-200'
+    color: 'bg-primary-50 text-primary-500 border-primary-100',
+    hoverColor: 'hover:bg-primary-100 hover:border-primary-200'
   },
   {
     id: 'game-3',

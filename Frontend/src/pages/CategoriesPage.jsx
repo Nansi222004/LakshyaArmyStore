@@ -180,11 +180,11 @@ export default function CategoriesPage() {
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden">
       {/* Elevated Sticky Header */}
-      <header className="sticky top-0 bg-[#ee4923] border-b border-[#ee4923] px-4 py-3 flex items-center justify-between z-40 flex-shrink-0">
+      <header className="sticky top-0 bg-[#4B5320] border-b border-[#4B5320] px-4 py-3 flex items-center justify-between z-40 flex-shrink-0">
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate(-1)}
-            className="p-1 bg-white hover:bg-white/90 border border-transparent rounded-full shadow-2xs transition-colors active:scale-95 cursor-pointer text-[#ee4923]"
+            className="p-1 bg-white hover:bg-white/90 border border-transparent rounded-full shadow-2xs transition-colors active:scale-95 cursor-pointer text-[#4B5320]"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -208,7 +208,7 @@ export default function CategoriesPage() {
       <div className="flex-grow flex animate-fade-in overflow-hidden">
 
         {/* 1. Vertical Sidebar Category Navigation */}
-        <div className="w-[72px] bg-[#02006c]/[0.02] border-r border-slate-100 flex flex-col items-center pt-2 pb-2 overflow-y-auto scrollbar-none gap-3 flex-shrink-0">
+        <div className="w-[72px] bg-[#2F3E16]/[0.02] border-r border-slate-100 flex flex-col items-center pt-2 pb-2 overflow-y-auto scrollbar-none gap-3 flex-shrink-0">
           {categories.map((cat) => {
             const catKey = cat._id || cat.id;
             const isActive = selectedCategory === catKey;
@@ -225,11 +225,11 @@ export default function CategoriesPage() {
                   {isActive ? (
                     <motion.div
                       layoutId="activeCategoryCapsule"
-                      className="absolute inset-0 rounded-xl bg-[#ee4923] shadow-md shadow-[#ee4923]/30"
+                      className="absolute inset-0 rounded-xl bg-[#4B5320] shadow-md shadow-[#4B5320]/30"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   ) : (
-                    <div className="absolute inset-0 rounded-xl bg-orange-50 group-hover:bg-orange-100 transition-colors duration-300" />
+                    <div className="absolute inset-0 rounded-xl bg-primary-50 group-hover:bg-primary-100 transition-colors duration-300" />
                   )}
 
                   {/* Image Icon */}
@@ -258,7 +258,7 @@ export default function CategoriesPage() {
                 {isActive && (
                   <motion.div
                     layoutId="activeCategoryLine"
-                    className="absolute left-0 top-1 bottom-1 w-1 bg-[#02006c] rounded-r-full z-20"
+                    className="absolute left-0 top-1 bottom-1 w-1 bg-[#2F3E16] rounded-r-full z-20"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -273,41 +273,41 @@ export default function CategoriesPage() {
           {/* Title bar */}
           <div className="flex items-center justify-between border-b border-slate-50 pb-2 relative z-20 px-1">
             <div className="space-y-0.5">
-              <h3 className="text-xs font-bold text-[#02006c] uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-[#2F3E16] uppercase tracking-wider">
                 {categories.find((c) => c.id === selectedCategory || c._id === selectedCategory)?.categoryName || categories.find((c) => c.id === selectedCategory || c._id === selectedCategory)?.name || "Catalog"}
               </h3>
-              <p className="text-[8px] text-[#02006c]/60 font-bold uppercase tracking-widest">
+              <p className="text-[8px] text-[#2F3E16]/60 font-bold uppercase tracking-widest">
                 {filteredProducts.length} items found
               </p>
             </div>
             <div className="relative">
               <Filter
                 onClick={() => setShowSortDropdown(!showSortDropdown)}
-                className={`w-4 h-4 cursor-pointer transition-colors ${showSortDropdown ? 'text-[#ee4923]' : 'text-[#02006c]/70 hover:text-[#02006c]'}`}
+                className={`w-4 h-4 cursor-pointer transition-colors ${showSortDropdown ? 'text-[#4B5320]' : 'text-[#2F3E16]/70 hover:text-[#2F3E16]'}`}
               />
               {showSortDropdown && (
                 <div className="absolute right-0 mt-2 w-36 bg-white border border-slate-100 rounded-lg shadow-lg py-1 z-30 animate-fade-in text-[10px]">
                   <button
                     onClick={() => { setSortBy('none'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'none' ? 'text-[#ee4923]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'none' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     DEFAULT
                   </button>
                   <button
                     onClick={() => { setSortBy('price-low'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'price-low' ? 'text-[#ee4923]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'price-low' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     PRICE: LOW TO HIGH
                   </button>
                   <button
                     onClick={() => { setSortBy('price-high'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'price-high' ? 'text-[#ee4923]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'price-high' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     PRICE: HIGH TO LOW
                   </button>
                   <button
                     onClick={() => { setSortBy('rating'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-orange-50 font-bold ${sortBy === 'rating' ? 'text-[#ee4923]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'rating' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     TOP RATED
                   </button>
@@ -325,12 +325,12 @@ export default function CategoriesPage() {
               >
                 <div className="relative w-[52px] h-[52px] flex items-center justify-center">
                   {selectedSubCategory === 'all' ? (
-                    <div className="absolute inset-0 rounded-lg bg-[#ee4923] shadow-md shadow-[#ee4923]/25" />
+                    <div className="absolute inset-0 rounded-lg bg-[#4B5320] shadow-md shadow-[#4B5320]/25" />
                   ) : (
-                    <div className="absolute inset-0 rounded-lg bg-orange-50 group-hover:bg-orange-100 transition-colors duration-300" />
+                    <div className="absolute inset-0 rounded-lg bg-primary-50 group-hover:bg-primary-100 transition-colors duration-300" />
                   )}
                   <div className="relative z-10 flex items-center justify-center">
-                    <LayoutGrid className={`w-6 h-6 transition-all duration-300 ${selectedSubCategory === 'all' ? 'text-white scale-110' : 'text-[#ee4923]'}`} />
+                    <LayoutGrid className={`w-6 h-6 transition-all duration-300 ${selectedSubCategory === 'all' ? 'text-white scale-110' : 'text-[#4B5320]'}`} />
                   </div>
                 </div>
                 <span className={`text-[9px] leading-[1.1] font-black tracking-tight select-none px-0.5 text-center mt-1.5 w-full transition-colors ${selectedSubCategory === 'all' ? 'text-[#0F172A]' : 'text-slate-500'
@@ -349,9 +349,9 @@ export default function CategoriesPage() {
                   >
                     <div className="relative w-[52px] h-[52px] flex items-center justify-center">
                       {isSubActive ? (
-                        <div className="absolute inset-0 rounded-lg bg-[#ee4923] shadow-md shadow-[#ee4923]/25 animate-scale-up" />
+                        <div className="absolute inset-0 rounded-lg bg-[#4B5320] shadow-md shadow-[#4B5320]/25 animate-scale-up" />
                       ) : (
-                        <div className="absolute inset-0 rounded-lg bg-orange-50 group-hover:bg-orange-100 transition-colors duration-300" />
+                        <div className="absolute inset-0 rounded-lg bg-primary-50 group-hover:bg-primary-100 transition-colors duration-300" />
                       )}
                       <div className="relative z-10 flex items-center justify-center">
                         {sub.image ? (
@@ -408,7 +408,7 @@ export default function CategoriesPage() {
               transition={{ duration: 0.2 }}
               className="bg-slate-50 border border-dashed border-slate-200 rounded-3xl p-8 text-center space-y-3 mt-6"
             >
-              <div className="w-12 h-12 bg-orange-100 text-[#ee4923] rounded-full flex items-center justify-center mx-auto shadow-sm">
+              <div className="w-12 h-12 bg-primary-100 text-[#4B5320] rounded-full flex items-center justify-center mx-auto shadow-sm">
                 <Search className="w-6 h-6 animate-pulse" />
               </div>
               <div className="space-y-1">
@@ -422,7 +422,7 @@ export default function CategoriesPage() {
                   setSelectedCategory('for-you');
                   setSearchQuery('');
                 }}
-                className="bg-white border border-slate-200 hover:border-[#ee4923] text-[#ee4923] text-[8px] font-black px-4 py-2 rounded-xl transition-all duration-300"
+                className="bg-white border border-slate-200 hover:border-[#4B5320] text-[#4B5320] text-[8px] font-black px-4 py-2 rounded-xl transition-all duration-300"
               >
                 RESET FILTERS
               </button>

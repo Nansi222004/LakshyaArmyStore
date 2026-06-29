@@ -34,7 +34,7 @@ const CommissionRules = () => {
         </div>
         <button 
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+          className="flex items-center gap-1.5 px-4 py-2 bg-primary-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
         >
           <Plus size={14} />
           Create Rule
@@ -66,11 +66,11 @@ const CommissionRules = () => {
               className="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all group"
             >
               <div className="flex justify-between items-start mb-3">
-                 <div className="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center font-black shadow-inner">
+                 <div className="w-10 h-10 bg-primary-50 text-primary-500 rounded-xl flex items-center justify-center font-black shadow-inner">
                     <Layers size={20} />
                  </div>
                  <div className="flex gap-1.5">
-                    <button className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
+                    <button className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all">
                        <Edit2 size={12} />
                     </button>
                     <button className="p-1.5 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">
@@ -82,7 +82,7 @@ const CommissionRules = () => {
               <div>
                  <h3 className="text-[13px] font-black text-slate-900 font-montserrat uppercase tracking-tight">{rule.category}</h3>
                  <div className="mt-1 flex items-baseline gap-1">
-                    <span className="text-xl font-black text-blue-600 font-roboto">{rule.rate}</span>
+                    <span className="text-xl font-black text-primary-600 font-roboto">{rule.rate}</span>
                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
                        {rule.type === 'Percentage' ? '%' : 'FIXED'}
                     </span>
@@ -127,7 +127,7 @@ const CommissionRules = () => {
       <div className="flex justify-center pt-6">
          <button 
            onClick={handleSave}
-           className={`flex items-center gap-2 px-8 py-3 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all shadow-xl ${saved ? 'bg-green-500 text-white' : 'bg-blue-600 text-white hover:scale-105 shadow-blue-200'}`}
+           className={`flex items-center gap-2 px-8 py-3 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all shadow-xl ${saved ? 'bg-green-500 text-white' : 'bg-primary-600 text-white hover:scale-105 shadow-primary-200'}`}
          >
             {saved ? <CheckCircle2 size={16} /> : <Save size={16} />}
             {saved ? 'Policy Published!' : 'Apply Global Changes'}

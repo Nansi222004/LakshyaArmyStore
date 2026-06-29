@@ -47,14 +47,14 @@ export default function MobileNav() {
               {isActive && (
                 <motion.div
                   layoutId="active-nav-pill"
-                  className="absolute inset-0 bg-[#FFF0ED] border border-[#EE4923]/20 shadow-[0_4px_12px_rgba(238,73,35,0.08)] rounded-2xl -z-10"
+                  className="absolute inset-0 bg-[#F8F8F5] border border-[#4B5320]/20 shadow-[0_4px_12px_rgba(75,83,32,0.08)] rounded-2xl -z-10"
                   transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
 
               <div className={`transition-all duration-300 ${
                 isActive 
-                  ? 'text-[#EE4923] -translate-y-0.5 scale-110' 
+                  ? 'text-[#4B5320] -translate-y-0.5 scale-110' 
                   : 'text-[#64748B] hover:text-[#0F172A]'
               }`}>
                 <Icon className={`w-5.5 h-5.5 ${isActive ? 'stroke-[2.5]' : 'stroke-[2]'}`} />
@@ -62,7 +62,7 @@ export default function MobileNav() {
 
               <span className={`text-[10px] tracking-wide transition-all duration-300 ${
                 isActive 
-                  ? 'text-[#EE4923] font-black mt-0.5' 
+                  ? 'text-[#4B5320] font-black mt-0.5' 
                   : 'text-[#64748B] font-semibold mt-1'
               }`}>
                 {item.label}
@@ -70,7 +70,7 @@ export default function MobileNav() {
 
               {/* Red Badge for Cart */}
               {item.badge && totalCartItems > 0 && (
-                <span className="absolute top-0.5 right-0.5 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#EE4923] text-[9px] font-bold text-white ring-2 ring-white shadow-sm">
+                <span className="absolute top-0.5 right-0.5 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#4B5320] text-[9px] font-bold text-white ring-2 ring-white shadow-sm">
                   {totalCartItems}
                 </span>
               )}

@@ -30,7 +30,7 @@ const FeaturedProducts = () => {
           <h1 className="text-4xl font-semibold text-slate-900 tracking-tight font-montserrat uppercase">Curation Hub</h1>
           <p className="text-slate-500 font-medium mt-1 font-raleway">Manage featured and trending products across the main storefront.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 transition-all">
+        <button className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 transition-all">
           <Plus size={16} />
           Add to Collection
         </button>
@@ -120,7 +120,7 @@ const FeaturedProducts = () => {
             <LayoutGrid size={300} />
          </div>
          <div className="relative z-10 flex items-center gap-6">
-            <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center shadow-2xl">
+            <div className="w-16 h-16 bg-primary-500 rounded-2xl flex items-center justify-center shadow-2xl">
                <CheckCircle2 size={32} />
             </div>
             <div>

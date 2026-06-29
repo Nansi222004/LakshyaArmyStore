@@ -105,7 +105,7 @@ const LegalPolicies = () => {
           ) : !isEditing ? (
             <button 
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-100 text-sm font-semibold"
+              className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-primary-100 text-sm font-semibold"
             >
               <Edit3 size={18} />
               <span>Edit Content</span>
@@ -143,18 +143,18 @@ const LegalPolicies = () => {
           <button 
             disabled={isEditing || loading}
             onClick={() => setActiveTab('privacy')}
-            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'privacy' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing || loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'privacy' ? 'text-primary-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing || loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Privacy Policy
-            {activeTab === 'privacy' && <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />}
+            {activeTab === 'privacy' && <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600" />}
           </button>
           <button 
             disabled={isEditing || loading}
             onClick={() => setActiveTab('terms')}
-            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'terms' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing || loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`flex-1 py-5 text-sm font-bold transition-all relative ${activeTab === 'terms' ? 'text-primary-600' : 'text-slate-400 hover:text-slate-600'} ${isEditing || loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Terms & Conditions
-            {activeTab === 'terms' && <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />}
+            {activeTab === 'terms' && <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600" />}
           </button>
         </div>
 
@@ -200,7 +200,7 @@ const LegalPolicies = () => {
                 value={activeTab === 'privacy' ? privacyPolicy : termsConditions}
                 onChange={(e) => activeTab === 'privacy' ? setPrivacyPolicy(e.target.value) : setTermsConditions(e.target.value)}
                 className={`w-full h-[500px] border rounded-2xl p-8 text-slate-700 font-medium leading-relaxed transition-all resize-none outline-none ${isEditing 
-                  ? 'bg-slate-50 border-blue-200 focus:ring-4 focus:ring-blue-50 focus:border-blue-400' 
+                  ? 'bg-slate-50 border-primary-200 focus:ring-4 focus:ring-primary-50 focus:border-primary-400' 
                   : 'bg-slate-50/30 border-slate-100 cursor-not-allowed'}`}
                 placeholder="Start typing your policy content..."
               />

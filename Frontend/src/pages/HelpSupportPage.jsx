@@ -141,28 +141,28 @@ export default function HelpSupportPage() {
       <div className="bg-white px-4 py-4 shadow-sm z-10 sticky top-0 flex items-center gap-3">
         <button 
           onClick={() => navigate(-1)}
-          className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[#02006c] hover:bg-slate-100 active:scale-95 transition-all cursor-pointer shadow-sm flex-shrink-0"
+          className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-[#2F3E16] hover:bg-slate-100 active:scale-95 transition-all cursor-pointer shadow-sm flex-shrink-0"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-[#02006c] text-[20px] font-black tracking-tight">Support Helpdesk</h1>
+        <h1 className="text-[#2F3E16] text-[20px] font-black tracking-tight">Support Helpdesk</h1>
       </div>
 
       <div className="p-5 flex-grow space-y-6">
         
         {/* Intro Banner */}
-        <div className="bg-gradient-to-br from-orange-50 to-[#FFE4D6] rounded-2xl p-5 border border-orange-100 shadow-sm relative overflow-hidden">
+        <div className="bg-gradient-to-br from-primary-50 to-[#FFE4D6] rounded-2xl p-5 border border-primary-100 shadow-sm relative overflow-hidden">
           <div className="relative z-10">
-            <h2 className="text-[#02006c] font-black text-lg mb-1">How can we help?</h2>
+            <h2 className="text-[#2F3E16] font-black text-lg mb-1">How can we help?</h2>
             <p className="text-slate-600 text-xs font-medium max-w-[80%]">Raise a support ticket for order, payment or technical issues, or get in touch with our support crew directly.</p>
           </div>
-          <MessageSquare className="absolute -bottom-4 -right-4 w-24 h-24 text-orange-200/50 rotate-12" />
+          <MessageSquare className="absolute -bottom-4 -right-4 w-24 h-24 text-primary-200/50 rotate-12" />
         </div>
 
         {/* Raise a Support Ticket Form */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-50 pb-3">
-            <FileText className="w-5 h-5 text-[#ee4923]" />
+            <FileText className="w-5 h-5 text-[#4B5320]" />
             <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Raise a Support Ticket</h3>
           </div>
 
@@ -173,7 +173,7 @@ export default function HelpSupportPage() {
                 <select 
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold text-slate-700 outline-none focus:border-orange-500 transition-all appearance-none"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold text-slate-700 outline-none focus:border-primary-500 transition-all appearance-none"
                 >
                   <option value="General">General / Other Queries</option>
                   <option value="Payments">Payments & Wallet</option>
@@ -191,7 +191,7 @@ export default function HelpSupportPage() {
                   placeholder="Summarize your issue..."
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold text-slate-700 outline-none focus:border-orange-500 transition-all"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold text-slate-700 outline-none focus:border-primary-500 transition-all"
                   required
                 />
               </div>
@@ -203,7 +203,7 @@ export default function HelpSupportPage() {
                   placeholder="Provide full description of the problem..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold text-slate-700 outline-none focus:border-orange-500 transition-all resize-none"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 px-4 text-xs font-bold text-slate-700 outline-none focus:border-primary-500 transition-all resize-none"
                   required
                 ></textarea>
               </div>
@@ -211,7 +211,7 @@ export default function HelpSupportPage() {
               <button 
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 bg-gradient-to-r from-orange-500 to-[#ee4923] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-orange-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 bg-gradient-to-r from-primary-500 to-[#4B5320] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5" />
                 {submitting ? 'Raising Ticket...' : 'Submit Support Ticket'}
@@ -222,7 +222,7 @@ export default function HelpSupportPage() {
               <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Please log in to raise support tickets online.</p>
               <button 
                 onClick={() => navigate('/login')} 
-                className="px-6 py-2.5 bg-[#02006c] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#02006c]/90 transition-all cursor-pointer"
+                className="px-6 py-2.5 bg-[#2F3E16] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#2F3E16]/90 transition-all cursor-pointer"
               >
                 Go to Login
               </button>
@@ -239,11 +239,11 @@ export default function HelpSupportPage() {
                 <div 
                   key={ticket._id} 
                   onClick={() => setSelectedTicket(ticket)}
-                  className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-start justify-between gap-3 cursor-pointer hover:border-orange-500 hover:shadow-md transition-all active:scale-[0.99]"
+                  className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-start justify-between gap-3 cursor-pointer hover:border-primary-500 hover:shadow-md transition-all active:scale-[0.99]"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[10px] font-black text-blue-600 font-roboto">{ticket.ticketId}</span>
+                      <span className="text-[10px] font-black text-[#D4AF37] font-roboto">{ticket.ticketId}</span>
                       <span className="text-[8px] text-slate-400 font-bold uppercase">{new Date(ticket.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
                       <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${
                         ticket.priority === 'High' ? 'bg-red-50 text-red-650' : 'bg-slate-100 text-slate-500'
@@ -256,7 +256,7 @@ export default function HelpSupportPage() {
                   </div>
                   <span className={`px-2.5 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider border ${
                     ticket.status === 'Open' ? 'bg-red-50 text-red-600 border-red-100' :
-                    ticket.status === 'In-Progress' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-green-50 text-green-600 border-green-100'
+                    ticket.status === 'In-Progress' ? 'bg-blue-50 text-[#D4AF37] border-blue-100' : 'bg-green-50 text-green-600 border-green-100'
                   }`}>
                     {ticket.status}
                   </span>
@@ -270,12 +270,12 @@ export default function HelpSupportPage() {
         <div className="space-y-4">
           <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Direct Assistance</h3>
           
-          <a href={`tel:${supportPhone}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
+          <a href={`tel:${supportPhone}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#4B5320] hover:shadow-md transition-all group">
             <div className="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <PhoneCall className="w-5 h-5" />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-bold text-[#02006c]">Call Us</h4>
+              <h4 className="text-sm font-bold text-[#2F3E16]">Call Us</h4>
               <p className="text-xs text-slate-500 font-medium mt-0.5">{supportPhone}</p>
             </div>
             <div className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 flex items-center gap-1">
@@ -283,12 +283,12 @@ export default function HelpSupportPage() {
             </div>
           </a>
 
-          <a href={`mailto:${supportEmail}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#ee4923] hover:shadow-md transition-all group">
+          <a href={`mailto:${supportEmail}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-[#4B5320] hover:shadow-md transition-all group">
             <div className="w-12 h-12 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <Mail className="w-5 h-5" />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-bold text-[#02006c]">Email Us</h4>
+              <h4 className="text-sm font-bold text-[#2F3E16]">Email Us</h4>
               <p className="text-xs text-slate-500 font-medium mt-0.5">{supportEmail}</p>
             </div>
             <div className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 flex items-center gap-1">
@@ -306,19 +306,19 @@ export default function HelpSupportPage() {
               <div 
                 key={index}
                 className={`border-b border-slate-100 last:border-0 ${
-                  openFaqIndex === index ? 'bg-orange-50/30' : 'hover:bg-slate-50'
+                  openFaqIndex === index ? 'bg-primary-50/30' : 'hover:bg-slate-50'
                 } transition-colors`}
               >
                 <button
                   onClick={() => toggleFaq(index)}
                   className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 cursor-pointer"
                 >
-                  <span className={`text-[13px] font-bold ${openFaqIndex === index ? 'text-[#ee4923]' : 'text-[#02006c]'}`}>
+                  <span className={`text-[13px] font-bold ${openFaqIndex === index ? 'text-[#4B5320]' : 'text-[#2F3E16]'}`}>
                     {faq.question}
                   </span>
                   <ChevronDown 
                     className={`w-4 h-4 text-slate-400 flex-shrink-0 transition-transform duration-300 ${
-                      openFaqIndex === index ? 'rotate-180 text-[#ee4923]' : ''
+                      openFaqIndex === index ? 'rotate-180 text-[#4B5320]' : ''
                     }`}
                   />
                 </button>
@@ -345,8 +345,8 @@ export default function HelpSupportPage() {
             <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl space-y-4 border border-slate-100 max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom-10 sm:zoom-in-95 duration-300">
               <div className="flex justify-between items-center border-b border-slate-50 pb-3">
                 <div>
-                  <span className="text-[10px] font-black text-blue-600 font-roboto">{selectedTicket.ticketId}</span>
-                  <h3 className="text-sm font-black text-[#02006c] uppercase tracking-wide mt-0.5">Ticket Details</h3>
+                  <span className="text-[10px] font-black text-[#D4AF37] font-roboto">{selectedTicket.ticketId}</span>
+                  <h3 className="text-sm font-black text-[#2F3E16] uppercase tracking-wide mt-0.5">Ticket Details</h3>
                 </div>
                 <button 
                   onClick={() => setSelectedTicket(null)}
@@ -362,7 +362,7 @@ export default function HelpSupportPage() {
                     <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-widest">Status</span>
                     <span className={`inline-block px-2.5 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider border mt-1 ${
                       selectedTicket.status === 'Open' ? 'bg-red-50 text-red-600 border-red-100' :
-                      selectedTicket.status === 'In-Progress' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-green-50 text-green-600 border-green-100'
+                      selectedTicket.status === 'In-Progress' ? 'bg-blue-50 text-[#D4AF37] border-blue-100' : 'bg-green-50 text-green-600 border-green-100'
                     }`}>
                       {selectedTicket.status}
                     </span>
@@ -377,7 +377,7 @@ export default function HelpSupportPage() {
                   </div>
                   <div>
                     <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-widest">Category</span>
-                    <span className="font-bold text-[#02006c] mt-1 block uppercase">{selectedTicket.category}</span>
+                    <span className="font-bold text-[#2F3E16] mt-1 block uppercase">{selectedTicket.category}</span>
                   </div>
                   <div>
                     <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-widest">Date Raised</span>
@@ -400,7 +400,7 @@ export default function HelpSupportPage() {
 
               <button 
                 onClick={() => setSelectedTicket(null)}
-                className="w-full py-3 bg-[#02006c] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#02006c]/90 transition-all active:scale-95 cursor-pointer"
+                className="w-full py-3 bg-[#2F3E16] text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#2F3E16]/90 transition-all active:scale-95 cursor-pointer"
               >
                 Close Details
               </button>

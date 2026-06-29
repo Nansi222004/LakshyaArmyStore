@@ -23,7 +23,7 @@ const DeliveryCharges = () => {
           <h1 className="text-4xl font-semibold text-slate-900 tracking-tight font-montserrat uppercase">Logistics Pricing</h1>
           <p className="text-slate-500 font-medium mt-1 font-raleway">Manage zone-based delivery fees, free shipping thresholds and COD charges.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 transition-all">
+        <button className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 transition-all">
           <Plus size={16} />
           Add Pricing Zone
         </button>
@@ -40,7 +40,7 @@ const DeliveryCharges = () => {
                   {zones.map((zone) => (
                     <div key={zone.id} className="p-6 hover:bg-slate-50/50 transition-colors flex items-center justify-between group">
                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center shadow-inner flex-shrink-0">
+                          <div className="w-12 h-12 bg-primary-50 text-primary-500 rounded-2xl flex items-center justify-center shadow-inner flex-shrink-0">
                              <MapPin size={24} />
                           </div>
                           <div>
@@ -59,7 +59,7 @@ const DeliveryCharges = () => {
                           </div>
                        </div>
                        <div className="flex gap-2">
-                          <button className="p-2 text-slate-300 hover:text-blue-500 transition-all">
+                          <button className="p-2 text-slate-300 hover:text-primary-500 transition-all">
                              <Edit2 size={16} />
                           </button>
                           <button className="p-2 text-slate-300 hover:text-red-500 transition-all">
@@ -97,7 +97,7 @@ const DeliveryCharges = () => {
                </div>
             </div>
 
-            <div className="bg-blue-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-blue-100">
+            <div className="bg-primary-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-primary-100">
                <div className="absolute -right-4 -bottom-4 opacity-10">
                   <Truck size={120} />
                </div>

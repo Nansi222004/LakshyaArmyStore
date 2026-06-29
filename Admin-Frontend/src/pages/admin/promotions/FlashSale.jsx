@@ -20,7 +20,7 @@ const FlashSale = () => {
   const StatusBadge = ({ status }) => {
     const styles = {
       'Live': 'bg-red-50 text-red-600 border-red-100 animate-pulse',
-      'Scheduled': 'bg-blue-50 text-blue-600 border-blue-100',
+      'Scheduled': 'bg-primary-50 text-primary-600 border-primary-100',
       'Completed': 'bg-slate-50 text-slate-400 border-slate-100',
     };
     return (
@@ -53,7 +53,7 @@ const FlashSale = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
           { label: 'Active Sales', value: '01', icon: Timer, color: 'text-red-500', bg: 'bg-red-50' },
-          { label: 'Participating Items', value: '68', icon: ShoppingBag, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Participating Items', value: '68', icon: ShoppingBag, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Projected Traffic', value: '4.2k', icon: Users, color: 'text-indigo-500', bg: 'bg-indigo-50' },
         ].map((stat, i) => (
           <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
@@ -129,7 +129,7 @@ const FlashSale = () => {
                   </td>
                   <td className="px-6 py-5 text-right">
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all">
+                      <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all">
                         <Edit2 size={16} />
                       </button>
                       <button className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all">
@@ -164,7 +164,7 @@ const FlashSale = () => {
               <div className="flex-1 space-y-6 overflow-y-auto no-scrollbar pb-10">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Event Name</label>
-                  <input type="text" placeholder="e.g. Early Bird Special" className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-blue-50 outline-none uppercase" />
+                  <input type="text" placeholder="e.g. Early Bird Special" className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-black focus:ring-4 focus:ring-primary-50 outline-none uppercase" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -180,7 +180,7 @@ const FlashSale = () => {
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Global Discount Type</label>
-                  <select className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-blue-50 outline-none appearance-none">
+                  <select className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary-50 outline-none appearance-none">
                     <option>Flat Discount (%)</option>
                     <option>Up to (%)</option>
                     <option>Fixed Amount Off (₹)</option>
@@ -190,7 +190,7 @@ const FlashSale = () => {
                 <div className="space-y-4">
                    <div className="flex justify-between items-center">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Select Products</label>
-                      <button className="text-[9px] font-black text-blue-500 uppercase tracking-widest hover:underline">+ Add Manually</button>
+                      <button className="text-[9px] font-black text-primary-500 uppercase tracking-widest hover:underline">+ Add Manually</button>
                    </div>
                    <div className="p-10 border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center text-slate-300 gap-3">
                       <ShoppingBag size={32} />

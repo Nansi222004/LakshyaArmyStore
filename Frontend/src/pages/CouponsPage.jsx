@@ -69,15 +69,15 @@ export default function CouponsPage() {
           onClick={() => navigate(-1)}
           className="p-2 -ml-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
         >
-          <ChevronLeft className="w-5 h-5 text-[#02006c]" />
+          <ChevronLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
-        <h1 className="text-[17px] font-bold text-[#02006c]">My Coupons</h1>
+        <h1 className="text-[17px] font-bold text-[#2F3E16]">My Coupons</h1>
       </div>
 
       {/* History List */}
       {loading ? (
         <div className="flex-grow flex flex-col items-center justify-center py-20 gap-2">
-          <div className="w-8 h-8 border-4 border-[#ee4923] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-[#4B5320] border-t-transparent rounded-full animate-spin"></div>
           <span className="text-xs font-bold text-slate-400">Loading coupons...</span>
         </div>
       ) : (

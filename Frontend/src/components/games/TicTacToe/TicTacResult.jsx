@@ -19,14 +19,14 @@ export default function TicTacResult({ result, mode, onPlayAgain, onHome, claimR
           angle: 60,
           spread: 55,
           origin: { x: 0 },
-          colors: ['#FF5A1F', '#FBBF24', '#FFFFFF', '#071226']
+          colors: ['#D4AF37', '#FBBF24', '#FFFFFF', '#071226']
         });
         confetti({
           particleCount: 5,
           angle: 120,
           spread: 55,
           origin: { x: 1 },
-          colors: ['#FF5A1F', '#FBBF24', '#FFFFFF', '#071226']
+          colors: ['#D4AF37', '#FBBF24', '#FFFFFF', '#071226']
         });
 
         if (Date.now() < end) {
@@ -58,7 +58,7 @@ export default function TicTacResult({ result, mode, onPlayAgain, onHome, claimR
     >
       {/* Decorative background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-[#FF5A1F] rounded-full blur-[100px] opacity-20"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-[#D4AF37] rounded-full blur-[100px] opacity-20"></div>
         
         {/* Floating elements */}
         {[...Array(6)].map((_, i) => (
@@ -98,11 +98,11 @@ export default function TicTacResult({ result, mode, onPlayAgain, onHome, claimR
               <Circle className="w-10 h-10 text-slate-400" />
             </div>
           ) : (
-            <Circle className="w-24 h-24 text-[#FF5A1F] drop-shadow-[0_0_20px_rgba(255,90,31,0.6)]" />
+            <Circle className="w-24 h-24 text-[#D4AF37] drop-shadow-[0_0_20px_rgba(255,90,31,0.6)]" />
           )}
           
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center pointer-events-none">
-             <div className="bg-[#FF5A1F] text-white px-6 py-2 rounded-lg font-black text-2xl uppercase tracking-widest shadow-lg -rotate-6 transform scale-110 whitespace-nowrap border-b-4 border-orange-700">
+             <div className="bg-[#D4AF37] text-white px-6 py-2 rounded-lg font-black text-2xl uppercase tracking-widest shadow-lg -rotate-6 transform scale-110 whitespace-nowrap border-b-4 border-primary-700">
                {isWin ? 'YOU WIN!' : isDraw ? 'IT\'S A TIE!' : 'YOU LOSE!'}
              </div>
           </div>
@@ -124,7 +124,7 @@ export default function TicTacResult({ result, mode, onPlayAgain, onHome, claimR
             {[...Array(9)].map((_, idx) => (
               <div key={idx} className="bg-slate-100 rounded-lg flex items-center justify-center">
                  {result?.combo?.includes(idx) && (
-                   result.winner === 'X' ? <XIcon className="w-6 h-6 text-[#071226]" strokeWidth={3} /> : <Circle className="w-5 h-5 text-[#FF5A1F]" strokeWidth={4} />
+                   result.winner === 'X' ? <XIcon className="w-6 h-6 text-[#071226]" strokeWidth={3} /> : <Circle className="w-5 h-5 text-[#D4AF37]" strokeWidth={4} />
                  )}
               </div>
             ))}
@@ -137,7 +137,7 @@ export default function TicTacResult({ result, mode, onPlayAgain, onHome, claimR
                 y1={`${Math.floor(result.combo[0] / 3) * 33.33 + 16.66}%`}
                 x2={`${(result.combo[2] % 3) * 33.33 + 16.66}%`}
                 y2={`${Math.floor(result.combo[2] / 3) * 33.33 + 16.66}%`}
-                stroke={result.winner === 'X' ? "#071226" : "#FF5A1F"}
+                stroke={result.winner === 'X' ? "#071226" : "#D4AF37"}
                 strokeWidth="4"
                 strokeLinecap="round"
               />
@@ -189,7 +189,7 @@ export default function TicTacResult({ result, mode, onPlayAgain, onHome, claimR
         </button>
         <button
           onClick={handleHome}
-          className="flex-1 bg-[#FF5A1F] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.4)] hover:shadow-[0_0_30px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
+          className="flex-1 bg-[#D4AF37] text-white font-black text-sm py-4 rounded-2xl shadow-[0_0_20px_rgba(255,90,31,0.4)] hover:shadow-[0_0_30px_rgba(255,90,31,0.6)] active:scale-95 transition-all"
         >
           BACK TO HOME
         </button>

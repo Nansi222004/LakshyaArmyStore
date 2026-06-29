@@ -170,7 +170,7 @@ const Returns = () => {
   const StatusBadge = ({ status }) => {
     const styles = {
       'Requested': 'bg-amber-50 text-amber-600 border-amber-100',
-      'Approved': 'bg-blue-50 text-blue-600 border-blue-100',
+      'Approved': 'bg-primary-50 text-primary-600 border-primary-100',
       'Rejected': 'bg-red-50 text-red-600 border-red-100',
       'Pick-up Scheduled': 'bg-indigo-50 text-indigo-600 border-indigo-100',
       'Received': 'bg-purple-50 text-purple-600 border-purple-100',
@@ -187,7 +187,7 @@ const Returns = () => {
   const getAvailableActions = (status) => {
     const map = {
       'Requested': [
-        { label: 'Approve', status: 'Approved', icon: CheckCircle2, color: 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-100' },
+        { label: 'Approve', status: 'Approved', icon: CheckCircle2, color: 'bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-100' },
         { label: 'Reject', status: 'Rejected', icon: Ban, color: 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-100' }
       ],
       'Approved': [
@@ -224,7 +224,7 @@ const Returns = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
           { label: 'Open Requests', value: stats.requestedCount.toString(), icon: RotateCcw, color: 'text-amber-600', bg: 'bg-amber-50' },
-          { label: 'Approved', value: stats.approvedCount.toString(), icon: CheckCircle2, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Approved', value: stats.approvedCount.toString(), icon: CheckCircle2, color: 'text-primary-600', bg: 'bg-primary-50' },
           { label: 'Refunded Today', value: `₹${stats.refundedTodayAmount.toLocaleString()}`, icon: DollarSign, color: 'text-green-600', bg: 'bg-green-50' },
           { label: 'Avg Resolution', value: `${stats.avgResolutionDays} Days`, icon: Clock, color: 'text-indigo-600', bg: 'bg-indigo-50' },
         ].map((stat, i) => (
@@ -251,7 +251,7 @@ const Returns = () => {
               placeholder="Search by user name, phone, email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm text-slate-700 font-medium placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-200 transition-all"
+              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm text-slate-700 font-medium placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-200 transition-all"
             />
           </div>
 
@@ -263,7 +263,7 @@ const Returns = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                   activeTab === tab 
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+                  ? 'bg-primary-600 text-white shadow-lg shadow-primary-100' 
                   : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                 }`}
               >
@@ -276,7 +276,7 @@ const Returns = () => {
         {/* Loading */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-3">
-            <RefreshCw className="animate-spin text-blue-500" size={28} />
+            <RefreshCw className="animate-spin text-primary-500" size={28} />
             <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading returns...</p>
           </div>
         ) : returns.length === 0 ? (
@@ -304,7 +304,7 @@ const Returns = () => {
                   {returns.map((item) => (
                     <tr key={item._id} className="group hover:bg-slate-50/50 transition-colors">
                       <td className="px-6 py-5">
-                        <span className="text-xs font-black text-blue-600 font-roboto">RET-{getReturnId(item)}</span>
+                        <span className="text-xs font-black text-primary-600 font-roboto">RET-{getReturnId(item)}</span>
                       </td>
                       <td className="px-6 py-5">
                         <div>
@@ -317,7 +317,7 @@ const Returns = () => {
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center text-[10px] font-black uppercase">
+                          <div className="w-7 h-7 bg-primary-50 text-primary-500 rounded-lg flex items-center justify-center text-[10px] font-black uppercase">
                             {getUserName(item).substring(0, 1)}
                           </div>
                           <span className="text-xs font-bold text-slate-700">{getUserName(item)}</span>
@@ -338,7 +338,7 @@ const Returns = () => {
                         <div className="flex justify-end gap-2">
                           <button 
                             onClick={() => handleManage(item)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all"
+                            className="px-4 py-2 bg-primary-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all"
                           >
                             Manage
                           </button>
@@ -398,7 +398,7 @@ const Returns = () => {
             >
               {detailLoading || !selectedReturn ? (
                 <div className="flex flex-col items-center justify-center h-full space-y-4">
-                  <RefreshCw className="animate-spin text-blue-500" size={28} />
+                  <RefreshCw className="animate-spin text-primary-500" size={28} />
                   <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading details...</p>
                 </div>
               ) : (
@@ -423,11 +423,11 @@ const Returns = () => {
                     {/* Customer */}
                     <div className="bg-slate-50 p-5 rounded-2xl space-y-3">
                       <div className="flex items-center gap-2">
-                        <User size={16} className="text-blue-500" />
+                        <User size={16} className="text-primary-500" />
                         <p className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Customer</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-black uppercase">
+                        <div className="w-10 h-10 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center text-sm font-black uppercase">
                           {(selectedReturn.userId?.name || 'G').substring(0, 1)}
                         </div>
                         <div>
@@ -480,7 +480,7 @@ const Returns = () => {
                               <p className="text-sm font-bold text-slate-900 truncate">{item.name}</p>
                               <p className="text-[10px] text-slate-400 font-bold mt-0.5">Qty: {item.quantity} • ₹{item.price?.toLocaleString()}</p>
                             </div>
-                            <p className="text-sm font-black text-blue-600 font-roboto">₹{(item.price * item.quantity).toLocaleString()}</p>
+                            <p className="text-sm font-black text-primary-600 font-roboto">₹{(item.price * item.quantity).toLocaleString()}</p>
                           </div>
                         ))}
                       </div>
@@ -574,7 +574,7 @@ const Returns = () => {
                         onChange={(e) => setAdminNotes(e.target.value)}
                         placeholder="Add internal notes about this return..."
                         rows={3}
-                        className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm text-slate-700 font-medium placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-200 transition-all resize-none"
+                        className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm text-slate-700 font-medium placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-200 transition-all resize-none"
                       />
                     </div>
 

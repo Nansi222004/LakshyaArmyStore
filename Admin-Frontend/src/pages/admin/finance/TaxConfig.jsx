@@ -25,7 +25,7 @@ const TaxConfig = () => {
           <h1 className="text-4xl font-semibold text-slate-900 tracking-tight font-montserrat uppercase">Tax & Compliance</h1>
           <p className="text-slate-500 font-medium mt-1 font-raleway">Configure GST slabs, HSN codes and category-wise tax rules.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 transition-all">
+        <button className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 transition-all">
           <Plus size={16} />
           Add Tax Slab
         </button>
@@ -57,7 +57,7 @@ const TaxConfig = () => {
                         {slabs.map((slab) => (
                            <tr key={slab.id} className="hover:bg-slate-50/50 transition-colors">
                               <td className="px-6 py-5 font-bold text-slate-900">{slab.category}</td>
-                              <td className="px-6 py-5 font-black text-blue-600 font-roboto">{slab.gst}</td>
+                              <td className="px-6 py-5 font-black text-primary-600 font-roboto">{slab.gst}</td>
                               <td className="px-6 py-5 font-bold text-slate-400 font-roboto">{slab.hsn}</td>
                               <td className="px-6 py-5">
                                  <span className="px-3 py-1 bg-green-50 text-green-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-green-100">
@@ -65,7 +65,7 @@ const TaxConfig = () => {
                                  </span>
                               </td>
                               <td className="px-6 py-5 text-right">
-                                 <button className="p-2 text-slate-300 hover:text-blue-500 transition-all">
+                                 <button className="p-2 text-slate-300 hover:text-primary-500 transition-all">
                                     <Edit2 size={16} />
                                  </button>
                               </td>
@@ -90,7 +90,7 @@ const TaxConfig = () => {
                         <p className="text-[10px] font-black text-slate-900 uppercase tracking-tight">Inclusive Pricing</p>
                         <p className="text-[8px] text-slate-400 font-bold uppercase">Display prices with tax</p>
                      </div>
-                     <div className="w-10 h-5 bg-blue-600 rounded-full relative cursor-pointer">
+                     <div className="w-10 h-5 bg-primary-600 rounded-full relative cursor-pointer">
                         <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-sm" />
                      </div>
                   </div>

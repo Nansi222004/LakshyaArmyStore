@@ -101,7 +101,7 @@ const ProductDetails = () => {
 
           {/* Highlights & Specs */}
           <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-            <SectionTitle icon={Info} color="bg-blue-50 text-blue-600">Highlights & Technical Specs</SectionTitle>
+            <SectionTitle icon={Info} color="bg-primary-50 text-primary-600">Highlights & Technical Specs</SectionTitle>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
               <div className="space-y-4">

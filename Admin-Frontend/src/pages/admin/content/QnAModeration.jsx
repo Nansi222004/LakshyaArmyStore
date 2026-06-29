@@ -147,7 +147,7 @@ const QnAModeration = () => {
             setAnswer('');
             setIsAdding(true);
           }}
-          className="flex items-center gap-2 px-6 py-4 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+          className="flex items-center gap-2 px-6 py-4 bg-primary-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
         >
           <Plus size={14} />
           Create FAQ
@@ -161,7 +161,7 @@ const QnAModeration = () => {
           <input 
             type="text" 
             placeholder="Search FAQs by question or answer..." 
-            className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-6 text-sm font-medium focus:ring-4 focus:ring-blue-50 transition-all outline-none" 
+            className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-6 text-sm font-medium focus:ring-4 focus:ring-primary-50 transition-all outline-none" 
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />
@@ -188,7 +188,7 @@ const QnAModeration = () => {
                 className="p-8 hover:bg-slate-50/50 transition-colors"
               >
                 <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary-50 text-primary-600 rounded-2xl flex items-center justify-center flex-shrink-0">
                      <HelpCircle size={24} />
                   </div>
                   <div className="flex-1 space-y-4">
@@ -206,7 +206,7 @@ const QnAModeration = () => {
                             setAnswer(item.answer);
                             setIsAdding(true);
                           }}
-                          className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all"
+                          className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-all"
                           title="Edit FAQ"
                         >
                           <Edit2 size={16} />
@@ -221,12 +221,12 @@ const QnAModeration = () => {
                       </div>
                     </div>
 
-                    <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 flex items-start gap-4">
-                      <div className="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="bg-primary-50/50 border border-primary-100 rounded-2xl p-5 flex items-start gap-4">
+                      <div className="w-8 h-8 bg-primary-500 text-white rounded-lg flex items-center justify-center flex-shrink-0">
                         <MessageCircle size={16} />
                       </div>
                       <div className="flex-1">
-                        <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">Answer</p>
+                        <p className="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-1">Answer</p>
                         <p className="text-sm text-slate-600 font-medium leading-relaxed whitespace-pre-wrap">
                           {item.answer}
                         </p>
@@ -273,7 +273,7 @@ const QnAModeration = () => {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Question</label>
                     <textarea 
                       placeholder="e.g. How can I track my shipment?" 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-medium focus:ring-4 focus:ring-blue-50 transition-all outline-none resize-none" 
+                      className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-medium focus:ring-4 focus:ring-primary-50 transition-all outline-none resize-none" 
                       rows={3}
                       value={question}
                       onChange={e => setQuestion(e.target.value)}
@@ -285,7 +285,7 @@ const QnAModeration = () => {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Answer</label>
                     <textarea 
                       placeholder="e.g. You can track your shipment using the link sent in the confirmation email." 
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-medium focus:ring-4 focus:ring-blue-50 transition-all outline-none resize-none" 
+                      className="w-full bg-slate-50 border border-slate-100 rounded-xl py-4 px-6 text-sm font-medium focus:ring-4 focus:ring-primary-50 transition-all outline-none resize-none" 
                       rows={6}
                       value={answer}
                       onChange={e => setAnswer(e.target.value)}
@@ -309,7 +309,7 @@ const QnAModeration = () => {
                   </button>
                   <button 
                     type="submit" 
-                    className="flex-1 py-4 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:scale-105 active:scale-95 transition-all"
+                    className="flex-1 py-4 bg-primary-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary-100 hover:scale-105 active:scale-95 transition-all"
                   >
                     {editingFaq ? 'Save Changes' : 'Publish FAQ'}
                   </button>

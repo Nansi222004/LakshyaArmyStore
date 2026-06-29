@@ -13,9 +13,9 @@ export default function SettingsPage() {
           onClick={() => navigate(-1)}
           className="p-2 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
         >
-          <ChevronLeft className="w-5 h-5 text-[#02006c]" />
+          <ChevronLeft className="w-5 h-5 text-[#2F3E16]" />
         </button>
-        <h1 className="text-lg font-bold text-[#02006c]">System Settings</h1>
+        <h1 className="text-lg font-bold text-[#2F3E16]">System Settings</h1>
       </div>
       
       <div className="p-4 flex flex-col items-center justify-center flex-1 text-slate-500">

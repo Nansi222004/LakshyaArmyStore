@@ -14,20 +14,20 @@ export default function WishlistPage() {
   return (
     <div className="flex-grow flex flex-col bg-white min-h-screen">
       {/* Elevated Sticky Header */}
-      <header className="sticky top-0 bg-orange-100 border-b border-orange-200/50 px-4 py-3 flex items-center justify-between z-40">
+      <header className="sticky top-0 bg-primary-100 border-b border-primary-200/50 px-4 py-3 flex items-center justify-between z-40">
         <div className="flex items-center gap-3">
           <button 
             onClick={() => navigate(-1)}
-            className="p-1 bg-white hover:bg-orange-50 border border-slate-100 rounded-full shadow-sm transition-colors active:scale-95 cursor-pointer text-[#02006c]"
+            className="p-1 bg-white hover:bg-primary-50 border border-slate-100 rounded-full shadow-sm transition-colors active:scale-95 cursor-pointer text-[#2F3E16]"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-1.5 -ml-1">
             <Lottie animationData={shoppingBagAnimation} loop={true} className="w-10 h-10" />
             <div className="flex flex-col justify-center">
-              <h1 className="text-sm font-black text-[#02006c] tracking-wide uppercase font-sans flex items-center gap-1.5 leading-tight">
+              <h1 className="text-sm font-black text-[#2F3E16] tracking-wide uppercase font-sans flex items-center gap-1.5 leading-tight">
                 My Picks
-                <Heart className="w-3.5 h-3.5 text-[#ee4923] fill-current" />
+                <Heart className="w-3.5 h-3.5 text-[#4B5320] fill-current" />
               </h1>
               <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest font-sans leading-tight">
                 Saved Treasures
@@ -35,7 +35,7 @@ export default function WishlistPage() {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1 bg-[#ee4923]/10 text-[#ee4923] px-2.5 py-0.5 rounded-full border border-[#ee4923]/15">
+        <div className="flex items-center gap-1 bg-[#4B5320]/10 text-[#4B5320] px-2.5 py-0.5 rounded-full border border-[#4B5320]/15">
           <span className="text-[8.5px] font-bold uppercase tracking-wider">{wishlist.length} Items</span>
         </div>
       </header>
@@ -68,11 +68,11 @@ export default function WishlistPage() {
               exit={{ opacity: 0, y: -15 }}
               className="bg-slate-50 border border-slate-100 rounded-3xl p-10 text-center space-y-4 max-w-sm mx-auto shadow-inner mt-12"
             >
-              <div className="w-16 h-16 bg-rose-50 text-[#ee4923] rounded-full flex items-center justify-center mx-auto shadow-md shadow-rose-500/10">
-                <Heart className="w-8 h-8 animate-pulse fill-current text-[#ee4923]" />
+              <div className="w-16 h-16 bg-rose-50 text-[#4B5320] rounded-full flex items-center justify-center mx-auto shadow-md shadow-rose-500/10">
+                <Heart className="w-8 h-8 animate-pulse fill-current text-[#4B5320]" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-sm font-black text-[#02006c] font-syne">Nothing saved yet!</h4>
+                <h4 className="text-sm font-black text-[#2F3E16] font-syne">Nothing saved yet!</h4>
                 <p className="text-[10px] text-slate-400 font-medium leading-relaxed font-sans">
                   Start browsing our collections and click the heart icon on your favorite gifts to save them here.
                 </p>
@@ -80,7 +80,7 @@ export default function WishlistPage() {
 
               <button
                 onClick={() => navigate('/')}
-                className="bg-[#ee4923] hover:bg-orange-600 active:scale-95 text-white text-[10px] font-black px-6 py-3 rounded-2xl shadow-md shadow-orange-500/25 transition-all duration-300 font-sans cursor-pointer"
+                className="bg-[#4B5320] hover:bg-primary-600 active:scale-95 text-white text-[10px] font-black px-6 py-3 rounded-2xl shadow-md shadow-primary-500/25 transition-all duration-300 font-sans cursor-pointer"
               >
                 EXPLORE PRODUCTS
               </button>

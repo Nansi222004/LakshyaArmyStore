@@ -33,7 +33,7 @@ const DeliveryOnboarding = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
           { label: 'Pending Review', value: '18', icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50' },
-          { label: 'Background Check', value: '12', icon: ShieldCheck, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Background Check', value: '12', icon: ShieldCheck, color: 'text-primary-500', bg: 'bg-primary-50' },
           { label: 'Approved Today', value: '5', icon: CheckCircle2, color: 'text-green-500', bg: 'bg-green-50' },
         ].map((stat, i) => (
           <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-5">
@@ -63,7 +63,7 @@ const DeliveryOnboarding = () => {
             >
               {/* Agent Profile */}
               <div className="flex items-center gap-5 flex-1 min-w-[250px]">
-                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-2xl font-black text-slate-400 border border-slate-100 shadow-inner group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-2xl font-black text-slate-400 border border-slate-100 shadow-inner group-hover:bg-primary-50 group-hover:text-primary-500 transition-colors">
                   {app.name.charAt(0)}
                 </div>
                 <div>
@@ -79,11 +79,11 @@ const DeliveryOnboarding = () => {
               {/* Status & Zone */}
               <div className="flex flex-col items-center md:items-start gap-2 flex-1">
                  <div className="flex items-center gap-1.5 text-[11px] font-black text-slate-600 uppercase tracking-tighter bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
-                    <MapPin size={12} className="text-blue-500" />
+                    <MapPin size={12} className="text-primary-500" />
                     Preferred Zone: <span className="text-slate-900 ml-1">{app.zone}</span>
                  </div>
                  <div className="flex items-center gap-2 mt-1">
-                    <div className={`w-2 h-2 rounded-full ${app.status === 'Pending' ? 'bg-amber-500' : 'bg-blue-500'}`} />
+                    <div className={`w-2 h-2 rounded-full ${app.status === 'Pending' ? 'bg-amber-500' : 'bg-primary-500'}`} />
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{app.status}</span>
                  </div>
               </div>

@@ -579,7 +579,7 @@ export default function InventoryList() {
   };
 
   const SortIcon = ({ col }) => (
-    <ArrowUpDown size={13} className={`ml-1 inline ${sortBy === col ? 'text-[#ee4923]' : 'text-slate-300'}`} />
+    <ArrowUpDown size={13} className={`ml-1 inline ${sortBy === col ? 'text-[#4B5320]' : 'text-slate-300'}`} />
   );
 
   return (
@@ -593,7 +593,7 @@ export default function InventoryList() {
         <div className="flex flex-wrap gap-3 shrink-0">
           <button 
             onClick={handleDownloadSample}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-blue-600 hover:bg-blue-50 transition-all shadow-sm"
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-primary-600 hover:bg-primary-50 transition-all shadow-sm"
           >
             <FileSpreadsheet size={15} />
             Sample Format
@@ -612,7 +612,7 @@ export default function InventoryList() {
           </button>
           <button
             onClick={() => navigate('/admin/inventory/add')}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#ee4923] text-white rounded-xl text-sm font-bold shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#4B5320] text-white rounded-xl text-sm font-bold shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all"
           >
             <Plus size={16} />
             Add Product
@@ -622,7 +622,7 @@ export default function InventoryList() {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Total Products" value={totalProducts} sub="In Inventory" icon={Package} color="bg-orange-50 text-[#ee4923]" />
+        <StatCard label="Total Products" value={totalProducts} sub="In Inventory" icon={Package} color="bg-orange-50 text-[#4B5320]" />
         <StatCard label="Live / Approved" value={approvedCount} sub="Currently active" icon={CheckCircle2} color="bg-green-50 text-green-500" />
         <StatCard label="Pending Review" value={pendingCount} sub="Awaiting approval" icon={AlertTriangle} color="bg-amber-50 text-amber-500" />
         <StatCard label="Out of Stock" value={outOfStockCount} sub="Needs restock" icon={XCircle} color="bg-red-50 text-red-400" />
@@ -633,7 +633,7 @@ export default function InventoryList() {
         <div className="flex flex-col md:flex-row gap-3">
           {/* Search */}
           <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#ee4923] transition-colors" size={16} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#4B5320] transition-colors" size={16} />
             <input
               type="text"
               value={search}
@@ -698,7 +698,7 @@ export default function InventoryList() {
               className="overflow-hidden"
             >
               <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-3">
-                <span className="text-[11px] font-black text-[#ee4923] uppercase tracking-widest">{selectedIds.length} selected</span>
+                <span className="text-[11px] font-black text-[#4B5320] uppercase tracking-widest">{selectedIds.length} selected</span>
                 <button 
                   onClick={handleBulkApprove}
                   className="px-3 py-1.5 bg-green-50 text-green-600 rounded-lg text-xs font-black border border-green-100 hover:bg-green-100 transition-all"
@@ -829,10 +829,10 @@ export default function InventoryList() {
                             <p className="text-sm font-black text-slate-900 leading-none">{product.name}</p>
                             <div className="flex flex-wrap gap-1 mt-1.5 items-center">
                               {product.discount && (
-                                <span className="text-[9px] font-black text-[#ee4923]">{product.discount} OFF</span>
+                                <span className="text-[9px] font-black text-[#4B5320]">{product.discount} OFF</span>
                               )}
                               {product.flags?.topSection && (
-                                <span className="text-[8px] font-black bg-blue-50 text-blue-600 px-1 py-0.5 rounded border border-blue-100 uppercase tracking-tight scale-95 origin-left">Top</span>
+                                <span className="text-[8px] font-black bg-primary-50 text-primary-600 px-1 py-0.5 rounded border border-primary-100 uppercase tracking-tight scale-95 origin-left">Top</span>
                               )}
                               {product.flags?.crazyDeals && (
                                 <span className="text-[8px] font-black bg-purple-50 text-purple-600 px-1 py-0.5 rounded border border-purple-100 uppercase tracking-tight scale-95 origin-left">Crazy</span>
@@ -929,7 +929,7 @@ export default function InventoryList() {
                           </button>
                           <button
                             onClick={() => navigate(`/admin/inventory/edit/${product.id}`)}
-                            className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-blue-50 hover:text-blue-500 transition-all"
+                            className="p-2 bg-slate-50 text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-500 transition-all"
                             title="Edit Product"
                           >
                             <Edit3 size={14} />
@@ -1017,7 +1017,7 @@ export default function InventoryList() {
                         onClick={() => setCurrentPage(pageNum)}
                         className={`w-7 h-7 rounded-md text-xs font-bold flex items-center justify-center transition-all ${
                           currentPage === pageNum 
-                            ? 'bg-[#ee4923] text-white shadow-sm' 
+                            ? 'bg-[#4B5320] text-white shadow-sm' 
                             : 'text-slate-500 hover:bg-slate-200'
                         }`}
                       >

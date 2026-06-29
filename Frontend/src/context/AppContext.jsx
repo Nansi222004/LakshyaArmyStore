@@ -192,7 +192,7 @@ export const AppProvider = ({ children }) => {
         const body = payload.notification?.body || '';
         toast((t) => (
           <div className="flex flex-col gap-1">
-            <span className="font-bold text-[#02006c]">{title}</span>
+            <span className="font-bold text-[#2F3E16]">{title}</span>
             <span className="text-xs text-slate-600">{body}</span>
           </div>
         ), {
