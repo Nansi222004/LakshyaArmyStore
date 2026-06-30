@@ -13,10 +13,10 @@ const app = express();
 
 // Allowed Origins for CORS
 const ALLOWED_ORIGINS = [
-  'https://mynzo.com',
-  'https://admin.mynzo.com',
-  'https://mynzoworld.com',
-  'https://admin.mynzoworld.com',
+  'https://lakshyaarmystore.com',
+  'https://admin.lakshyaarmystore.com',
+  'https://lakshyaarmystore.com',
+  'https://admin.lakshyaarmystore.com',
   'http://localhost:5173',
   'http://localhost:5174'
 ];
@@ -118,7 +118,7 @@ app.use('/cart', require('./Router/cartRoutes'));
 app.use('/orders', require('./Router/orderRoutes'));
 app.use('/api/payments', require('./Router/paymentRoutes'));
 app.use('/referral', require('./Router/referralRoutes'));
-app.use('/games', require('./Router/gameRoutes'));
+
 app.use('/reels', require('./Router/reelRoutes'));
 app.use('/analytics', require('./Router/analyticsRoutes'));
 app.use('/admin/analytics', require('./Router/analyticsRoutes'));
@@ -161,7 +161,7 @@ app.get('/health', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.json({ success: true, message: 'Mynzo API is running 🚀' });
+  res.json({ success: true, message: 'Lakshya API is running 🚀' });
 });
 
 // 404 handler

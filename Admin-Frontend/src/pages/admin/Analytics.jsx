@@ -51,7 +51,6 @@ const Analytics = () => {
   const [events, setEvents] = useState([]);
   const [searches, setSearches] = useState([]);
   const [products, setProducts] = useState(null);
-  const [games, setGames] = useState(null);
 
   // DAU Filters state
   const [dauRange, setDauRange] = useState('month'); // 'today', 'week', 'month', 'custom'
@@ -112,8 +111,7 @@ const Analytics = () => {
         funnelRes,
         eventsRes,
         searchRes,
-        productsRes,
-        gamesRes
+        productsRes
       ] = await Promise.all([
         safeFetch('overview'),
         safeFetch(`dau?range=${dauRange}&startDate=${customStartDate}&endDate=${customEndDate}`),
@@ -122,8 +120,7 @@ const Analytics = () => {
         safeFetch('funnel'),
         safeFetch('events'),
         safeFetch('search'),
-        safeFetch('products/top'),
-        safeFetch('games')
+        safeFetch('products/top')
       ]);
 
       if (overviewRes) setOverview(overviewRes);
@@ -134,7 +131,6 @@ const Analytics = () => {
       if (eventsRes) setEvents(eventsRes);
       if (searchRes) setSearches(searchRes);
       if (productsRes) setProducts(productsRes);
-      if (gamesRes) setGames(gamesRes);
 
     } catch (err) {
       console.error(err);
@@ -180,7 +176,7 @@ const Analytics = () => {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `mynzo_analytics_report_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `lakshya_analytics_report_${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -431,43 +427,7 @@ const Analytics = () => {
 
       {/* Game Analytics & Search Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-         {/* Game Plays analytics */}
-         <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight mb-2 font-montserrat">Game Playground Activity</h3>
-              <p className="text-xs text-slate-400 font-bold mb-6 uppercase">Game Plays, Streaks, and Reward Coins distribution</p>
-              
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                 <div className="p-4 bg-orange-50/50 rounded-2xl border border-orange-100/50 text-center">
-                    <Gamepad2 className="w-6 h-6 text-orange-500 mx-auto mb-2" />
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block leading-none">Total Plays</span>
-                    <span className="text-lg font-black text-slate-800 font-roboto mt-1 block leading-none">{games?.totalPlays || 0}</span>
-                 </div>
-                 <div className="p-4 bg-primary-50/50 rounded-2xl border border-primary-100/50 text-center">
-                    <Users className="w-6 h-6 text-primary-500 mx-auto mb-2" />
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block leading-none">Unique Players</span>
-                    <span className="text-lg font-black text-slate-800 font-roboto mt-1 block leading-none">{games?.uniqueUsers || 0}</span>
-                 </div>
-                 <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100/50 text-center">
-                    <Coins className="w-6 h-6 text-emerald-500 mx-auto mb-2" />
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block leading-none">Coins Claimed</span>
-                    <span className="text-lg font-black text-slate-800 font-roboto mt-1 block leading-none">{games?.totalPointsAwarded || 0}</span>
-                 </div>
-              </div>
-            </div>
-            
-            {games?.dailyPlays && games.dailyPlays.length > 0 && (
-              <div className="h-[150px]">
-                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={games.dailyPlays}>
-                       <XAxis dataKey="_id" tick={{fontSize: 9, fill: '#94a3b8'}} />
-                       <Tooltip />
-                       <Bar dataKey="count" fill="#ff7f50" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                 </ResponsiveContainer>
-              </div>
-            )}
-         </div>
+
 
          {/* Search Queries analytics */}
          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-8">

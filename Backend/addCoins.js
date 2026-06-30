@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URL = 'mongodb://mohammadrehan00121_db_user:OEQpI7e4loBYudaV@ac-hcoqomx-shard-00-00.x8ddlwp.mongodb.net:27017,ac-hcoqomx-shard-00-01.x8ddlwp.mongodb.net:27017,ac-hcoqomx-shard-00-02.x8ddlwp.mongodb.net:27017/Mynzo-Test?ssl=true&replicaSet=atlas-scmpry-shard-0&authSource=admin&appName=Cluster0';
+const MONGODB_URL = 'mongodb://mohammadrehan00121_db_user:OEQpI7e4loBYudaV@ac-hcoqomx-shard-00-00.x8ddlwp.mongodb.net:27017,ac-hcoqomx-shard-00-01.x8ddlwp.mongodb.net:27017,ac-hcoqomx-shard-00-02.x8ddlwp.mongodb.net:27017/Lakshya-Test?ssl=true&replicaSet=atlas-scmpry-shard-0&authSource=admin&appName=Cluster0';
 
 const userSchema = new mongoose.Schema({
   referralCoins: {

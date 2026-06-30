@@ -188,7 +188,7 @@ export default function WalletPage() {
                 </div>
                 <p className="text-indigo-200 text-[10px] font-bold tracking-wider uppercase mb-0.5">Coins Balance</p>
                 <h2 className="text-2xl font-black tracking-tight">{coins}</h2>
-                <span className="text-[10px] text-indigo-300 font-semibold mt-1">Mynzo Coins</span>
+                <span className="text-[10px] text-indigo-300 font-semibold mt-1">Lakshya Coins</span>
               </div>
               
               {/* Wallet Cash Balance */}
@@ -206,13 +206,13 @@ export default function WalletPage() {
           {/* Quick Actions */}
           <div className="grid grid-cols-2 gap-3">
             <button 
-              onClick={() => navigate('/games')}
+              onClick={() => navigate('/refer')}
               className="bg-white rounded-xl p-3 flex flex-col items-center justify-center gap-1.5 shadow-sm border border-slate-100 hover:border-primary-200 hover:shadow-md transition-all active:scale-95 group"
             >
               <div className="w-9 h-9 bg-[#4B5320]/10 rounded-full flex items-center justify-center group-hover:bg-[#4B5320]/20 transition-colors">
                 <Coins className="w-4 h-4 text-[#4B5320]" />
               </div>
-              <span className="text-xs font-bold text-[#2F3E16]">Play & Earn</span>
+              <span className="text-xs font-bold text-[#2F3E16]">Refer & Earn</span>
             </button>
             
             <button 

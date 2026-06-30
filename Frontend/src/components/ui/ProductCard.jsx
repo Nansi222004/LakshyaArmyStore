@@ -29,7 +29,7 @@ function ProductCard({ product }) {
       case 'tee':
       case 'pants':
       case 'outfit': return 'Roadster';
-      default: return 'Mynzo Originals';
+      default: return 'Lakshya Originals';
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Heart, ShoppingCart, MapPin, ChevronDown, Search, Camera, Mic, Scan, X, Crosshair, MoreHorizontal, Home, Plus, Gamepad2 } from 'lucide-react';
+import { Bell, Heart, ShoppingCart, MapPin, ChevronDown, Search, Camera, Mic, Scan, X, Crosshair, MoreHorizontal, Home, Plus } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import toast from '../../utils/toast';
@@ -319,18 +319,7 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Fun Zone / Games button highlight */}
-            <button 
-              onClick={() => navigate('/games')}
-              className="relative overflow-hidden group active:scale-95 text-white rounded-lg shadow-md transition-all duration-300 w-[42px] h-[42px] flex items-center justify-center flex-shrink-0 bg-white/20 backdrop-blur-md border border-white/40 hover:bg-white/30"
-            >
-              <Gamepad2 className="w-5 h-5 drop-shadow-sm" />
-              {/* Little ping animation to highlight it */}
-              <span className="absolute -top-1.5 -right-1.5 flex h-3.5 w-3.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-white shadow-sm"></span>
-              </span>
-            </button>
+
           </div>
         </div>
       </header>

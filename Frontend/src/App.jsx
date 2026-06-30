@@ -8,7 +8,7 @@ import Layout from './components/layout/Layout';
 const Home               = lazy(() => import('./pages/Home'));
 const CategoriesPage     = lazy(() => import('./pages/CategoriesPage'));
 const StudioPage         = lazy(() => import('./pages/StudioPage'));
-const GamesPage          = lazy(() => import('./pages/GamesPage'));
+
 const CartPage           = lazy(() => import('./pages/CartPage'));
 const ProfilePage        = lazy(() => import('./pages/ProfilePage'));
 const LoginPage          = lazy(() => import('./pages/LoginPage'));
@@ -64,7 +64,7 @@ function AppContent() {
   }, [location.pathname, location.search]);
 
   useEffect(() => {
-    const protectedRoutes = ['/cart', '/wishlist', '/orders', '/games', '/refer', '/saved-addresses', '/wallet'];
+    const protectedRoutes = ['/cart', '/wishlist', '/orders', '/refer', '/saved-addresses', '/wallet'];
     const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
 
     if (!user && isProtectedRoute) {
@@ -85,7 +85,7 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/studio" element={<StudioPage />} />
-        <Route path="/games" element={<GamesPage />} />
+
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/orders" element={<OrdersPage />} />

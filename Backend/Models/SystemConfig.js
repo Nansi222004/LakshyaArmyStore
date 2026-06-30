@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const systemConfigSchema = new mongoose.Schema({
-  platformName: { type: String, default: 'Mynzo' },
-  supportEmail: { type: String, default: 'support@mynzo.com' },
+  platformName: { type: String, default: 'Lakshya' },
+  supportEmail: { type: String, default: 'support@lakshyaarmystore.com' },
   helpline: { type: String, default: '+91 1800 123 4567' },
   currency: { type: String, default: 'INR (₹)' },
   commission: { type: Number, default: 10 },

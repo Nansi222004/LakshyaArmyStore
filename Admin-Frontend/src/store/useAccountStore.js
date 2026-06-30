@@ -3,7 +3,7 @@ import { create } from 'zustand';
 const useAccountStore = create((set) => ({
   userProfile: {
     name: 'Harsh Pandey',
-    email: 'harsh.vendor@Cocio.com',
+    email: 'admin@lakshya.com',
     phone: '9876543210',
     gender: 'Male',
     dob: '1995-05-15',

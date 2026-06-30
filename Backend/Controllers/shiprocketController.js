@@ -351,7 +351,7 @@ exports.syncOrderStatus = async (req, res) => {
                 const latestTrack = shipmentTrack[0];
                 const currentStatus = latestTrack.current_status;
 
-                // Map to Mynzo status
+                // Map to Lakshya status
                 let mappedStatus = order.status;
                 const srStatus = currentStatus ? String(currentStatus).toUpperCase().trim() : '';
 
@@ -469,7 +469,7 @@ exports.webhookReceiver = async (req, res) => {
         }
 
         if (order) {
-            // Map Shiprocket status to Mynzo status
+            // Map Shiprocket status to Lakshya status
             let mappedStatus = order.status;
             const srStatus = currentStatus ? String(currentStatus).toUpperCase().trim() : '';
 
@@ -522,7 +522,7 @@ exports.webhookReceiver = async (req, res) => {
                         let phone = order.userId.phone.toString().replace(/\D/g, '');
                         if (phone.length === 10) phone = '91' + phone;
 
-                        const msg = `Dear Customer, your Mynzo order tracking update: Status is now ${currentStatus || mappedStatus}.`;
+                        const msg = `Dear Customer, your Lakshya order tracking update: Status is now ${currentStatus || mappedStatus}.`;
                         const smsSenderId = process.env.SMS_SENDER_ID || 'IIDMTB';
                         let smsUrl = `https://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=${smsApiKey}&msisdn=${phone}&sid=${smsSenderId}&msg=${encodeURIComponent(msg)}&fl=0&gwid=2`;
                         const smsPeId = process.env.SMS_PE_ID;
@@ -608,7 +608,7 @@ exports.createShiprocketOrderForExisting = async (req, res) => {
             billing_pincode: order.deliveryAddress.pincode,
             billing_state: cityState.state,
             billing_country: 'India',
-            billing_email: user.email || 'customer@mynzo.com',
+            billing_email: user.email || 'customer@lakshyaarmystore.com',
             billing_phone: user.phone || '9876543210',
             shipping_is_billing: true,
             order_items: order.items.map(item => ({

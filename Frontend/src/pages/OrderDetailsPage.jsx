@@ -205,7 +205,7 @@ export default function OrderDetailsPage() {
       const itemsText = orderItems.map(item => `${item.quantity}x ${item.name} - ₹${item.price}`).join('\n');
       const invoiceContent = `
 =========================================
-               MYNZO INVOICE
+               LAKSHYA INVOICE
 =========================================
 Order ID: ${id}
 Date: ${globalOrder?.date || new Date().toLocaleDateString()}
@@ -217,7 +217,7 @@ ${itemsText}
 Total Amount:       ₹${orderTotal}
 Paid By:            ${globalOrder?.paymentMethod || 'UPI'}
 
-Thank you for shopping with Mynzo!
+Thank you for shopping with Lakshya!
 =========================================
 `;
       const blob = new Blob([invoiceContent], { type: 'text/plain' });
@@ -625,7 +625,7 @@ Thank you for shopping with Mynzo!
            onClick={() => navigate('/')}
            className="w-full border border-[#4B5320] text-[#4B5320] font-bold text-[13px] py-2.5 rounded-lg hover:bg-[#4B5320]/5 active:bg-[#4B5320]/10 transition-colors"
          >
-           Shop more from Mynzo
+           Shop more from Lakshya
          </button>
       </div>
 

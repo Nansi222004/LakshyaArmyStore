@@ -49,7 +49,7 @@ const sections = [
     iconColor: 'text-rose-500',
     title: 'Your Rights',
     content:
-      'You have the right to access, correct, or delete the personal data we hold about you. You may also opt out of marketing communications at any time. To exercise any of these rights, please contact us at privacy@mynzo.com and we will respond within 30 days.',
+      'You have the right to access, correct, or delete the personal data we hold about you. You may also opt out of marketing communications at any time. To exercise any of these rights, please contact us at privacy@lakshyaarmystore.com and we will respond within 30 days.',
   },
 ];
 
@@ -156,8 +156,8 @@ export default function PrivacyPage() {
             <h4 className="text-[13px] font-bold text-[#2F3E16] mb-0.5">Questions about privacy?</h4>
             <p className="text-[12px] text-slate-500 font-medium leading-snug">
               Reach out to us at{' '}
-              <a href="mailto:privacy@mynzo.com" className="text-[#4B5320] font-bold hover:underline">
-                privacy@mynzo.com
+              <a href="mailto:privacy@lakshyaarmystore.com" className="text-[#4B5320] font-bold hover:underline">
+                privacy@lakshyaarmystore.com
               </a>{' '}
               and our team will get back to you within 30 days.
             </p>

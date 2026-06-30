@@ -4,7 +4,7 @@ const CoinTransaction = require('../Models/CoinTransaction');
 
 // Helper: generate unique 8-char code from user's name/phone
 const generateReferralCode = (user) => {
-  const base = (user.name || user.phone || 'MYNZO').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4).padEnd(4, 'X');
+  const base = (user.name || user.phone || 'LAKSHYA').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4).padEnd(4, 'X');
   const suffix = Math.random().toString(36).substring(2, 6).toUpperCase();
   return `${base}${suffix}`;
 };

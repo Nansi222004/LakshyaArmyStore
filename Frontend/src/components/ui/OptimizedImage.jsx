@@ -11,11 +11,11 @@ import { getImageUrl } from '../../utils/imageHelper';
 
 // Category-specific gradient fallbacks (colourful so nothing looks blank)
 const FALLBACK_GRADIENTS = {
-  banner:     'linear-gradient(135deg, #f97316 0%, #ec4899 100%)',
-  category:   'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-  product:    'linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)',
-  subcategory:'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-  default:    'linear-gradient(135deg, #64748b 0%, #94a3b8 100%)',
+  banner:     'linear-gradient(135deg, #4B5320 0%, #2F3E16 100%)',
+  category:   'linear-gradient(135deg, #F8F9F5 0%, #E2E8F0 100%)',
+  product:    'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)',
+  subcategory:'linear-gradient(135deg, #F8F9F5 0%, #E2E8F0 100%)',
+  default:    'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)',
 };
 
 export default function OptimizedImage({

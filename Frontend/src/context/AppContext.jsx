@@ -2,8 +2,7 @@ import React, { createContext, useState, useContext, useEffect, useRef } from 'r
 import { io } from 'socket.io-client';
 import { CRAZY_DEALS } from '../data/mockData';
 import toast from 'react-hot-toast';
-import { requestFcmToken, messaging } from '../firebase';
-import { onMessage } from 'firebase/messaging';
+import { requestFcmToken, messaging, onMessage } from '../firebase';
 import analytics from '../utils/analytics';
 
 const AppContext = createContext();
@@ -50,7 +49,7 @@ export const AppProvider = ({ children }) => {
     if (loggedIn === 'true') {
       return {
         name: 'Vini',
-        email: 'vini@mynzoworld.com',
+        email: 'vini@lakshyaarmystore.com',
         tier: 'Gold Tier Gifter',
         joined: 'Member since May 2026'
       };
@@ -103,7 +102,7 @@ export const AppProvider = ({ children }) => {
         rating: p.rating || 0,
         type: (p.category || '').toLowerCase(),
         image: p.images && p.images[0] ? p.images[0] : '',
-        brandName: p.brandName || 'Mynzo Originals',
+        brandName: p.brandName || 'Lakshya Originals',
         sales: p.sales || 0,
         quantity: item.quantity,
         weight: p.shippingSpecs?.weight || 0.5,
@@ -246,7 +245,7 @@ export const AppProvider = ({ children }) => {
           rating: p.rating || 0,
           type: (p.category || '').toLowerCase(),
           image: p.images && p.images[0] ? p.images[0] : '',
-          brandName: p.brandName || 'Mynzo Originals',
+          brandName: p.brandName || 'Lakshya Originals',
           sales: p.sales || 0
         }));
         setWishlist(normalised);
@@ -268,7 +267,7 @@ export const AppProvider = ({ children }) => {
               rating: product.rating || 0,
               type: (product.category || '').toLowerCase(),
               image: product.images && product.images[0] ? product.images[0] : '',
-              brandName: product.brandName || 'Mynzo Originals',
+              brandName: product.brandName || 'Lakshya Originals',
               sales: product.sales || 0
             };
             return [...prev, normalised];

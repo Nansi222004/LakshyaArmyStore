@@ -1,11 +1,11 @@
 const LegalPolicy = require('../Models/LegalPolicy');
 
 // Default initial content
-const DEFAULT_PRIVACY = `Privacy Policy for Mynzo
+const DEFAULT_PRIVACY = `Privacy Policy for Lakshya
 
 Last Updated: June 2026
 
-At Mynzo, we take your privacy seriously. This policy describes how we collect, use, and protect your personal data when you use our marketplace.
+At Lakshya, we take your privacy seriously. This policy describes how we collect, use, and protect your personal data when you use our marketplace.
 
 1. DATA COLLECTION
 We collect information that you provide when creating an account, such as your business name, email address, and contact details.
@@ -16,10 +16,10 @@ We use your information to facilitate transactions, provide customer support, an
 3. DATA PROTECTION
 We implement industry-standard security measures to ensure the safety of your personal information.`;
 
-const DEFAULT_TERMS = `Terms & Conditions for Mynzo
+const DEFAULT_TERMS = `Terms & Conditions for Lakshya
 
 1. ACCEPTANCE OF TERMS
-By accessing and using the Mynzo platform, you agree to comply with these terms.
+By accessing and using the Lakshya platform, you agree to comply with these terms.
 
 2. VENDOR OBLIGATIONS
 Vendors must provide accurate product information and maintain professional standards of service.

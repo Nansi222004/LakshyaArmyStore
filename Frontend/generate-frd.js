@@ -35,14 +35,14 @@ const doc = new Document({
                 spacing: { after: 400 }
             }),
             new Paragraph({
-                text: "Project: Mynzo E-Commerce Application",
+                text: "Project: Lakshya E-Commerce Application",
                 heading: HeadingLevel.HEADING_2,
                 alignment: AlignmentType.CENTER,
                 spacing: { after: 400 }
             }),
 
             createSectionHeading("1. Introduction"),
-            createParagraph("The purpose of this document is to outline the functional requirements for the Mynzo E-Commerce Application. This system is a modern, gamified e-commerce platform built with React, focusing on a rich user experience, dynamic interactions, and comprehensive shopping features."),
+            createParagraph("The purpose of this document is to outline the functional requirements for the Lakshya E-Commerce Application. This system is a modern, gamified e-commerce platform built with React, focusing on a rich user experience, dynamic interactions, and comprehensive shopping features."),
 
             createSectionHeading("2. System Overview"),
             createParagraph("The application is currently developed as a Single Page Application (SPA) using the following frontend technologies:"),
@@ -106,6 +106,6 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then((buffer) => {
-    fs.writeFileSync("Mynzo_FRD.docx", buffer);
-    console.log("Document created successfully as Mynzo_FRD.docx");
+    fs.writeFileSync("Lakshya_FRD.docx", buffer);
+    console.log("Document created successfully as Lakshya_FRD.docx");
 });

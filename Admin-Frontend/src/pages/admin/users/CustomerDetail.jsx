@@ -219,7 +219,7 @@ const CustomerDetail = () => {
                <div className="relative z-10">
                   <p className="text-[10px] font-black uppercase tracking-widest opacity-60">Admin Notes</p>
                   <p className="text-[11px] opacity-80 mt-4 leading-relaxed font-medium italic font-raleway">
-                     "Customer is highly active on the Mynzo platform. Coin wallet is synced and monitored."
+                     "Customer is highly active on the Lakshya platform. Coin wallet is synced and monitored."
                   </p>
                </div>
             </div>

@@ -53,7 +53,7 @@ const Dashboard = () => {
     let csvContent = "\uFEFF"; // Add BOM for Excel UTF-8 support
     
     // Header
-    csvContent += "Mynzo Admin System Report\n";
+    csvContent += "Lakshya Admin System Report\n";
     csvContent += `Generated At,${new Date().toLocaleString()}\n\n`;
     
     // Overview Metrics
@@ -94,7 +94,7 @@ const Dashboard = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `mynzo_admin_report_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute("download", `lakshya_admin_report_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -356,7 +356,6 @@ const Dashboard = () => {
               (stats?.recentActivities || [
                 { title: 'New Order Placed', desc: 'Order of ₹1,499 placed by Rohan Sharma', time: '5 mins ago', icon: 'ShoppingBag', color: 'text-primary-500', bg: 'bg-primary-50' },
                 { title: 'New Customer Signup', desc: 'Sneha Patel registered on the platform', time: '15 mins ago', icon: 'Users', color: 'text-green-500', bg: 'bg-green-50' },
-                { title: 'Game Played', desc: 'Amit Kumar won 150 coins in Spin the Wheel', time: '1 hour ago', icon: 'TrendingUp', color: 'text-amber-500', bg: 'bg-amber-50' },
                 { title: 'Order Delivered', desc: 'Order #ORD10243 successfully delivered', time: '2 hours ago', icon: 'CheckCircle2', color: 'text-emerald-500', bg: 'bg-emerald-50' },
               ]).map((activity, i) => {
                 const IconComponent = iconMap[activity.icon] || Clock;

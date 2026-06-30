@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Gift, Gamepad2, Gem, Heart, LayoutGrid, Compass, HelpCircle, Layers, MapPin, Trophy, ShieldAlert, Truck, RotateCcw, ShieldCheck, Tag, ChevronRight } from 'lucide-react';
+import { Sparkles, Gift, Gamepad2, Gem, Heart, LayoutGrid, Compass, HelpCircle, Layers, MapPin, Trophy, ShieldAlert, Truck, RotateCcw, ShieldCheck, Tag, ChevronRight, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { CATEGORIES, BANNERS, VALUE_PROPS } from '../data/mockData';
 import { useApp } from '../context/AppContext';
@@ -219,11 +219,7 @@ export default function Home() {
     switch (id) {
       case 'for-you':
         return (
-          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current" stroke={strokeColor} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <path d="M16 10a4 4 0 0 1-8 0" />
-          </svg>
+          <Star className={`w-6 h-6 transition-all duration-300 ${isActive ? 'text-white fill-white' : 'text-[#4B5320] fill-[#4B5320]'}`} />
         );
       case 'beauty':
         return (
@@ -308,7 +304,7 @@ export default function Home() {
     rating: p.rating || 4.5,
     type: (p.category || '').toLowerCase(),
     image: (p.images && p.images[0]) ? p.images[0] : '',
-    brandName: p.brandName || 'Mynzo Originals',
+    brandName: p.brandName || 'Lakshya Originals',
     flags: p.flags || {},
     stock: p.stock || 0,
     sales: p.sales || 0,

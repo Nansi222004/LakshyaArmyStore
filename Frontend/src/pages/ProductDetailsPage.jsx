@@ -249,7 +249,7 @@ export default function ProductDetailsPage() {
             type: (p.category || '').toLowerCase(),
             image: getImageUrl(productImages[0]),
             images: productImages.map(getImageUrl),
-            brandName: p.brandName || 'Mynzo Originals',
+            brandName: p.brandName || 'Lakshya Originals',
             flags: p.flags || {},
             stock: p.stock || 0,
             highlights: p.highlights || {},
@@ -287,7 +287,7 @@ export default function ProductDetailsPage() {
               discount: '50% OFF',
               image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800',
               images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800'],
-              brandName: 'Mynzo Originals',
+              brandName: 'Lakshya Originals',
               highlights: {},
               technicalSpecs: {}
             });
@@ -375,7 +375,7 @@ export default function ProductDetailsPage() {
   const handleShare = async () => {
     const shareData = {
       title: product?.name || 'Check out this product',
-      text: product?.desc || 'Great product on Mynzo',
+      text: product?.desc || 'Great product on Lakshya',
       url: window.location.href,
     };
 

@@ -1,44 +1,18 @@
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+// Stubbed Firebase configuration
+// We are no longer using the old Mynzo Firebase project.
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const messaging = getMessaging(app);
+export const messaging = null;
 
 export const requestFcmToken = async () => {
-  try {
-    if (!('Notification' in window)) {
-      console.log('This browser does not support notifications');
-      return null;
-    }
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
-      const token = await getToken(messaging, {
-        vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
-      });
-      return token;
-    } else {
-      console.log('Permission not granted for notifications');
-      return null;
-    }
-  } catch (error) {
-    console.error('An error occurred while retrieving token:', error);
-    return null;
-  }
+  console.log('Firebase Cloud Messaging is disabled for Lakshya Army Store.');
+  return null;
 };
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
-    onMessage(messaging, (payload) => {
-      resolve(payload);
-    });
+    // Never resolves
   });
+
+export const onMessage = () => {
+  return () => {}; // Return dummy unsubscribe function
+};

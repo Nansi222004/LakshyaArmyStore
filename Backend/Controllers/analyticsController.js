@@ -1,8 +1,6 @@
 const AnalyticsEvent = require('../Models/AnalyticsEvent');
 const User = require('../Models/User');
 const Order = require('../Models/Order');
-const GamePlayLogModel = require('../Models/GamePlayLog');
-const Game = require('../Models/Game');
 const mongoose = require('mongoose');
 
 // @desc    Record tracking event(s)
@@ -814,50 +812,7 @@ const getTopProducts = async (req, res) => {
   }
 };
 
-// @desc    Get dashboard game performance tracking details
-// @route   GET /admin/analytics/games
-// @access  Private (Admin)
-const getGameAnalytics = async (req, res) => {
-  try {
-    // Relying on GamePlayLog database details
-    const totalPlays = await GamePlayLogModel.countDocuments();
-    const uniqueUsersResult = await GamePlayLogModel.aggregate([
-      { $group: { _id: '$userId' } },
-      { $count: 'count' }
-    ]);
-    const uniqueUsers = uniqueUsersResult[0] ? uniqueUsersResult[0].count : 0;
 
-    const pointsDistributedStats = await GamePlayLogModel.aggregate([
-      { $group: { _id: null, totalPoints: { $sum: '$pointsAwarded' } } }
-    ]);
-    const totalPointsAwarded = pointsDistributedStats[0] ? pointsDistributedStats[0].totalPoints : 0;
-
-    // Daily play counts for last 7 days
-    const dailyPlays = await GamePlayLogModel.aggregate([
-      {
-        $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$playedAt' } },
-          count: { $sum: 1 }
-        }
-      },
-      { $sort: { _id: -1 } },
-      { $limit: 7 }
-    ]);
-
-    res.status(200).json({
-      success: true,
-      data: {
-        totalPlays,
-        uniqueUsers,
-        totalPointsAwarded,
-        dailyPlays: dailyPlays.reverse()
-      }
-    });
-  } catch (error) {
-    console.error('Get Game Analytics Error:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
 
 // @desc    Get store earnings analytics
 // @route   GET /admin/analytics/earnings
@@ -1024,6 +979,5 @@ module.exports = {
   getTopEvents,
   getSearchAnalytics,
   getTopProducts,
-  getGameAnalytics,
   getEarnings
 };

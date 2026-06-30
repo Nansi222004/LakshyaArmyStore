@@ -12,10 +12,10 @@ class AnalyticsTracker {
 
   init() {
     // 1. Get or Create Session ID
-    let sessId = sessionStorage.getItem('mynzo_session_id');
+    let sessId = sessionStorage.getItem('lakshya_session_id');
     if (!sessId) {
       sessId = 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-      sessionStorage.setItem('mynzo_session_id', sessId);
+      sessionStorage.setItem('lakshya_session_id', sessId);
     }
     this.sessionId = sessId;
 

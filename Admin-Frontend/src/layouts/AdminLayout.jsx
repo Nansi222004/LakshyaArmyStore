@@ -110,7 +110,7 @@ const AdminLayout = () => {
       title: 'PROMOTIONS',
       items: [
         { name: 'Coupon Manager', path: '/admin/promotions/coupons', icon: <Tag size={18} /> },
-        { name: 'Game Manager', path: '/admin/promotions/games', icon: <Gamepad2 size={18} /> },
+
         { name: 'Referral Program', path: '/admin/promotions/referrals', icon: <GitBranch size={18} /> },
       ]
     },
@@ -162,7 +162,7 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-[#f8fafc] flex text-primary-900 font-nunito">
       {/* Sidebar */}
       <aside
-        className={`${isSidebarOpen ? 'w-72' : 'w-24'} bg-white border-r border-slate-200 transition-all duration-500 ease-in-out flex flex-col fixed inset-y-0 z-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]`}
+        className={`${isSidebarOpen ? 'w-72' : 'w-24'} bg-[#1A230F] text-slate-300 border-r border-[#2F3E16] transition-all duration-500 ease-in-out flex flex-col fixed inset-y-0 z-50 shadow-[4px_0_24px_rgba(0,0,0,0.1)]`}
       >
         <div className="h-20 flex items-center px-6 gap-3">
           {isSidebarOpen ? (
@@ -188,7 +188,7 @@ const AdminLayout = () => {
           {menuGroups.map((group, gIdx) => (
             <div key={gIdx} className="space-y-2">
               {isSidebarOpen && (
-                <h3 className="px-4 text-[13px] font-[800] text-orange-600 uppercase tracking-[2px]">
+                <h3 className="px-4 text-[13px] font-[800] text-[#A3AE8E] uppercase tracking-[2px]">
                   {group.title}
                 </h3>
               )}
@@ -205,12 +205,12 @@ const AdminLayout = () => {
                         <button
                           onClick={() => toggleSubMenu(item.name)}
                           className={`w-full flex items-center justify-between px-4 py-2.5 transition-all outline-none focus:outline-none focus:ring-0 ${isActive
-                              ? 'bg-primary-50 text-primary-500 rounded-md'
-                              : 'text-primary-900/60 hover:bg-primary-50/50 hover:text-primary-500 rounded-xl'
+                              ? 'bg-[#4B5320] text-white rounded-md'
+                              : 'text-slate-400 hover:bg-[#2F3E16] hover:text-white rounded-xl'
                             }`}
                         >
                           <div className="flex items-center gap-3">
-                            <span className={`flex-shrink-0 ${isActive ? 'text-primary-500' : ''}`}>{item.icon}</span>
+                            <span className={`flex-shrink-0 ${isActive ? 'text-white' : ''}`}>{item.icon}</span>
                             {isSidebarOpen && <span className="font-bold text-[17px] font-raleway whitespace-nowrap">{item.name}</span>}
                           </div>
                           {isSidebarOpen && (
@@ -229,8 +229,8 @@ const AdminLayout = () => {
                                   key={sub.path}
                                   to={sub.path}
                                   className={`block py-2.5 text-[16px] font-bold transition-all outline-none focus:outline-none ${location.pathname === sub.path
-                                      ? 'text-primary-500'
-                                      : 'text-slate-400 hover:text-primary-500'
+                                      ? 'text-white'
+                                      : 'text-slate-400 hover:text-white'
                                     }`}
                                 >
                                   {sub.name}
@@ -248,8 +248,8 @@ const AdminLayout = () => {
                       key={item.path}
                       to={item.path}
                       className={`flex items-center gap-3 px-4 py-2.5 transition-all outline-none focus:outline-none focus:ring-0 ${isActive
-                          ? 'bg-primary-500 text-white shadow-md shadow-primary-100/30 rounded-md'
-                          : 'text-primary-900/60 hover:bg-primary-50/50 hover:text-primary-500 rounded-xl'
+                          ? 'bg-[#4B5320] text-white shadow-md rounded-md'
+                          : 'text-slate-400 hover:bg-[#2F3E16] hover:text-white rounded-xl'
                         }`}
                     >
                       <span className="flex-shrink-0">{item.icon}</span>
@@ -263,12 +263,12 @@ const AdminLayout = () => {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-6 border-t border-slate-50 space-y-3">
+        <div className="p-6 border-t border-[#2F3E16] space-y-3">
             <div 
               onClick={() => navigate('/admin/settings')}
-              className={`p-4 bg-primary-50 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-primary-100 transition-all`}
+              className={`p-4 bg-[#2F3E16] rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-[#4B5320] transition-all`}
             >
-              <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-xs text-primary-500 border border-primary-100 overflow-hidden">
+              <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-xs text-[#1A230F] border border-[#4B5320] overflow-hidden">
                  {adminInfo.avatar ? (
                     <OptimizedImage src={adminInfo.avatar} alt="Admin" type="default" className="w-full h-full" />
                  ) : (
@@ -277,7 +277,7 @@ const AdminLayout = () => {
               </div>
               {isSidebarOpen && (
                 <div className="flex-1 min-w-0">
-                   <p className="text-[11px] font-bold text-primary-500 uppercase leading-none truncate">{adminInfo.name || 'Super Admin'}</p>
+                   <p className="text-[11px] font-bold text-white uppercase leading-none truncate">{adminInfo.name || 'Super Admin'}</p>
                    <p className="text-[10px] text-green-500 font-bold mt-1 flex items-center gap-1">
                       <span className="w-1 h-1 bg-green-500 rounded-full animate-pulse" /> Live & Secure
                    </p>
@@ -286,7 +286,7 @@ const AdminLayout = () => {
            </div>
            <button
              onClick={handleLogout}
-             className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-red-400 hover:bg-red-50 hover:text-red-500 ${!isSidebarOpen ? 'justify-center' : ''}`}
+             className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-red-400 hover:bg-red-500/20 hover:text-red-300 ${!isSidebarOpen ? 'justify-center' : ''}`}
            >
              <LogOut size={16} />
              {isSidebarOpen && <span className="font-bold text-[13px]">Logout</span>}

@@ -18,7 +18,7 @@ const analyticsEventSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['engagement', 'commerce', 'social', 'game', 'studio', 'auth', 'other'],
+    enum: ['engagement', 'commerce', 'social', 'studio', 'auth', 'other'],
     default: 'other',
     index: true
   },

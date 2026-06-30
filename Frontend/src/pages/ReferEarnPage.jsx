@@ -54,7 +54,7 @@ export default function ReferEarnPage() {
   }, [user]);
 
   const referralCode = referralData?.referralCode || '...';
-  const shareText = `Hey! Join Mynzo using my referral code ${referralCode} and we both get ${referralData?.stats?.coinsPerReferral || 100} Mynzo Coins! 🎉`;
+  const shareText = `Hey! Join Lakshya using my referral code ${referralCode} and we both get ${referralData?.stats?.coinsPerReferral || 100} Lakshya Coins! 🎉`;
   const shareUrl = `${window.location.origin}/register?ref=${referralCode}`;
   const fullShareText = `${shareText}\n\n${shareUrl}`;
 
@@ -73,12 +73,12 @@ export default function ReferEarnPage() {
   const handleNativeShare = async () => {
     if (window.flutter_inappwebview && window.flutter_inappwebview.callHandler) {
       window.flutter_inappwebview.callHandler('shareContent', {
-        title: 'Join Mynzo!',
+        title: 'Join Lakshya!',
         text: fullShareText
       });
     } else if (navigator.share) {
       try {
-        await navigator.share({ title: 'Join Mynzo!', text: shareText, url: shareUrl });
+        await navigator.share({ title: 'Join Lakshya!', text: shareText, url: shareUrl });
       } catch (err) { /* canceled */ }
     } else {
       navigator.clipboard.writeText(fullShareText);
@@ -163,7 +163,7 @@ export default function ReferEarnPage() {
               <h2 className="text-2xl font-black mb-1 tracking-tight">Invite &amp; Earn!</h2>
               <p className="text-sm text-indigo-200 font-medium px-4 leading-snug">
                 You and your friend both get{' '}
-                <span className="text-amber-300 font-black">{referralData?.stats?.coinsPerReferral || 100} Mynzo Coins</span>{' '}
+                <span className="text-amber-300 font-black">{referralData?.stats?.coinsPerReferral || 100} Lakshya Coins</span>{' '}
                 when they complete their first order.
               </p>
             </div>
@@ -312,7 +312,7 @@ export default function ReferEarnPage() {
               {[
                 { n: 1, title: 'Share your code', desc: 'Send your unique referral code to friends.' },
                 { n: 2, title: 'Friend signs up', desc: 'They register using your referral code.' },
-                { n: 3, title: 'You both earn!', desc: 'Both get Mynzo Coins after their first order.' },
+                { n: 3, title: 'You both earn!', desc: 'Both get Lakshya Coins after their first order.' },
               ].map((step) => (
                 <div key={step.n} className="flex gap-4 relative z-10">
                   <div className="w-8 h-8 rounded-full bg-[#4B5320]/10 border border-[#4B5320]/30 flex items-center justify-center flex-shrink-0 text-[#4B5320] font-black text-sm">

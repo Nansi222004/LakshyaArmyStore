@@ -225,7 +225,7 @@ export default function CartPage() {
 
   return (
     <div className="flex-grow flex flex-col bg-slate-100 pb-40 relative font-sans">
-      {/* Header - Kept identical to original Mynzo theme per request */}
+      {/* Header - Kept identical to original Lakshya theme per request */}
       <header className="sticky top-0 bg-primary-100 border-b border-primary-200/50 px-4 py-3 flex items-center justify-between z-40 shadow-sm">
         <div className="flex items-center gap-3">
           <button 

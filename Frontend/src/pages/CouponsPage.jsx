@@ -86,7 +86,7 @@ export default function CouponsPage() {
             <div className="text-center py-16 text-slate-400 font-bold text-xs space-y-2">
               <Clock className="w-8 h-8 mx-auto text-slate-200" />
               <p>No coupons redeemed yet.</p>
-              <p className="text-[10px] text-slate-300 font-normal">Use a coupon on checkout to save Mynzo Coins and log history!</p>
+              <p className="text-[10px] text-slate-300 font-normal">Use a coupon on checkout to save Lakshya Coins and log history!</p>
             </div>
           ) : (
             history.map((item, idx) => (

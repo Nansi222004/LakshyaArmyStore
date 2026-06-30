@@ -21,7 +21,7 @@ async function testOrder() {
             billing_pincode: '452001',
             billing_state: 'State',
             billing_country: 'India',
-            billing_email: 'customer@mynzo.com',
+            billing_email: 'customer@lakshyaarmystore.com',
             billing_phone: '9876543210',
             shipping_is_billing: true,
             order_items: [{

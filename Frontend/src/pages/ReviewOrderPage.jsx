@@ -316,7 +316,7 @@ export default function ReviewOrderPage() {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_mockkey",
         amount: grandTotal * 100,
         currency: "INR",
-        name: "Mynzo World",
+        name: "Lakshya Army Store",
         description: "Purchase Transaction",
         handler: function (response) {
           executeOrderPlacement("Online", response.razorpay_payment_id);
@@ -588,12 +588,12 @@ export default function ReviewOrderPage() {
           </div>
         </div>
 
-        {/* Mynzo Wallet Cash Redemption */}
+        {/* Lakshya Wallet Cash Redemption */}
         {walletBalance > 0 && (
           <div>
             <div className="flex items-center gap-2 mb-2 px-1 text-[#2F3E16]">
               <Landmark className="w-4 h-4 text-emerald-500" />
-              <h2 className="text-xs font-black uppercase tracking-wide">Mynzo Wallet Cash</h2>
+              <h2 className="text-xs font-black uppercase tracking-wide">Lakshya Wallet Cash</h2>
             </div>
             <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
               <div className="flex flex-col">

@@ -7,7 +7,7 @@ export default function HelpSupportPage() {
   const navigate = useNavigate();
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [faqs, setFaqs] = useState([]);
-  const [supportEmail, setSupportEmail] = useState('support@mynzo.com');
+  const [supportEmail, setSupportEmail] = useState('support@lakshyaarmystore.com');
   const [supportPhone, setSupportPhone] = useState('+1 (800) 123-4567');
 
   // Ticket Form state
@@ -30,8 +30,8 @@ export default function HelpSupportPage() {
       answer: "We offer a 30-day hassle-free return policy. If you're not satisfied with your purchase, you can return it within 30 days of delivery for a full refund."
     },
     {
-      question: "How do I use Mynzo Coins?",
-      answer: "Mynzo Coins can be applied at checkout. 100 Mynzo Coins equals $1. You can select the option to 'Use Mynzo Coins' during the payment process."
+      question: "How do I use Lakshya Coins?",
+      answer: "Lakshya Coins can be applied at checkout. 100 Lakshya Coins equals $1. You can select the option to 'Use Lakshya Coins' during the payment process."
     },
     {
       question: "Can I change my shipping address?",

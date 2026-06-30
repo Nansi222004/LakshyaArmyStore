@@ -313,7 +313,7 @@ exports.webhookReceiver = async (req, res) => {
           billing_pincode: addressDoc.pincode,
           billing_state: cityState.state,
           billing_country: 'India',
-          billing_email: user.email || 'customer@mynzo.com',
+          billing_email: user.email || 'customer@lakshyaarmystore.com',
           billing_phone: user.phone || '9876543210',
           shipping_is_billing: true,
           order_items: validatedItems.map(item => ({

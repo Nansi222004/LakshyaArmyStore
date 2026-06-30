@@ -378,7 +378,7 @@ exports.updateReturnStatus = async (req, res) => {
 
           // Get return shipping address from env or defaults
           const returnShippingAddress = {
-            name: process.env.RETURN_SHIPPING_NAME || "Mynzo Warehouse",
+            name: process.env.RETURN_SHIPPING_NAME || "Lakshya Warehouse",
             address: process.env.RETURN_SHIPPING_ADDRESS || "Warehouse 12, Sector 63",
             address_2: process.env.RETURN_SHIPPING_ADDRESS_2 || "",
             city: process.env.RETURN_SHIPPING_CITY || "Noida",
@@ -386,7 +386,7 @@ exports.updateReturnStatus = async (req, res) => {
             country: "India",
             pincode: process.env.SHIPROCKET_PICKUP_PINCODE || "201301",
             phone: process.env.RETURN_SHIPPING_PHONE || "9876543210",
-            email: process.env.RETURN_SHIPPING_EMAIL || "warehouse@mynzo.com"
+            email: process.env.RETURN_SHIPPING_EMAIL || "warehouse@lakshyaarmystore.com"
           };
 
           const returnPayload = {
@@ -401,7 +401,7 @@ exports.updateReturnStatus = async (req, res) => {
             pickup_state: cityState.state,
             pickup_country: "India",
             pickup_pincode: order.deliveryAddress.pincode,
-            pickup_email: order.userId?.email || "customer@mynzo.com",
+            pickup_email: order.userId?.email || "customer@lakshyaarmystore.com",
             pickup_phone: order.userId?.phone || "9876543210",
             shipping_customer_name: returnShippingAddress.name,
             shipping_last_name: "",

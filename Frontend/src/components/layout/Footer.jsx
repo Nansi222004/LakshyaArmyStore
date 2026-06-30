@@ -11,10 +11,10 @@ export default function Footer() {
             <div className="w-8 h-8 bg-[#4B5320] rounded-full flex items-center justify-center text-white">
               <Gift className="w-4 h-4" />
             </div>
-            <span className="text-white font-extrabold text-lg tracking-tight">Mynzo <span className="text-[#4B5320]">World</span></span>
+            <span className="text-white font-extrabold text-lg tracking-tight">Lakshya <span className="text-[#4B5320]">World</span></span>
           </div>
           <p className="text-xs leading-relaxed">
-            Mynzo World is your premium online gifting destination, offering beautifully curated teddy bears, RC cars, pendants, and customized gift bundles that surprise, delight, and express your deepest feelings.
+            Lakshya Army Store is your premium online gifting destination, offering beautifully curated teddy bears, RC cars, pendants, and customized gift bundles that surprise, delight, and express your deepest feelings.
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export default function Footer() {
           <div className="space-y-2">
             <h4 className="text-white font-bold uppercase tracking-wider text-[10px]">Company</h4>
             <ul className="space-y-1.5">
-              <li><a href="#" className="hover:text-[#4B5320] transition-colors">About Mynzo</a></li>
+              <li><a href="#" className="hover:text-[#4B5320] transition-colors">About Lakshya</a></li>
               <li><a href="#" className="hover:text-[#4B5320] transition-colors">Privacy Policy</a></li>
               <li><a href="#" className="hover:text-[#4B5320] transition-colors">Terms of Service</a></li>
               <li><a href="#" className="hover:text-[#4B5320] transition-colors">Support Center</a></li>
@@ -50,7 +50,7 @@ export default function Footer() {
 
         {/* Bottom copyright */}
         <div className="border-t border-slate-800 pt-6 text-center text-[10px] space-y-1">
-          <p>© {new Date().getFullYear()} Mynzo World Private Limited.</p>
+          <p>© {new Date().getFullYear()} Lakshya Army Store Private Limited.</p>
           <p className="flex items-center justify-center gap-1">
             Made with <Heart className="w-3 h-3 text-rose-500 fill-current animate-pulse" /> for special moments.
           </p>

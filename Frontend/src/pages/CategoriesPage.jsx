@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, Search, ChevronLeft, LayoutGrid } from 'lucide-react';
+import { Filter, Search, ChevronLeft, LayoutGrid, Star } from 'lucide-react';
 import { CATEGORIES, CRAZY_DEALS } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ui/ProductCard';
@@ -10,7 +10,6 @@ import { getImageUrl } from '../utils/imageHelper';
 import { cachedFetch } from '../utils/apiCache';
 
 // Category Images
-import catForYou from '../assets/CategorySection/categoryForU-removebg-preview.webp';
 import cat1 from '../assets/CategorySection/Category1-removebg-preview.webp';
 import cat2 from '../assets/CategorySection/Category2-removebg-preview.webp';
 import cat3 from '../assets/CategorySection/Category3-removebg-preview.webp';
@@ -88,9 +87,14 @@ export default function CategoriesPage() {
 
   // Category Image drawer
   const renderCatIcon = (id, isActive) => {
+    if (id === 'for-you' || !id) {
+      return (
+        <Star className={`w-[24px] h-[24px] text-[#4B5320] fill-[#4B5320] transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`} />
+      );
+    }
+    
     let imgSrc = null;
     switch (id) {
-      case 'for-you': imgSrc = catForYou; break;
       case 'beauty': imgSrc = cat1; break;
       case 'toys': imgSrc = cat2; break; // teddy bear
       case 'jewellery': imgSrc = cat3; break; // woman with necklace
@@ -99,7 +103,7 @@ export default function CategoriesPage() {
       case 'fashion': imgSrc = cat6; break;
       case 'gifting': imgSrc = cat7; break;
       case 'electrical': imgSrc = cat4; break;
-      default: imgSrc = catForYou;
+      default: return null;
     }
 
     if (!imgSrc) return null;
@@ -125,7 +129,7 @@ export default function CategoriesPage() {
     type: (p.category || '').toLowerCase(),
     subCategory: p.subCategory ? p.subCategory.toLowerCase() : '',
     image: p.images && p.images[0] ? p.images[0] : '',
-    brandName: p.brandName || 'Mynzo Originals',
+    brandName: p.brandName || 'Lakshya Originals',
     flags: p.flags || {},
     stock: p.stock || 0,
     sales: p.sales || 0,
@@ -190,7 +194,7 @@ export default function CategoriesPage() {
           </button>
           <div>
             <h1 className="text-sm font-black text-white tracking-wide uppercase font-syne">
-              Discover <span>Mynzo</span>
+              Discover <span>Lakshya</span>
             </h1>
             <p className="text-[10px] text-white/90 font-bold uppercase tracking-widest font-sans mt-0.5">
               Trend Starts Here
@@ -225,11 +229,11 @@ export default function CategoriesPage() {
                   {isActive ? (
                     <motion.div
                       layoutId="activeCategoryCapsule"
-                      className="absolute inset-0 rounded-xl bg-[#4B5320] shadow-md shadow-[#4B5320]/30"
+                      className="absolute inset-0 rounded-xl bg-white border-[1.5px] border-[#4B5320] shadow-sm"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   ) : (
-                    <div className="absolute inset-0 rounded-xl bg-primary-50 group-hover:bg-primary-100 transition-colors duration-300" />
+                    <div className="absolute inset-0 rounded-xl bg-[#4B5320]/[0.05] group-hover:bg-[#4B5320]/[0.1] transition-colors duration-300" />
                   )}
 
                   {/* Image Icon */}
@@ -268,7 +272,7 @@ export default function CategoriesPage() {
         </div>
 
         {/* 2. Main filtered products catalog grid */}
-        <div className="flex-grow p-2.5 overflow-y-auto space-y-3 bg-[#ff7400]/15 relative">
+        <div className="flex-grow p-2.5 overflow-y-auto space-y-3 bg-[#4B5320]/10 relative">
 
           {/* Title bar */}
           <div className="flex items-center justify-between border-b border-slate-50 pb-2 relative z-20 px-1">
@@ -289,25 +293,25 @@ export default function CategoriesPage() {
                 <div className="absolute right-0 mt-2 w-36 bg-white border border-slate-100 rounded-lg shadow-lg py-1 z-30 animate-fade-in text-[10px]">
                   <button
                     onClick={() => { setSortBy('none'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'none' ? 'text-[#4B5320]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-[#4B5320]/10 font-bold ${sortBy === 'none' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     DEFAULT
                   </button>
                   <button
                     onClick={() => { setSortBy('price-low'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'price-low' ? 'text-[#4B5320]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-[#4B5320]/10 font-bold ${sortBy === 'price-low' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     PRICE: LOW TO HIGH
                   </button>
                   <button
                     onClick={() => { setSortBy('price-high'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'price-high' ? 'text-[#4B5320]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-[#4B5320]/10 font-bold ${sortBy === 'price-high' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     PRICE: HIGH TO LOW
                   </button>
                   <button
                     onClick={() => { setSortBy('rating'); setShowSortDropdown(false); }}
-                    className={`w-full text-left px-3 py-1.5 hover:bg-primary-50 font-bold ${sortBy === 'rating' ? 'text-[#4B5320]' : 'text-slate-600'}`}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-[#4B5320]/10 font-bold ${sortBy === 'rating' ? 'text-[#4B5320]' : 'text-slate-600'}`}
                   >
                     TOP RATED
                   </button>
@@ -325,12 +329,12 @@ export default function CategoriesPage() {
               >
                 <div className="relative w-[52px] h-[52px] flex items-center justify-center">
                   {selectedSubCategory === 'all' ? (
-                    <div className="absolute inset-0 rounded-lg bg-[#4B5320] shadow-md shadow-[#4B5320]/25" />
+                    <div className="absolute inset-0 rounded-lg bg-white border-[1.5px] border-[#4B5320] shadow-sm" />
                   ) : (
-                    <div className="absolute inset-0 rounded-lg bg-primary-50 group-hover:bg-primary-100 transition-colors duration-300" />
+                    <div className="absolute inset-0 rounded-lg bg-[#4B5320]/[0.05] group-hover:bg-[#4B5320]/[0.1] transition-colors duration-300" />
                   )}
                   <div className="relative z-10 flex items-center justify-center">
-                    <LayoutGrid className={`w-6 h-6 transition-all duration-300 ${selectedSubCategory === 'all' ? 'text-white scale-110' : 'text-[#4B5320]'}`} />
+                    <LayoutGrid className={`w-6 h-6 transition-all duration-300 ${selectedSubCategory === 'all' ? 'text-[#4B5320] scale-110' : 'text-[#4B5320]/60'}`} />
                   </div>
                 </div>
                 <span className={`text-[9px] leading-[1.1] font-black tracking-tight select-none px-0.5 text-center mt-1.5 w-full transition-colors ${selectedSubCategory === 'all' ? 'text-[#0F172A]' : 'text-slate-500'
@@ -349,9 +353,9 @@ export default function CategoriesPage() {
                   >
                     <div className="relative w-[52px] h-[52px] flex items-center justify-center">
                       {isSubActive ? (
-                        <div className="absolute inset-0 rounded-lg bg-[#4B5320] shadow-md shadow-[#4B5320]/25 animate-scale-up" />
+                        <div className="absolute inset-0 rounded-lg bg-white border-[1.5px] border-[#4B5320] shadow-sm animate-scale-up" />
                       ) : (
-                        <div className="absolute inset-0 rounded-lg bg-primary-50 group-hover:bg-primary-100 transition-colors duration-300" />
+                        <div className="absolute inset-0 rounded-lg bg-[#4B5320]/[0.05] group-hover:bg-[#4B5320]/[0.1] transition-colors duration-300" />
                       )}
                       <div className="relative z-10 flex items-center justify-center">
                         {sub.image ? (
@@ -408,7 +412,7 @@ export default function CategoriesPage() {
               transition={{ duration: 0.2 }}
               className="bg-slate-50 border border-dashed border-slate-200 rounded-3xl p-8 text-center space-y-3 mt-6"
             >
-              <div className="w-12 h-12 bg-primary-100 text-[#4B5320] rounded-full flex items-center justify-center mx-auto shadow-sm">
+              <div className="w-12 h-12 bg-[#4B5320]/10 text-[#4B5320] rounded-full flex items-center justify-center mx-auto shadow-sm">
                 <Search className="w-6 h-6 animate-pulse" />
               </div>
               <div className="space-y-1">

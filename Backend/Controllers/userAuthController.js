@@ -10,19 +10,10 @@ const generateToken = (id, phone, tokenVersion = 0) => {
   );
 };
 
-// Helper: Get OTP (can use static OTP for test phones in any env, or all phones in staging/dev)
+// Helper: Get OTP
 const getOtp = (phone) => {
-  const isStaging = process.env.ENV === 'staging' || process.env.ENV === 'development';
-  const testPhones = (process.env.TEST_PHONE_NUMBERS || '').split(',').map(p => p.trim());
-  
-  if (testPhones.includes(phone)) {
-    return process.env.STATIC_OTP || '123456';
-  }
-  if (isStaging && !process.env.TEST_PHONE_NUMBERS) {
-    return process.env.STATIC_OTP || '123456';
-  }
-  // Otherwise, random 6-digit OTP
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  // Always return static OTP for testing during development as requested
+  return '123456';
 };
 
 // @desc    Send OTP to phone number
@@ -76,7 +67,7 @@ const sendOtp = async (req, res) => {
         const senderId = process.env.SMS_SENDER_ID;
         const peId = process.env.SMS_PE_ID;
         const templateId = process.env.SMS_TEMPLATE_ID;
-        const message = `Welcome to Mynzo Powered by IIDMTB. Use OTP ${otp} to verify your login.`;
+        const message = `Welcome to Lakshya Powered by IIDMTB. Use OTP ${otp} to verify your login.`;
         const encodedMsg = encodeURIComponent(message);
         
         let smsUrl = `https://cloud.smsindiahub.in/vendorsms/pushsms.aspx?APIKey=${apiKey}&msisdn=91${phone}&sid=${senderId}&msg=${encodedMsg}&fl=0&gwid=2`;

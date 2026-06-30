@@ -13,7 +13,6 @@ const {
   getTopEvents,
   getSearchAnalytics,
   getTopProducts,
-  getGameAnalytics,
   getEarnings
 } = require('../Controllers/analyticsController');
 
@@ -49,7 +48,6 @@ router.get('/funnel', protectAdmin, getCheckoutFunnel);
 router.get('/events', protectAdmin, getTopEvents);
 router.get('/search', protectAdmin, getSearchAnalytics);
 router.get('/products/top', protectAdmin, getTopProducts);
-router.get('/games', protectAdmin, getGameAnalytics);
 router.get('/earnings', protectAdmin, getEarnings);
 
 module.exports = router;

@@ -228,7 +228,7 @@ export default function LoginPage() {
         <div className="relative z-10 h-28 flex items-center justify-center mb-2 animate-fade-in drop-shadow-xl">
           <img
             src="/logo_lakshya.webp"
-            alt="Mynzo Logo"
+            alt="Lakshya Logo"
             className="h-full w-auto object-contain rounded-3xl"
             onError={(e) => { e.target.style.display = 'none'; }}
           />

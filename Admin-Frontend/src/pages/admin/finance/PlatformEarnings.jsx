@@ -84,7 +84,7 @@ const PlatformEarnings = () => {
     let csvContent = "\uFEFF"; // Add BOM for Excel UTF-8 support
     
     // Header
-    csvContent += "Mynzo Store Earnings & Sales Report\n";
+    csvContent += "Lakshya Store Earnings & Sales Report\n";
     csvContent += `Generated At,${new Date().toLocaleString()}\n\n`;
     
     // Overview Metrics
@@ -120,7 +120,7 @@ const PlatformEarnings = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `mynzo_sales_report_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute("download", `lakshya_sales_report_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

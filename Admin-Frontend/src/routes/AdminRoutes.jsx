@@ -31,7 +31,7 @@ import SubAdmins from '../pages/admin/system/SubAdmins';
 import Coupons from '../pages/admin/promotions/Coupons';
 import FlashSale from '../pages/admin/promotions/FlashSale';
 import FeaturedProducts from '../pages/admin/promotions/FeaturedProducts';
-import GameManager from '../pages/admin/promotions/GameManager';
+
 import ReferralProgram from '../pages/admin/promotions/ReferralProgram';
 
 // Comms
@@ -88,7 +88,7 @@ const AdminRoutes = () => {
         <Route path="promotions/coupons" element={<Coupons />} />
         <Route path="promotions/flash-sale" element={<FlashSale />} />
         <Route path="promotions/featured" element={<FeaturedProducts />} />
-        <Route path="promotions/games" element={<GameManager />} />
+
         <Route path="promotions/referrals" element={<ReferralProgram />} />
 
         {/* Comms */}
