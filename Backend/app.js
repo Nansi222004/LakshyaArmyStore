@@ -15,8 +15,7 @@ const app = express();
 const ALLOWED_ORIGINS = [
   'https://lakshyaarmystore.com',
   'https://admin.lakshyaarmystore.com',
-  'https://lakshyaarmystore.com',
-  'https://admin.lakshyaarmystore.com',
+  'https://lakshya-army-store-ecru.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174'
 ];
