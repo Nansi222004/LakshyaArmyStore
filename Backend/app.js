@@ -16,6 +16,7 @@ const ALLOWED_ORIGINS = [
   'https://lakshyaarmystore.com',
   'https://admin.lakshyaarmystore.com',
   'https://lakshya-army-store-ecru.vercel.app',
+  'https://lakshya-army-store-n4bs.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174'
 ];
