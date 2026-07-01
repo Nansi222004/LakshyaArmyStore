@@ -41,5 +41,8 @@ export const getImageUrl = (imagePath) => {
     apiBase = 'http://localhost:5000';
   }
   
+  // Ensure apiBase doesn't end with /api so uploads resolve correctly
+  apiBase = apiBase.replace(/\/api\/?$/, '');
+  
   return `${apiBase}${path.startsWith('/') ? '' : '/'}${path}`;
 };

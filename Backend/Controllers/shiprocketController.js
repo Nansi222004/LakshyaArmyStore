@@ -32,6 +32,10 @@ exports.estimateShipping = async (req, res) => {
         }
         res.status(200).json({ success: true, deliveryCharge: minFreight, etd });
     } catch (error) {
+        // Fallback for when Shiprocket is not configured (e.g. missing .env credentials)
+        if (error.message && error.message.includes('authentication failed')) {
+            return res.status(200).json({ success: true, deliveryCharge: 50, etd: '3-5 Working Days (Fallback)' });
+        }
         res.status(500).json({ success: false, message: error.message });
     }
 };
